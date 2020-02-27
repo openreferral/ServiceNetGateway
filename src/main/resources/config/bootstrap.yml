@@ -26,3 +26,16 @@ spring:
           - git-branch=${git.branch:}
       host: localhost
       port: 8500
+
+# See http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
+zuul: # those values must be configured depending on the application specific needs
+  sensitive-headers: Cookie,Set-Cookie #see https://github.com/spring-cloud/spring-cloud-netflix/issues/3126
+  host:
+    max-total-connections: 1000
+    max-per-route-connections: 100
+    connect-timeout-millis: 120000
+    socket-timeout-millis: 120000
+  prefix: /services
+  semaphore:
+    max-semaphores: 500
+  ignoredServices: 'consul,ServiceNetGateway' # Prevent Consul and the "ServiceNetGateway" app itself from having a Zuul route automatically created for them
