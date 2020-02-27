@@ -45,8 +45,9 @@ After starting the docker containers using app-dev-dependencies.yml, you can sim
 You can also build a docker image of these services, add them to `src/main/docker/app-dev.yml` and start the containers with:
 
    ``` 
-   docker-compose -f src/main/docker/app-dev.yml up -d
+   ./docker-compose.sh -f src/main/docker/app-dev.yml up -d
    ```
+Please note that `docker-compose.sh` script was used in the above example to set the `HOST_IP` environment variable.
 
 ### PWA Support
 
