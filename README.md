@@ -30,6 +30,7 @@ docker-compose -f src/main/docker/hazelcast-management-center.yml up -d
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
+    docker-compose -f src/main/docker/app-dev-dependencies.yml up -d
     ./mvnw
     npm start
 
@@ -38,6 +39,14 @@ specifying a newer version in [package.json](package.json). You can also run `np
 Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
 
 The `npm run` command will list all of the scripts available to run for this project.
+
+### Backend services
+After starting the docker containers using app-dev-dependencies.yml, you can simply run `./mvnw` in any backend service. It should register to the gateway and be available under `/services/<service_name>` url.
+You can also build a docker image of these services, add them to `src/main/docker/app-dev.yml` and start the containers with:
+
+   ``` 
+   docker-compose -f src/main/docker/app-dev.yml up -d
+   ```
 
 ### PWA Support
 
