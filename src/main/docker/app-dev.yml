@@ -1,10 +1,25 @@
 version: '2'
 services:
+#  servicenetgateway-app:
+#    image: servicenetgateway
+#    environment:
+#      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+#      - SPRING_PROFILES_ACTIVE=staging,swagger
+#      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+#      - SPRING_CLOUD_CONSUL_HOST=consul
+#      - SPRING_CLOUD_CONSUL_PORT=8500
+#        # You can find the host ip by running: "ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+'"
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://172.17.0.1:5432/ServiceNet
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=password
+#      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+#    ports:
+#      - 8080:8080
   servicenet-app:
     image: servicenet
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - SPRING_PROFILES_ACTIVE=staging,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500

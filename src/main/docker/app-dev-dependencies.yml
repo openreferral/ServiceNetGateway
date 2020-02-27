@@ -1,0 +1,15 @@
+version: '2'
+services:
+  servicenet-mongo:
+    extends:
+      file: mongo.yml
+      service: servicenet-mongo
+  consul:
+    extends:
+      file: consul.yml
+      service: consul
+
+  consul-config-loader:
+    extends:
+      file: consul.yml
+      service: consul-config-loader
