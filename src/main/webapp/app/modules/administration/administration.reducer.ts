@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+import { GATEWAY_API_URL, SERVICENET_BASE_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   FETCH_LOGS: 'administration/FETCH_LOGS',
@@ -134,27 +135,27 @@ export default (state: AdministrationState = initialState, action): Administrati
 // Actions
 export const gatewayRoutes = () => ({
   type: ACTION_TYPES.FETCH_GATEWAY_ROUTE,
-  payload: axios.get('/api/gateway/routes')
+  payload: axios.get(GATEWAY_API_URL + '/gateway/routes')
 });
 
 export const systemHealth = () => ({
   type: ACTION_TYPES.FETCH_HEALTH,
-  payload: axios.get('management/health')
+  payload: axios.get(SERVICENET_BASE_URL + '/management/health')
 });
 
 export const systemMetrics = () => ({
   type: ACTION_TYPES.FETCH_METRICS,
-  payload: axios.get('management/metrics')
+  payload: axios.get(SERVICENET_BASE_URL + '/management/metrics')
 });
 
 export const systemThreadDump = () => ({
   type: ACTION_TYPES.FETCH_THREAD_DUMP,
-  payload: axios.get('management/threaddump')
+  payload: axios.get(SERVICENET_BASE_URL + '/management/threaddump')
 });
 
 export const getLoggers = () => ({
   type: ACTION_TYPES.FETCH_LOGS,
-  payload: axios.get('management/logs')
+  payload: axios.get(SERVICENET_BASE_URL + '/management/logs')
 });
 
 export const changeLogLevel = (name, level) => {
@@ -164,7 +165,7 @@ export const changeLogLevel = (name, level) => {
   return async dispatch => {
     await dispatch({
       type: ACTION_TYPES.FETCH_LOGS_CHANGE_LEVEL,
-      payload: axios.put('management/logs', body)
+      payload: axios.put(SERVICENET_BASE_URL + '/management/logs', body)
     });
     dispatch(getLoggers());
   };
@@ -172,12 +173,12 @@ export const changeLogLevel = (name, level) => {
 
 export const getConfigurations = () => ({
   type: ACTION_TYPES.FETCH_CONFIGURATIONS,
-  payload: axios.get('management/configprops')
+  payload: axios.get(SERVICENET_BASE_URL + '/management/configprops')
 });
 
 export const getEnv = () => ({
   type: ACTION_TYPES.FETCH_ENV,
-  payload: axios.get('management/env')
+  payload: axios.get(SERVICENET_BASE_URL + '/management/env')
 });
 
 export const getAudits = (page, size, sort, fromDate, toDate) => {
