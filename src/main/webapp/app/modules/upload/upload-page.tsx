@@ -2,7 +2,7 @@ import 'filepond/dist/filepond.min.css';
 import './upload-page.scss';
 
 import React from 'react';
-import { Translate } from 'react-jhipster';
+import { Storage, Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Button, Input } from 'reactstrap';
 import { FilePond, registerPlugin } from 'react-filepond';
@@ -10,6 +10,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { toast } from 'react-toastify';
 
 import { getSystemAccounts } from './upload-page.reducer';
+import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export interface IUploadPageProp extends StateProps, DispatchProps {}
 
@@ -69,16 +70,18 @@ export class UploadPage extends React.Component<IUploadPageProp, IUploadState> {
   };
 
   uploadAll = () => {
+    const token = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
     toast.info('Processing data. Please wait.');
     this.state.pond.processFiles().then(files => {
       const filesArray = [];
       files.forEach(file => {
         filesArray.push(this.appendFilenameToJSON(file.serverId, file.filenameWithoutExtension));
       });
-      fetch('/api/map', {
+      fetch(SERVICENET_API_URL + '/map', {
         method: 'POST',
         body: JSON.stringify(filesArray),
         headers: new Headers({
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'X-XSRF-TOKEN': this.getToken(),
           PROVIDER: this.state.provider
@@ -148,6 +151,7 @@ export class UploadPage extends React.Component<IUploadPageProp, IUploadState> {
       </div>
     ) : null;
 
+    const token = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
     return (
       <Row>
         <Col>
@@ -164,9 +168,10 @@ export class UploadPage extends React.Component<IUploadPageProp, IUploadState> {
             allowRevert={false}
             maxFiles={maxNumberOfFiles}
             server={{
-              url: '/api/file',
+              url: SERVICENET_API_URL + '/file',
               process: {
                 headers: {
+                  Authorization: `Bearer ${token}`,
                   'X-XSRF-TOKEN': this.getToken(),
                   DELIMITER: this.state.delimiter,
                   PROVIDER: this.state.provider
