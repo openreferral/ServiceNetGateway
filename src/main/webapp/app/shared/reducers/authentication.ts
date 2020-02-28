@@ -59,6 +59,7 @@ export default (state: AuthenticationState = initialState, action): Authenticati
         isAuthenticated: false,
         sessionHasBeenFetched: true,
         showModalLogin: true,
+        loggingOut: false,
         errorMessage: action.payload
       };
     case SUCCESS(ACTION_TYPES.LOGIN):
@@ -99,6 +100,11 @@ export default (state: AuthenticationState = initialState, action): Authenticati
         showModalLogin: true,
         isAuthenticated: false
       };
+    case ACTION_TYPES.LOGOUT:
+      return {
+        ...state,
+        loggingOut: true
+      };
     default:
       return state;
   }
@@ -137,10 +143,10 @@ export const login = (username, password, rememberMe = false) => async (dispatch
 };
 
 export const logout = () => async dispatch => {
-  await dispatch({
-    type: ACTION_TYPES.LOGOUT,
-    payload: axios.post(AUTH_API_URL + '/logout', {})
+  dispatch({
+    type: ACTION_TYPES.LOGOUT
   });
+  clearAuthToken();
   dispatch(getSession());
 };
 
