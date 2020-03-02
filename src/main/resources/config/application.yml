@@ -27,6 +27,9 @@ zuul: # those values must be configured depending on the application specific ne
     max-semaphores: 500
   ignoredServices: 'consul,ServiceNetGateway' # Prevent Consul and the "ServiceNetGateway" app itself from having a Zuul route automatically created for them
 
+ribbon:
+  ReadTimeout: 60000
+
 # See https://github.com/Netflix/Hystrix/wiki/Configuration
 hystrix:
   command:
