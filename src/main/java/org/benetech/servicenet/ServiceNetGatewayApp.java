@@ -1,5 +1,7 @@
 package org.benetech.servicenet;
 
+import static org.benetech.servicenet.config.Constants.SPRING_PROFILE_STAGING;
+
 import org.benetech.servicenet.config.ApplicationProperties;
 
 import io.github.jhipster.config.DefaultProfileUtil;
@@ -46,11 +48,13 @@ public class ServiceNetGatewayApp {
     @PostConstruct
     public void initApplication() {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT) && (activeProfiles
+            .contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION) || activeProfiles.contains(SPRING_PROFILE_STAGING))) {
             log.error("You have misconfigured your application! It should not run " +
-                "with both the 'dev' and 'prod' profiles at the same time.");
+                "with both the 'dev' and 'prod' (or 'staging') profiles at the same time.");
         }
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_CLOUD)) {
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles
+            .contains(JHipsterConstants.SPRING_PROFILE_CLOUD)) {
             log.error("You have misconfigured your application! It should not " +
                 "run with both the 'dev' and 'cloud' profiles at the same time.");
         }
