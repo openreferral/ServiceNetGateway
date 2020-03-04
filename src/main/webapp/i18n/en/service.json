@@ -42,7 +42,16 @@
       "docs": "Docs",
       "paymentsAccepted": "Payments Accepted",
       "langs": "Langs",
-      "taxonomies": "Taxonomies"
+      "taxonomies": "Taxonomies",
+      "matches": "Matches"
+    },
+    "serviceMatch": {
+      "created": "A new ServiceMatch is created with identifier {{ param }}",
+      "deleted": "A ServiceMatch is deleted with identifier {{ param }}"
+    },
+    "locationMatch": {
+      "created": "A new LocationMatch is created with identifier {{ param }}",
+      "deleted": "A LocationMatch is deleted with identifier {{ param }}"
     }
   }
 }

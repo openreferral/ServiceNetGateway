@@ -1,6 +1,5 @@
 import 'filepond/dist/filepond.min.css';
 import './all-records-view.scss';
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Jumbotron, Button, Tooltip } from 'reactstrap';
@@ -18,13 +17,13 @@ import HideRecordButton from 'app/shared/layout/hide-record-button';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import Select from 'react-select';
-
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import DismissModal from '../shared/components/dismiss-modal';
 import SuccessModal from '../shared/components/success-modal';
 import FieldsDisplaySettingsPanel from '../multiple/fields-display-settings-panel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { Details as DetailClass } from '../single/details';
 
 export interface IAllRecordsViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -186,6 +185,8 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
 
   render() {
     const { baseRecord, partnerRecords, systemAccountName, matches } = this.props;
+    const locationMatches = DetailClass.getLocationMatches(matches);
+    const match = partnerRecords.length && _.find(matches, m => m.partnerVersionId === partnerRecords[0].organization.id);
     const baseProviderName = baseRecord ? baseRecord.organization.accountName : null;
     const loading = (
       <Col>
@@ -245,6 +246,8 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
                 matchingLocation={this.state.matchingLocation}
                 toggleMatchLocations={this.toggleMatchLocations}
                 settings={this.props.selectedSettings}
+                serviceMatches={match && match.serviceMatches}
+                locationMatches={match && locationMatches}
               />
             </div>
           ) : (
@@ -300,6 +303,8 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
                   matchLocations={this.state.matchLocations}
                   matchingLocation={this.state.matchingLocation}
                   settings={this.props.selectedSettings}
+                  serviceMatches={match && match.serviceMatches}
+                  locationMatches={match && locationMatches}
                 />
                 <Jumbotron className="same-record-question-container">
                   <div className="text-center">

@@ -7,7 +7,13 @@ export const ACTION_TYPES = {
   FETCH_BASE_ORGANIZATION: 'recordView/FETCH_BASE_ORGANIZATION',
   FETCH_PARTNER_ORGANIZATION: 'recordView/FETCH_PARTNER_ORGANIZATION',
   FETCH_PARTNER_ORGANIZATIONS: 'recordView/FETCH_PARTNER_ORGANIZATIONS',
-  FETCH_MATCHES: 'recordView/FETCH_MATCHES'
+  FETCH_MATCHES: 'recordView/FETCH_MATCHES',
+  CREATE_SERVICE_MATCHES: 'recordView/CREATE_SERVICE_MATCHES',
+  DELETE_SERVICE_MATCHES: 'recordView/DELETE_SERVICE_MATCHES',
+  OPEN_SERVICE: 'OPEN_SERVICE',
+  CREATE_LOCATION_MATCHES: 'recordView/CREATE_LOCATION_MATCHES',
+  DELETE_LOCATION_MATCHES: 'recordView/DELETE_LOCATION_MATCHES',
+  OPEN_LOCATION: 'OPEN_LOCATION'
 };
 
 const initialState = {
@@ -17,7 +23,9 @@ const initialState = {
   matches: [],
   dismissedMatches: [],
   hiddenMatches: [],
-  partnerRecords: []
+  partnerRecords: [],
+  openedService: null,
+  openedLocation: null
 };
 
 export type SharedRecordViewState = Readonly<typeof initialState>;
@@ -29,6 +37,10 @@ export default (state: SharedRecordViewState = initialState, action): SharedReco
     case REQUEST(ACTION_TYPES.FETCH_PARTNER_ORGANIZATION):
     case REQUEST(ACTION_TYPES.FETCH_PARTNER_ORGANIZATIONS):
     case REQUEST(ACTION_TYPES.FETCH_MATCHES):
+    case REQUEST(ACTION_TYPES.CREATE_SERVICE_MATCHES):
+    case REQUEST(ACTION_TYPES.DELETE_SERVICE_MATCHES):
+    case REQUEST(ACTION_TYPES.CREATE_LOCATION_MATCHES):
+    case REQUEST(ACTION_TYPES.DELETE_LOCATION_MATCHES):
       return {
         ...state
       };
@@ -36,6 +48,10 @@ export default (state: SharedRecordViewState = initialState, action): SharedReco
     case FAILURE(ACTION_TYPES.FETCH_PARTNER_ORGANIZATION):
     case FAILURE(ACTION_TYPES.FETCH_PARTNER_ORGANIZATIONS):
     case FAILURE(ACTION_TYPES.FETCH_MATCHES):
+    case FAILURE(ACTION_TYPES.CREATE_SERVICE_MATCHES):
+    case FAILURE(ACTION_TYPES.DELETE_SERVICE_MATCHES):
+    case FAILURE(ACTION_TYPES.CREATE_LOCATION_MATCHES):
+    case FAILURE(ACTION_TYPES.DELETE_LOCATION_MATCHES):
       return {
         ...state,
         errorMessage: action.payload
@@ -76,6 +92,16 @@ export default (state: SharedRecordViewState = initialState, action): SharedReco
         dismissedMatches,
         hiddenMatches
       };
+    case ACTION_TYPES.OPEN_SERVICE:
+      return {
+        ...state,
+        openedService: action.payload
+      };
+    case ACTION_TYPES.OPEN_LOCATION:
+      return {
+        ...state,
+        openedLocation: action.payload
+      };
     default:
       return state;
   }
@@ -87,6 +113,8 @@ const activityUrl = url + 'activities/';
 const partnerActivityUrl = url + 'partner-activities/';
 const matchesUrl = url + 'organization-matches/organization/';
 const hiddenMatchesUrl = url + 'organization-matches/hidden';
+const matchService = url + 'service-matches';
+const matchLocation = url + 'location-matches';
 
 export const getBaseRecord = orgId => ({
   type: ACTION_TYPES.FETCH_BASE_ORGANIZATION,
@@ -116,4 +144,60 @@ export const getHiddenMatches = () => ({
 export const getNotHiddenMatchesByOrg = orgId => ({
   type: ACTION_TYPES.FETCH_MATCHES,
   payload: axios.get(matchesUrl + orgId + '/notHidden')
+});
+
+export const createServiceMatch = (serviceId, matchingServiceId, orgId) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_SERVICE_MATCHES,
+    payload: axios.post(matchService, { service: serviceId, matchingService: matchingServiceId })
+  });
+  dispatch(getMatches(orgId));
+  return result;
+};
+
+export const deleteServiceMatch = (serviceId, matchingServiceId, orgId) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.DELETE_SERVICE_MATCHES,
+    payload: axios.delete(matchService, {
+      data: {
+        service: serviceId,
+        matchingService: matchingServiceId
+      }
+    })
+  });
+  dispatch(getMatches(orgId));
+  return result;
+};
+
+export const setOpenedService = serviceId => ({
+  type: ACTION_TYPES.OPEN_SERVICE,
+  payload: serviceId
+});
+
+export const createLocationMatch = (locationId, matchingLocationId, orgId) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_LOCATION_MATCHES,
+    payload: axios.post(matchLocation, { location: locationId, matchingLocation: matchingLocationId })
+  });
+  dispatch(getMatches(orgId));
+  return result;
+};
+
+export const deleteLocationMatch = (locationId, matchingLocationId, orgId) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.DELETE_LOCATION_MATCHES,
+    payload: axios.delete(matchLocation, {
+      data: {
+        location: locationId,
+        matchingLocation: matchingLocationId
+      }
+    })
+  });
+  dispatch(getMatches(orgId));
+  return result;
+};
+
+export const setOpenedLocation = locationId => ({
+  type: ACTION_TYPES.OPEN_LOCATION,
+  payload: locationId
 });

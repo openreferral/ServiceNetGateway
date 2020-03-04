@@ -24,6 +24,7 @@ import SuccessModal from '../shared/components/success-modal';
 import FieldsDisplaySettingsPanel from './fields-display-settings-panel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select from 'react-select';
+import { Details as DetailClass } from '../single/details';
 
 export interface IMultipleRecordViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -203,6 +204,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
   render() {
     const { baseRecord, partnerRecord, systemAccountName, matches } = this.props;
     const baseProviderName = baseRecord ? baseRecord.organization.accountName : null;
+    const locationMatches = DetailClass.getLocationMatches(matches);
     const match = matches[this.state.matchNumber];
     const loading = (
       <Col>
@@ -277,6 +279,8 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                 matchingLocation={this.state.matchingLocation}
                 toggleMatchLocations={this.toggleMatchLocations}
                 settings={this.props.selectedSettings}
+                serviceMatches={match && match.serviceMatches}
+                locationMatches={match && locationMatches}
               />
             </Col>
           ) : (
@@ -329,6 +333,8 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                 matchLocations={this.state.matchLocations}
                 matchingLocation={this.state.matchingLocation}
                 settings={this.props.selectedSettings}
+                serviceMatches={match && match.serviceMatches}
+                locationMatches={match && locationMatches}
               />
               <Jumbotron className="same-record-question-container">
                 <div className="same-record-question">
