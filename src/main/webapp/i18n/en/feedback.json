@@ -1,0 +1,14 @@
+{
+  "serviceNetApp": {
+    "feedback": {
+      "feedback": "Feedback",
+      "sendFeedback": "Send Feedback",
+      "cancel": "Cancel",
+      "emailAddress": "Email Address",
+      "pleaseProvideEmail": "Please provide an email so we can write back. (optional)",
+      "sendUsSuggestion": "Send us your question or suggestion...",
+      "success": "Message sent successfully.",
+      "error": "Failed to send message."
+    }
+  }
+}
