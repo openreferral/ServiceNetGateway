@@ -85,12 +85,6 @@ const Routes = ({ isAdmin, isSacramento }) => (
       <ErrorBoundaryRoute path="/about-us" component={AboutUs} />
       <PrivateRoute path="/feedback" component={Feedback} hasAnyAuthorities={[AUTHORITIES.SACRAMENTO]} isAdmin={isAdmin} />
       {!isSacramento && <ErrorBoundaryRoute path="/" component={Home} />}
-      <PrivateRoute
-        path="/dismissed-match-view/:orgId/partner/:partnerId"
-        isAdmin={isAdmin}
-        component={DismissedMatchView}
-        hasAnyAuthorities={[AUTHORITIES.USER]}
-      />
     </Switch>
   </div>
 );

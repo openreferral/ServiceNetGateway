@@ -4,7 +4,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
-  SEND_MAIL: 'feedback/SEND_MAIL'
+  SEND_MAIL: 'feedback/SEND_FEEDBACK'
 };
 
 export const initialState = {
@@ -34,12 +34,12 @@ export default (state: FeedbackState = initialState, action): FeedbackState => {
 };
 
 const url = SERVICENET_API_URL + '/';
-const mailUrl = url + 'send-mail/';
+const feedbackApiUrl = url + 'feedback/';
 
 export const sendMail = (data, callback) => dispatch => {
   dispatch({
     type: ACTION_TYPES.SEND_MAIL,
-    payload: axios.post(mailUrl, data)
+    payload: axios.post(feedbackApiUrl, data)
   });
   if (callback) {
     callback();
