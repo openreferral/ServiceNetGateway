@@ -1,12 +1,11 @@
 import './header.scss';
-
 import React from 'react';
 import { Translate, Storage } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, Collapse } from 'reactstrap';
 
 import LoadingBar from 'react-redux-loading-bar';
 
-import { Home, Brand, Upload } from './header-components';
+import { Home, Brand, Upload, FeedbackButton } from './header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu, SacramentoMenu } from './menus';
 
 export interface IHeaderProps {
@@ -71,6 +70,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         <Navbar expand="sm" fixed="top" className="navbar-light bg-white">
           <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
           <Brand isSacramento={isSacramento} />
+          <FeedbackButton isSacramento={isSacramento} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
               {(!isAuthenticated || !isSacramento) && <Home />}

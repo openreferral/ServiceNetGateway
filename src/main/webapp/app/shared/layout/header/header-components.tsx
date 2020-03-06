@@ -1,6 +1,5 @@
 import React from 'react';
 import { Translate } from 'react-jhipster';
-
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, NavItem, NavLink, NavbarBrand } from 'reactstrap';
 import { NavLink as Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,6 +37,15 @@ export const Brand = props => (
     </NavLink>
   </div>
 );
+
+export const FeedbackButton = props =>
+  props.isSacramento && (
+    <NavLink exact tag={Link} to="/feedback" className="pl-0">
+      <span className="navbar-label text-dark about-us-link">
+        <Translate contentKey="global.menu.feedback" />
+      </span>
+    </NavLink>
+  );
 
 export const Home = props => (
   <NavItem>
