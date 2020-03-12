@@ -43,7 +43,7 @@ spring:
       port: 8500
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/ServiceNet
+    url: jdbc:postgresql://localhost:5432/ServiceNet?currentSchema=gateway
     username: postgres
     password: password
     hikari:
@@ -65,6 +65,7 @@ spring:
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
+    default-schema: gateway
   mail:
     host: localhost
     port: 25

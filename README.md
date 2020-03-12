@@ -20,6 +20,10 @@ You will only need to run this command when dependencies change in [package.json
 
 We use npm scripts and [Webpack][] as our build system.
 
+Database: we are using postgres and database "ServiceNet". Each service in architecture should use its own schema. 
+ServiceNet backend service is using 'public'. ServiceNetGateway is using schema 'gateway'. Create required schema 
+for this service (if you don't have it). 
+
 If you are using hazelcast as a cache, you will have to launch a cache server.
 To start your cache server, run:
 
