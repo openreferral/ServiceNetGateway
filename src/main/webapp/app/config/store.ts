@@ -13,7 +13,7 @@ const defaultMiddlewares = [
   thunkMiddleware,
   errorMiddleware,
   notificationMiddleware,
-  promiseMiddleware(),
+  promiseMiddleware,
   loadingBarMiddleware(),
   loggerMiddleware,
   reactGaMiddleware
