@@ -43,6 +43,7 @@ export class ServiceMatchesDetails extends React.Component<IServiceMatchesDetail
   handleMatchClick = orgId => () => {
     this.props.getPartnerRecord(orgId);
     ReactGA.event({ category: 'UserActions', action: 'Clicking On Side By Side View' });
+    window.scroll(0, 0);
   };
 
   render() {
