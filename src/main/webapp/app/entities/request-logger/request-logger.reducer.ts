@@ -107,7 +107,7 @@ export default (state: RequestLoggerState = initialState, action): RequestLogger
   }
 };
 
-const apiUrl = 'services/servicenet/api/request-logger';
+const apiUrl = '/api/request-logger';
 
 // Actions
 
