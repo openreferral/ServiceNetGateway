@@ -60,7 +60,8 @@
         "serviceFieldsValue": "Service Fields Value",
         "serviceTaxonomiesDetailsFieldsValue": "Service Taxonomies Details Fields Value",
         "contactDetailsFieldsValue": "Contact Details Fields Value",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "requestLogger": "Request Logger"
       },
       "account": {
         "main": "Account",
