@@ -203,11 +203,6 @@ export const EntitiesMenu = props => (
       &nbsp;
       <Translate contentKey="global.menu.entities.activityFilter" />
     </DropdownItem>
-    <DropdownItem tag={Link} to="/entity/request-logger">
-      <FontAwesomeIcon icon="asterisk" />
-      &nbsp;
-      <Translate contentKey="global.menu.entities.requestLogger" />
-    </DropdownItem>
     {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
   </NavDropdown>
 );

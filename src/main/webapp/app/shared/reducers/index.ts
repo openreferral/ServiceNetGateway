@@ -212,9 +212,7 @@ import contactDetailsFieldsValue, {
 } from 'app/entities/contact-details-fields-value/contact-details-fields-value.reducer';
 // prettier-ignore
 import feedback, { FeedbackState } from 'app/modules/feedback/feedback.reducer';
-import requestLogger, {
-  RequestLoggerState
-} from 'app/entities/request-logger/request-logger.reducer';
+import requestLogger, { RequestLoggerState } from 'app/entities/request-logger/request-logger.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -283,6 +281,8 @@ export interface IRootState {
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly filterShelter: FilterShelterState;
+  readonly feedback: FeedbackState;
+  readonly requestLogger: RequestLoggerState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -350,7 +350,9 @@ const rootReducer = combineReducers<IRootState>({
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
   filterActivity,
-  filterShelter
+  filterShelter,
+  feedback,
+  requestLogger
 });
 
 export default rootReducer;
