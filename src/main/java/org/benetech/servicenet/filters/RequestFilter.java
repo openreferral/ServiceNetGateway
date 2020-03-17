@@ -56,9 +56,11 @@ public class RequestFilter extends OncePerRequestFilter implements Ordered {
         requestLogger.setRequestParameters(Objects.toString(trace.get("requestParams"), ""));
         requestLogger.setRequestBody(Objects.toString(trace.get("body"), ""));
         requestLogger.setResponseStatus(Objects.toString(responseTrace.get("status"), ""));
-        if (!Objects.toString(responseTrace.get("status"), "").equalsIgnoreCase("200")) {
-            requestLogger.setResponseBody(Objects.toString(responseTrace.get("body"), ""));
-        }
+        // Temporary disabling response body logging
+        // TODO: investigate and fix issue when in body is 0x00 character and it can't be saved to database
+        // if (!Objects.toString(responseTrace.get("status"), "").equalsIgnoreCase("200")) {
+        //     requestLogger.setResponseBody(Objects.toString(responseTrace.get("body"), ""));
+        // }
 
         requestLoggerService.save(requestLoggerMapper.toDto(requestLogger));
 
