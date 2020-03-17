@@ -9,7 +9,7 @@ services:
 #      - SPRING_CLOUD_CONSUL_HOST=consul
 #      - SPRING_CLOUD_CONSUL_PORT=8500
 #        # You can find the host ip by running: "ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+'"
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://172.17.0.1:5432/ServiceNet
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://172.17.0.1:5432/ServiceNet?currentSchema=gateway
 #      - SPRING_DATASOURCE_USERNAME=postgres
 #      - SPRING_DATASOURCE_PASSWORD=password
 #      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application

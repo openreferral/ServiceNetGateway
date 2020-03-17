@@ -8,7 +8,7 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://servicenet-postgresql:5432/ServiceNetGateway
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://servicenet-postgresql:5432/ServiceNet?currentSchema=gateway
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
     ports:
       - 8080:8080
