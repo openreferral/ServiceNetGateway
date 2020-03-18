@@ -6,7 +6,7 @@ import { ILanguage } from 'app/shared/model//language.model';
 import { IServiceTaxonomy } from 'app/shared/model//service-taxonomy.model';
 
 export interface IService {
-  id?: number;
+  id?: string;
   name?: string;
   alternateName?: string;
   description?: any;

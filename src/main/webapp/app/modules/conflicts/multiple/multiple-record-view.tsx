@@ -79,18 +79,20 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     });
   }
 
-  setMatchingNumber = () => {
-    const partnerId = this.props.partnerId;
-    if (partnerId) {
-      const partnerIdx = this.props.matches.findIndex(match => match.partnerVersionId === partnerId);
-      const matchNumber = partnerIdx > 0 ? partnerIdx : 0;
-      if (this.state.matchNumber !== matchNumber) {
-        this.setState({
-          matchNumber
-        });
+  componentDidUpdate(prevProps) {
+    if (prevProps.partnerId !== this.props.partnerId) {
+      const partnerId = this.props.partnerId;
+      if (partnerId) {
+        const partnerIdx = this.props.matches.findIndex(match => match.partnerVersionId === partnerId);
+        const matchNumber = partnerIdx > 0 ? partnerIdx : 0;
+        if (this.state.matchNumber !== matchNumber) {
+          this.setState({
+            matchNumber
+          });
+        }
       }
     }
-  };
+  }
 
   handleDismissModalClose = () => {
     this.setState({ showDismissModal: false, dismissError: false });
@@ -215,7 +217,6 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
   };
 
   render() {
-    this.setMatchingNumber();
     const { baseRecord, partnerRecord, systemAccountName, matches } = this.props;
     const baseProviderName = baseRecord ? baseRecord.organization.accountName : null;
     const locationMatches = DetailClass.getLocationMatches(matches);

@@ -11,9 +11,11 @@ export const ACTION_TYPES = {
   CREATE_SERVICE_MATCHES: 'recordView/CREATE_SERVICE_MATCHES',
   DELETE_SERVICE_MATCHES: 'recordView/DELETE_SERVICE_MATCHES',
   OPEN_SERVICE: 'OPEN_SERVICE',
+  OPEN_PARTNER_SERVICE: 'OPEN_PARTNER_SERVICE',
   CREATE_LOCATION_MATCHES: 'recordView/CREATE_LOCATION_MATCHES',
   DELETE_LOCATION_MATCHES: 'recordView/DELETE_LOCATION_MATCHES',
-  OPEN_LOCATION: 'OPEN_LOCATION'
+  OPEN_LOCATION: 'OPEN_LOCATION',
+  OPEN_PARTNER_LOCATION: 'OPEN_PARTNER_LOCATION'
 };
 
 const initialState = {
@@ -25,7 +27,9 @@ const initialState = {
   hiddenMatches: [],
   partnerRecords: [],
   openedService: null,
-  openedLocation: null
+  openedLocation: null,
+  openedPartnerLocation: null,
+  openedPartnerService: null
 };
 
 export type SharedRecordViewState = Readonly<typeof initialState>;
@@ -101,6 +105,16 @@ export default (state: SharedRecordViewState = initialState, action): SharedReco
       return {
         ...state,
         openedLocation: action.payload
+      };
+    case ACTION_TYPES.OPEN_PARTNER_LOCATION:
+      return {
+        ...state,
+        openedPartnerLocation: action.payload
+      };
+    case ACTION_TYPES.OPEN_PARTNER_SERVICE:
+      return {
+        ...state,
+        openedPartnerService: action.payload
       };
     default:
       return state;
@@ -200,4 +214,14 @@ export const deleteLocationMatch = (locationId, matchingLocationId, orgId) => as
 export const setOpenedLocation = locationId => ({
   type: ACTION_TYPES.OPEN_LOCATION,
   payload: locationId
+});
+
+export const setOpenedPartnerLocation = locationId => ({
+  type: ACTION_TYPES.OPEN_PARTNER_LOCATION,
+  payload: locationId
+});
+
+export const setOpenedPartnerService = serviceId => ({
+  type: ACTION_TYPES.OPEN_PARTNER_SERVICE,
+  payload: serviceId
 });
