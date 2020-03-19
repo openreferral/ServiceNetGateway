@@ -79,6 +79,21 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.partnerId !== this.props.partnerId) {
+      const partnerId = this.props.partnerId;
+      if (partnerId) {
+        const partnerIdx = this.props.matches.findIndex(match => match.partnerVersionId === partnerId);
+        const matchNumber = partnerIdx > 0 ? partnerIdx : 0;
+        if (this.state.matchNumber !== matchNumber) {
+          this.setState({
+            matchNumber
+          });
+        }
+      }
+    }
+  }
+
   handleDismissModalClose = () => {
     this.setState({ showDismissModal: false, dismissError: false });
   };

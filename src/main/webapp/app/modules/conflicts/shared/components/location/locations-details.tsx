@@ -21,6 +21,7 @@ export interface ILocationsDetailsProp extends StateProps, DispatchProps {
   settings?: any;
   locationMatches?: any;
   orgId?: string;
+  openedPartnerLocation: string;
 }
 
 export interface ILocationsDetailsState {
@@ -40,9 +41,6 @@ export class LocationsDetails extends React.Component<ILocationsDetailsProp, ILo
 
   componentDidMount() {
     this.setCurrentOpenLocation(this.state.locationNumber);
-    if (this.props.selectLocation && this.props.isBaseRecord) {
-      this.props.selectLocation(this.props.locations[this.state.locationNumber]);
-    }
   }
 
   isBaseRecord = record => {
@@ -60,14 +58,11 @@ export class LocationsDetails extends React.Component<ILocationsDetailsProp, ILo
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.matchingLocation !== this.props.matchingLocation) {
-      this.setState({
-        locationNumber: this.getLocationNumber()
-      });
-    } else if (prevProps.activity !== this.props.activity) {
-      this.setState({
-        locationNumber: 0
-      });
+    const sortedLocations = LocationsDetails.sortLocations(this.props.locations);
+    const locationIndex = _.findIndex(sortedLocations, record => record.location.id === this.props.openedPartnerLocation);
+    if (locationIndex >= 0 && locationIndex !== this.state.locationNumber) {
+      this.changeRecord(locationIndex);
+      this.setState({ isAreaOpen: true });
     }
   }
 
@@ -80,19 +75,10 @@ export class LocationsDetails extends React.Component<ILocationsDetailsProp, ILo
     }
   };
 
-  getLocationNumber = () => {
-    const { matchLocations, matchingLocation, locations } = this.props;
-    if (matchLocations && matchingLocation) {
-      const idx = _.findIndex(LocationsDetails.sortLocations(locations), l => l.location.id === matchingLocation.matchingLocation);
-      return idx >= 0 ? idx : this.state.locationNumber;
-    } else {
-      return this.state.locationNumber;
-    }
-  };
-
   render() {
     const { locations, isAreaOpen, locationMatches } = this.props;
-    const locationNumber = this.state.locationNumber;
+    const isLocationOpen = this.state.isAreaOpen;
+    const { locationNumber } = this.state;
     const sortedLocations = LocationsDetails.sortLocations(locations);
     const record = sortedLocations[locationNumber];
     const locationDetails =
@@ -104,7 +90,7 @@ export class LocationsDetails extends React.Component<ILocationsDetailsProp, ILo
           isOnlyOne={sortedLocations.length <= 1}
           record={record}
           locationsCount={`(${locationNumber + 1}/${sortedLocations.length}) `}
-          isAreaOpen={isAreaOpen}
+          isAreaOpen={isAreaOpen || isLocationOpen}
           locationNumber={this.state.locationNumber}
           locationMatches={locationMatches}
           isBaseRecord={this.isBaseRecord(record)}
@@ -115,7 +101,9 @@ export class LocationsDetails extends React.Component<ILocationsDetailsProp, ILo
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  openedPartnerLocation: state.sharedRecordView.openedPartnerLocation
+});
 
 const mapDispatchToProps = { setOpenedLocation };
 

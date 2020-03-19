@@ -17,6 +17,7 @@ export interface IServicesDetailsProp extends StateProps, DispatchProps {
   settings?: any;
   orgId?: any;
   serviceMatches?: any;
+  openedPartnerService: string;
 }
 
 export interface IServicesDetailsState {
@@ -65,16 +66,19 @@ export class ServicesDetails extends React.Component<IServicesDetailsProp, IServ
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.activity !== this.props.activity) {
-      this.setState({
-        serviceNumber: 0
-      });
+    const { services } = this.props;
+    const sortedServices = _.sortBy(services, ['service.name']);
+    const serviceIndex = _.findIndex(sortedServices, record => record.service.id === this.props.openedPartnerService);
+    if (serviceIndex >= 0 && serviceIndex !== this.state.serviceNumber) {
+      this.changeRecord(serviceIndex);
+      this.setState({ isAreaOpen: true });
     }
   }
 
   render() {
     const { services, isAreaOpen, serviceMatches } = this.props;
     const { serviceNumber } = this.state;
+    const isServiceOpen = this.state.isAreaOpen;
     const sortedServices = _.sortBy(services, ['service.name']);
     const record = sortedServices[serviceNumber];
     const missingServiceNameIndex = 0;
@@ -87,7 +91,7 @@ export class ServicesDetails extends React.Component<IServicesDetailsProp, IServ
           isOnlyOne={sortedServices.length <= 1}
           record={record}
           servicesCount={`(${serviceNumber + 1}/${sortedServices.length}) `}
-          isAreaOpen={isAreaOpen}
+          isAreaOpen={isAreaOpen || isServiceOpen}
           settings={this.props.settings}
           serviceMatches={serviceMatches}
           isBaseRecord={this.isBaseRecord(record)}
@@ -99,7 +103,9 @@ export class ServicesDetails extends React.Component<IServicesDetailsProp, IServ
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  openedPartnerService: state.sharedRecordView.openedPartnerService
+});
 
 const mapDispatchToProps = { setOpenedService };
 

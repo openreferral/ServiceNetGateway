@@ -22,7 +22,7 @@ import { getTextField } from 'app/shared/util/single-record-view-utils';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import Select from 'react-select';
 import _ from 'lodash';
-import { createServiceMatch, deleteServiceMatch } from 'app/modules/conflicts/shared/shared-record-view.reducer';
+import { createServiceMatch, deleteServiceMatch, setOpenedPartnerService } from 'app/modules/conflicts/shared/shared-record-view.reducer';
 
 export interface ISingleServiceDetailsProp extends StateProps, DispatchProps {
   activity: IActivityRecord;
@@ -47,9 +47,36 @@ export interface ISingleServiceDetailsState {
 }
 
 export class SingleServiceDetails extends React.Component<ISingleServiceDetailsProp, ISingleServiceDetailsState> {
+  myRef: any;
   state: ISingleServiceDetailsState = {
     isAreaOpen: this.props.isAreaOpen
   };
+
+  constructor(props) {
+    super(props);
+    if (!props.isBaseRecord) {
+      this.myRef = React.createRef();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.openedPartnerService !== null &&
+      this.props.openedPartnerService === null &&
+      this.props.record.service.id === prevProps.openedPartnerService
+    ) {
+      this.setState({ isAreaOpen: true }, () => {
+        this.myRef.current.scrollIntoView({
+          behavior: 'instant',
+          block: 'start'
+        });
+        window.scrollBy(0, -100);
+      });
+    }
+    if (this.props.record.service.id === this.props.openedPartnerService && !this.props.isBaseRecord) {
+      this.props.setOpenedPartnerService(null);
+    }
+  }
 
   toggleAreaOpen = () => {
     this.setState({
@@ -117,7 +144,7 @@ export class SingleServiceDetails extends React.Component<ISingleServiceDetailsP
     } = this.props;
 
     const customHeader = (
-      <div className="title d-flex justify-content-start align-items-center mb-1">
+      <div ref={this.myRef} className="title d-flex justify-content-start align-items-center mb-1">
         <div
           className="col collapseBtn d-flex justify-content-start align-items-center pr-3 h4 mb-0 pl-0 flex-grow-0"
           onClick={this.toggleAreaOpen}
@@ -276,10 +303,11 @@ export class SingleServiceDetails extends React.Component<ISingleServiceDetailsP
 }
 
 const mapStateToProps = state => ({
-  baseService: state.sharedRecordView.openedService
+  baseService: state.sharedRecordView.openedService,
+  openedPartnerService: state.sharedRecordView.openedPartnerService
 });
 
-const mapDispatchToProps = { createServiceMatch, deleteServiceMatch };
+const mapDispatchToProps = { createServiceMatch, deleteServiceMatch, setOpenedPartnerService };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

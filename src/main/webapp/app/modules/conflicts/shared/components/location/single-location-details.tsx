@@ -16,7 +16,11 @@ import { getTextField, getTextAreaField } from 'app/shared/util/single-record-vi
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import Select from 'react-select';
 import _ from 'lodash';
-import { createLocationMatch, deleteLocationMatch } from 'app/modules/conflicts/shared/shared-record-view.reducer';
+import {
+  createLocationMatch,
+  deleteLocationMatch,
+  setOpenedPartnerLocation
+} from 'app/modules/conflicts/shared/shared-record-view.reducer';
 import LocationMatchesDetails from 'app/modules/conflicts/shared/components/location/location-matches-details';
 
 export interface ISingleLocationDetailsProp extends StateProps, DispatchProps {
@@ -40,13 +44,13 @@ export interface ISingleLocationDetailsProp extends StateProps, DispatchProps {
 }
 
 export interface ISingleLocationDetailsState {
-  isAreaOpen: boolean;
+  isAreaOpen?: boolean;
   id: string;
 }
 
 export class SingleLocationDetails extends React.Component<ISingleLocationDetailsProp, ISingleLocationDetailsState> {
+  myRef: any;
   state: ISingleLocationDetailsState = {
-    isAreaOpen: this.props.isAreaOpen,
     id: `location_${Math.random()
       .toString()
       .replace(/0\./, '')}`
@@ -59,6 +63,30 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
         ? `${record.physicalAddress.address1} ${record.physicalAddress.city}`
         : translate('multiRecordView.noPhysicalAddress')
   });
+
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.openedPartnerLocation !== null &&
+      this.props.openedPartnerLocation === null &&
+      this.props.record.location.id === prevProps.openedPartnerLocation
+    ) {
+      this.setState({ isAreaOpen: true }, () => {
+        this.myRef.current.scrollIntoView({
+          behavior: 'instant',
+          block: 'start'
+        });
+        window.scrollBy(0, -100);
+      });
+    }
+    if (this.props.record.location.id === this.props.openedPartnerLocation && !this.props.isBaseRecord) {
+      this.props.setOpenedPartnerLocation(null);
+    }
+  }
 
   toggleAreaOpen = () => {
     this.setState({
@@ -128,7 +156,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
     } = this.props;
 
     const customHeader = (
-      <div className="title d-flex justify-content-between align-items-center mb-1">
+      <div ref={this.myRef} className="title d-flex justify-content-between align-items-center mb-1">
         <div
           className="col collapseBtn d-flex justify-content-start align-items-center pr-1 h4 mb-0 pl-0 flex-grow-0"
           onClick={this.toggleAreaOpen}
@@ -267,10 +295,11 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
 }
 
 const mapStateToProps = state => ({
-  baseLocation: state.sharedRecordView.openedLocation
+  baseLocation: state.sharedRecordView.openedLocation,
+  openedPartnerLocation: state.sharedRecordView.openedPartnerLocation
 });
 
-const mapDispatchToProps = { createLocationMatch, deleteLocationMatch };
+const mapDispatchToProps = { createLocationMatch, deleteLocationMatch, setOpenedPartnerLocation };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

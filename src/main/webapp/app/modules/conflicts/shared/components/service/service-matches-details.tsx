@@ -5,7 +5,7 @@ import { Collapse } from 'reactstrap';
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Translate } from 'react-jhipster';
-import { getPartnerRecord } from '../../shared-record-view.reducer';
+import { getPartnerRecord, setOpenedPartnerService } from '../../shared-record-view.reducer';
 import { Link } from 'react-router-dom';
 import ReactGA from 'react-ga';
 
@@ -40,8 +40,9 @@ export class ServiceMatchesDetails extends React.Component<IServiceMatchesDetail
     });
   };
 
-  handleMatchClick = orgId => () => {
-    this.props.getPartnerRecord(orgId);
+  handleMatchClick = service => () => {
+    this.props.getPartnerRecord(service.orgId);
+    this.props.setOpenedPartnerService(service.matchingService);
     ReactGA.event({ category: 'UserActions', action: 'Clicking On Side By Side View' });
   };
 
@@ -49,26 +50,24 @@ export class ServiceMatchesDetails extends React.Component<IServiceMatchesDetail
     const { serviceMatches, serviceId, isBaseRecord, orgId } = this.props;
     return isBaseRecord ? (
       <div>
-        <div>
-          <h4 className="title">
-            <div className={'collapseBtn'} onClick={this.toggleAreaOpen}>
-              <div className="collapseIcon">
-                <FontAwesomeIcon size="xs" icon={this.state.isAreaOpen ? 'angle-up' : 'angle-down'} />
-              </div>
-              <Translate contentKey={'serviceNetApp.service.matches'} />
+        <h4 className="title">
+          <div className={'collapseBtn'} onClick={this.toggleAreaOpen}>
+            <div className="collapseIcon">
+              <FontAwesomeIcon size="xs" icon={this.state.isAreaOpen ? 'angle-up' : 'angle-down'} />
             </div>
-          </h4>
-          <Collapse isOpen={this.state.isAreaOpen}>
-            {serviceMatches &&
-              _.map(serviceMatches[serviceId], (field, i) => (
-                <div key={i}>
-                  <Link onClick={this.handleMatchClick(field.orgId)} to={`/multi-record-view/${orgId}/${field.orgId}`}>
-                    {`${field.organizationName} - ${field.serviceName}`}
-                  </Link>
-                </div>
-              ))}
-          </Collapse>
-        </div>
+            <Translate contentKey={'serviceNetApp.service.matches'} />
+          </div>
+        </h4>
+        <Collapse isOpen={this.state.isAreaOpen}>
+          {serviceMatches &&
+            _.map(serviceMatches[serviceId], (field, i) => (
+              <div key={i}>
+                <Link onClick={this.handleMatchClick(field)} to={`/multi-record-view/${orgId}/${field.orgId}`}>
+                  {`${field.organizationName} - ${field.serviceName}`}
+                </Link>
+              </div>
+            ))}
+        </Collapse>
       </div>
     ) : (
       ''
@@ -78,7 +77,7 @@ export class ServiceMatchesDetails extends React.Component<IServiceMatchesDetail
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = { getPartnerRecord };
+const mapDispatchToProps = { getPartnerRecord, setOpenedPartnerService };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
