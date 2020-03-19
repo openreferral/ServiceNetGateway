@@ -63,9 +63,8 @@ export default () => next => action => {
                   entityKey = v;
                 }
               });
-              if (errorHeader) {
-                const entityName = translate('global.menu.entities.' + entityKey);
-                addErrorAlert(errorHeader, errorHeader, { entityName });
+              if (data !== '' && data.message) {
+                addErrorAlert(data.message, data.message, data.params);
               } else if (data !== '' && data.fieldErrors) {
                 const fieldErrors = data.fieldErrors;
                 for (i = 0; i < fieldErrors.length; i++) {
@@ -78,8 +77,9 @@ export default () => next => action => {
                   const fieldName = translate(`serviceNetApp.${fieldError.objectName}.${convertedField}`);
                   addErrorAlert(`Error on field "${fieldName}"`, `error.${fieldError.message}`, { fieldName });
                 }
-              } else if (data !== '' && data.message) {
-                addErrorAlert(data.message, data.message, data.params);
+              } else if (errorHeader) {
+                const entityName = translate('global.menu.entities.' + entityKey);
+                addErrorAlert(errorHeader, errorHeader, { entityName });
               } else {
                 addErrorAlert(data);
               }
