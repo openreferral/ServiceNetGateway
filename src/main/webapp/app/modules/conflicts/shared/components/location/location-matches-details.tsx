@@ -50,27 +50,24 @@ export class LocationMatchesDetails extends React.Component<ILocationMatchesDeta
     const { locationMatches, locationId, isBaseRecord, orgId } = this.props;
     return isBaseRecord ? (
       <div>
-        use
-        <div>
-          <h4 className="title">
-            <div className={'collapseBtn'} onClick={this.toggleAreaOpen}>
-              <div className="collapseIcon">
-                <FontAwesomeIcon size="xs" icon={this.state.isAreaOpen ? 'angle-up' : 'angle-down'} />
-              </div>
-              <Translate contentKey={'serviceNetApp.service.matches'} />
+        <h4 className="title">
+          <div className={'collapseBtn'} onClick={this.toggleAreaOpen}>
+            <div className="collapseIcon">
+              <FontAwesomeIcon size="xs" icon={this.state.isAreaOpen ? 'angle-up' : 'angle-down'} />
             </div>
-          </h4>
-          <Collapse isOpen={this.state.isAreaOpen}>
-            {locationMatches &&
-              _.map(locationMatches[locationId], (field, i) => (
-                <div key={i}>
-                  <Link onClick={this.handleMatchClick(field)} to={`/multi-record-view/${orgId}/${field.orgId}`}>
-                    {`${field.organizationName} - ${field.locationName}`}
-                  </Link>
-                </div>
-              ))}
-          </Collapse>
-        </div>
+            <Translate contentKey={'serviceNetApp.service.matches'} />
+          </div>
+        </h4>
+        <Collapse isOpen={this.state.isAreaOpen}>
+          {locationMatches &&
+            _.map(locationMatches[locationId], (field, i) => (
+              <div key={i}>
+                <Link onClick={this.handleMatchClick(field)} to={`/multi-record-view/${orgId}/${field.orgId}`}>
+                  {`${field.organizationName} - ${field.locationName}`}
+                </Link>
+              </div>
+            ))}
+        </Collapse>
       </div>
     ) : (
       ''

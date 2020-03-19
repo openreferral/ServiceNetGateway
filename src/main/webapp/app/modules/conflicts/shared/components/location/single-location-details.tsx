@@ -1,5 +1,4 @@
 import React from 'react';
-/* tslint:disable */
 import { Col, Row, Button } from 'reactstrap';
 import '../../shared-record-view.scss';
 import { TextFormat, translate, Translate } from 'react-jhipster';
@@ -57,11 +56,6 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
       .replace(/0\./, '')}`
   };
 
-  constructor(props) {
-    super(props);
-    this.myRef = React.createRef();
-  }
-
   static getSelectOption = (record, locationNumber) => ({
     value: locationNumber,
     label:
@@ -69,6 +63,11 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
         ? `${record.physicalAddress.address1} ${record.physicalAddress.city}`
         : translate('multiRecordView.noPhysicalAddress')
   });
+
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (
