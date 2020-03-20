@@ -44,7 +44,7 @@ export default (state: ActivateState = initialState, action): ActivateState => {
 // Actions
 export const activateAction = key => ({
   type: ACTION_TYPES.ACTIVATE_ACCOUNT,
-  payload: axios.get(SERVICENET_API_URL + '/activate?key=' + key)
+  payload: axios.get('services/servicenetauth/api/activate?key=' + key)
 });
 
 export const reset = () => ({

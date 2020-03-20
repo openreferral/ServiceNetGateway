@@ -52,7 +52,7 @@ export default (state: PasswordState = initialState, action): PasswordState => {
 };
 
 // Actions
-const apiUrl = SERVICENET_API_URL + '/account';
+const apiUrl = 'services/servicenetauth/api/account';
 
 export const savePassword = (currentPassword, newPassword) => ({
   type: ACTION_TYPES.UPDATE_PASSWORD,

@@ -88,7 +88,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
         ...state,
         loading: false,
         users: action.payload.data,
-        totalItems: action.payload.headers['x-total-count']
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
     case SUCCESS(ACTION_TYPES.FETCH_USER):
       return {
@@ -120,8 +120,7 @@ export default (state: UserManagementState = initialState, action): UserManageme
   }
 };
 
-const baseApiUrl = SERVICENET_API_URL + '';
-const apiUrl = baseApiUrl + '/users';
+const apiUrl = 'services/servicenetauth/api/users';
 // Actions
 export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&itemsPerPage=${size}` : ''}`;
@@ -138,7 +137,7 @@ export const getRoles = () => ({
 
 export const getSystemAccounts = () => ({
   type: ACTION_TYPES.FETCH_SYSTEM_ACCOUNTS,
-  payload: axios.get(`${baseApiUrl}/system-accounts`)
+  payload: axios.get(`${SERVICENET_API_URL}/system-accounts`)
 });
 
 export const getUser: ICrudGetAction<IUser> = id => {

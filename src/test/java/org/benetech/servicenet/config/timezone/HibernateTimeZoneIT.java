@@ -1,6 +1,7 @@
 package org.benetech.servicenet.config.timezone;
 
 import org.benetech.servicenet.ServiceNetGatewayApp;
+import org.benetech.servicenet.config.SecurityBeanOverrideConfiguration;
 import org.benetech.servicenet.repository.timezone.DateTimeWrapper;
 import org.benetech.servicenet.repository.timezone.DateTimeWrapperRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Integration tests for the UTC Hibernate configuration.
  */
-@SpringBootTest(classes = ServiceNetGatewayApp.class)
+@SpringBootTest(classes = {SecurityBeanOverrideConfiguration.class, ServiceNetGatewayApp.class})
 public class HibernateTimeZoneIT {
 
     @Autowired

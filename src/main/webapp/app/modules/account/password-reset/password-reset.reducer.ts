@@ -50,7 +50,7 @@ export default (state: PasswordResetState = initialState, action): PasswordReset
   }
 };
 
-const apiUrl = SERVICENET_API_URL + '/account/reset-password';
+const apiUrl = 'services/servicenetauth/api/account/reset-password';
 
 // Actions
 export const handlePasswordResetInit = mail => ({

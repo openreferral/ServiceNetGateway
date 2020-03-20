@@ -53,7 +53,7 @@ export default (state: SettingsState = initialState, action): SettingsState => {
 };
 
 // Actions
-const apiUrl = SERVICENET_API_URL + '/account';
+const apiUrl = 'services/servicenetauth/api/account';
 
 export const saveAccountSettings = account => async (dispatch, getState) => {
   await dispatch({

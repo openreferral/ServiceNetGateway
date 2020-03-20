@@ -182,7 +182,7 @@ export const getEnv = () => ({
 });
 
 export const getAudits = (page, size, sort, fromDate, toDate) => {
-  let requestUrl = `management/audits${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  let requestUrl = `services/servicenetauth/management/audits${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   if (fromDate) {
     requestUrl += `&fromDate=${fromDate}`;
   }

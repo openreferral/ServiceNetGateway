@@ -90,14 +90,11 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
-  mail:
-    from: test@localhost
-    base-url: http://127.0.0.1:8080
   security:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: MGFmMzE0OTM2NGZjOTkzYjU2MWNhZThhNmU0MzIwNGUxY2VlNWNjNjAwNzU2OTc4ZTNkYmZjMGQ4ZmYwNzY2OGVkYTVhMzRmYTA1Y2YxOGMxOTMwMWY0ODFmMjEzOTFjODdkNDM2OGU5MWFhZDQ0YjYyMjkzMjdhNzg3Njc5MTA==
+        base64-secret:
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
   metrics:
