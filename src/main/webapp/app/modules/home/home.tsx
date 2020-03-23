@@ -43,6 +43,8 @@ export interface IHomeState extends IPaginationBaseState {
 }
 
 export class Home extends React.Component<IHomeProp, IHomeState> {
+  selectRef: any;
+
   static getAutosuggestOptions = suggestions => {
     const organizationOptions = _.map(suggestions.organizations, o => ({ value: o, label: o, type: ORGANIZATION }));
     const serviceOptions = _.map(suggestions.services, o => ({ value: o, label: o, type: SERVICES }));
@@ -60,6 +62,7 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
 
   constructor(props) {
     super(props);
+    this.selectRef = React.createRef();
 
     const { searchPhrase, sort, order } = getSearchPreferences(this.props.account.login);
     this.state = {
@@ -222,6 +225,17 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
       this.updateSearch(inputValue);
     }
   };
+
+  onInputKeyDown = event => {
+    if (event.keyCode === 13) {
+      // ENTER
+      event.preventDefault();
+      this.updateSearch(event.target.value);
+      this.searchEntities(null);
+      this.selectRef.current.setState({ menuIsOpen: false });
+    }
+  };
+
   onOptionSelect = option => {
     const searchOn = option.type;
     if (searchOn !== this.props.activityFilter.searchOn) {
@@ -303,6 +317,7 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
                   <Col sm="12" className="searchBar">
                     <FontAwesomeIcon icon="search" size="lg" className="searchIcon" />
                     <Select
+                      ref={this.selectRef}
                       key={`autosuggest__${this.state.clearedAt}`}
                       name="search"
                       id="searchBar"
@@ -314,6 +329,7 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
                       onInputChange={this.onInputChange}
                       onChange={this.onOptionSelect}
                       styles={autosuggestStyles}
+                      onKeyDown={this.onInputKeyDown}
                     />
                   </Col>
                   <div className="searchClearIconContainer" onClick={this.clearSearchBar}>
