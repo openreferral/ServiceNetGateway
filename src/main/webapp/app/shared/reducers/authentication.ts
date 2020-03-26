@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+import { AUTH_API_URL } from 'app/shared/util/service-url.constants';
+import { setLocale } from 'app/shared/reducers/locale';
+import { Storage } from 'react-jhipster';
 
 export const ACTION_TYPES = {
   LOGIN: 'authentication/LOGIN',
@@ -104,17 +107,17 @@ export default (state: AuthenticationState = initialState, action): Authenticati
 
 export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, message });
 
-export const getSession = () => (dispatch, getState) => {
-  dispatch({
+export const getSession = () => async (dispatch, getState) => {
+  await dispatch({
     type: ACTION_TYPES.GET_SESSION,
-    payload: axios.get('services/servicenetauth/api/account')
+    payload: axios.get(AUTH_API_URL + '/account')
   });
 
-  // const { account } = getState().authentication;
-  // if (account && account.langKey) {
-  //   const langKey = Storage.session.get('locale', account.langKey);
-  //   await dispatch(setLocale(langKey));
-  // }
+  const { account } = getState().authentication;
+  if (account && account.langKey) {
+    const langKey = Storage.session.get('locale', account.langKey);
+    await dispatch(setLocale(langKey));
+  }
 };
 
 export const login = (username, password, rememberMe = false) => async (dispatch, getState) => {
@@ -130,7 +133,6 @@ export const logout = () => async dispatch => {
     type: ACTION_TYPES.LOGOUT,
     payload: axios.post('auth/logout', {})
   });
-
   // fetch new csrf token
   dispatch(getSession());
 };

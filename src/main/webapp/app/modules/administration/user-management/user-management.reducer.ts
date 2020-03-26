@@ -120,10 +120,10 @@ export default (state: UserManagementState = initialState, action): UserManageme
   }
 };
 
-const apiUrl = 'services/servicenetauth/api/users';
+const userApiUrl = SERVICENET_API_URL + '/users';
 // Actions
 export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&itemsPerPage=${size}` : ''}`;
+  const requestUrl = `${userApiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&itemsPerPage=${size}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_USERS,
     payload: axios.get<IUser>(requestUrl)
@@ -132,7 +132,7 @@ export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
 
 export const getRoles = () => ({
   type: ACTION_TYPES.FETCH_ROLES,
-  payload: axios.get(`${apiUrl}/authorities`)
+  payload: axios.get(`${userApiUrl}/authorities`)
 });
 
 export const getSystemAccounts = () => ({
@@ -141,7 +141,7 @@ export const getSystemAccounts = () => ({
 });
 
 export const getUser: ICrudGetAction<IUser> = id => {
-  const requestUrl = `${apiUrl}/${id}`;
+  const requestUrl = `${userApiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_USER,
     payload: axios.get<IUser>(requestUrl)
@@ -151,7 +151,7 @@ export const getUser: ICrudGetAction<IUser> = id => {
 export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_USER,
-    payload: axios.post(apiUrl, user)
+    payload: axios.post(userApiUrl, user)
   });
   dispatch(getUsers());
   return result;
@@ -160,14 +160,14 @@ export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
 export const updateUser: ICrudPutAction<IUser> = user => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_USER,
-    payload: axios.put(apiUrl, user)
+    payload: axios.put(userApiUrl, user)
   });
   dispatch(getUsers());
   return result;
 };
 
 export const deleteUser: ICrudDeleteAction<IUser> = id => async dispatch => {
-  const requestUrl = `${apiUrl}/${id}`;
+  const requestUrl = `${userApiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_USER,
     payload: axios.delete(requestUrl)
