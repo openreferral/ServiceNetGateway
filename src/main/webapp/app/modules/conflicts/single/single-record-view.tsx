@@ -9,6 +9,7 @@ import { getBaseRecord, getMatches } from '../shared/shared-record-view.reducer'
 import { RouteComponentProps } from 'react-router-dom';
 import { TextFormat, Translate } from 'react-jhipster';
 import { APP_DATE_FORMAT } from 'app/config/constants';
+import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
 
 export interface ISingleRecordViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {
   showClipboard: boolean;
@@ -26,14 +27,24 @@ export class SingleRecordView extends React.Component<ISingleRecordViewProp, ISi
   componentDidMount() {
     this.props.getBaseRecord(this.props.orgId);
     this.props.getMatches(this.props.orgId);
+    this.props.getUser(this.props.account.login);
   }
 
   render() {
-    const { activityRecord } = this.props;
+    const { activityRecord, user } = this.props;
     const content = activityRecord ? (
       <Row>
         <Col>
           <h2>{activityRecord.organization.name}</h2>
+          <h5>
+            {activityRecord.organization.accountId === user.systemAccountId ? (
+              <Translate contentKey="multiRecordView.yourData" />
+            ) : (
+              <span>
+                <Translate contentKey="singleRecordView.partnerName" /> {activityRecord.organization.accountName}
+              </span>
+            )}
+          </h5>
           <h5>
             <Translate contentKey="multiRecordView.lastCompleteReview" />
             {activityRecord.organization.lastVerifiedOn ? (
@@ -69,10 +80,12 @@ const mapStateToProps = (storeState, { match }: ISingleRecordViewState) => ({
   orgId: match.params.orgId,
   activityRecord: storeState.sharedRecordView.baseRecord,
   organizationMatches: storeState.sharedRecordView.matches,
-  dismissedMatches: storeState.sharedRecordView.dismissedMatches
+  dismissedMatches: storeState.sharedRecordView.dismissedMatches,
+  account: storeState.authentication.account,
+  user: storeState.userManagement.user
 });
 
-const mapDispatchToProps = { getBaseRecord, getMatches };
+const mapDispatchToProps = { getBaseRecord, getMatches, getUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

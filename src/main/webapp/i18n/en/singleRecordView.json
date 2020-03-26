@@ -2,6 +2,8 @@
   "singleRecordView": {
     "lastUpdated": "Last partial update ",
     "lastCompleteReview": "Last complete review ",
+    "partnerName": "Partner: ",
+    "noMatches": "No matches",
     "tabs": {
       "details": "Details"
     },
