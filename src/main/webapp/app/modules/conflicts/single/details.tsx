@@ -76,7 +76,15 @@ export class Details extends React.Component<ISingleRecordViewProp, ISingleRecor
     const { orgId, organizationMatches, dismissedMatches } = this.props;
     const firstMatch = organizationMatches.length !== 0 ? organizationMatches[0] : null;
 
-    const sideSection = firstMatch ? (
+    const noMatchSection = (
+      <Col md="6">
+        <h3 className="no-match-text">
+          <Translate contentKey="singleRecordView.noMatches" />
+        </h3>
+      </Col>
+    );
+
+    const matchSection = firstMatch ? (
       <Col sm="3">
         <Jumbotron className="jumbotron">
           <div className="jumbotron-header">
@@ -139,6 +147,8 @@ export class Details extends React.Component<ISingleRecordViewProp, ISingleRecor
         </Link>
       </div>
     );
+
+    const sideSection = organizationMatches && (organizationMatches.length === 0 ? noMatchSection : matchSection);
 
     const columnSize = 6;
     const { isAreaOpen } = this.state;

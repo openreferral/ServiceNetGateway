@@ -228,7 +228,7 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     let urlButton = null;
     if (fieldName === 'url' && defaultValue) {
       const url = this.props.activity.organization.url;
-      urlButton = (
+      urlButton = url && (
         <a className="url-link" style={{ color: 'rgba(0, 0, 0, 0.7)' }} href={url.startsWith('http') ? url : `//${url}`}>
           <FontAwesomeIcon icon="external-link-alt" className="url-icon" />
           {url.length < 100 ? `${url}` : <Translate contentKey="multiRecordView.goToWebsite" />}
