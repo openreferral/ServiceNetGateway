@@ -29,7 +29,7 @@ const adminMenuItems = (
     <DropdownItem tag={Link} to="/admin/logs">
       <FontAwesomeIcon icon="tasks" /> <Translate contentKey="global.menu.admin.logs">Logs</Translate>
     </DropdownItem>
-    <DropdownItem tag={Link} to="/admin/gateway" disabled>
+    <DropdownItem tag={Link} to="/admin/gateway">
       <FontAwesomeIcon icon="road" /> <Translate contentKey="global.menu.admin.gateway">Gateway</Translate>
     </DropdownItem>
   </>
