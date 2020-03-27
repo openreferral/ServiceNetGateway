@@ -17,7 +17,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,16 +35,12 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
-
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
     }
@@ -68,7 +63,7 @@ public class UserService {
         return userRepository.findOneByResetKey(key)
             .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
             .map(user -> {
-                user.setPassword(passwordEncoder.encode(newPassword));
+                user.setPassword(newPassword);
                 user.setResetKey(null);
                 user.setResetDate(null);
                 this.clearUserCaches(user);
@@ -100,11 +95,10 @@ public class UserService {
                 throw new EmailAlreadyUsedException();
             }
         });
-        User newUser = new User();
-        String encryptedPassword = passwordEncoder.encode(password);
+        User newUser = new User();;
         newUser.setLogin(userDTO.getLogin().toLowerCase());
         // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
+        newUser.setPassword(password);
         newUser.setFirstName(userDTO.getFirstName());
         newUser.setLastName(userDTO.getLastName());
         if (userDTO.getEmail() != null) {
@@ -149,8 +143,7 @@ public class UserService {
         } else {
             user.setLangKey(userDTO.getLangKey());
         }
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
-        user.setPassword(encryptedPassword);
+        user.setPassword(RandomUtil.generatePassword());
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
@@ -241,12 +234,10 @@ public class UserService {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
-                String currentEncryptedPassword = user.getPassword();
-                if (!passwordEncoder.matches(currentClearTextPassword, currentEncryptedPassword)) {
+                if (!currentClearTextPassword.equals(user.getPassword())) {
                     throw new InvalidPasswordException();
                 }
-                String encryptedPassword = passwordEncoder.encode(newPassword);
-                user.setPassword(encryptedPassword);
+                user.setPassword(newPassword);
                 this.clearUserCaches(user);
                 log.debug("Changed password for User: {}", user);
             });

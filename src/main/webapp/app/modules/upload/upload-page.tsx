@@ -152,6 +152,12 @@ export class UploadPage extends React.Component<IUploadPageProp, IUploadState> {
     ) : null;
 
     const token = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'X-XSRF-TOKEN': this.getToken(),
+      DELIMITER: this.state.delimiter,
+      PROVIDER: this.state.provider
+    };
     return (
       <Row>
         <Col>
@@ -170,12 +176,7 @@ export class UploadPage extends React.Component<IUploadPageProp, IUploadState> {
             server={{
               url: SERVICENET_API_URL + '/file',
               process: {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  'X-XSRF-TOKEN': this.getToken(),
-                  DELIMITER: this.state.delimiter,
-                  PROVIDER: this.state.provider
-                }
+                headers
               }
             }}
             instantUpload={false}
@@ -183,6 +184,7 @@ export class UploadPage extends React.Component<IUploadPageProp, IUploadState> {
             acceptedFileTypes={supportedFileTypes}
             fileValidateTypeDetectType={this.fileValidateTypeDetectType}
             onupdatefiles={this.onUpdateFiles}
+            onprocessfile={() => (headers['X-XSRF-TOKEN'] = this.getToken())}
           />
           <p className="lead">
             <Translate contentKey="upload.filesCount" />

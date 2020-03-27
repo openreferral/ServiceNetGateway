@@ -2,7 +2,7 @@ import axios from 'axios';
 import { translate } from 'react-jhipster';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { AUTH_API_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   RESET_PASSWORD_INIT: 'passwordReset/RESET_PASSWORD_INIT',
@@ -50,7 +50,7 @@ export default (state: PasswordResetState = initialState, action): PasswordReset
   }
 };
 
-const apiUrl = SERVICENET_API_URL + '/account/reset-password';
+const apiUrl = AUTH_API_URL + '/account/reset-password';
 
 // Actions
 export const handlePasswordResetInit = mail => ({
