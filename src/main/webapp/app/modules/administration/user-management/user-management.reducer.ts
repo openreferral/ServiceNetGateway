@@ -4,7 +4,7 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IUser, defaultValue } from 'app/shared/model/user.model';
 import { ISystemAccount } from 'app/shared/model/system-account.model';
-import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { AUTH_API_URL, SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   FETCH_ROLES: 'userManagement/FETCH_ROLES',
@@ -121,9 +121,10 @@ export default (state: UserManagementState = initialState, action): UserManageme
 };
 
 const userApiUrl = SERVICENET_API_URL + '/users';
+const authUserApiUrl = AUTH_API_URL + '/users';
 // Actions
 export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
-  const requestUrl = `${userApiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&itemsPerPage=${size}` : ''}`;
+  const requestUrl = `${authUserApiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&itemsPerPage=${size}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_USERS,
     payload: axios.get<IUser>(requestUrl)
