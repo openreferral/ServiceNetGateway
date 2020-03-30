@@ -15,7 +15,6 @@ import org.benetech.servicenet.service.mapper.RequestLoggerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -40,14 +39,15 @@ public class RequestFilter extends OncePerRequestFilter implements Ordered {
         throws ServletException, IOException {
         ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
+        String characterEncoding = response.getCharacterEncoding();
 
         filterChain.doFilter(wrappedRequest, wrappedResponse);
 
         Map<String, Object> trace = getTrace(wrappedRequest);
         Map<String, Object> responseTrace = getResponseTrace(wrappedResponse);
 
-        getBody(wrappedRequest, trace);
-        getResponseBody(wrappedResponse, responseTrace);
+        getBody(wrappedRequest, trace, characterEncoding);
+        getResponseBody(wrappedResponse, responseTrace, characterEncoding);
 
         RequestLogger requestLogger = new RequestLogger();
         requestLogger.setRemoteAddr(Objects.toString(trace.get("remoteAddr"), ""));
@@ -56,25 +56,25 @@ public class RequestFilter extends OncePerRequestFilter implements Ordered {
         requestLogger.setRequestParameters(Objects.toString(trace.get("requestParams"), ""));
         requestLogger.setRequestBody(Objects.toString(trace.get("body"), ""));
         requestLogger.setResponseStatus(Objects.toString(responseTrace.get("status"), ""));
-        // Temporary disabling response body logging
-        // TODO: investigate and fix issue when in body is 0x00 character and it can't be saved to database
-        // if (!Objects.toString(responseTrace.get("status"), "").equalsIgnoreCase("200")) {
-        //     requestLogger.setResponseBody(Objects.toString(responseTrace.get("body"), ""));
-        // }
+         if (!Objects.toString(responseTrace.get("status"), "").startsWith("2")) {
+             requestLogger.setResponseBody(
+                 Objects.toString(responseTrace.get("body"), "").replaceAll("\u0000", "")
+             );
+         }
 
         requestLoggerService.save(requestLoggerMapper.toDto(requestLogger));
 
         wrappedResponse.copyBodyToResponse();
     }
 
-    private void getBody(ContentCachingRequestWrapper request, Map<String, Object> trace) {
+    private void getBody(ContentCachingRequestWrapper request, Map<String, Object> trace, String characterEncoding) {
         ContentCachingRequestWrapper wrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
         if (wrapper != null) {
             byte[] buf = wrapper.getContentAsByteArray();
             if (buf.length > 0) {
                 String payload;
                 try {
-                    payload = new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
+                    payload = new String(buf, 0, buf.length, characterEncoding);
                 }
                 catch (UnsupportedEncodingException ex) {
                     payload = "[unknown]";
@@ -91,16 +91,16 @@ public class RequestFilter extends OncePerRequestFilter implements Ordered {
         }
     }
 
-    private void getResponseBody(ContentCachingResponseWrapper response, Map<String, Object> trace) {
+    private void getResponseBody(ContentCachingResponseWrapper response, Map<String, Object> trace, String characterEncoding) {
         ContentCachingResponseWrapper wrapper = WebUtils.getNativeResponse(response, ContentCachingResponseWrapper.class);
         if (wrapper != null) {
             byte[] buf = wrapper.getContentAsByteArray();
             if (buf.length > 0) {
                 String payload;
                 try {
-                    payload = new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
+                    payload = new String(buf, 0, buf.length, characterEncoding);
                 }
-                catch (UnsupportedEncodingException ex) {
+                catch (Exception ex) {
                     payload = "[unknown]";
                 }
 
