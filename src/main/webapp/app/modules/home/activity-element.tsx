@@ -7,6 +7,7 @@ import { Translate, translate, TextFormat } from 'react-jhipster';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import HideRecordButton from 'app/shared/layout/hide-record-button';
 import { toast } from 'react-toastify';
+import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 const ActivityElement = props => {
   const maxConflicts = 3;
@@ -17,7 +18,7 @@ const ActivityElement = props => {
     const matchIds = props.activity.organizationMatches;
     event.preventDefault();
     axios
-      .post(`/api/organization-matches/hideList`, matchIds)
+      .post(`${SERVICENET_API_URL}/organization-matches/hideList`, matchIds)
       .then(() => {
         toast.success(translate('hiddenMatches.hiddenSuccessfully'));
         document.getElementById(props.activity.organizationId).style.display = 'none';
