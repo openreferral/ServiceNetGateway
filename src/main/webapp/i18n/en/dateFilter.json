@@ -1,7 +1,7 @@
 {
   "serviceNetApp": {
     "DateFilter": {
-      "null": "",
+      "null": "Not selected",
       "LAST_7_DAYS": "LAST_7_DAYS",
       "LAST_30_DAYS": "LAST_30_DAYS",
       "DATE_RANGE": "DATE_RANGE"
