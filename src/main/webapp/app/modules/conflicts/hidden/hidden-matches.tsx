@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { getHiddenMatches } from '../shared/shared-record-view.reducer';
+import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export interface IHiddenMatchesProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -18,7 +19,7 @@ export class HiddenMatches extends React.Component<IHiddenMatchesProp> {
 
   revertHideOrganizationMatch = matchId => () => {
     axios
-      .post(`/api/organization-matches/${matchId}/revertHide`)
+      .post(`${SERVICENET_API_URL}/organization-matches/${matchId}/revertHide`)
       .then(() => {
         toast.success(translate('hiddenMatches.reinstatedSuccessfully'));
         Promise.all([this.props.getHiddenMatches()]).then(() => {
