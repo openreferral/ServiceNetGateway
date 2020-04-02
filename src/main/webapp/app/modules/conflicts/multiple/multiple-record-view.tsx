@@ -74,7 +74,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
           });
           this.props.getPartnerRecord(partnerIdx > 0 ? partnerId : this.props.matches[matchNumber].partnerVersionId);
         } else {
-          this.props.getPartnerRecord(this.props.matches[this.state.matchNumber]);
+          this.props.getPartnerRecord(this.props.matches[this.state.matchNumber].partnerVersionId);
         }
       }
     });
@@ -107,7 +107,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     const { orgId } = this.props;
     const matchId = this.props.matches[this.state.matchNumber].id;
     axios
-      .post(`/api/organization-matches/${matchId}/dismiss`, dismissParams)
+      .post(`${SERVICENET_API_URL}/organization-matches/${matchId}/dismiss`, dismissParams)
       .then(() => {
         this.setState({ showDismissModal: false, showSuccessModal: true, matchNumber: 0 });
         Promise.all([this.props.getNotHiddenMatchesByOrg(this.props.orgId)]).then(() => {

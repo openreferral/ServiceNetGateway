@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { getMatches } from '../shared/shared-record-view.reducer';
+import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export interface IDismissedMatchesProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -21,7 +22,7 @@ export class DismissedMatches extends React.Component<IDismissedMatchesProp> {
     const { orgId } = this.props;
 
     axios
-      .post(`/api/organization-matches/${matchId}/revertDismiss`)
+      .post(`${SERVICENET_API_URL}/organization-matches/${matchId}/revertDismiss`)
       .then(() => {
         toast.success(translate('dismissedMatches.reinstatedSuccessfully'));
         Promise.all([this.props.getMatches(this.props.orgId)]).then(() => {
