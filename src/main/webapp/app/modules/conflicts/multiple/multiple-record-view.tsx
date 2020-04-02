@@ -152,7 +152,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     const matchId = match && match.id ? match.id : '';
     event.preventDefault();
     axios
-      .post(`${SERVICENET_API_URL}//organization-matches/${matchId}/hide`)
+      .post(`${SERVICENET_API_URL}/organization-matches/${matchId}/hide`)
       .then(() => {
         toast.success(translate('hiddenMatches.hiddenSuccessfully'));
         if (matches.length === 1) {
