@@ -25,6 +25,7 @@ import FieldsDisplaySettingsPanel from './fields-display-settings-panel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select from 'react-select';
 import { Details as DetailClass } from '../single/details';
+import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export interface IMultipleRecordViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -151,7 +152,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     const matchId = match && match.id ? match.id : '';
     event.preventDefault();
     axios
-      .post(`/api/organization-matches/${matchId}/hide`)
+      .post(`${SERVICENET_API_URL}//organization-matches/${matchId}/hide`)
       .then(() => {
         toast.success(translate('hiddenMatches.hiddenSuccessfully'));
         if (matches.length === 1) {
