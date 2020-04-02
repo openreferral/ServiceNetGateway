@@ -123,7 +123,7 @@ jhipster:
       access-token-uri: http://servicenetauth/oauth/token
       token-service-id: servicenetauth
       client-id: internal
-      client-secret: internal
+      client-secret: changeme
   mail: # specific JHipster mail property, for standard properties see MailProperties
     base-url: http://127.0.0.1:8080
   metrics:
@@ -139,6 +139,7 @@ jhipster:
       queue-size: 512
   audit-events:
     retention-period: 30 # Number of days before audit events are deleted.
+
 oauth2:
   signature-verification:
     public-key-endpoint-uri: http://servicenetauth/oauth/token_key
@@ -149,10 +150,11 @@ oauth2:
   web-client-configuration:
     #keep in sync with UAA configuration
     client-id: web_app
-    secret: changeit
+    secret: changeme
     # Controls session expiration due to inactivity (ignored for remember-me).
     # Negative values disable session inactivity expiration.
     session-timeout-in-seconds: 1800
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
