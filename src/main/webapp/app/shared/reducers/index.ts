@@ -213,10 +213,12 @@ import contactDetailsFieldsValue, {
 // prettier-ignore
 import feedback, { FeedbackState } from 'app/modules/feedback/feedback.reducer';
 import requestLogger, { RequestLoggerState } from 'app/entities/request-logger/request-logger.reducer';
+import clientManagement, { ClientManagementState } from 'app/modules/administration/client-management/client-management.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
   readonly authentication: AuthenticationState;
+  readonly clientManagement: ClientManagementState;
   readonly locale: LocaleState;
   readonly applicationProfile: ApplicationProfileState;
   readonly administration: AdministrationState;
@@ -287,6 +289,7 @@ export interface IRootState {
 
 const rootReducer = combineReducers<IRootState>({
   authentication,
+  clientManagement,
   locale,
   applicationProfile,
   administration,

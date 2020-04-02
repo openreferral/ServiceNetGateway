@@ -1,0 +1,21 @@
+{
+  "clientManagement": {
+    "home": {
+      "title": "External clients",
+      "createLabel": "Create a new client",
+      "createOrEditLabel": "Create or edit a client"
+    },
+    "created": "A new client is created with identifier {{ param }}",
+    "updated": "An client is updated with identifier {{ param }}",
+    "deleted": "An client is deleted with identifier {{ param }}",
+    "delete": {
+      "question": "Are you sure you want to delete client {{ login }}?"
+    },
+    "detail": {
+      "title": "Client"
+    },
+    "tokenValiditySeconds": "Token validity in seconds",
+    "clientId": "Client Id",
+    "clientSecret": "Client Secret"
+  }
+}

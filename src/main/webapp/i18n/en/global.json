@@ -62,7 +62,8 @@
         "contactDetailsFieldsValue": "Contact Details Fields Value",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "requestLogger": "Request Logger",
-        "userManagement": "User management"
+        "userManagement": "User management",
+        "clientManagement": "Client management"
       },
       "account": {
         "main": "Account",
@@ -76,6 +77,7 @@
       "admin": {
         "main": "Administration",
         "userManagement": "User management",
+        "clientManagement": "Client management",
         "tracker": "User tracker",
         "metrics": "Metrics",
         "health": "Health",
