@@ -1,0 +1,5 @@
+CREATE DATABASE "ServiceNet";
+\connect "ServiceNet";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE SCHEMA IF NOT EXISTS auth;
+CREATE SCHEMA IF NOT EXISTS gateway;

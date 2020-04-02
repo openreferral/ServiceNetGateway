@@ -123,7 +123,7 @@ jhipster:
       access-token-uri: http://servicenetauth/oauth/token
       token-service-id: servicenetauth
       client-id: internal
-      client-secret: changeme
+      client-secret: ${JHIPSTER_OAUTH2_CLIENT_SECRET:changeme}
   mail: # specific JHipster mail property, for standard properties see MailProperties
     base-url: http://my-server-url-to-change # Modify according to your server's URL
   metrics:
@@ -150,7 +150,7 @@ oauth2:
   web-client-configuration:
     #keep in sync with UAA configuration
     client-id: web_app
-    secret: changeme
+    secret: ${SPRING_OAUTH2_CLIENT_SECRET:changeme}
     # Controls session expiration due to inactivity (ignored for remember-me).
     # Negative values disable session inactivity expiration.
     session-timeout-in-seconds: 1800
