@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { AUTH_API_URL } from 'app/shared/util/service-url.constants';
+import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 import { setLocale } from 'app/shared/reducers/locale';
 import { Storage } from 'react-jhipster';
 
@@ -110,7 +110,7 @@ export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, 
 export const getSession = () => async (dispatch, getState) => {
   await dispatch({
     type: ACTION_TYPES.GET_SESSION,
-    payload: axios.get(AUTH_API_URL + '/account')
+    payload: axios.get(SERVICENET_API_URL + '/account')
   });
 
   const { account } = getState().authentication;
