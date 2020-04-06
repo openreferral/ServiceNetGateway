@@ -51,6 +51,7 @@ export interface ISingleLocationDetailsState {
 export class SingleLocationDetails extends React.Component<ISingleLocationDetailsProp, ISingleLocationDetailsState> {
   myRef: any;
   state: ISingleLocationDetailsState = {
+    isAreaOpen: this.props.isAreaOpen,
     id: `location_${Math.random()
       .toString()
       .replace(/0\./, '')}`
