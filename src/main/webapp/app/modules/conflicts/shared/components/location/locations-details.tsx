@@ -15,7 +15,7 @@ export interface ILocationsDetailsProp extends StateProps, DispatchProps {
   isAreaOpen: boolean;
   selectLocation?: any;
   matchingLocation?: any;
-  matchLocations?: boolean;
+  locationsHaveMatch?: boolean;
   toggleMatchLocations?: any;
   isBaseRecord: boolean;
   settings?: any;
@@ -58,6 +58,11 @@ export class LocationsDetails extends React.Component<ILocationsDetailsProp, ILo
   };
 
   componentDidUpdate(prevProps) {
+    if (prevProps.matchingLocation !== this.props.matchingLocation) {
+      this.setState({
+        locationNumber: this.getLocationNumber()
+      });
+    }
     const sortedLocations = LocationsDetails.sortLocations(this.props.locations);
     const locationIndex = _.findIndex(sortedLocations, record => record.location.id === this.props.openedPartnerLocation);
     if (locationIndex >= 0 && locationIndex !== this.state.locationNumber) {
@@ -72,6 +77,16 @@ export class LocationsDetails extends React.Component<ILocationsDetailsProp, ILo
     if (this.props.selectLocation) {
       const sortedLocations = LocationsDetails.sortLocations(this.props.locations);
       this.props.selectLocation(sortedLocations[locationNumber]);
+    }
+  };
+
+  getLocationNumber = () => {
+    const { locationsHaveMatch, matchingLocation, locations } = this.props;
+    if (locationsHaveMatch && matchingLocation) {
+      const idx = _.findIndex(LocationsDetails.sortLocations(locations), l => l.location.id === matchingLocation);
+      return idx >= 0 ? idx : this.state.locationNumber;
+    } else {
+      return this.state.locationNumber;
     }
   };
 

@@ -37,7 +37,7 @@ export interface IMultipleRecordViewState {
   dismissError: boolean;
   locationMatches: any;
   selectedLocation: any;
-  matchLocations: boolean;
+  locationsHaveMatch: boolean;
   matchingLocation: any;
   fieldSettingsExpanded: boolean;
   tooltipOpen: boolean;
@@ -53,7 +53,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     dismissError: false,
     locationMatches: [],
     selectedLocation: null,
-    matchLocations: true,
+    locationsHaveMatch: true,
     matchingLocation: null,
     fieldSettingsExpanded: false,
     tooltipOpen: false,
@@ -184,16 +184,16 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     const match = partnerRecord && _.find(matches, m => m.partnerVersionId === partnerRecord.organization.id);
     if (match && match.locationMatches) {
       if (selectedLocation in match.locationMatches) {
-        return match.locationMatches[selectedLocation][0];
+        return match.locationMatches[selectedLocation][0].matchingLocation;
       }
       // return inverted match if any
-      return _.findKey(match.locationMatches, matchList => matchList.includes(selectedLocation));
+      return _.findKey(match.locationMatches, matchList => _.some(matchList, list => list.matchingLocation === selectedLocation));
     }
   };
 
   toggleMatchLocations = () => {
     this.setState({
-      matchLocations: !this.state.matchLocations
+      locationsHaveMatch: !this.state.locationsHaveMatch
     });
   };
 
@@ -291,7 +291,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                 isBaseRecord
                 showClipboard={false}
                 selectLocation={this.selectLocation}
-                matchLocations={this.state.matchLocations}
+                locationsHaveMatch={this.state.locationsHaveMatch}
                 matchingLocation={this.state.matchingLocation}
                 toggleMatchLocations={this.toggleMatchLocations}
                 settings={this.props.selectedSettings}
@@ -346,7 +346,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                 isBaseRecord={false}
                 showClipboard
                 selectLocation={this.selectLocation}
-                matchLocations={this.state.matchLocations}
+                locationsHaveMatch={this.state.locationsHaveMatch}
                 matchingLocation={this.state.matchingLocation}
                 settings={this.props.selectedSettings}
                 serviceMatches={match && match.serviceMatches}

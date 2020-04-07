@@ -33,7 +33,7 @@ export interface ISingleLocationDetailsProp extends StateProps, DispatchProps {
   showClipboard: boolean;
   isAreaOpen: boolean;
   selectOptions: any;
-  matchLocations?: boolean;
+  locationsHaveMatch?: boolean;
   toggleMatchLocations?: any;
   isBaseRecord: boolean;
   locationNumber?: number;
@@ -148,7 +148,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
       locationsCount,
       selectOptions,
       isBaseRecord,
-      matchLocations,
+      locationsHaveMatch,
       toggleMatchLocations,
       locationNumber,
       settings,
@@ -179,7 +179,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
         {isBaseRecord ? (
           <div className="col-1 d-flex justify-content-center align-items-center">
             <input
-              checked={matchLocations}
+              checked={locationsHaveMatch}
               onChange={toggleMatchLocations}
               type="checkbox"
               title={translate('multiRecordView.locationCheckboxTooltip')}
