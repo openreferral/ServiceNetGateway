@@ -17,7 +17,7 @@ export interface IDetailsProp extends StateProps, DispatchProps, RouteComponentP
   showClipboard: boolean;
   selectLocation?: any;
   matchingLocation?: any;
-  matchLocations?: boolean;
+  locationsHaveMatch?: boolean;
   toggleMatchLocations?: any;
   settings?: any;
   serviceMatches?: any;

@@ -35,7 +35,7 @@ export interface IAllRecordsViewState {
   dismissError: boolean;
   locationMatches: any;
   selectedLocation: any;
-  matchLocations: boolean;
+  locationsHaveMatch: boolean;
   matchingLocation: any;
   selectedMatch: any;
   fieldSettingsExpanded: boolean;
@@ -52,7 +52,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
     dismissError: false,
     locationMatches: [],
     selectedLocation: null,
-    matchLocations: true,
+    locationsHaveMatch: true,
     matchingLocation: null,
     selectedMatch: null,
     fieldSettingsExpanded: false,
@@ -159,7 +159,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
 
   toggleMatchLocations = () => {
     this.setState({
-      matchLocations: !this.state.matchLocations
+      locationsHaveMatch: !this.state.locationsHaveMatch
     });
   };
 
@@ -242,7 +242,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
                 isBaseRecord
                 showClipboard={false}
                 selectLocation={this.selectLocation}
-                matchLocations={this.state.matchLocations}
+                locationsHaveMatch={this.state.locationsHaveMatch}
                 matchingLocation={this.state.matchingLocation}
                 toggleMatchLocations={this.toggleMatchLocations}
                 settings={this.props.selectedSettings}
@@ -300,7 +300,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
                   isBaseRecord={false}
                   showClipboard
                   selectLocation={this.selectLocation}
-                  matchLocations={this.state.matchLocations}
+                  locationsHaveMatch={this.state.locationsHaveMatch}
                   matchingLocation={this.state.matchingLocation}
                   settings={this.props.selectedSettings}
                   serviceMatches={match && match.serviceMatches}
