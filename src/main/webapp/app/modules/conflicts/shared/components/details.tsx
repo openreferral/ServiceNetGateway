@@ -47,7 +47,7 @@ export class Details extends React.Component<IDetailsProp, IDetailsState> {
 
   render() {
     const { isAreaOpen } = this.state;
-    const { settings, serviceMatches, locationMatches } = this.props;
+    const { settings, serviceMatches, locationMatches, matchingLocation } = this.props;
     const columnSize = 12;
     return (
       <div>
@@ -72,6 +72,7 @@ export class Details extends React.Component<IDetailsProp, IDetailsState> {
                 isAreaOpen
                 settings={settings}
                 locationMatches={locationMatches}
+                matchingLocation={matchingLocation}
               />
             ) : null}
             {this.displaySection('serviceFields') ? (
@@ -105,6 +106,7 @@ export class Details extends React.Component<IDetailsProp, IDetailsState> {
                 isAreaOpen={false}
                 settings={settings}
                 locationMatches={locationMatches}
+                matchingLocation={matchingLocation}
               />
             ) : null}
             {this.displaySection('serviceFields') ? (

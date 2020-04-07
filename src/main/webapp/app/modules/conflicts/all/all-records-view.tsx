@@ -153,7 +153,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
         return match.locationMatches[selectedLocation][0];
       }
       // return inverted match if any
-      return _.findKey(match.locationMatches, matchList => matchList.includes(selectedLocation));
+      return _.findKey(match.locationMatches, matchList => _.some(matchList, list => list.matchingLocation === selectedLocation));
     }
   };
 
