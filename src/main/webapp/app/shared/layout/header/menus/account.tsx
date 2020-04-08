@@ -16,11 +16,6 @@ const accountMenuItemsAuthenticated = isAdmin => (
     <DropdownItem tag={Link} to="/hidden-matches">
       <FontAwesomeIcon icon="eye" /> <Translate contentKey="global.menu.admin.hiddenRecords">View hidden matches</Translate>
     </DropdownItem>
-    {isAdmin && (
-      <DropdownItem tag={Link} to="/account/sessions">
-        <FontAwesomeIcon icon="cloud" /> <Translate contentKey="global.menu.account.sessions">Sessions</Translate>
-      </DropdownItem>
-    )}
     <DropdownItem tag={Link} to="/logout">
       <FontAwesomeIcon icon="sign-out-alt" /> <Translate contentKey="global.menu.account.logout">Sign out</Translate>
     </DropdownItem>
