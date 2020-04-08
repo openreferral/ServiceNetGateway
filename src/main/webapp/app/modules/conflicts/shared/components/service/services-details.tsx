@@ -67,9 +67,15 @@ export class ServicesDetails extends React.Component<IServicesDetailsProp, IServ
 
   componentDidUpdate(prevProps) {
     const { services } = this.props;
+    const { serviceNumber } = this.state;
     const sortedServices = _.sortBy(services, ['service.name']);
     const serviceIndex = _.findIndex(sortedServices, record => record.service.id === this.props.openedPartnerService);
-    if (serviceIndex >= 0 && serviceIndex !== this.state.serviceNumber) {
+    const currentRecord = sortedServices[serviceNumber];
+    if (prevProps.activity !== this.props.activity && !currentRecord) {
+      this.setState({
+        serviceNumber: 0
+      });
+    } else if (serviceIndex >= 0 && serviceIndex !== this.state.serviceNumber) {
       this.changeRecord(serviceIndex);
       this.setState({ isAreaOpen: true });
     }
