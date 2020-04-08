@@ -65,9 +65,15 @@ export class LocationsDetails extends React.Component<ILocationsDetailsProp, ILo
     }
     const sortedLocations = LocationsDetails.sortLocations(this.props.locations);
     const locationIndex = _.findIndex(sortedLocations, record => record.location.id === this.props.openedPartnerLocation);
+    const { locationNumber } = this.state;
+    const currentRecord = sortedLocations[locationNumber];
     if (locationIndex >= 0 && locationIndex !== this.state.locationNumber) {
       this.changeRecord(locationIndex);
       this.setState({ isAreaOpen: true });
+    } else if (prevProps.activity !== this.props.activity && !currentRecord) {
+      this.setState({
+        locationNumber: 0
+      });
     }
   }
 
