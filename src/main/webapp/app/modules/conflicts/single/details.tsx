@@ -148,7 +148,8 @@ export class Details extends React.Component<ISingleRecordViewProp, ISingleRecor
       </div>
     );
 
-    const sideSection = organizationMatches && (organizationMatches.length === 0 ? noMatchSection : matchSection);
+    const sideSection =
+      organizationMatches && organizationMatches.length === 0 && dismissedMatches.length === 0 ? noMatchSection : matchSection;
 
     const columnSize = 6;
     const { isAreaOpen } = this.state;
