@@ -13,7 +13,6 @@ import activate, { ActivateState } from 'app/modules/account/activate/activate.r
 import password, { PasswordState } from 'app/modules/account/password/password.reducer';
 import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
-import sessions, { SessionsState } from 'app/modules/account/sessions/sessions.reducer';
 // prettier-ignore
 import systemAccount, {
 SystemAccountState
@@ -229,7 +228,6 @@ export interface IRootState {
   readonly passwordReset: PasswordResetState;
   readonly password: PasswordState;
   readonly settings: SettingsState;
-  readonly sessions: SessionsState;
   readonly systemAccount: SystemAccountState;
   readonly documentUpload: DocumentUploadState;
   readonly organization: OrganizationState;
@@ -300,7 +298,6 @@ const rootReducer = combineReducers<IRootState>({
   passwordReset,
   password,
   settings,
-  sessions,
   systemAccount,
   documentUpload,
   organization,
