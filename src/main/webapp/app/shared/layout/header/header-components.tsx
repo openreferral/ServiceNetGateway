@@ -49,10 +49,21 @@ export const FeedbackButton = props =>
 
 export const Home = props => (
   <NavItem>
-    <NavLink exact tag={Link} to="/" className="d-flex align-items-center">
+    <NavLink exact tag={Link} to="/data-status" className="d-flex align-items-center">
       <FontAwesomeIcon icon="home" />
       <span className="navbar-label">
         <Translate contentKey="global.menu.home" />
+      </span>
+    </NavLink>
+  </NavItem>
+);
+
+export const DataStatus = props => (
+  <NavItem>
+    <NavLink exact tag={Link} to="/" className="d-flex align-items-center">
+      <FontAwesomeIcon icon="table" />
+      <span className="navbar-label">
+        <Translate contentKey="global.menu.dataStatus" />
       </span>
     </NavLink>
   </NavItem>

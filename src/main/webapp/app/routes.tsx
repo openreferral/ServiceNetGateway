@@ -85,6 +85,7 @@ const Routes = ({ isAdmin, isSacramento }) => (
       <ErrorBoundaryRoute path="/about-us" component={AboutUs} />
       <PrivateRoute path="/feedback" component={Feedback} hasAnyAuthorities={[AUTHORITIES.SACRAMENTO]} isAdmin={isAdmin} />
       {!isSacramento && <ErrorBoundaryRoute path="/" component={Home} />}
+      {!isSacramento && <ErrorBoundaryRoute path="/data-status" component={Home} />}
     </Switch>
   </div>
 );
