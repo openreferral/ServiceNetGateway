@@ -60,7 +60,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
             persistentAuditEvent.setAuditEventDate(event.getTimestamp());
             Map<String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
             persistentAuditEvent.setData(truncate(eventData));
-            // persistenceAuditEventRepository.save(persistentAuditEvent);
+            persistenceAuditEventRepository.save(persistentAuditEvent);
         }
     }
 
