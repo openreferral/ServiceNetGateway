@@ -26,6 +26,7 @@ import ShelterUpdate from 'app/entities/shelter/shelter-update';
 import ShelterDetails from 'app/modules/shelter/shelter-details';
 import AllRecordsView from 'app/modules/conflicts/all/all-records-view';
 import Feedback from 'app/modules/feedback/feedback';
+import DataStatus from 'app/modules/data-status/data-status';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -84,8 +85,8 @@ const Routes = ({ isAdmin, isSacramento }) => (
       <PrivateRoute path="/hidden-matches/" isAdmin={isAdmin} component={HiddenMatches} hasAnyAuthorities={[AUTHORITIES.USER]} />
       <ErrorBoundaryRoute path="/about-us" component={AboutUs} />
       <PrivateRoute path="/feedback" component={Feedback} hasAnyAuthorities={[AUTHORITIES.SACRAMENTO]} isAdmin={isAdmin} />
+      <PrivateRoute path="/data-status" component={DataStatus} hasAnyAuthorities={[AUTHORITIES.ADMIN]} isAdmin={isAdmin} />
       {!isSacramento && <ErrorBoundaryRoute path="/" component={Home} />}
-      {!isSacramento && <ErrorBoundaryRoute path="/data-status" component={Home} />}
     </Switch>
   </div>
 );

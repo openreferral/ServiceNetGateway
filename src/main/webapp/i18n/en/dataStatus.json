@@ -1,0 +1,8 @@
+{
+  "serviceNetApp": {
+    "dataStatus": {
+      "providerName": "Provider Name",
+      "dateUploaded": "Date of last update"
+    }
+  }
+}
