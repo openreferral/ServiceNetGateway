@@ -101,6 +101,8 @@ jhipster:
     logs: # Reports metrics in the logs
       enabled: true
       report-frequency: 60 # in seconds
+  mail:
+    from: ServiceNetGateway@localhost
 
 # ===================================================================
 # Application specific properties
