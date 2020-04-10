@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import org.benetech.servicenet.ServiceNetGatewayApp;
 import org.benetech.servicenet.TestConstants;
@@ -148,7 +149,7 @@ public class RequestLoggerResourceIT {
 
         // Create the RequestLogger
         RequestLoggerDTO requestLoggerDTO = requestLoggerMapper.toDto(requestLogger);
-        restRequestLoggerMockMvc.perform(post("/api/request-loggers")
+        restRequestLoggerMockMvc.perform(post("/api/request-logger")
             .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(requestLoggerDTO)))
             .andExpect(status().isCreated());
@@ -176,7 +177,7 @@ public class RequestLoggerResourceIT {
         RequestLoggerDTO requestLoggerDTO = requestLoggerMapper.toDto(requestLogger);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restRequestLoggerMockMvc.perform(post("/api/request-loggers")
+        restRequestLoggerMockMvc.perform(post("/api/request-logger")
             .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(requestLoggerDTO)))
             .andExpect(status().isBadRequest());
@@ -194,7 +195,7 @@ public class RequestLoggerResourceIT {
         requestLoggerRepository.saveAndFlush(requestLogger);
 
         // Get all the requestLoggerList
-        restRequestLoggerMockMvc.perform(get("/api/request-loggers?sort=id,desc"))
+        restRequestLoggerMockMvc.perform(get("/api/request-logger?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(requestLogger.getId().toString())))
@@ -214,7 +215,7 @@ public class RequestLoggerResourceIT {
         requestLoggerRepository.saveAndFlush(requestLogger);
 
         // Get the requestLogger
-        restRequestLoggerMockMvc.perform(get("/api/request-loggers/{id}", requestLogger.getId()))
+        restRequestLoggerMockMvc.perform(get("/api/request-logger/{id}", requestLogger.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(requestLogger.getId().toString()))
@@ -231,7 +232,7 @@ public class RequestLoggerResourceIT {
     @Transactional
     public void getNonExistingRequestLogger() throws Exception {
         // Get the requestLogger
-        restRequestLoggerMockMvc.perform(get("/api/request-loggers/{id}", Long.MAX_VALUE))
+        restRequestLoggerMockMvc.perform(get("/api/request-logger/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -257,7 +258,7 @@ public class RequestLoggerResourceIT {
             .responseBody(UPDATED_RESPONSE_BODY);
         RequestLoggerDTO requestLoggerDTO = requestLoggerMapper.toDto(updatedRequestLogger);
 
-        restRequestLoggerMockMvc.perform(put("/api/request-loggers")
+        restRequestLoggerMockMvc.perform(put("/api/request-logger")
             .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(requestLoggerDTO)))
             .andExpect(status().isOk());
@@ -284,7 +285,7 @@ public class RequestLoggerResourceIT {
         RequestLoggerDTO requestLoggerDTO = requestLoggerMapper.toDto(requestLogger);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restRequestLoggerMockMvc.perform(put("/api/request-loggers")
+        restRequestLoggerMockMvc.perform(put("/api/request-logger")
             .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(requestLoggerDTO)))
             .andExpect(status().isBadRequest());
@@ -303,7 +304,7 @@ public class RequestLoggerResourceIT {
         int databaseSizeBeforeDelete = requestLoggerRepository.findAll().size();
 
         // Delete the requestLogger
-        restRequestLoggerMockMvc.perform(delete("/api/request-loggers/{id}", requestLogger.getId())
+        restRequestLoggerMockMvc.perform(delete("/api/request-logger/{id}", requestLogger.getId())
             .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
