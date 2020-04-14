@@ -100,6 +100,7 @@ export default (state: ClientManagementState = initialState, action): ClientMana
 const clientApiUrl = AUTH_API_URL + '/clients';
 // Actions
 export const getClients: ICrudGetAllAction<IClient> = (page, size, sort) => {
+  sort = sort === 'id' ? 'clientId' : sort;
   const requestUrl = `${clientApiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&itemsPerPage=${size}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_CLIENTS,
