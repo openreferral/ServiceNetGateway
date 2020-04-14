@@ -5,7 +5,7 @@ import { NavLink as Link } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { NavDropdown } from '../header-components';
 
-const accountMenuItemsAuthenticated = isAdmin => (
+const accountMenuItemsAuthenticated = (isAdmin, isSacramento) => (
   <>
     <DropdownItem tag={Link} to="/account/settings">
       <FontAwesomeIcon icon="wrench" /> <Translate contentKey="global.menu.account.settings">Settings</Translate>
@@ -13,9 +13,11 @@ const accountMenuItemsAuthenticated = isAdmin => (
     <DropdownItem tag={Link} to="/account/password">
       <FontAwesomeIcon icon="clock" /> <Translate contentKey="global.menu.account.password">Password</Translate>
     </DropdownItem>
-    <DropdownItem tag={Link} to="/hidden-matches">
-      <FontAwesomeIcon icon="eye" /> <Translate contentKey="global.menu.admin.hiddenRecords">View hidden matches</Translate>
-    </DropdownItem>
+    {isSacramento ? null : (
+      <DropdownItem tag={Link} to="/hidden-matches">
+        <FontAwesomeIcon icon="eye" /> <Translate contentKey="global.menu.admin.hiddenRecords">View hidden matches</Translate>
+      </DropdownItem>
+    )}
     <DropdownItem tag={Link} to="/logout">
       <FontAwesomeIcon icon="sign-out-alt" /> <Translate contentKey="global.menu.account.logout">Sign out</Translate>
     </DropdownItem>
@@ -33,9 +35,9 @@ const accountMenuItems = (
   </>
 );
 
-export const AccountMenu = ({ isAuthenticated = false, userLogin, isAdmin = false }) => (
+export const AccountMenu = ({ isAuthenticated = false, userLogin, isAdmin = false, isSacramento = false }) => (
   <NavDropdown icon="user" name={userLogin ? userLogin : translate('global.menu.account.main')} id="account-menu">
-    {isAuthenticated ? accountMenuItemsAuthenticated(isAdmin) : accountMenuItems}
+    {isAuthenticated ? accountMenuItemsAuthenticated(isAdmin, isSacramento) : accountMenuItems}
   </NavDropdown>
 );
 

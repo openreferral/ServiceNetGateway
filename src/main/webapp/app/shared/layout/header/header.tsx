@@ -79,7 +79,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
               {isAuthenticated && isAdmin && <Upload />}
               {isAuthenticated && isAdmin && <AdminMenu showSwagger={isSwaggerEnabled} showDatabase={!isInProduction} />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
-              <AccountMenu isAuthenticated={isAuthenticated} userLogin={userLogin} isAdmin={isAdmin} />
+              <AccountMenu isAuthenticated={isAuthenticated} userLogin={userLogin} isAdmin={isAdmin} isSacramento={isSacramento} />
             </Nav>
           </Collapse>
         </Navbar>
