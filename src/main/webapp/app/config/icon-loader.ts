@@ -46,6 +46,7 @@ import { faLink } from '@fortawesome/free-solid-svg-icons/faLink';
 import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
 import { faUndoAlt } from '@fortawesome/free-solid-svg-icons/faUndoAlt';
 import { faTable } from '@fortawesome/free-solid-svg-icons/faTable';
+import { faMedapps } from '@fortawesome/free-brands-svg-icons/faMedapps';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -98,6 +99,7 @@ export const loadIcons = () => {
     faLink,
     faCogs,
     faUndoAlt,
-    faTable
+    faTable,
+    faMedapps,
   );
 };

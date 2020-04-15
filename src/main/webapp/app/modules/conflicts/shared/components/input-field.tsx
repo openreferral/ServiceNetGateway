@@ -8,10 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IActivityRecord } from 'app/shared/model/activity-record.model';
 import '../shared-record-view.scss';
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { RouteComponentProps } from 'react-router-dom';
 
 const DOMAIN_CLASS = 'org.benetech.servicenet.domain';
 
-export interface IInputFieldProp extends StateProps, DispatchProps {
+export interface IInputFieldProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
   activity: IActivityRecord;
   entityClass: string;
   fieldName: string;
@@ -132,7 +133,7 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     if (this.state.isConflicting) {
       icon = (
         <div id={`${identifier}-icon`}>
-          <FontAwesomeIcon className={`icon-conflicting icon-${type}`} size="lg" icon="question-circle" />
+          <FontAwesomeIcon className={`icon-conflicting icon-${type}`} size="lg" icon="lightbulb" />
         </div>
       );
     } else if (this.state.isExcluded) {
@@ -170,7 +171,11 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
             }`}
           />
           {suggestedValues.map((value, i) => (
-            <div className="suggested" key={`suggested-${identifier}-${i}`}>
+            <div
+              className="suggested"
+              key={`suggested-${identifier}-${i}`}
+              onClick={() => this.props.history.push(`/multi-record-view/${value.resourceId}/${value.partnerResourceId}`)}
+            >
               <hr className="half-rule" />
               {value.offeredValue}
               <br />
