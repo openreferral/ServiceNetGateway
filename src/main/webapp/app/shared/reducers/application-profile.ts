@@ -9,7 +9,8 @@ export const ACTION_TYPES = {
 const initialState = {
   ribbonEnv: '',
   inProduction: true,
-  isSwaggerEnabled: false
+  isSwaggerEnabled: false,
+  isStaging: false
 };
 
 export type ApplicationProfileState = Readonly<typeof initialState>;
@@ -21,6 +22,7 @@ export default (state: ApplicationProfileState = initialState, action): Applicat
       return {
         ...state,
         ribbonEnv: data['display-ribbon-on-profiles'],
+        isStaging: data.activeProfiles.includes('staging'),
         inProduction: data.activeProfiles.includes('prod'),
         isSwaggerEnabled: data.activeProfiles.includes('swagger')
       };
