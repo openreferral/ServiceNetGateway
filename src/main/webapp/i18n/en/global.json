@@ -146,7 +146,8 @@
       "id": "ID"
     },
     "ribbon": {
-      "dev,staging": "Development"
+      "dev": "Development",
+      "staging": "Staging"
     },
     "item-count": "Showing {{first}} - {{second}} of {{total}} items."
   },

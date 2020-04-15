@@ -19,6 +19,7 @@ export interface IHeaderProps {
   onLocaleChange: Function;
   userLogin: string;
   isShelterOwner: boolean;
+  isStaging: boolean;
 }
 
 export interface IHeaderState {
@@ -40,7 +41,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     this.props.isInProduction === false ? (
       <div className="ribbon dev">
         <a href="">
-          <Translate contentKey={`global.ribbon.${this.props.ribbonEnv}`} />
+          <Translate contentKey={`global.ribbon.${this.props.isStaging ? 'staging' : 'dev'}`} />
         </a>
       </div>
     ) : null;
