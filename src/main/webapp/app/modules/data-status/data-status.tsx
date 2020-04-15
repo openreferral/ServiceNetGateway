@@ -12,8 +12,7 @@ import { FIRST_PAGE, MAX_BUTTONS } from 'app/shared/util/pagination.constants';
 export interface IDataStatusProp extends StateProps, DispatchProps {}
 
 export interface IDataStatusState extends IPaginationBaseState {
-  dropdownOpenTop: boolean;
-  dropdownOpenBottom: boolean;
+  dropdownOpen: boolean;
   itemsPerPage: number;
 }
 
@@ -23,8 +22,7 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpenTop: false,
-      dropdownOpenBottom: false,
+      dropdownOpen: false,
       itemsPerPage: ITEMS_PER_PAGE,
       ...getSortState(this.props.dataStatus, ITEMS_PER_PAGE)
     };
@@ -34,12 +32,12 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
     this.props.fetchDataStatus(0, this.state.itemsPerPage);
   }
 
-  toggleTop = () => this.setState({ dropdownOpenTop: !this.state.dropdownOpenTop });
+  toggleTop = () => this.setState({ dropdownOpen: !this.state.dropdownOpen });
 
-  select = prop => () => {
+  selectPage = itemsPerPage => () => {
     this.setState(
       {
-        itemsPerPage: prop,
+        itemsPerPage: itemsPerPage,
         activePage: FIRST_PAGE
       },
       () => this.updatePage()
@@ -56,7 +54,7 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
 
   render() {
     const { dataStatus, totalItems } = this.props;
-    const { dropdownOpenTop, itemsPerPage, activePage } = this.state;
+    const { dropdownOpen, itemsPerPage, activePage } = this.state;
     return (
       <Row className="justify-content-center">
         <Col md="6">
@@ -68,10 +66,10 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
             <CardBody className="centered-flex">
               <PageSizeSelector
                 className="paging"
-                dropdownOpen={dropdownOpenTop}
+                dropdownOpen={dropdownOpen}
                 toggleSelect={this.toggleTop}
                 itemsPerPage={itemsPerPage}
-                selectFunc={this.select}
+                selectFunc={this.selectPage}
               />
               <JhiPagination
                 items={getPaginationItemsNumber(totalItems, itemsPerPage)}
