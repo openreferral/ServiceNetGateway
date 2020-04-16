@@ -22,20 +22,18 @@ export class ClientManagementDetail extends React.Component<IClientManagementDet
         <h2>
           <Translate contentKey="clientManagement.detail.title">Client</Translate> [<b>{client.clientId}</b>]
         </h2>
-        <Row size="md">
-          <dl className="jh-entity-details">
-            <dt>
-              <Translate contentKey="clientManagement.clientId">clientId</Translate>
-            </dt>
-            <dd>
-              <span>{client.clientId}</span>
-            </dd>
-            <dt>
-              <Translate contentKey="clientManagement.tokenValiditySeconds">Token validity seconds</Translate>
-            </dt>
-            <dd>{client.tokenValiditySeconds}</dd>
-          </dl>
-        </Row>
+        <dl className="jh-entity-details">
+          <dt>
+            <Translate contentKey="clientManagement.clientId">clientId</Translate>
+          </dt>
+          <dd>
+            <span>{client.clientId}</span>
+          </dd>
+          <dt>
+            <Translate contentKey="clientManagement.tokenValiditySeconds">Token validity seconds</Translate>
+          </dt>
+          <dd>{client.tokenValiditySeconds}</dd>
+        </dl>
         <Button tag={Link} to="/admin/client-management" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
