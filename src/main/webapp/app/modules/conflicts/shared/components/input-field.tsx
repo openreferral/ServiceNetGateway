@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IActivityRecord } from 'app/shared/model/activity-record.model';
 import '../shared-record-view.scss';
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { getPartnerRecord } from '../shared-record-view.reducer';
 
 const DOMAIN_CLASS = 'org.benetech.servicenet.domain';
 
@@ -111,6 +112,11 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     document.body.removeChild(textArea);
   };
 
+  handleConflictDescriptionClick = value => {
+    this.props.getPartnerRecord(value.partnerResourceId);
+    ReactGA.event({ category: 'UserActions', action: 'Clicking On Side By Side View' });
+  };
+
   render() {
     const { entityClass, fieldName, type, defaultValue, showClipboard } = this.props;
     const identifier = this.getIdentifierName(entityClass, fieldName);
@@ -133,7 +139,7 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     if (this.state.isConflicting) {
       icon = (
         <div id={`${identifier}-icon`}>
-          <FontAwesomeIcon className={`icon-conflicting icon-${type}`} size="lg" icon="lightbulb" />
+          <FontAwesomeIcon className={`icon-conflicting icon-${type}`} size="lg" icon={['fab', 'medapps']} />
         </div>
       );
     } else if (this.state.isExcluded) {
@@ -171,22 +177,23 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
             }`}
           />
           {suggestedValues.map((value, i) => (
-            <div
-              className="suggested"
-              key={`suggested-${identifier}-${i}`}
-              onClick={() => this.props.history.push(`/multi-record-view/${value.resourceId}/${value.partnerResourceId}`)}
+            <Link
+              onClick={() => this.handleConflictDescriptionClick(value)}
+              to={`/multi-record-view/${value.resourceId}/${value.partnerResourceId}`}
             >
-              <hr className="half-rule" />
-              {value.offeredValue}
-              <br />
-              <div>
-                <p className="secondary">
-                  {value.partnerName}
-                  <Translate contentKey="singleRecordView.inputField.imported" />
-                  <TextFormat value={value.offeredValueDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
-                </p>
+              <div className="suggested" key={`suggested-${identifier}-${i}`}>
+                <hr className="half-rule" />
+                {value.offeredValue}
+                <br />
+                <div>
+                  <p className="secondary">
+                    {value.partnerName}
+                    <Translate contentKey="singleRecordView.inputField.imported" />
+                    <TextFormat value={value.offeredValueDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
+                  </p>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </Tooltip>
       );
@@ -268,7 +275,9 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getPartnerRecord
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

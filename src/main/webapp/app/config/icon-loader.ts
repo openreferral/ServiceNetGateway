@@ -100,6 +100,6 @@ export const loadIcons = () => {
     faCogs,
     faUndoAlt,
     faTable,
-    faMedapps,
+    faMedapps
   );
 };
