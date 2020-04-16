@@ -7,6 +7,7 @@ import sinon from 'sinon';
 import { REQUEST, FAILURE, SUCCESS } from 'app/shared/reducers/action-type.util';
 import administration, {
   ACTION_TYPES,
+  gatewayRoutes,
   systemHealth,
   systemMetrics,
   systemThreadDump,
@@ -16,8 +17,13 @@ import administration, {
   getEnv,
   getAudits
 } from 'app/modules/administration/administration.reducer';
+import { setupTranslations } from '../../utils';
 
 describe('Administration reducer tests', () => {
+  beforeEach(() => {
+    setupTranslations();
+  });
+
   function isEmpty(element): boolean {
     if (element instanceof Array) {
       return element.length === 0;
@@ -32,6 +38,7 @@ describe('Administration reducer tests', () => {
       errorMessage: null,
       totalItems: 0
     });
+    expect(isEmpty(state.gateway.routes));
     expect(isEmpty(state.logs.loggers));
     expect(isEmpty(state.threadDump));
     expect(isEmpty(state.audits));
@@ -53,6 +60,7 @@ describe('Administration reducer tests', () => {
     it('should set state to loading', () => {
       testMultipleTypes(
         [
+          REQUEST(ACTION_TYPES.FETCH_GATEWAY_ROUTE),
           REQUEST(ACTION_TYPES.FETCH_LOGS),
           REQUEST(ACTION_TYPES.FETCH_HEALTH),
           REQUEST(ACTION_TYPES.FETCH_METRICS),
@@ -76,6 +84,7 @@ describe('Administration reducer tests', () => {
     it('should set state to failed and put an error message in errorMessage', () => {
       testMultipleTypes(
         [
+          FAILURE(ACTION_TYPES.FETCH_GATEWAY_ROUTE),
           FAILURE(ACTION_TYPES.FETCH_LOGS),
           FAILURE(ACTION_TYPES.FETCH_HEALTH),
           FAILURE(ACTION_TYPES.FETCH_METRICS),
@@ -96,13 +105,30 @@ describe('Administration reducer tests', () => {
   });
 
   describe('Success', () => {
+    it('should update state according to a successful fetch gateway routes request', () => {
+      const payload = { data: [] };
+      const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_GATEWAY_ROUTE), payload });
+
+      expect(toTest).toMatchObject({
+        loading: false,
+        gateway: { routes: payload.data }
+      });
+    });
     it('should update state according to a successful fetch logs request', () => {
-      const payload = { data: [{ name: 'ROOT', level: 'DEBUG' }] };
+      const payload = {
+        data: {
+          main: {
+            effectiveLevel: 'WARN'
+          }
+        }
+      };
       const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_LOGS), payload });
 
       expect(toTest).toMatchObject({
         loading: false,
-        logs: { loggers: payload.data }
+        logs: {
+          loggers: payload.data
+        }
       });
     });
 
@@ -182,7 +208,20 @@ describe('Administration reducer tests', () => {
       const mockStore = configureStore([thunk, promiseMiddleware]);
       store = mockStore({});
       axios.get = sinon.stub().returns(Promise.resolve(resolvedObject));
+      axios.post = sinon.stub().returns(Promise.resolve(resolvedObject));
       axios.put = sinon.stub().returns(Promise.resolve(resolvedObject));
+    });
+    it('dispatches FETCH_GATEWAY_ROUTE_PENDING and FETCH_GATEWAY_ROUTE_FULFILLED actions', async () => {
+      const expectedActions = [
+        {
+          type: REQUEST(ACTION_TYPES.FETCH_GATEWAY_ROUTE)
+        },
+        {
+          type: SUCCESS(ACTION_TYPES.FETCH_GATEWAY_ROUTE),
+          payload: resolvedObject
+        }
+      ];
+      await store.dispatch(gatewayRoutes()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
     it('dispatches FETCH_HEALTH_PENDING and FETCH_HEALTH_FULFILLED actions', async () => {
       const expectedActions = [

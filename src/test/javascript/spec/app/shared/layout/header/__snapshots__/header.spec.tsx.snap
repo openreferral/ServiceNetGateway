@@ -34,6 +34,9 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
     <Component
       isSacramento={false}
     />
+    <Component
+      isSacramento={false}
+    />
     <Collapse
       appear={false}
       enter={true}
@@ -62,6 +65,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
         <Component />
         <Component />
         <Component />
+        <Component />
         <Component
           showDatabase={true}
           showSwagger={true}
@@ -73,6 +77,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
         <Component
           isAdmin={true}
           isAuthenticated={true}
+          isSacramento={false}
           userLogin="user"
         />
       </Nav>
@@ -99,6 +104,9 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       onClick={[Function]}
       tag="button"
       type="button"
+    />
+    <Component
+      isSacramento={false}
     />
     <Component
       isSacramento={false}
@@ -131,6 +139,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
         <Component />
         <Component />
         <Component />
+        <Component />
         <Component
           showDatabase={false}
           showSwagger={false}
@@ -142,6 +151,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
         <Component
           isAdmin={true}
           isAuthenticated={true}
+          isSacramento={false}
           userLogin="user"
         />
       </Nav>

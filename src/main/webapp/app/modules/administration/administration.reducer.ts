@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { GATEWAY_API_URL, SERVICENET_BASE_URL } from 'app/shared/util/service-url.constants';
+import { GATEWAY_API_URL, SERVICENET_BASE_URL, AUTH_BASE_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   FETCH_LOGS: 'administration/FETCH_LOGS',
@@ -160,6 +160,7 @@ export const getLoggers = () => ({
 
 export const changeLogLevel = (name, level) => {
   const body = {
+    level,
     name
   };
   return async dispatch => {
@@ -182,7 +183,7 @@ export const getEnv = () => ({
 });
 
 export const getAudits = (page, size, sort, fromDate, toDate) => {
-  let requestUrl = `services/servicenetauth/management/audits${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  let requestUrl = AUTH_BASE_URL + `/management/audits${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   if (fromDate) {
     requestUrl += `&fromDate=${fromDate}`;
   }

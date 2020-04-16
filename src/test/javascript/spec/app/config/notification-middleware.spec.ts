@@ -4,9 +4,13 @@ import * as toastify from 'react-toastify'; // synthetic default import doesn't 
 import sinon from 'sinon';
 
 import notificationMiddleware from 'app/config/notification-middleware';
+import { setupTranslations } from '../utils';
 
 describe('Notification Middleware', () => {
   let store;
+  beforeEach(() => {
+    setupTranslations();
+  });
 
   const SUCCESS_TYPE = 'SUCCESS';
   const ERROR_TYPE = 'SUCCESS';
@@ -164,7 +168,7 @@ describe('Notification Middleware', () => {
       expect(err.response.data.message).toEqual('error.validation');
     });
     const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
-    expect(toastMsg).toContain('error.Size');
+    expect(toastMsg).toContain('error.validation');
   });
   it('should trigger an error toast message and return promise error for 404 response code', async () => {
     await store.dispatch(NOT_FOUND_ERROR).catch(err => {
