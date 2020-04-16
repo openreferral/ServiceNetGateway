@@ -31,7 +31,7 @@
 
 .icon-textarea {
   margin-top: 8px;
-  margin-left: -55px;
+  margin-left: -45px !important;
   position: relative;
 }
 
@@ -47,6 +47,10 @@
 
 .tooltip {
   margin-left: -10px;
+}
+
+.tooltip.show {
+  opacity: 1 !important;
 }
 
 .half-rule {

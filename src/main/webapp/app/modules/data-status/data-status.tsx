@@ -37,7 +37,7 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
   selectPage = itemsPerPage => () => {
     this.setState(
       {
-        itemsPerPage: itemsPerPage,
+        itemsPerPage,
         activePage: FIRST_PAGE
       },
       () => this.updatePage()
