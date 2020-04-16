@@ -6,8 +6,13 @@ import promiseMiddleware from 'redux-promise-middleware';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import password, { ACTION_TYPES, savePassword, reset } from 'app/modules/account/password/password.reducer';
+import { setupTranslations } from '../../../utils';
 
 describe('Password reducer tests', () => {
+  beforeEach(() => {
+    setupTranslations();
+  });
+
   describe('Common tests', () => {
     it('should return the initial state', () => {
       const toTest = password(undefined, {});

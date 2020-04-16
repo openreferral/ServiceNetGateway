@@ -63,9 +63,9 @@ export default () => next => action => {
                   entityKey = v;
                 }
               });
-              if (data !== '' && data.message) {
+              if (!!data && data.message) {
                 addErrorAlert(data.message, data.message, data.params);
-              } else if (data !== '' && data.fieldErrors) {
+              } else if (!!data && data.fieldErrors) {
                 const fieldErrors = data.fieldErrors;
                 for (i = 0; i < fieldErrors.length; i++) {
                   const fieldError = fieldErrors[i];

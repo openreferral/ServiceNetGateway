@@ -11,7 +11,8 @@ describe('Profile reducer tests', () => {
   const initialState = {
     ribbonEnv: '',
     inProduction: true,
-    isSwaggerEnabled: false
+    isSwaggerEnabled: false,
+    isStaging: false
   };
   describe('Common tests', () => {
     it('should return the initial state', () => {
@@ -30,7 +31,8 @@ describe('Profile reducer tests', () => {
       expect(profile(undefined, { type: SUCCESS(ACTION_TYPES.GET_PROFILE), payload })).toEqual({
         ribbonEnv: 'awesome ribbon stuff',
         inProduction: true,
-        isSwaggerEnabled: false
+        isSwaggerEnabled: false,
+        isStaging: false
       });
     });
 
@@ -45,7 +47,8 @@ describe('Profile reducer tests', () => {
       expect(profile(undefined, { type: SUCCESS(ACTION_TYPES.GET_PROFILE), payload })).toEqual({
         ribbonEnv: 'awesome ribbon stuff',
         inProduction: false,
-        isSwaggerEnabled: true
+        isSwaggerEnabled: true,
+        isStaging: false
       });
     });
   });
