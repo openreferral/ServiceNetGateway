@@ -6,6 +6,7 @@ import { Translate, JhiPagination, getPaginationItemsNumber, getSortState, IPagi
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ITEMS_PER_PAGE, MAX_BUTTONS, FIRST_PAGE } from 'app/shared/util/pagination.constants';
+import { getSystemAccounts } from 'app/modules/administration/user-management/user-management.reducer';
 import { getClients, updateClient } from './client-management.reducer';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
@@ -33,6 +34,7 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
     } else {
       this.getClients();
     }
+    this.props.getSystemAccounts();
   }
 
   componentDidUpdate(prevProps) {
@@ -88,8 +90,17 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
     });
   };
 
+  getSystemAccount = (clientProfiles, systemAccounts, client) => {
+    const clientProfile = _.find(clientProfiles, c => c.clientId === client.clientId);
+    if (clientProfile) {
+      const systemAccount = _.find(systemAccounts, s => s.id === clientProfile.systemAccount);
+      return _.get(systemAccount, 'name', '');
+    }
+    return '';
+  };
+
   render() {
-    const { clients, account, match, totalItems } = this.props;
+    const { clients, account, match, totalItems, clientProfiles, systemAccounts } = this.props;
     return (
       <div>
         <h2 id="client-management-page-heading">
@@ -109,6 +120,10 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
                 <Translate contentKey="clientManagement.tokenValiditySeconds">Token validity seconds</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
+              <th className="hand" onClick={this.sort('accessTokenValiditySeconds')}>
+                <Translate contentKey="clientManagement.systemAccount">System Account</Translate>
+                <FontAwesomeIcon icon="sort" />
+              </th>
               <th />
             </tr>
           </thead>
@@ -121,6 +136,7 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
                   </Button>
                 </td>
                 <td>{client.tokenValiditySeconds}</td>
+                <td>{this.getSystemAccount(clientProfiles, systemAccounts, client)}</td>
                 <td className="text-right">
                   <div className="btn-group flex-btn-group-container">
                     <Button tag={Link} to={`${match.url}/${client.clientId}`} color="info" size="sm">
@@ -169,10 +185,12 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
 const mapStateToProps = (storeState: IRootState) => ({
   clients: storeState.clientManagement.clients,
   totalItems: storeState.clientManagement.totalItems,
-  account: storeState.authentication.account
+  account: storeState.authentication.account,
+  clientProfiles: storeState.clientManagement.clientProfiles,
+  systemAccounts: storeState.userManagement.systemAccounts
 });
 
-const mapDispatchToProps = { getClients, updateClient };
+const mapDispatchToProps = { getClients, updateClient, getSystemAccounts };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
