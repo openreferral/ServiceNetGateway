@@ -19,7 +19,7 @@ services:
   servicenet-app:
     image: servicenet
     environment:
-      - _JAVA_OPTIONS=-Xmx1024m -Xms512m
+      - _JAVA_OPTIONS=-Xmx2048m -Xms1024m
       - SPRING_PROFILES_ACTIVE=dev,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul
