@@ -1,31 +1,27 @@
 import 'react-toastify/dist/ReactToastify.css';
-import './bootstrap.scss';
-import './app.scss';
+import './provider-site.scss';
+import '../../bootstrap.scss';
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'reactstrap';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { ToastContainer, ToastPosition, toast } from 'react-toastify';
 import ReactGA from 'react-ga';
 
 import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getProfile } from 'app/shared/reducers/application-profile';
 import { setLocale } from 'app/shared/reducers/locale';
-import Header from 'app/shared/layout/header/header';
-import Footer from 'app/shared/layout/footer/footer';
-import PrivateRoute, { hasAnyAuthority } from 'app/shared/auth/private-route';
-import ErrorBoundary from 'app/shared/error/error-boundary';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
-import AppRoutes from 'app/routes';
-import GoBackButton from 'app/shared/layout/go-back-button';
-import { containerStyle } from 'app/shared/util/measure-widths';
-import ProviderSite from 'app/modules/provider-site/provider-site';
+import { toast, ToastContainer, ToastPosition } from 'react-toastify';
+import ErrorBoundary from 'app/shared/error/error-boundary';
+import Header from './menus/header';
+import { Avatar } from './avatar';
+import UserRecords from './user-records';
+import { translate, Translate } from 'react-jhipster';
 
-export interface IAppProps extends StateProps, DispatchProps {}
+export interface IProviderSiteProps extends StateProps, DispatchProps {}
 
-export class App extends React.Component<IAppProps> {
+export class ProviderSite extends React.Component<IProviderSiteProps> {
   componentDidMount() {
     this.props.getSession();
     this.props.getProfile();
@@ -38,12 +34,10 @@ export class App extends React.Component<IAppProps> {
   }
 
   render() {
-    const padding = '10px';
-    const oldApp = (
-      <div>
-        <div id="measure-layer" style={containerStyle} />
+    const { userLogin } = this.props;
+    return (
+      <div id="provider-site-view-container">
         <div className="app-container">
-          <GoBackButton />
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}
             className="toastify-container"
@@ -64,30 +58,26 @@ export class App extends React.Component<IAppProps> {
               isShelterOwner={this.props.isShelterOwner}
             />
           </ErrorBoundary>
-          <div className="container-fluid view-container" id="app-view-container">
-            <Card className="jh-card" style={{ padding }}>
-              <ErrorBoundary>
-                <AppRoutes isAdmin={this.props.isAdmin} isSacramento={this.props.isSacramento} />
-              </ErrorBoundary>
-            </Card>
+          <div>
+            <div className="hero-image">
+              <div className="hero-text">
+                <div className="hero-avatar">
+                  <Avatar size="big" name={`${userLogin.charAt(0).toUpperCase()} `} />
+                </div>
+                <h5 className="hello-text">
+                  <b>{`${translate('providerSite.hello')}${userLogin}!`}</b>
+                </h5>
+                <h4 className="hello-text">
+                  <Translate contentKey="providerSite.anyUpdates" />
+                </h4>
+              </div>
+            </div>
           </div>
-          <Footer />
+          <div className="user-cards-container">
+            <UserRecords />
+          </div>
         </div>
       </div>
-    );
-
-    return (
-      <Router>
-        <Switch>
-          <PrivateRoute
-            path="/provider-site"
-            component={ProviderSite}
-            hasAnyAuthorities={[AUTHORITIES.ADMIN]}
-            isAdmin={this.props.isAdmin}
-          />
-          <Route path="/" render={() => oldApp} />
-        </Switch>
-      </Router>
     );
   }
 }
@@ -113,4 +103,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(ProviderSite);
