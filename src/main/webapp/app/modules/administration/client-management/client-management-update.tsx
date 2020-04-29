@@ -52,7 +52,7 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
 
   render() {
     const isInvalid = false;
-    const { client, loading, updating, systemAccounts, clientProfile } = this.props;
+    const { client, loading, updating, systemAccounts } = this.props;
     return (
       <div>
         <Row className="justify-content-center">
@@ -118,7 +118,7 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
                   <Label for="systemAccountId">
                     <Translate contentKey="userManagement.systemAccount">System Account</Translate>
                   </Label>
-                  <AvInput type="select" className="form-control" name="systemAccountId" value={clientProfile.systemAccount} required>
+                  <AvInput type="select" className="form-control" name="systemAccountId" value={client.systemAccountId} required>
                     <option value="" key="0" />
                     {systemAccounts.map(systemAccount => (
                       <option value={systemAccount.id} key={systemAccount.id}>
@@ -178,8 +178,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   user: storeState.userManagement.user,
   systemAccounts: storeState.userManagement.systemAccounts,
   loading: storeState.clientManagement.loading,
-  updating: storeState.clientManagement.updating,
-  clientProfile: storeState.clientManagement.clientProfile
+  updating: storeState.clientManagement.updating
 });
 
 const mapDispatchToProps = { getClient, updateClient, createClient, reset, getSystemAccounts };

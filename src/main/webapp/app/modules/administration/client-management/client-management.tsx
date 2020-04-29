@@ -90,17 +90,13 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
     });
   };
 
-  getSystemAccount = (clientProfiles, systemAccounts, client) => {
-    const clientProfile = _.find(clientProfiles, c => c.clientId === client.clientId);
-    if (clientProfile) {
-      const systemAccount = _.find(systemAccounts, s => s.id === clientProfile.systemAccount);
-      return _.get(systemAccount, 'name', '');
-    }
-    return '';
+  getSystemAccount = (systemAccounts, client) => {
+    const systemAccount = _.find(systemAccounts, s => s.id === client.systemAccountId);
+    return _.get(systemAccount, 'name', '');
   };
 
   render() {
-    const { clients, account, match, totalItems, clientProfiles, systemAccounts } = this.props;
+    const { clients, account, match, totalItems, systemAccounts } = this.props;
     return (
       <div>
         <h2 id="client-management-page-heading">
@@ -136,7 +132,7 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
                   </Button>
                 </td>
                 <td>{client.tokenValiditySeconds}</td>
-                <td>{this.getSystemAccount(clientProfiles, systemAccounts, client)}</td>
+                <td>{this.getSystemAccount(systemAccounts, client)}</td>
                 <td className="text-right">
                   <div className="btn-group flex-btn-group-container">
                     <Button tag={Link} to={`${match.url}/${client.clientId}`} color="info" size="sm">
@@ -186,7 +182,6 @@ const mapStateToProps = (storeState: IRootState) => ({
   clients: storeState.clientManagement.clients,
   totalItems: storeState.clientManagement.totalItems,
   account: storeState.authentication.account,
-  clientProfiles: storeState.clientManagement.clientProfiles,
   systemAccounts: storeState.userManagement.systemAccounts
 });
 
