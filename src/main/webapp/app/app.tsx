@@ -20,6 +20,7 @@ import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
 import GoBackButton from 'app/shared/layout/go-back-button';
+import { containerStyle } from 'app/shared/util/measure-widths';
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -39,6 +40,7 @@ export class App extends React.Component<IAppProps> {
     const padding = '10px';
     return (
       <Router>
+        <div id="measure-layer" style={containerStyle} />
         <div className="app-container">
           <GoBackButton />
           <ToastContainer

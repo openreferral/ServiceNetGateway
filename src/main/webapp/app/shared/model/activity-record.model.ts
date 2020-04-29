@@ -1,4 +1,4 @@
-import { IConflict } from 'app/shared/model//conflict.model';
+import { IConflict } from 'app/shared/model/conflict.model';
 import { IOrganization } from './organization.model';
 import { Moment } from 'moment';
 import { IContact } from './contact.model';
