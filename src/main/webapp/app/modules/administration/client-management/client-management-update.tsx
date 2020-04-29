@@ -2,14 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Label, Row, Col } from 'reactstrap';
-import { AvForm, AvGroup, AvField } from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvField, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getClient, updateClient, createClient, reset } from './client-management.reducer';
+import { getSystemAccounts } from 'app/modules/administration/user-management/user-management.reducer';
+
 import { IRootState } from 'app/shared/reducers';
 
-export interface IClientManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ clientId: string }> {}
+export interface IClientManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ clientId: string }> {
+  clientProfile: any;
+}
 
 export interface IClientManagementUpdateState {
   isNew: boolean;
@@ -26,6 +30,7 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
     } else {
       this.props.getClient(this.props.match.params.clientId);
     }
+    this.props.getSystemAccounts();
   }
 
   componentWillUnmount() {
@@ -47,7 +52,7 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
 
   render() {
     const isInvalid = false;
-    const { client, loading, updating } = this.props;
+    const { client, loading, updating, systemAccounts } = this.props;
     return (
       <div>
         <Row className="justify-content-center">
@@ -110,6 +115,22 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label for="systemAccountId">
+                    <Translate contentKey="userManagement.systemAccount">System Account</Translate>
+                  </Label>
+                  <AvInput type="select" className="form-control" name="systemAccountId" value={client.systemAccountId} required>
+                    <option value="" key="0" />
+                    {systemAccounts.map(systemAccount => (
+                      <option value={systemAccount.id} key={systemAccount.id}>
+                        {systemAccount.name}
+                      </option>
+                    ))}
+                  </AvInput>
+                  <AvFeedback>
+                    <Translate contentKey="clientManagement.systemAccountRequired">System Account required</Translate>
+                  </AvFeedback>
+                </AvGroup>
+                <AvGroup>
                   <Label for="tokenValiditySeconds">
                     <Translate contentKey="clientManagement.tokenValiditySeconds">Token validity in seconds</Translate>
                   </Label>
@@ -154,11 +175,13 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
 
 const mapStateToProps = (storeState: IRootState) => ({
   client: storeState.clientManagement.client,
+  user: storeState.userManagement.user,
+  systemAccounts: storeState.userManagement.systemAccounts,
   loading: storeState.clientManagement.loading,
   updating: storeState.clientManagement.updating
 });
 
-const mapDispatchToProps = { getClient, updateClient, createClient, reset };
+const mapDispatchToProps = { getClient, updateClient, createClient, reset, getSystemAccounts };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

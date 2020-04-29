@@ -3,7 +3,7 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IClient, defaultValue } from 'app/shared/model/client.model';
-import { AUTH_API_URL } from 'app/shared/util/service-url.constants';
+import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   FETCH_ROLES: 'ClientManagement/FETCH_ROLES',
@@ -97,11 +97,12 @@ export default (state: ClientManagementState = initialState, action): ClientMana
   }
 };
 
-const clientApiUrl = AUTH_API_URL + '/clients';
+const realClientUrl = SERVICENET_API_URL + '/clients';
+
 // Actions
 export const getClients: ICrudGetAllAction<IClient> = (page, size, sort) => {
   sort = sort === 'id' ? 'clientId' : sort;
-  const requestUrl = `${clientApiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&itemsPerPage=${size}` : ''}`;
+  const requestUrl = `${realClientUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&itemsPerPage=${size}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_CLIENTS,
     payload: axios.get<IClient>(requestUrl)
@@ -109,7 +110,7 @@ export const getClients: ICrudGetAllAction<IClient> = (page, size, sort) => {
 };
 
 export const getClient: ICrudGetAction<IClient> = id => {
-  const requestUrl = `${clientApiUrl}/${id}`;
+  const requestUrl = `${realClientUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_CLIENT,
     payload: axios.get<IClient>(requestUrl)
@@ -119,7 +120,7 @@ export const getClient: ICrudGetAction<IClient> = id => {
 export const createClient: ICrudPutAction<IClient> = client => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_CLIENT,
-    payload: axios.post(clientApiUrl, client)
+    payload: axios.post(realClientUrl, client)
   });
   dispatch(getClients());
   return result;
@@ -128,14 +129,14 @@ export const createClient: ICrudPutAction<IClient> = client => async dispatch =>
 export const updateClient: ICrudPutAction<IClient> = client => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_CLIENT,
-    payload: axios.put(clientApiUrl, client)
+    payload: axios.put(realClientUrl, client)
   });
   dispatch(getClients());
   return result;
 };
 
 export const deleteClient: ICrudDeleteAction<IClient> = id => async dispatch => {
-  const requestUrl = `${clientApiUrl}/${id}`;
+  const requestUrl = `${realClientUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_CLIENT,
     payload: axios.delete(requestUrl)

@@ -15,6 +15,8 @@
       "title": "Client"
     },
     "tokenValiditySeconds": "Token validity in seconds",
+    "systemAccount": "System Account",
+    "systemAccountRequired": "System Account required",
     "clientId": "Client Id",
     "clientSecret": "Client Secret"
   }
