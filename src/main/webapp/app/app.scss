@@ -76,6 +76,12 @@
   background-color: #fff5bf;
 }
 
+#measure-layer {
+  > * {
+    display: inline-block;
+  }
+}
+
 #root {
   width: fit-content;
   min-width: 100%;

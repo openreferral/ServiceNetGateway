@@ -1,0 +1,75 @@
+div.card.record-card {
+  font-family: 'Muli', serif;
+  font-size: 12px;
+  max-width: 400px;
+
+  div.card-title {
+    display: flex;
+    .bookmark {
+      padding-left: 5px;
+      padding-top: 5px;
+      width: 30px;
+    }
+    .last-update {
+      flex: 1;
+    }
+    .updated-by {
+      font-size: 10px;
+    }
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    color: grey;
+  }
+
+  div.card-body {
+    padding: 0;
+    .organization-name {
+      font-size: large;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    > * {
+      padding-left: 20px;
+    }
+    section {
+      height: 50px;
+      padding-top: 10px;
+    }
+    .locations {
+      border-top: 1px solid #f0f0f0;
+    }
+  }
+
+  .blue {
+    color: #0c32ff;
+  }
+
+  .remainder {
+    font-weight: bold;
+  }
+
+  .pill {
+    display: inline-block;
+    span {
+      margin-right: 8px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      border: 1px lightgrey solid;
+      padding: 2px 8px;
+      border-radius: 16px;
+    }
+  }
+
+  .location {
+    display: inline-block;
+    span {
+      margin-right: 8px;
+      display: inline-block;
+      svg {
+        width: 0.5em !important;
+      }
+    }
+  }
+}
