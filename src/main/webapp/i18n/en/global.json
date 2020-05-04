@@ -204,6 +204,7 @@
     "NotNull": "Field {{ fieldName }} cannot be empty!",
     "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
     "userexists": "Login name already used!",
+    "clientexists": "Client id already used!",
     "emailexists": "Email is already in use!",
     "idexists": "A new {{ entityName }} cannot already have an ID",
     "settingNameExists": "Setting with this name already exists in your organization. Please change the name.",
