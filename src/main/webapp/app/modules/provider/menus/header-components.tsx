@@ -31,7 +31,7 @@ export const Brand = props => (
     <NavbarBrand tag={Link} to={props.isSacramento ? '/shelters' : '/'} className="brand-logo d-flex align-items-center mr-1">
       <BrandIcon />
     </NavbarBrand>
-    <NavLink exact tag={Link} to="/provider-site" className="pl-0">
+    <NavLink exact tag={Link} to="/provider-home" className="pl-0">
       <span className="navbar-label text-dark header-link">
         <Translate contentKey="global.menu.home" />
       </span>

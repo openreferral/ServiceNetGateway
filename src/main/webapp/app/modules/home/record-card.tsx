@@ -18,7 +18,7 @@ import { IRootState } from 'app/shared/reducers';
 const REMAINDER_WIDTH = 25;
 
 export interface IRecordCardProps extends StateProps, DispatchProps {
-  record: IActivityRecord;
+  record: any;
 }
 
 export interface IRecordCardState {
@@ -51,9 +51,6 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   };
 
   componentDidMount() {
-    if (!this.props.loadingUser && !this.props.user.id) {
-      this.props.getUser(this.props.account.login);
-    }
     const record = this.props.record;
     measureWidths(
       [...record.services.map(item => ServiceColumn(item)), ...record.locations.map(item => LocationColumn(item))],

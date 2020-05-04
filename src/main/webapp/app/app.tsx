@@ -21,7 +21,7 @@ import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
 import GoBackButton from 'app/shared/layout/go-back-button';
 import { containerStyle } from 'app/shared/util/measure-widths';
-import ProviderSite from 'app/modules/provider-site/provider-site';
+import ProviderHome from 'app/modules/provider/provider-home';
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -39,9 +39,8 @@ export class App extends React.Component<IAppProps> {
 
   render() {
     const padding = '10px';
-    const oldApp = (
+    const app = (
       <div>
-        <div id="measure-layer" style={containerStyle} />
         <div className="app-container">
           <GoBackButton />
           <ToastContainer
@@ -78,14 +77,15 @@ export class App extends React.Component<IAppProps> {
 
     return (
       <Router>
+        <div id="measure-layer" style={containerStyle} />
         <Switch>
           <PrivateRoute
-            path="/provider-site"
-            component={ProviderSite}
+            path="/provider-home"
+            component={ProviderHome}
             hasAnyAuthorities={[AUTHORITIES.ADMIN]}
             isAdmin={this.props.isAdmin}
           />
-          <Route path="/" render={() => oldApp} />
+          <Route path="/" render={() => app} />
         </Switch>
       </Router>
     );

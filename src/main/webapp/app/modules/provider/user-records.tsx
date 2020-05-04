@@ -1,4 +1,4 @@
-import './provider-site.scss';
+import './provider-home.scss';
 import React, { Component } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -7,8 +7,9 @@ import MagicSliderDots from 'react-magic-slider-dots';
 // tslint:disable-next-line:no-submodule-imports
 import 'react-magic-slider-dots/dist/magic-dots.css';
 import _ from 'lodash';
-import { OrganizationCart } from 'app/modules/provider-site/organization-card/organization-card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import RecordCard from 'app/modules/home/record-card';
+import Record from './mock-data';
 
 export default class UserRecords extends Component {
   slider: any;
@@ -82,8 +83,8 @@ export default class UserRecords extends Component {
 
     return (
       <Slider ref={c => (this.slider = c)} {...settings}>
-        {_.map(Array.from(Array(15).keys()), item => (
-          <OrganizationCart item={item} />
+        {_.map(Array.from(Array(6).keys()), item => (
+          <RecordCard record={Record} />
         ))}
       </Slider>
     );

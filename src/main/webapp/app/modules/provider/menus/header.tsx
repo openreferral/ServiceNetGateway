@@ -22,6 +22,7 @@ export interface IHeaderProps {
   userLogin: string;
   isShelterOwner: boolean;
   isStaging: boolean;
+  toggleMenu: Function;
 }
 
 export interface IHeaderState {
@@ -54,19 +55,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         {this.renderDevRibbon()}
         <LoadingBar className="loading-bar" />
         <Navbar expand="sm" fixed="top" className="navbar-light bg-white header-bar">
-          <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
           <Brand isSacramento={isSacramento} />
-          <div className="ml-auto right-menu invisible-non-mobile">
-            <div className="self-align-center">
-              <Badge className="bell-bagde" color="info">
-                12
-              </Badge>
-              <FontAwesomeIcon className="self-align-center" size="lg" icon="bell" />
-            </div>
-            <div className="header-item-padding">
-              <AccountMenu isAuthenticated={isAuthenticated} userLogin={userLogin} />
-            </div>
-          </div>
 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto header-item" navbar>
@@ -75,7 +64,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
               </div>
               <div className="self-align-center">
                 <Badge className="bell-bagde" color="info">
-                  12
+                  13
                 </Badge>
                 <FontAwesomeIcon className="self-align-center" size="lg" icon="bell" />
               </div>

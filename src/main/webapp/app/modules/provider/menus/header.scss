@@ -1,4 +1,4 @@
-@import 'src/main/webapp/app/modules/provider-site/app-variables';
+@import 'src/main/webapp/app/modules/provider/app-variables';
 
 $header-color: #fff;
 $header-color-secondary: #bbb;
@@ -166,19 +166,10 @@ Navbar styles
   .navbar-version {
     display: none;
   }
-  .brand-logo {
-    display: none !important;
-  }
   .brand-menu {
     display: none !important;
   }
   .right-menu {
     display: flex;
-  }
-}
-
-@media only screen and (min-width: 769px) {
-  .invisible-non-mobile {
-    display: none !important;
   }
 }

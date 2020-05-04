@@ -1,5 +1,5 @@
 import React from 'react';
-import '../provider-site.scss';
+import '../provider-home.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { translate } from 'react-jhipster';
 
