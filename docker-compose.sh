@@ -21,5 +21,6 @@ export EDEN_API_KEY=
 export UWBA_API_KEY=
 export SENDGRID_API_KEY=
 export FEEDBACK_RECEIVER_ADDRESS=
+export SN_VERSION_TAG=
 
 exec docker-compose $@
