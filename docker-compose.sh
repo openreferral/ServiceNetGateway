@@ -10,17 +10,17 @@ export POSTGRES_PASSWORD=password
 export POSTGRES_DB=ServiceNet
 
 # defaults to MongoDB inside Docker
-export MONGODB_HOST=
-export MONGODB_PORT=
-export MONGODB_DB=
+# export MONGODB_HOST=
+# export MONGODB_PORT=
+# export MONGODB_DB=
 
 export JHIPSTER_OAUTH2_CLIENT_SECRET=changeme
 export SPRING_OAUTH2_CLIENT_SECRET=changeme
-export GOOGLE_API_KEY=
-export EDEN_API_KEY=
-export UWBA_API_KEY=
-export SENDGRID_API_KEY=
-export FEEDBACK_RECEIVER_ADDRESS=
-export SN_VERSION_TAG=
+# export GOOGLE_API_KEY=
+# export EDEN_API_KEY=
+# export UWBA_API_KEY=
+# export SENDGRID_API_KEY=
+# export FEEDBACK_RECEIVER_ADDRESS=
+# export SN_VERSION_TAG=
 
 exec docker-compose $@

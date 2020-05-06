@@ -116,4 +116,7 @@ const mapDispatchToProps = { gatewayRoutes };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(GatewayPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GatewayPage);

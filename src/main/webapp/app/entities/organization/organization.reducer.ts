@@ -138,6 +138,15 @@ export const createEntity: ICrudPutAction<IOrganization> = entity => async dispa
   return result;
 };
 
+export const createUserOwnedEntity: ICrudPutAction<IOrganization> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_ORGANIZATION,
+    payload: axios.post(`${apiUrl}/user-owned`, cleanEntity(entity))
+  });
+  dispatch(getEntities());
+  return result;
+};
+
 export const updateEntity: ICrudPutAction<IOrganization> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_ORGANIZATION,
