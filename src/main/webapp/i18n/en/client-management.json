@@ -18,6 +18,9 @@
     "systemAccount": "System Account",
     "systemAccountRequired": "System Account required",
     "clientId": "Client Id",
-    "clientSecret": "Client Secret"
+    "clientSecret": "Client Secret",
+    "error": {
+      "clientexists": "Client id already used!"
+    }
   }
 }
