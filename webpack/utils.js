@@ -6,10 +6,15 @@ const tsconfig = require('../tsconfig.json');
 module.exports = {
   parseVersion,
   root,
+  getRoot,
   mapTypescriptAliasToWebpackAlias
 };
 
 const _root = path.resolve(__dirname, '..');
+
+function getRoot() {
+  return _root;
+}
 
 function root(args) {
   args = Array.prototype.slice.call(arguments, 0);

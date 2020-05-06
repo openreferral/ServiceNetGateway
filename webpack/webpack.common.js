@@ -4,9 +4,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
+const exists = require('exists-sync');
 const path = require('path');
 
 const utils = require('./utils.js');
+
+const babelrcPath = path.join(utils.root('.babelrc'));
+const babelrcExists = exists(babelrcPath);
 
 const getTsLoaderRule = env => {
   const rules = [
@@ -53,6 +57,21 @@ module.exports = options => ({
   },
   module: {
     rules: [
+      {
+        test: /\.jsx?$/,
+        include: [utils.getRoot(), /node_modules[\\/](?=@av).*/],
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [require.resolve('@availity/workflow-babel-preset')],
+              cacheDirectory: (process.env.NODE_ENV || 'development') === 'development',
+              babelrc: babelrcExists,
+              plugins: [babelrcExists ? null : require.resolve('react-hot-loader/babel')]
+            }
+          }
+        ]
+      },
       {
         test: /\.tsx?$/,
         use: getTsLoaderRule(options.env),

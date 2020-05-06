@@ -31,6 +31,7 @@ describe('Entities reducer tests', () => {
     loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<ITaxonomy>,
+    providerTaxonomies: [] as ReadonlyArray<ITaxonomy>,
     entity: defaultValue,
     updating: false,
     totalItems: 0,

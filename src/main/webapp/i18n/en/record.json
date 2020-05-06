@@ -1,0 +1,36 @@
+{
+  "record": {
+    "name": "Organization Name",
+    "description": "Organization Description",
+    "url": "Organization Website",
+    "email": "Main Email Address",
+    "tabs": {
+      "organization": "Organization",
+      "locations": "Locations",
+      "services": "Services"
+    },
+    "addAnother": "Add Another",
+    "remove": "Remove",
+    "location": {
+      "address1": "Address 1",
+      "address2": "Address 2",
+      "city": "City",
+      "ca": "CA",
+      "zipcode": "Zip Code"
+    },
+    "service": {
+      "name": "Service Name",
+      "type": "Service Type",
+      "description": "Service Description",
+      "applicationProcess": "Application Process",
+      "eligibilityCriteria": "Eligibility Criteria",
+      "locations": "Which Locations Offer This Service?"
+    },
+    "navigation": {
+      "goBack": "Go Back",
+      "addLocations": "Add Locations",
+      "addServices": "Add Services",
+      "submit": "I'm Finished"
+    }
+  }
+}

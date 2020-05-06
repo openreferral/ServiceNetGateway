@@ -9,6 +9,7 @@ import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   FETCH_TAXONOMY_LIST: 'taxonomy/FETCH_TAXONOMY_LIST',
+  FETCH_PROVIDER_TAXONOMY_LIST: 'taxonomy/FETCH_PROVIDER_TAXONOMY_LIST',
   FETCH_TAXONOMY: 'taxonomy/FETCH_TAXONOMY',
   CREATE_TAXONOMY: 'taxonomy/CREATE_TAXONOMY',
   UPDATE_TAXONOMY: 'taxonomy/UPDATE_TAXONOMY',
@@ -20,6 +21,7 @@ const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<ITaxonomy>,
+  providerTaxonomies: [] as ReadonlyArray<ITaxonomy>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -33,6 +35,7 @@ export type TaxonomyState = Readonly<typeof initialState>;
 export default (state: TaxonomyState = initialState, action): TaxonomyState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_TAXONOMY_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_PROVIDER_TAXONOMY_LIST):
     case REQUEST(ACTION_TYPES.FETCH_TAXONOMY):
       return {
         ...state,
@@ -50,6 +53,7 @@ export default (state: TaxonomyState = initialState, action): TaxonomyState => {
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_TAXONOMY_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_PROVIDER_TAXONOMY_LIST):
     case FAILURE(ACTION_TYPES.FETCH_TAXONOMY):
     case FAILURE(ACTION_TYPES.CREATE_TAXONOMY):
     case FAILURE(ACTION_TYPES.UPDATE_TAXONOMY):
@@ -67,6 +71,12 @@ export default (state: TaxonomyState = initialState, action): TaxonomyState => {
         loading: false,
         entities: action.payload.data,
         totalItems: action.payload.headers['x-total-count']
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_PROVIDER_TAXONOMY_LIST):
+      return {
+        ...state,
+        loading: false,
+        providerTaxonomies: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_TAXONOMY):
       return {
@@ -99,6 +109,7 @@ export default (state: TaxonomyState = initialState, action): TaxonomyState => {
 };
 
 const apiUrl = SERVICENET_API_URL + '/taxonomies';
+const serviceProviderApiUrl = SERVICENET_API_URL + '/provider-taxonomies';
 
 // Actions
 
@@ -107,6 +118,14 @@ export const getEntities: ICrudGetAllAction<ITaxonomy> = (page, size, sort) => {
   return {
     type: ACTION_TYPES.FETCH_TAXONOMY_LIST,
     payload: axios.get<ITaxonomy>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getProviderTaxonomies = (provider = 'ServiceProvider') => {
+  const requestUrl = `${serviceProviderApiUrl}${'/' + provider}`;
+  return {
+    type: ACTION_TYPES.FETCH_PROVIDER_TAXONOMY_LIST,
+    payload: axios.get<ITaxonomy>(`${requestUrl}?cacheBuster=${new Date().getTime()}`)
   };
 };
 
