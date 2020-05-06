@@ -1,0 +1,85 @@
+version: '3.1'
+services:
+  servicenetgateway-app:
+    image: johnhbenetech/servicenetgateway:${SN_VERSION_TAG:-dev}
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=dev,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_HOST:-servicenet-postgresql}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-ServiceNet}?currentSchema=gateway
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USERNAME:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - JHIPSTER_OAUTH2_CLIENT_SECRET=${JHIPSTER_OAUTH2_CLIENT_SECRET:-changeme}
+      - SPRING_OAUTH2_CLIENT_SECRET=${SPRING_OAUTH2_CLIENT_SECRET:-changeme}
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+    ports:
+      - 8080:8080
+  servicenet-app:
+    image: johnhbenetech/servicenet:${SN_VERSION_TAG:-dev}
+    environment:
+      - _JAVA_OPTIONS=-Xmx2048m -Xms1024m
+      - SPRING_PROFILES_ACTIVE=dev,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_HOST:-servicenet-postgresql}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-ServiceNet}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USERNAME:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - SPRING_DATA_MONGODB_URI=mongodb://${MONGODB_HOST:-servicenet-mongo}:${MONGODB_PORT:-27017}/${MONGODB_DB:-serviceNet}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - EDEN_API_KEY=${EDEN_API_KEY}
+      - UWBA_API_KEY=${UWBA_API_KEY}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - FEEDBACK_RECEIVER_ADDRESS=${FEEDBACK_RECEIVER_ADDRESS:-feedback@benetech.org}
+      - JHIPSTER_OAUTH2_CLIENT_SECRET=${JHIPSTER_OAUTH2_CLIENT_SECRET:-changeme}
+      - SPRING_OAUTH2_CLIENT_SECRET=${SPRING_OAUTH2_CLIENT_SECRET:-changeme}
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+  servicenetauth-app:
+    image: johnhbenetech/servicenetauth:${SN_VERSION_TAG:-dev}
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=dev,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_HOST:-servicenet-postgresql}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-ServiceNet}?currentSchema=auth
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USERNAME:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - JHIPSTER_OAUTH2_CLIENT_SECRET=${JHIPSTER_OAUTH2_CLIENT_SECRET:-changeme}
+      - SPRING_OAUTH2_CLIENT_SECRET=${SPRING_OAUTH2_CLIENT_SECRET:-changeme}
+      - JHIPSTER_SLEEP=10 # gives time for other services to boot before the application
+
+  servicenet-postgresql:
+    image: postgres:10.12
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/1-init.sql
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+    ports:
+      - 5432:5432
+
+  servicenet-mongo:
+    image: mongo:4.0
+    restart: always
+    ports:
+      - 27017:27017
+
+  consul:
+    image: consul:1.6.2
+    ports:
+      - 8300:8300
+      - 8500:8500
+      - 8600:8600
+    command: consul agent -dev -ui -client 0.0.0.0
+
+  consul-config-loader:
+    image: jhipster/consul-config-loader:v0.3.0
+    volumes:
+      - ./central-server-config:/config
+    environment:
+      - INIT_SLEEP_SECONDS=5
+      - CONSUL_URL=consul
+      - CONSUL_PORT=8500
