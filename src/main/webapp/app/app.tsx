@@ -5,7 +5,7 @@ import './app.scss';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
-import { HashRouter as Router } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { ToastContainer, ToastPosition, toast } from 'react-toastify';
 import ReactGA from 'react-ga';
 
@@ -15,12 +15,13 @@ import { getProfile } from 'app/shared/reducers/application-profile';
 import { setLocale } from 'app/shared/reducers/locale';
 import Header from 'app/shared/layout/header/header';
 import Footer from 'app/shared/layout/footer/footer';
-import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import PrivateRoute, { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
 import GoBackButton from 'app/shared/layout/go-back-button';
 import { containerStyle } from 'app/shared/util/measure-widths';
+import ProviderHome from 'app/modules/provider/provider-home';
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -38,9 +39,8 @@ export class App extends React.Component<IAppProps> {
 
   render() {
     const padding = '10px';
-    return (
-      <Router>
-        <div id="measure-layer" style={containerStyle} />
+    const app = (
+      <div>
         <div className="app-container">
           <GoBackButton />
           <ToastContainer
@@ -72,6 +72,21 @@ export class App extends React.Component<IAppProps> {
           </div>
           <Footer />
         </div>
+      </div>
+    );
+
+    return (
+      <Router>
+        <div id="measure-layer" style={containerStyle} />
+        <Switch>
+          <PrivateRoute
+            path="/provider-home"
+            component={ProviderHome}
+            hasAnyAuthorities={[AUTHORITIES.ADMIN]}
+            isAdmin={this.props.isAdmin}
+          />
+          <Route path="/" render={() => app} />
+        </Switch>
       </Router>
     );
   }
