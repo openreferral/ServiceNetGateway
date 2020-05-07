@@ -91,7 +91,7 @@ export class ProviderHome extends React.Component<IProviderSiteProps, IProviderS
     );
 
     return (
-      <div id="provider-home-view-container">
+      <div className="provider" id="provider-home-view-container">
         <SideMenu menuOpen={menuOpen} toggleMenu={this.toggleMenu} />
         <div className="app-container">
           <ToastContainer

@@ -46,11 +46,11 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
   }
 };
 
-const realClientUrl = SERVICENET_API_URL + '/provider-records';
+const apiUrl = SERVICENET_API_URL + '/provider-records';
 
 // Actions
 
 export const getProviderRecords = () => ({
   type: ACTION_TYPES.FETCH_RECORDS,
-  payload: axios.get(realClientUrl)
+  payload: axios.get(apiUrl)
 });
