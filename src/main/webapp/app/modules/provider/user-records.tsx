@@ -58,7 +58,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
       slidesToScroll: 3,
       infinite: true,
       initialSlide: 0,
-      adaptiveHeight: false,
+      adaptiveHeight: true,
       appendDots: this.addCustomDots,
       responsive: [
         {
