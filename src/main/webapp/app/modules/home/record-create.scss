@@ -1,6 +1,44 @@
 .record-create {
   font-family: 'Muli', serif;
   font-size: 14px;
+  color: #8194B2;
+
+  .btn {
+    &:not(.disabled):hover {
+      margin-top: -1px;
+      border-bottom-width: 1px;
+    }
+  }
+
+  .heading {
+    margin-top: 1.5em;
+    text-align: center;
+    margin-bottom: 2em;
+    h2 {
+      color: black;
+    }
+  }
+
+  .nav-item {
+    &.invalid {
+      .nav-link {
+        &:not(.active) {
+          background-color: #fbcbc8;
+        }
+        border: 1px solid red;
+      }
+    }
+    flex: 1;
+    font-weight: bold;
+    text-align: center;
+    .nav-link {
+      border-radius: 8px;
+    }
+    > .active {
+      background-color: #333E51;
+      color: white;
+    }
+  }
 
   .tab-pane {
     margin-top: 1em;
@@ -36,6 +74,18 @@
   }
   &.list-buttons {
     text-align: center;
+    button {
+      padding: 5px 15px;
+      font-size: 15px;
+      font-weight: bold;
+      text-transform: none;
+      border-radius: 8px;
+    }
+    .add-another {
+      background-color: #6EC1AB;
+      color: white;
+      border: 1px solid #8194B2;
+    }
   }
 }
 

@@ -20,7 +20,12 @@ export interface IRecordCreateViewState {
   locationCount: number;
   locations: object[];
   serviceCount: number;
+  invalidTabs: string[];
 }
+
+const ORGANIZATION_TAB = 'organization';
+const LOCATION_TAB = 'location';
+const SERVICE_TAB = 'service';
 
 const locationModel = {
   address1: '',
@@ -32,10 +37,11 @@ const locationModel = {
 
 export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecordCreateViewState> {
   state: IRecordCreateViewState = {
-    activeTab: 'organization',
+    activeTab: ORGANIZATION_TAB,
     locationCount: 1,
     serviceCount: 1,
-    locations: [{ ...locationModel }]
+    locations: [{ ...locationModel }],
+    invalidTabs: []
   };
 
   componentDidMount() {
@@ -53,12 +59,24 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   saveRecord = (event, errors, values) => {
     values.updatedAt = new Date();
 
+    const invalidTabs = [];
     if (errors.length === 0) {
       const entity = {
         ...values
       };
       this.props.createUserOwnedEntity(entity);
+    } else {
+      if (errors.some(err => err.includes(LOCATION_TAB))) {
+        invalidTabs.push(LOCATION_TAB);
+      }
+      if (errors.some(err => err.includes(SERVICE_TAB))) {
+        invalidTabs.push(SERVICE_TAB);
+      }
+      if (errors.some(err => !err.includes(LOCATION_TAB) && !err.includes(SERVICE_TAB))) {
+        invalidTabs.push(ORGANIZATION_TAB);
+      }
     }
+    this.setState({ invalidTabs });
   };
 
   addAnotherService = () => {
@@ -112,246 +130,271 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   };
 
   render() {
-    const { activeTab, locationCount, serviceCount } = this.state;
+    const { activeTab, invalidTabs, locationCount, serviceCount } = this.state;
     const { updating, taxonomyOptions } = this.props;
     return (
       <div className="record-create">
         <Nav tabs>
-          <NavItem>
-            <NavLink className={`${activeTab === 'organization' ? 'active' : ''}`} onClick={() => this.toggle('organization')}>
-              <Translate contentKey="record.tabs.organization" />
+          <NavItem className={`${invalidTabs.includes(ORGANIZATION_TAB) ? 'invalid' : ''}`}>
+            <NavLink className={`${activeTab === ORGANIZATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(ORGANIZATION_TAB)}>
+              1. <Translate contentKey="record.tabs.organization" />
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink className={`${activeTab === 'locations' ? 'active' : ''}`} onClick={() => this.toggle('locations')}>
-              <Translate contentKey="record.tabs.locations" />
+          <NavItem className={`${invalidTabs.includes(LOCATION_TAB) ? 'invalid' : ''}`}>
+            <NavLink className={`${activeTab === LOCATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(LOCATION_TAB)}>
+              2. <Translate contentKey="record.tabs.locations" />
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink className={`${activeTab === 'services' ? 'active' : ''}`} onClick={() => this.toggle('services')}>
-              <Translate contentKey="record.tabs.services" />
+          <NavItem className={`${invalidTabs.includes(SERVICE_TAB) ? 'invalid' : ''}`}>
+            <NavLink className={`${activeTab === SERVICE_TAB ? 'active' : ''}`} onClick={() => this.toggle(SERVICE_TAB)}>
+              3. <Translate contentKey="record.tabs.services" />
             </NavLink>
           </NavItem>
         </Nav>
 
         <AvForm model={{}} onSubmit={this.saveRecord}>
           <TabContent activeTab={activeTab}>
-            <TabPane tabId="organization">
-              <AvGroup className="flex">
-                <div className="required" />
-                <AvField
-                  id="organization-name"
-                  type="text"
-                  name="name"
-                  validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
-                  }}
-                  placeholder={translate('record.name')}
-                />
-              </AvGroup>
-              <AvGroup>
-                <AvInput
-                  id="organization-description"
-                  type="textarea"
-                  name="description"
-                  placeholder={translate('record.description')}
-                />
-              </AvGroup>
-              <AvGroup>
-                <AvField
-                  id="organization-url"
-                  type="text"
-                  name="url"
-                  placeholder={translate('record.url')}
-                />
-              </AvGroup>
-              <AvGroup>
-                <AvField
-                  id="organization-email"
-                  type="text"
-                  name="email"
-                  validate={{
-                    maxLength: { value: 50, errorMessage: translate('entity.validation.maxlength', { max: 50 }) }
-                  }}
-                  placeholder={translate('record.email')}
-                />
-              </AvGroup>
+            <TabPane tabId={ORGANIZATION_TAB}>
+              <Col md={{ size: 10, offset: 1 }}>
+                <div className="heading">
+                  <h2><Translate contentKey="record.heading.organization" /></h2>
+                  <div className="description">
+                    <Translate contentKey="record.heading.organizationDescription" />
+                  </div>
+                </div>
+                <AvGroup className="flex">
+                  <div className="required" />
+                  <AvField
+                    id="organization-name"
+                    type="text"
+                    name="name"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                    placeholder={translate('record.name')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <AvInput
+                    id="organization-description"
+                    type="textarea"
+                    name="description"
+                    placeholder={translate('record.description')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <AvField
+                    id="organization-url"
+                    type="text"
+                    name="url"
+                    placeholder={translate('record.url')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <AvField
+                    id="organization-email"
+                    type="text"
+                    name="email"
+                    validate={{
+                      maxLength: { value: 50, errorMessage: translate('entity.validation.maxlength', { max: 50 }) }
+                    }}
+                    placeholder={translate('record.email')}
+                  />
+                </AvGroup>
+              </Col>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.toggle('locations')} className="pull-right">
+                <Button onClick={() => this.toggle(LOCATION_TAB)} className="pull-right">
                   <Translate contentKey="record.navigation.addLocations" /> >
                 </Button>
               </div>
             </TabPane>
-            <TabPane tabId="locations">
-              {Array.apply(null, { length: locationCount }).map((e, i) => (
-                <Row className="item location">
-                  <Col md={1}>{i}.</Col>
-                  <Col md={11}>
-                    <AvGroup className="flex">
-                      <div className="required" />
-                      <AvInput
-                        type="textarea"
-                        name={'locations[' + i + '].address1'}
-                        onChange={this.onLocationChange(i, 'address1')}
-                        placeholder={translate('record.location.address1')}
-                        validate={{
-                          required: { value: true, errorMessage: translate('entity.validation.required') }
-                        }}
-                      />
-                    </AvGroup>
-                    <AvGroup>
-                      <AvInput
-                        type="textarea"
-                        name={'locations[' + i + '].address2'}
-                        onChange={this.onLocationChange(i, 'address2')}
-                        placeholder={translate('record.location.address2')}
-                      />
-                    </AvGroup>
-                    <Row>
-                      <Col md={7} className="flex">
+            <TabPane tabId={LOCATION_TAB}>
+              <Col md={{ size: 10, offset: 1 }}>
+                <div className="heading">
+                  <h2><Translate contentKey="record.heading.locations" /></h2>
+                  <div className="description">
+                    <Translate contentKey="record.heading.locationsDescription" />
+                  </div>
+                </div>
+                {Array.apply(null, { length: locationCount }).map((e, i) => (
+                  <Row className="item location">
+                    <Col md={1}><h4>{i}.</h4></Col>
+                    <Col md={11}>
+                      <AvGroup className="flex">
                         <div className="required" />
                         <AvInput
-                          type="text"
-                          name={'locations[' + i + '].city'}
-                          onChange={this.onLocationChange(i, 'city')}
-                          placeholder={translate('record.location.city')}
+                          type="textarea"
+                          name={'locations[' + i + '].address1'}
+                          onChange={this.onLocationChange(i, 'address1')}
+                          placeholder={translate('record.location.address1')}
                           validate={{
                             required: { value: true, errorMessage: translate('entity.validation.required') }
                           }}
                         />
-                      </Col>
-                      <Col md={2} className="flex">
-                        <div className="required" />
-                        <AvField
-                          type="select"
-                          name={'locations[' + i + '].ca'}
-                          onChange={this.onLocationChange(i, 'ca')}
-                          placeholder={translate('record.location.ca')}
-                          value={locationModel['ca']}
-                          validate={{
-                            required: { value: true, errorMessage: translate('entity.validation.required') }
-                          }}
-                        >
-                          {US_STATES.map(state => (
-                            <option value={state} key={state}>
-                              {state}
-                            </option>
-                          ))}
-                        </AvField>
-                      </Col>
-                      <Col md={3} className="flex">
-                        <div className="required" />
+                      </AvGroup>
+                      <AvGroup>
                         <AvInput
-                          type="text"
-                          name={'locations[' + i + '].zipcode'}
-                          onChange={this.onLocationChange(i, 'zipcode')}
-                          placeholder={translate('record.location.zipcode')}
-                          validate={{
-                            required: { value: true, errorMessage: translate('entity.validation.required') }
-                          }}
+                          type="textarea"
+                          name={'locations[' + i + '].address2'}
+                          onChange={this.onLocationChange(i, 'address2')}
+                          placeholder={translate('record.location.address2')}
                         />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              ))}
+                      </AvGroup>
+                      <Row>
+                        <Col md={7} className="flex">
+                          <div className="required" />
+                          <AvInput
+                            type="text"
+                            name={'locations[' + i + '].city'}
+                            onChange={this.onLocationChange(i, 'city')}
+                            placeholder={translate('record.location.city')}
+                            validate={{
+                              required: { value: true, errorMessage: translate('entity.validation.required') }
+                            }}
+                          />
+                        </Col>
+                        <Col md={2} className="flex">
+                          <div className="required" />
+                          <AvField
+                            type="select"
+                            name={'locations[' + i + '].ca'}
+                            onChange={this.onLocationChange(i, 'ca')}
+                            placeholder={translate('record.location.ca')}
+                            value={locationModel['ca']}
+                            validate={{
+                              required: { value: true, errorMessage: translate('entity.validation.required') }
+                            }}
+                            style={{ 'min-width': '5em' }}
+                          >
+                            {US_STATES.map(state => (
+                              <option value={state} key={state}>
+                                {state}
+                              </option>
+                            ))}
+                          </AvField>
+                        </Col>
+                        <Col md={3} className="flex">
+                          <div className="required" />
+                          <AvInput
+                            type="text"
+                            name={'locations[' + i + '].zipcode'}
+                            onChange={this.onLocationChange(i, 'zipcode')}
+                            placeholder={translate('record.location.zipcode')}
+                            validate={{
+                              required: { value: true, errorMessage: translate('entity.validation.required') }
+                            }}
+                          />
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                ))}
+              </Col>
               <div className="buttons list-buttons">
                 {this.state.locationCount === 1 ? null :
                   <Button onClick={this.removeLocation}>
                     <Translate contentKey="record.remove"/>
                   </Button>
                 }
-                <Button onClick={this.addAnotherLocation}>
+                <Button onClick={this.addAnotherLocation} className="add-another">
                   + <Translate contentKey="record.addAnother" />
                 </Button>
               </div>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.toggle('organization')}>
+                <Button onClick={() => this.toggle(ORGANIZATION_TAB)} className="go-back">
                   { '<' } <Translate contentKey="record.navigation.goBack" />
                 </Button>
-                <Button onClick={() => this.toggle('services')} className="pull-right">
+                <Button onClick={() => this.toggle(SERVICE_TAB)} className="pull-right">
                   <Translate contentKey="record.navigation.addServices" /> >
                 </Button>
               </div>
             </TabPane>
-            <TabPane tabId="services">
-              {Array.apply(null, { length: serviceCount }).map((e, i) => (
-                <Row className="item service">
-                  <Col md={1}>{i}.</Col>
-                  <Col md={11}>
-                    <AvGroup className="flex">
-                      <div className="required" />
-                      <AvInput
-                        type="text"
-                        name={'services[' + i + '].name'}
-                        placeholder={translate('record.service.name')}
-                        validate={{
-                          required: { value: true, errorMessage: translate('entity.validation.required') }
-                        }}
-                      />
-                    </AvGroup>
-                    <AvGroup className="flex">
-                      <div className="required" />
-                      <AvSelect
-                        name={'services[' + i + '].type'}
-                        validate={{
-                          required: { value: true, errorMessage: translate('entity.validation.required') }
-                        }}
-                        options={taxonomyOptions}
-                        // @ts-ignore
-                        isMulti
-                        placeholder={translate('record.service.type')}
-                      />
-                    </AvGroup>
-                    <AvGroup className="flex">
-                      <div className="required" />
-                      <AvInput
-                        type="textarea"
-                        name={'services[' + i + '].description'}
-                        placeholder={translate('record.service.description')}
-                        validate={{
-                          required: { value: true, errorMessage: translate('entity.validation.required') }
-                        }}
-                      />
-                    </AvGroup>
-                    <AvGroup>
-                      <AvInput
-                        type="textarea"
-                        name={'services[' + i + '].applicationProcess'}
-                        placeholder={translate('record.service.applicationProcess')}
-                      />
-                    </AvGroup>
-                    <AvGroup>
-                      <AvInput
-                        type="textarea"
-                        name={'services[' + i + '].eligibilityCriteria'}
-                        placeholder={translate('record.service.eligibilityCriteria')}
-                      />
-                    </AvGroup>
-                    <AvGroup>
-                      <AvSelect
-                        name={'services[' + i + '].locationIndexes'}
-                        options={this.getLocations()}
-                        // @ts-ignore
-                        isMulti
-                        placeholder={translate('record.service.locations')}
-                      />
-                    </AvGroup>
-                  </Col>
-                </Row>
-              ))}
+            <TabPane tabId={SERVICE_TAB}>
+              <Col md={{ size: 10, offset: 1 }}>
+                <div className="heading">
+                  <h2><Translate contentKey="record.heading.services" /></h2>
+                  <div className="description">
+                    <Translate contentKey="record.heading.servicesDescription" />
+                  </div>
+                </div>
+                {Array.apply(null, { length: serviceCount }).map((e, i) => (
+                  <Row className="item service">
+                    <Col md={1}><h4>{i}.</h4></Col>
+                    <Col md={11}>
+                      <AvGroup className="flex">
+                        <div className="required" />
+                        <AvInput
+                          type="text"
+                          name={'services[' + i + '].name'}
+                          placeholder={translate('record.service.name')}
+                          validate={{
+                            required: { value: true, errorMessage: translate('entity.validation.required') }
+                          }}
+                        />
+                      </AvGroup>
+                      <AvGroup className="flex">
+                        <div className="required" />
+                        <AvSelect
+                          name={'services[' + i + '].type'}
+                          validate={{
+                            required: { value: true, errorMessage: translate('entity.validation.required') }
+                          }}
+                          options={taxonomyOptions}
+                          // @ts-ignore
+                          isMulti
+                          placeholder={translate('record.service.type')}
+                        />
+                      </AvGroup>
+                      <AvGroup className="flex">
+                        <div className="required" />
+                        <AvInput
+                          type="textarea"
+                          name={'services[' + i + '].description'}
+                          placeholder={translate('record.service.description')}
+                          validate={{
+                            required: { value: true, errorMessage: translate('entity.validation.required') }
+                          }}
+                        />
+                      </AvGroup>
+                      <AvGroup>
+                        <AvInput
+                          type="textarea"
+                          name={'services[' + i + '].applicationProcess'}
+                          placeholder={translate('record.service.applicationProcess')}
+                        />
+                      </AvGroup>
+                      <AvGroup>
+                        <AvInput
+                          type="textarea"
+                          name={'services[' + i + '].eligibilityCriteria'}
+                          placeholder={translate('record.service.eligibilityCriteria')}
+                        />
+                      </AvGroup>
+                      <AvGroup>
+                        <AvSelect
+                          name={'services[' + i + '].locationIndexes'}
+                          options={this.getLocations()}
+                          // @ts-ignore
+                          isMulti
+                          placeholder={translate('record.service.locations')}
+                        />
+                      </AvGroup>
+                    </Col>
+                  </Row>
+                ))}
+              </Col>
               <div className="buttons list-buttons">
                 {this.state.serviceCount === 1 ? null :
-                  <Button onClick={this.removeService}>
+                  <Button onClick={this.removeService} type="primary">
                     <Translate contentKey="record.remove"/>
                   </Button>
                 }
-                <Button onClick={this.addAnotherService}>
+                <Button onClick={this.addAnotherService} className="add-another">
                   + <Translate contentKey="record.addAnother" />
                 </Button>
               </div>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.toggle('locations')}>
+                <Button onClick={() => this.toggle(LOCATION_TAB)} className="go-back">
                   { '<' } <Translate contentKey="record.navigation.goBack" />
                 </Button>
                 <Button id="submit" type="submit" disabled={updating} className="pull-right">
