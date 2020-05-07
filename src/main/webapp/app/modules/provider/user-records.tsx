@@ -11,6 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RecordCard from 'app/modules/home/record-card';
 import { connect } from 'react-redux';
 import { getProviderRecords } from './provider-record.reducer';
+import { Card, CardBody, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { Translate } from 'react-jhipster';
 
 export interface IUserRecordsProps extends StateProps, DispatchProps {}
 
@@ -91,6 +94,17 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
 
     return (
       <Slider ref={c => (this.slider = c)} {...settings}>
+        <Card className="record-card new-record">
+          <CardBody>
+            <h1><Translate contentKey="record.newCard.title" /></h1>
+            <Link
+              to={`/record-create`}
+              className="alert-link"
+            >
+              <Button><Translate contentKey="record.newCard.buttonLabel" /></Button>
+            </Link>
+          </CardBody>
+        </Card>
         {_.map(records, record => (
           <RecordCard key={record.organization.id} record={record} />
         ))}

@@ -1,5 +1,9 @@
 {
   "record": {
+    "newCard": {
+      "title": "Have more data to contribute?",
+      "buttonLabel": "Add a new record"
+    },
     "name": "Organization Name",
     "description": "Organization Description",
     "url": "Organization Website",

@@ -1,7 +1,31 @@
 div.card.record-card {
   font-family: 'Muli', serif;
   font-size: 12px;
-  width: 27vw;
+  width: 27vw !important;
+  height: 220px;
+
+  &.new-record {
+    h1 {
+      font-size: 30px;
+    }
+    border: 2px dashed;
+    border-radius: 12px;
+    .card-body {
+      margin: 3em;
+      text-align: center;
+    }
+    button {
+      padding: 5px 15px;
+      font-size: 15px;
+      background-color: #67BBA4;
+      color: white;
+      font-weight: bold;
+      text-transform: none;
+      border-radius: 8px;
+      border-color: white;
+      margin-top: 0.5em;
+    }
+  }
 
   div.card-title {
     display: flex;
