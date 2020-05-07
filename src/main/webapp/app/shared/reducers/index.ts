@@ -214,6 +214,7 @@ import feedback, { FeedbackState } from 'app/modules/feedback/feedback.reducer';
 import requestLogger, { RequestLoggerState } from 'app/entities/request-logger/request-logger.reducer';
 import clientManagement, { ClientManagementState } from 'app/modules/administration/client-management/client-management.reducer';
 import dataStatus, { DataStatusState } from 'app/modules/data-status/data-status.reducer';
+import providerRecord, { ProviderRecordsState } from 'app/modules/provider/provider-record.reducer';
 
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
@@ -286,6 +287,7 @@ export interface IRootState {
   readonly feedback: FeedbackState;
   readonly dataStatus: DataStatusState;
   readonly requestLogger: RequestLoggerState;
+  readonly providerRecord: ProviderRecordsState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -356,7 +358,8 @@ const rootReducer = combineReducers<IRootState>({
   filterShelter,
   feedback,
   requestLogger,
-  dataStatus
+  dataStatus,
+  providerRecord
 });
 
 export default rootReducer;

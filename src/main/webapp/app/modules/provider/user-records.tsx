@@ -1,5 +1,5 @@
 import './provider-home.scss';
-import React, { Component } from 'react';
+import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -9,13 +9,20 @@ import 'react-magic-slider-dots/dist/magic-dots.css';
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RecordCard from 'app/modules/home/record-card';
-import Record from './mock-data';
+import { connect } from 'react-redux';
+import { getProviderRecords } from './provider-record.reducer';
 
-export default class UserRecords extends Component {
+export interface IUserRecordsProps extends StateProps, DispatchProps {}
+
+export class UserRecords extends React.Component<IUserRecordsProps> {
   slider: any;
   constructor(props) {
     super(props);
     this.slider = React.createRef();
+  }
+
+  componentDidMount() {
+    this.props.getProviderRecords();
   }
 
   next = () => {
@@ -41,6 +48,7 @@ export default class UserRecords extends Component {
   );
 
   render() {
+    const { records } = this.props;
     const settings = {
       className: 'center',
       dots: true,
@@ -50,7 +58,7 @@ export default class UserRecords extends Component {
       slidesToScroll: 3,
       infinite: true,
       initialSlide: 0,
-      adaptiveHeight: true,
+      adaptiveHeight: false,
       appendDots: this.addCustomDots,
       responsive: [
         {
@@ -59,7 +67,7 @@ export default class UserRecords extends Component {
             slidesToShow: 3,
             slidesToScroll: 3,
             centerMode: true,
-            centerPadding: '60px',
+
             initialSlide: 1
           }
         },
@@ -83,10 +91,26 @@ export default class UserRecords extends Component {
 
     return (
       <Slider ref={c => (this.slider = c)} {...settings}>
-        {_.map(Array.from(Array(6).keys()), item => (
-          <RecordCard record={Record} />
+        {_.map(records, record => (
+          <RecordCard key={record.organization.id} record={record} />
         ))}
       </Slider>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  records: state.providerRecord.records
+});
+
+const mapDispatchToProps = {
+  getProviderRecords
+};
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserRecords);
