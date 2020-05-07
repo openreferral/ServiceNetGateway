@@ -1,7 +1,7 @@
 div.card.record-card {
   font-family: 'Muli', serif;
   font-size: 12px;
-  max-width: 400px;
+  width: 27vw;
 
   div.card-title {
     display: flex;
@@ -24,6 +24,7 @@ div.card.record-card {
   div.card-body {
     padding: 0;
     .organization-name {
+      height: 3em;
       font-size: large;
       font-weight: bold;
       overflow: hidden;
@@ -71,5 +72,11 @@ div.card.record-card {
         width: 0.5em !important;
       }
     }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  div.card.record-card {
+    width: 100%;
   }
 }
