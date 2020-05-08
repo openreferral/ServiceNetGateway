@@ -17,7 +17,7 @@ div.card.record-card {
     button {
       padding: 5px 15px;
       font-size: 15px;
-      background-color: #67BBA4;
+      background-color: #67bba4;
       color: white;
       font-weight: bold;
       text-transform: none;
@@ -101,6 +101,6 @@ div.card.record-card {
 
 @media only screen and (max-width: 768px) {
   div.card.record-card {
-    width: 100%;
+    width: 100% !important;
   }
 }
