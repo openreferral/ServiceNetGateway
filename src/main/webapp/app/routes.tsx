@@ -27,7 +27,6 @@ import ShelterDetails from 'app/modules/shelter/shelter-details';
 import AllRecordsView from 'app/modules/conflicts/all/all-records-view';
 import Feedback from 'app/modules/feedback/feedback';
 import DataStatus from 'app/modules/data-status/data-status';
-import RecordCreate from 'app/modules/home/record-create';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -50,7 +49,6 @@ const Routes = ({ isAdmin, isSacramento }) => (
       <ErrorBoundaryRoute path="/activate/:key?" component={Activate} />
       <ErrorBoundaryRoute path="/reset/request" component={PasswordResetInit} />
       <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} />
-      <PrivateRoute path="/record-create" hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} component={RecordCreate} isAdmin={isAdmin}/>
       <PrivateRoute path="/shelters" component={Shelters} hasAnyAuthorities={[AUTHORITIES.SACRAMENTO]} isAdmin={isAdmin} />
       <PrivateRoute path="/my-shelters" component={MyShelters} hasAnyAuthorities={[AUTHORITIES.SACRAMENTO]} isAdmin={isAdmin} />
       <PrivateRoute path="/shelter/:id/edit" component={ShelterUpdate} hasAnyAuthorities={[AUTHORITIES.SACRAMENTO]} isAdmin={isAdmin} />

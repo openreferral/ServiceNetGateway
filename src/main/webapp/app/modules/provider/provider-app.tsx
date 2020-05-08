@@ -97,8 +97,12 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             className="toastify-container"
             toastClassName="toastify-toast"
           />
-          <ErrorBoundary>{HeaderComponent}</ErrorBoundary>
-          <Routes isAdmin={isAdmin} match={match} />
+          <ErrorBoundary>
+            {HeaderComponent}
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Routes isAdmin={isAdmin} match={match} />
+          </ErrorBoundary>
         </div>
       </div>
     );

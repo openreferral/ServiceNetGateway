@@ -12,6 +12,10 @@ export const AUTHORITIES = {
   USER: 'ROLE_USER'
 };
 
+export const SYSTEM_ACCOUNTS = {
+  SERVICE_PROVIDER: 'ServiceProvider'
+};
+
 export const messages = {
   DATA_ERROR_ALERT: 'Internal Error'
 };
