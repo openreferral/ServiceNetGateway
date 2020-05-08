@@ -342,7 +342,7 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
                       <Translate contentKey="serviceNetApp.activity.unresolved.title" />
                     </h2>
                   </Col>
-                  <Col className="col-1">
+                  <Col className="col-1 p-0">
                     <div className="text-center">
                       {!_.isEmpty(activityList) ? activityList.length : 0} / {this.props.totalItems}
                     </div>
