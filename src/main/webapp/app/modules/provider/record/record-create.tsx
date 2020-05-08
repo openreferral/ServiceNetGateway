@@ -48,6 +48,12 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     this.props.getProviderTaxonomies();
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.props.history.push('/');
+    }
+  }
+
   toggle(activeTab) {
     if (activeTab !== this.state.activeTab) {
       this.setState({
@@ -203,6 +209,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 </AvGroup>
               </Col>
               <div className="buttons navigation-buttons">
+                <Button onClick={() => this.props.history.goBack()} className="go-back">
+                  { '<' } <Translate contentKey="record.navigation.goBack" />
+                </Button>
                 <Button onClick={() => this.toggle(LOCATION_TAB)} className="pull-right">
                   <Translate contentKey="record.navigation.addLocations" /> >
                 </Button>
@@ -414,6 +423,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
 const mapStateToProps = (storeState: IRootState) => ({
   locations: storeState.location.entities,
   updating: storeState.organization.updating,
+  updateSuccess: storeState.organization.updateSuccess,
   taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(
     taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
 });
