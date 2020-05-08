@@ -8,7 +8,7 @@ import MagicSliderDots from 'react-magic-slider-dots';
 import 'react-magic-slider-dots/dist/magic-dots.css';
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import RecordCard from 'app/modules/home/record-card';
+import RecordCard from 'app/modules/provider/record/record-card';
 import { connect } from 'react-redux';
 import { getProviderRecords } from './provider-record.reducer';
 import { Card, CardBody, Button } from 'reactstrap';

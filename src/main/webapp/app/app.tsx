@@ -17,11 +17,13 @@ import Header from 'app/shared/layout/header/header';
 import Footer from 'app/shared/layout/footer/footer';
 import PrivateRoute, { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
-import { AUTHORITIES } from 'app/config/constants';
+import { AUTHORITIES, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import AppRoutes from 'app/routes';
 import GoBackButton from 'app/shared/layout/go-back-button';
 import { containerStyle } from 'app/shared/util/measure-widths';
-import ProviderHome from 'app/modules/provider/provider-app';
+import ProviderApp from 'app/modules/provider/provider-app';
+import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import Home from 'app/modules/home/home';
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -79,8 +81,10 @@ export class App extends React.Component<IAppProps> {
       <Router>
         <div id="measure-layer" style={containerStyle} />
         <Switch>
-          <PrivateRoute path="/provider" component={ProviderHome} hasAnyAuthorities={[AUTHORITIES.ADMIN]} isAdmin={this.props.isAdmin} />
-          <Route path="/" render={() => app} />
+          {this.props.isServiceProvider
+            ? <Route path="/" component={ProviderApp} isAdmin={this.props.isAdmin}/>
+            : <Route path="/" render={() => app}/>
+          }
         </Switch>
       </Router>
     );
@@ -97,7 +101,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   isInProduction: applicationProfile.inProduction,
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
   userLogin: authentication.account.login,
-  isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0
+  isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
+  isServiceProvider: authentication.account.systemAccountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER
 });
 
 const mapDispatchToProps = { setLocale, getSession, getProfile };

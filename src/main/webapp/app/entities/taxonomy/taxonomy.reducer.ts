@@ -6,6 +6,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { ITaxonomy, defaultValue } from 'app/shared/model/taxonomy.model';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { SYSTEM_ACCOUNTS } from 'app/config/constants';
 
 export const ACTION_TYPES = {
   FETCH_TAXONOMY_LIST: 'taxonomy/FETCH_TAXONOMY_LIST',
@@ -121,7 +122,7 @@ export const getEntities: ICrudGetAllAction<ITaxonomy> = (page, size, sort) => {
   };
 };
 
-export const getProviderTaxonomies = (provider = 'ServiceProvider') => {
+export const getProviderTaxonomies = (provider = SYSTEM_ACCOUNTS.SERVICE_PROVIDER) => {
   const requestUrl = `${serviceProviderApiUrl}${'/' + provider}`;
   return {
     type: ACTION_TYPES.FETCH_PROVIDER_TAXONOMY_LIST,
