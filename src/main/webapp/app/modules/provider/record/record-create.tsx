@@ -12,6 +12,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { US_STATES } from 'app/shared/util/us-states';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import AvSelect from '@availity/reactstrap-validation-select';
+// @ts-ignore
+import BuildingLogo from '../../../../static/images/building.svg';
+// @ts-ignore
+import PeopleLogo from '../../../../static/images/people.svg';
+// @ts-ignore
+import ServiceLogo from '../../../../static/images/service.svg';
 
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -158,11 +164,12 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
           </NavItem>
         </Nav>
 
-        <AvForm model={{}} onSubmit={this.saveRecord}>
+        <AvForm model={{}} onSubmit={this.saveRecord} className="background">
           <TabContent activeTab={activeTab}>
             <TabPane tabId={ORGANIZATION_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
+                  <img src={PeopleLogo} height={100} alt="Organization" />
                   <h2><Translate contentKey="record.heading.organization" /></h2>
                   <div className="description">
                     <Translate contentKey="record.heading.organizationDescription" />
@@ -220,6 +227,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
             <TabPane tabId={LOCATION_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
+                  <img src={BuildingLogo} height={100} alt="Location" />
                   <h2><Translate contentKey="record.heading.locations" /></h2>
                   <div className="description">
                     <Translate contentKey="record.heading.locationsDescription" />
@@ -227,7 +235,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 </div>
                 {Array.apply(null, { length: locationCount }).map((e, i) => (
                   <Row className="item location">
-                    <Col md={1}><h4>{i}.</h4></Col>
+                    <Col md={1}><h4>{i + 1}.</h4></Col>
                     <Col md={11}>
                       <AvGroup className="flex">
                         <div className="required" />
@@ -321,6 +329,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
             <TabPane tabId={SERVICE_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
+                  <img src={ServiceLogo} height={100} alt="Service" />
                   <h2><Translate contentKey="record.heading.services" /></h2>
                   <div className="description">
                     <Translate contentKey="record.heading.servicesDescription" />
@@ -328,7 +337,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 </div>
                 {Array.apply(null, { length: serviceCount }).map((e, i) => (
                   <Row className="item service">
-                    <Col md={1}><h4>{i}.</h4></Col>
+                    <Col md={1}><h4>{i + 1}.</h4></Col>
                     <Col md={11}>
                       <AvGroup className="flex">
                         <div className="required" />

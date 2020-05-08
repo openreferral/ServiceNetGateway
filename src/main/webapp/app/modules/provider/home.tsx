@@ -16,7 +16,7 @@ export class Home extends React.Component<IHomeProps> {
   render() {
     const { userLogin } = this.props;
     return (
-      <div>
+      <div className="background">
         <div>
           <div className="hero-image">
             <div className="hero-text">
