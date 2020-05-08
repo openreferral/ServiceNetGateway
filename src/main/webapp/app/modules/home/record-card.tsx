@@ -34,7 +34,7 @@ const ServiceColumn = service => (
 const LocationColumn = location => (
   <div className="location">
     <span>
-      <FontAwesomeIcon icon={faCircle} className="blue" /> {location.location.name}
+      <FontAwesomeIcon icon={faCircle} className="blue" /> {location.physicalAddress.city}, {location.physicalAddress.stateProvince}
     </span>
   </div>
 );
