@@ -23,7 +23,7 @@ import GoBackButton from 'app/shared/layout/go-back-button';
 import { containerStyle } from 'app/shared/util/measure-widths';
 import ProviderApp from 'app/modules/provider/provider-app';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
-import Home from 'app/modules/home/home';
+import Logout from 'app/modules/login/logout';
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -81,7 +81,8 @@ export class App extends React.Component<IAppProps> {
       <Router>
         <div id="measure-layer" style={containerStyle} />
         <Switch>
-          {this.props.isServiceProvider
+          <ErrorBoundaryRoute path="/logout" component={Logout} />
+          {this.props.isServiceProvider && !this.props.isAdmin
             ? <Route path="/" component={ProviderApp} isAdmin={this.props.isAdmin}/>
             : <Route path="/" render={() => app}/>
           }
