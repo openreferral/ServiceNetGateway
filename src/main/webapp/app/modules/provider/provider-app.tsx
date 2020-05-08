@@ -15,14 +15,12 @@ import { toast, ToastContainer, ToastPosition } from 'react-toastify';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import Header from './menus/header';
 import HeaderMobile from 'app/modules/provider/mobile-components/header-mobile';
-import { Avatar } from './avatar';
-import UserRecords from './user-records';
-import { translate, Translate } from 'react-jhipster';
-import { Home } from 'app/modules/home/home';
+import { Home as MainHome } from 'app/modules/home/home';
 import { RouteComponentProps } from 'react-router-dom';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
 import { SideMenu } from './mobile-components/side-menu';
 import MediaQuery from 'react-responsive';
+import Routes from './routes';
 
 export interface IProviderSiteProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -30,7 +28,7 @@ export interface IProviderSiteState {
   menuOpen: boolean;
 }
 
-export class ProviderHome extends React.Component<IProviderSiteProps, IProviderSiteState> {
+export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSiteState> {
   constructor(props) {
     super(props);
 
@@ -50,7 +48,7 @@ export class ProviderHome extends React.Component<IProviderSiteProps, IProviderS
   };
 
   render() {
-    const { userLogin } = this.props;
+    const { match, isAdmin } = this.props;
     const { menuOpen } = this.state;
 
     const HeaderComponent = (
@@ -100,24 +98,7 @@ export class ProviderHome extends React.Component<IProviderSiteProps, IProviderS
             toastClassName="toastify-toast"
           />
           <ErrorBoundary>{HeaderComponent}</ErrorBoundary>
-          <div>
-            <div className="hero-image">
-              <div className="hero-text">
-                <div className="hero-avatar">
-                  <Avatar size="big" name={`${userLogin.charAt(0).toUpperCase()} `} />
-                </div>
-                <h5 className="hello-text">
-                  <b>{`${translate('providerSite.hello')}${userLogin}!`}</b>
-                </h5>
-                <h4 className="hello-text">
-                  <Translate contentKey="providerSite.anyUpdates" />
-                </h4>
-              </div>
-            </div>
-          </div>
-          <div className="user-cards-container">
-            <UserRecords />
-          </div>
+          <Routes isAdmin={isAdmin} match={match} />
         </div>
       </div>
     );
@@ -126,7 +107,7 @@ export class ProviderHome extends React.Component<IProviderSiteProps, IProviderS
 
 const mapStateToProps = ({ authentication, applicationProfile, locale, activity }: IRootState) => ({
   account: authentication.account,
-  autosuggestOptions: Home.getAutosuggestOptions(activity.suggestions),
+  autosuggestOptions: MainHome.getAutosuggestOptions(activity.suggestions),
   currentLocale: locale.currentLocale,
   isAuthenticated: authentication.isAuthenticated,
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
@@ -152,4 +133,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProviderHome);
+)(ProviderApp);
