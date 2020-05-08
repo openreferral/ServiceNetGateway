@@ -44,7 +44,6 @@ const Routes = ({ isAdmin, isSacramento }) => (
   <div className="view-routes">
     <ErrorBoundaryRoute path="/login" component={Login} />
     <Switch>
-      <ErrorBoundaryRoute path="/logout" component={Logout} />
       <ErrorBoundaryRoute path="/register" component={Register} />
       <ErrorBoundaryRoute path="/activate/:key?" component={Activate} />
       <ErrorBoundaryRoute path="/reset/request" component={PasswordResetInit} />
