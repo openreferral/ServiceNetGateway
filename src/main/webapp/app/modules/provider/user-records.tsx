@@ -96,13 +96,15 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
       <Slider ref={c => (this.slider = c)} {...settings}>
         <Card className="record-card new-record">
           <CardBody>
-            <h1><Translate contentKey="record.newCard.title" /></h1>
-            <Link
-              to={`/record-create`}
-              className="alert-link"
-            >
-              <Button><Translate contentKey="record.newCard.buttonLabel" /></Button>
-            </Link>
+            <div>
+              <h1><Translate contentKey="record.newCard.title" /></h1>
+              <Link
+                to={`/record-create`}
+                className="alert-link"
+              >
+                <Button><Translate contentKey="record.newCard.buttonLabel" /></Button>
+              </Link>
+            </div>
           </CardBody>
         </Card>
         {_.map(records, record => (
