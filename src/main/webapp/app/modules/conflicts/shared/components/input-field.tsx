@@ -164,7 +164,6 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
         <Tooltip
           placement="right"
           innerClassName="tooltip-inner"
-          className="tooltip"
           autohide={false}
           isOpen={this.state.tooltipOpen}
           target={`${identifier}-icon`}
@@ -202,7 +201,6 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
         <Tooltip
           placement="right"
           innerClassName="tooltip-inner"
-          className="tooltip"
           autohide={false}
           isOpen={this.state.tooltipOpen}
           target={`${identifier}-icon`}
