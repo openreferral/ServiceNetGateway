@@ -2,7 +2,6 @@ import './record-card.scss';
 
 import React from 'react';
 import { TextFormat, Translate } from 'react-jhipster';
-import { IActivityRecord } from 'app/shared/model/activity-record.model';
 import { Card, CardBody, CardTitle } from 'reactstrap';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';

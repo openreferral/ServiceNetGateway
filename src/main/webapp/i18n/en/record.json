@@ -1,5 +1,9 @@
 {
   "record": {
+    "newCard": {
+      "title": "Have more data to contribute?",
+      "buttonLabel": "Add a new record"
+    },
     "name": "Organization Name",
     "description": "Organization Description",
     "url": "Organization Website",
@@ -31,6 +35,14 @@
       "addLocations": "Add Locations",
       "addServices": "Add Services",
       "submit": "I'm Finished"
+    },
+    "heading": {
+      "organization": "Tell us a bit about your organization!",
+      "organizationDescription": "We will share this information with other service providers to make them aware of your services!",
+      "locations": "Tell us where your services are located",
+      "locationsDescription": "This will help partners make better referrals. You can add multiple locations covering all your services.",
+      "services": "Tell us more about the services you offer",
+      "servicesDescription": "This will help partners make better referrals. You can add multiple services from all locations."
     }
   }
 }
