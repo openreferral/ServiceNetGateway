@@ -52,6 +52,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
 
   render() {
     const { records } = this.props;
+    const initialSlide = records.length > 1 ? 1 : 0;
     const settings = {
       className: 'center',
       dots: true,
@@ -70,8 +71,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
             slidesToShow: 3,
             slidesToScroll: 3,
             centerMode: true,
-
-            initialSlide: 1
+            initialSlide
           }
         },
         {
@@ -79,7 +79,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 2,
-            initialSlide: 2
+            initialSlide
           }
         },
         {
