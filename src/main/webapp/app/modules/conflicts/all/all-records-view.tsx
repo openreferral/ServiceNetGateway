@@ -198,6 +198,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
     const locationMatches = DetailClass.getLocationMatches(matches);
     const match = partnerRecords.length && _.find(matches, m => m.partnerVersionId === partnerRecords[0].organization.id);
     const baseProviderName = baseRecord ? baseRecord.organization.accountName : null;
+    const isOneRecord = partnerRecords && partnerRecords.length === 1;
     const loading = (
       <Col>
         <h2>Loading...</h2>
@@ -217,7 +218,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
       pageBody = (
         <Row className="row flex-row flex-nowrap">
           {baseRecord ? (
-            <div className="record">
+            <div className={`record ${isOneRecord ? 'one-record m-0 w-50' : ''}`}>
               <h2>{baseRecord.organization.name}</h2>
               <h4 className="from">
                 {systemAccountName === baseProviderName ? (
@@ -263,9 +264,9 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
           ) : (
             loading
           )}
-          <Col className="partner-records row flex-row flex-nowrap">
+          <Col className={`partner-records row flex-row flex-nowrap ${isOneRecord ? 'one-record m-0 w-50' : ''}`}>
             {partnerRecords.map((partnerRecord, idx) => (
-              <div className="record flex-grow-1">
+              <div className={`record flex-grow-1 ${isOneRecord ? 'm-0' : ''}`}>
                 <Row>
                   <Col>
                     <div style={{ float: 'right' }}>
