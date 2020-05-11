@@ -97,7 +97,7 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         links,
         loading: false,
         totalItems: action.payload.headers['x-total-count'],
-        entities: loadMoreDataWhenScrolled(state.entities, action.payload.data, links)
+        entities: loadMoreDataWhenScrolled(state.entities || [], action.payload.data, links)
       };
     case SUCCESS(ACTION_TYPES.FETCH_SHELTER):
       return {
