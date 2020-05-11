@@ -98,8 +98,8 @@ export class MyShelters extends React.Component<IMySheltersProp, IMySheltersStat
 }
 const mapStateToProps = (storeState: IRootState) => ({
   account: storeState.authentication.account,
-  links: storeState.shelter.links,
-  totalItems: storeState.shelter.totalItems,
+  links: storeState.shelter.myShelterLinks,
+  totalItems: storeState.shelter.mySheltersTotalItems,
   shelterList: storeState.shelter.myShelters,
   isAuthenticated: storeState.authentication.isAuthenticated,
   shelterFilter: storeState.filterShelter.shelterFilter

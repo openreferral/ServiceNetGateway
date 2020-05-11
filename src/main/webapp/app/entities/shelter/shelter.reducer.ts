@@ -22,6 +22,7 @@ export const ACTION_TYPES = {
   CREATE_SHELTER: 'shelter/CREATE_SHELTER',
   UPDATE_SHELTER: 'shelter/UPDATE_SHELTER',
   DELETE_SHELTER: 'shelter/DELETE_SHELTER',
+  FETCH_SHELTER_LIST_FIRST_TIME: 'shelter/FETCH_SHELTER_LIST_FIRST_TIME',
   RESET: 'shelter/RESET'
 };
 
@@ -33,8 +34,12 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   links: { next: 0 },
+  myShelterLinks: { next: 0 },
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  mySheltersLoading: false,
+  mySheltersUpdate: false,
+  mySheltersTotalItems: 0
 };
 
 export type ShelterState = Readonly<typeof initialState>;
@@ -44,14 +49,21 @@ export type ShelterState = Readonly<typeof initialState>;
 export default (state: ShelterState = initialState, action): ShelterState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_SHELTER_LIST):
-    case REQUEST(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
     case REQUEST(ACTION_TYPES.SEARCH_SHELTERS):
+    case REQUEST(ACTION_TYPES.FETCH_SHELTER_LIST_FIRST_TIME):
     case REQUEST(ACTION_TYPES.FETCH_SHELTER):
       return {
         ...state,
         errorMessage: null,
         updateSuccess: false,
         loading: true
+      };
+    case REQUEST(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
+      return {
+        ...state,
+        errorMessage: null,
+        updateSuccess: false,
+        mySheltersLoading: true
       };
     case REQUEST(ACTION_TYPES.CREATE_SHELTER):
     case REQUEST(ACTION_TYPES.UPDATE_SHELTER):
@@ -63,8 +75,8 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_SHELTER_LIST):
-    case FAILURE(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
     case FAILURE(ACTION_TYPES.SEARCH_SHELTERS):
+    case FAILURE(ACTION_TYPES.FETCH_SHELTER_LIST_FIRST_TIME):
     case FAILURE(ACTION_TYPES.FETCH_SHELTER):
     case FAILURE(ACTION_TYPES.CREATE_SHELTER):
     case FAILURE(ACTION_TYPES.UPDATE_SHELTER):
@@ -76,6 +88,16 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case FAILURE(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
+      const myShelterLinks = parseHeaderForLinks(action.payload.headers.link);
+      return {
+        ...state,
+        myShelterLinks,
+        mySheltersLoading: false,
+        updating: false,
+        updateSuccess: false,
+        errorMessage: action.payload
+      };
     case SUCCESS(ACTION_TYPES.FETCH_SHELTER_LIST):
       return {
         ...state,
@@ -83,12 +105,21 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         entities: action.payload.data,
         totalItems: action.payload.data.length
       };
-    case SUCCESS(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
+    case SUCCESS(ACTION_TYPES.FETCH_SHELTER_LIST_FIRST_TIME):
+      const linkList = parseHeaderForLinks(action.payload.headers.link);
       return {
         ...state,
         loading: false,
+        links: linkList,
+        entities: action.payload.data,
+        totalItems: action.payload.headers['x-total-count']
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
+      return {
+        ...state,
+        mySheltersLoading: false,
         myShelters: action.payload.data,
-        totalItems: action.payload.data.length
+        mySheltersTotalItems: action.payload.data.length
       };
     case SUCCESS(ACTION_TYPES.SEARCH_SHELTERS):
       const links = parseHeaderForLinks(action.payload.headers.link);
@@ -132,7 +163,7 @@ export default (state: ShelterState = initialState, action): ShelterState => {
 const apiUrl = SERVICENET_API_URL + '/shelters';
 
 // Actions
-export const searchEntities = (search, page, size, sort, filter) => {
+export const searchEntities = (search, page, size, sort, filter, firstTime = false) => {
   const requestUrl = `${apiUrl}/search${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
 
   const filterDataToSend = {
@@ -141,7 +172,11 @@ export const searchEntities = (search, page, size, sort, filter) => {
   };
 
   return {
-    type: filter.userId ? ACTION_TYPES.FETCH_MY_SHELTER_LIST : ACTION_TYPES.SEARCH_SHELTERS,
+    type: filter.userId
+      ? ACTION_TYPES.FETCH_MY_SHELTER_LIST
+      : firstTime
+        ? ACTION_TYPES.FETCH_SHELTER_LIST_FIRST_TIME
+        : ACTION_TYPES.SEARCH_SHELTERS,
     payload: axios.post<IShelter>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`, filterDataToSend)
   };
 };
