@@ -22,7 +22,6 @@ export const ACTION_TYPES = {
   CREATE_SHELTER: 'shelter/CREATE_SHELTER',
   UPDATE_SHELTER: 'shelter/UPDATE_SHELTER',
   DELETE_SHELTER: 'shelter/DELETE_SHELTER',
-  FETCH_SHELTER_LIST_FIRST_TIME: 'shelter/FETCH_SHELTER_LIST_FIRST_TIME',
   RESET: 'shelter/RESET'
 };
 
@@ -50,7 +49,6 @@ export default (state: ShelterState = initialState, action): ShelterState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_SHELTER_LIST):
     case REQUEST(ACTION_TYPES.SEARCH_SHELTERS):
-    case REQUEST(ACTION_TYPES.FETCH_SHELTER_LIST_FIRST_TIME):
     case REQUEST(ACTION_TYPES.FETCH_SHELTER):
       return {
         ...state,
@@ -76,7 +74,6 @@ export default (state: ShelterState = initialState, action): ShelterState => {
       };
     case FAILURE(ACTION_TYPES.FETCH_SHELTER_LIST):
     case FAILURE(ACTION_TYPES.SEARCH_SHELTERS):
-    case FAILURE(ACTION_TYPES.FETCH_SHELTER_LIST_FIRST_TIME):
     case FAILURE(ACTION_TYPES.FETCH_SHELTER):
     case FAILURE(ACTION_TYPES.CREATE_SHELTER):
     case FAILURE(ACTION_TYPES.UPDATE_SHELTER):
@@ -105,15 +102,6 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         entities: action.payload.data,
         totalItems: action.payload.data.length
       };
-    case SUCCESS(ACTION_TYPES.FETCH_SHELTER_LIST_FIRST_TIME):
-      const linkList = parseHeaderForLinks(action.payload.headers.link);
-      return {
-        ...state,
-        loading: false,
-        links: linkList,
-        entities: action.payload.data,
-        totalItems: action.payload.headers['x-total-count']
-      };
     case SUCCESS(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
       return {
         ...state,
@@ -122,13 +110,14 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         mySheltersTotalItems: action.payload.data.length
       };
     case SUCCESS(ACTION_TYPES.SEARCH_SHELTERS):
+      const { isFirstTime } = action.meta;
       const links = parseHeaderForLinks(action.payload.headers.link);
       return {
         ...state,
         links,
         loading: false,
         totalItems: action.payload.headers['x-total-count'],
-        entities: loadMoreDataWhenScrolled(state.entities || [], action.payload.data, links)
+        entities: isFirstTime ? action.payload.data : loadMoreDataWhenScrolled(state.entities || [], action.payload.data, links)
       };
     case SUCCESS(ACTION_TYPES.FETCH_SHELTER):
       return {
@@ -172,12 +161,11 @@ export const searchEntities = (search, page, size, sort, filter, firstTime = fal
   };
 
   return {
-    type: filter.userId
-      ? ACTION_TYPES.FETCH_MY_SHELTER_LIST
-      : firstTime
-        ? ACTION_TYPES.FETCH_SHELTER_LIST_FIRST_TIME
-        : ACTION_TYPES.SEARCH_SHELTERS,
-    payload: axios.post<IShelter>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`, filterDataToSend)
+    type: filter.userId ? ACTION_TYPES.FETCH_MY_SHELTER_LIST : ACTION_TYPES.SEARCH_SHELTERS,
+    payload: axios.post<IShelter>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`, filterDataToSend),
+    meta: {
+      isFirstTime: firstTime
+    }
   };
 };
 
