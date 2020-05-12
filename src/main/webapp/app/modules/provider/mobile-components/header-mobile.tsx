@@ -63,11 +63,9 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
                   <BrandIcon />
                 </div>
               </Col>
-              <Col xs="2" className="height-fluid">
-                <div className="square" style={{ float: 'right' }}>
-                  <div className="content">
-                    <Avatar size="small" mobile name={`${userLogin.charAt(0).toUpperCase()}`} />
-                  </div>
+              <Col xs="2">
+                <div style={{ float: 'right' }}>
+                  <Avatar size="small" mobile name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
                 </div>
               </Col>
             </Row>

@@ -15,5 +15,8 @@ export const SideMenu = props => (
     <Link to={'/contact'} onClick={() => props.toggleMenu()}>
       <Translate contentKey="global.menu.contact" />
     </Link>
+    <Link to={'/logout'} onClick={() => props.toggleMenu()}>
+      <Translate contentKey="global.menu.account.logout">Sign out</Translate>
+    </Link>
   </Menu>
 );

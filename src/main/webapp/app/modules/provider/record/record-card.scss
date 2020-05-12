@@ -1,13 +1,17 @@
 div.card.record-card {
   font-family: 'Muli', serif;
   font-size: 12px;
-  max-width: 27vw;
   height: 220px;
+  margin-right: 5%;
+  margin-left: 5%;
 
   &.new-record {
     display: flex !important;
     align-items: center;
     padding: 0 1em;
+    margin-right: 5%;
+    margin-left: 5%;
+    width: auto !important;
     h1 {
       font-size: 30px;
     }
@@ -16,7 +20,7 @@ div.card.record-card {
     button {
       padding: 5px 15px;
       font-size: 15px;
-      background-color: #67BBA4;
+      background-color: #67bba4;
       color: white;
       font-weight: bold;
       text-transform: none;
@@ -118,6 +122,8 @@ div.card.record-card {
 
 @media only screen and (max-width: 768px) {
   div.card.record-card {
+    margin-right: 2px;
+    margin-left: 2px;
     &.new-record {
       h1 {
         font-size: 18px;
