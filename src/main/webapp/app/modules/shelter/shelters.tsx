@@ -54,7 +54,8 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
   }
 
   componentDidMount() {
-    this.getEntities();
+    const { activePage, itemsPerPage, sort, order } = this.state;
+    this.props.searchEntities(this.state.searchPhrase, activePage - 1, itemsPerPage, `${sort},${order}`, this.props.shelterFilter, true);
   }
 
   handleLoadMore = () => {

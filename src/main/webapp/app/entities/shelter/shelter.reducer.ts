@@ -33,8 +33,12 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   links: { next: 0 },
+  myShelterLinks: { next: 0 },
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  mySheltersLoading: false,
+  mySheltersUpdate: false,
+  mySheltersTotalItems: 0
 };
 
 export type ShelterState = Readonly<typeof initialState>;
@@ -44,7 +48,6 @@ export type ShelterState = Readonly<typeof initialState>;
 export default (state: ShelterState = initialState, action): ShelterState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_SHELTER_LIST):
-    case REQUEST(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
     case REQUEST(ACTION_TYPES.SEARCH_SHELTERS):
     case REQUEST(ACTION_TYPES.FETCH_SHELTER):
       return {
@@ -52,6 +55,13 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         errorMessage: null,
         updateSuccess: false,
         loading: true
+      };
+    case REQUEST(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
+      return {
+        ...state,
+        errorMessage: null,
+        updateSuccess: false,
+        mySheltersLoading: true
       };
     case REQUEST(ACTION_TYPES.CREATE_SHELTER):
     case REQUEST(ACTION_TYPES.UPDATE_SHELTER):
@@ -63,7 +73,6 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_SHELTER_LIST):
-    case FAILURE(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
     case FAILURE(ACTION_TYPES.SEARCH_SHELTERS):
     case FAILURE(ACTION_TYPES.FETCH_SHELTER):
     case FAILURE(ACTION_TYPES.CREATE_SHELTER):
@@ -72,6 +81,16 @@ export default (state: ShelterState = initialState, action): ShelterState => {
       return {
         ...state,
         loading: false,
+        updating: false,
+        updateSuccess: false,
+        errorMessage: action.payload
+      };
+    case FAILURE(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
+      const myShelterLinks = parseHeaderForLinks(action.payload.headers.link);
+      return {
+        ...state,
+        myShelterLinks,
+        mySheltersLoading: false,
         updating: false,
         updateSuccess: false,
         errorMessage: action.payload
@@ -86,18 +105,19 @@ export default (state: ShelterState = initialState, action): ShelterState => {
     case SUCCESS(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
       return {
         ...state,
-        loading: false,
+        mySheltersLoading: false,
         myShelters: action.payload.data,
-        totalItems: action.payload.data.length
+        mySheltersTotalItems: action.payload.data.length
       };
     case SUCCESS(ACTION_TYPES.SEARCH_SHELTERS):
+      const { isFirstTime } = action.meta;
       const links = parseHeaderForLinks(action.payload.headers.link);
       return {
         ...state,
         links,
         loading: false,
         totalItems: action.payload.headers['x-total-count'],
-        entities: loadMoreDataWhenScrolled(state.entities || [], action.payload.data, links)
+        entities: isFirstTime ? action.payload.data : loadMoreDataWhenScrolled(state.entities || [], action.payload.data, links)
       };
     case SUCCESS(ACTION_TYPES.FETCH_SHELTER):
       return {
@@ -132,7 +152,7 @@ export default (state: ShelterState = initialState, action): ShelterState => {
 const apiUrl = SERVICENET_API_URL + '/shelters';
 
 // Actions
-export const searchEntities = (search, page, size, sort, filter) => {
+export const searchEntities = (search, page, size, sort, filter, firstTime = false) => {
   const requestUrl = `${apiUrl}/search${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
 
   const filterDataToSend = {
@@ -142,7 +162,10 @@ export const searchEntities = (search, page, size, sort, filter) => {
 
   return {
     type: filter.userId ? ACTION_TYPES.FETCH_MY_SHELTER_LIST : ACTION_TYPES.SEARCH_SHELTERS,
-    payload: axios.post<IShelter>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`, filterDataToSend)
+    payload: axios.post<IShelter>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`, filterDataToSend),
+    meta: {
+      isFirstTime: firstTime
+    }
   };
 };
 
