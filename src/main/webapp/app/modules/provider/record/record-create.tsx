@@ -25,6 +25,7 @@ export interface IRecordCreateViewState {
   activeTab: string;
   locationCount: number;
   locations: object[];
+  services: object[];
   serviceCount: number;
   invalidTabs: string[];
 }
@@ -41,12 +42,17 @@ const locationModel = {
   zipcode: ''
 };
 
+const serviceModel = {
+  locationIndexes: []
+};
+
 export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecordCreateViewState> {
   state: IRecordCreateViewState = {
     activeTab: ORGANIZATION_TAB,
     locationCount: 1,
     serviceCount: 1,
     locations: [{ ...locationModel }],
+    services: [{ ...serviceModel }],
     invalidTabs: []
   };
 
@@ -92,8 +98,10 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   };
 
   addAnotherService = () => {
+    const services = this.state.services.concat({ ...serviceModel });
     this.setState({
-      serviceCount: this.state.serviceCount + 1
+      serviceCount: this.state.serviceCount + 1,
+      services
     });
   };
 
@@ -106,21 +114,27 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   };
 
   removeService = () => {
-    const { serviceCount } = this.state;
+    const { serviceCount, services } = this.state;
     if (serviceCount > 1) {
+      services.pop();
       this.setState({
-        serviceCount: serviceCount - 1
+        serviceCount: serviceCount - 1,
+        services
       });
     }
   };
 
   removeLocation = () => {
-    const { locationCount, locations } = this.state;
+    const { locationCount, locations, services } = this.state;
     if (locationCount > 1) {
       locations.pop();
+      // filter out this location from services
+      services.forEach(service => service['locationIndexes'] = service['locationIndexes'].filter(
+        value => value !== locations.length));
       this.setState({
         locationCount: locationCount - 1,
-        locations
+        locations,
+        services
       });
     }
   };
@@ -138,6 +152,14 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     locations[i][fieldName] = target.value;
     this.setState({
       locations
+    });
+  };
+
+  onServiceChange = (i, fieldName) => value => {
+    const services = this.state.services;
+    services[i][fieldName] = value;
+    this.setState({
+      services
     });
   };
 
@@ -258,7 +280,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <Row>
-                        <Col md={7} className="flex">
+                        <Col md={7} className="flex mb-3">
                           <div className="required" />
                           <AvInput
                             type="text"
@@ -270,7 +292,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                             }}
                           />
                         </Col>
-                        <Col md={2} className="flex">
+                        <Col md={2} className="flex mb-3">
                           <div className="required" />
                           <AvField
                             type="select"
@@ -290,7 +312,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                             ))}
                           </AvField>
                         </Col>
-                        <Col md={3} className="flex">
+                        <Col md={3} className="flex mb-3">
                           <div className="required" />
                           <AvInput
                             type="text"
@@ -391,6 +413,8 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       <AvGroup>
                         <AvSelect
                           name={'services[' + i + '].locationIndexes'}
+                          value={this.state.services[i]['locationIndexes']}
+                          onChange={this.onServiceChange(i, 'locationIndexes')}
                           options={this.getLocations()}
                           // @ts-ignore
                           isMulti
