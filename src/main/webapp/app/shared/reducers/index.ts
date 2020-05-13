@@ -216,6 +216,10 @@ import clientManagement, { ClientManagementState } from 'app/modules/administrat
 import dataStatus, { DataStatusState } from 'app/modules/data-status/data-status.reducer';
 import providerRecord, { ProviderRecordsState } from 'app/modules/provider/provider-record.reducer';
 
+// prettier-ignore
+import dailyUpdate, {
+  DailyUpdateState
+} from 'app/entities/daily-update/daily-update.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -281,6 +285,7 @@ export interface IRootState {
   readonly serviceFieldsValue: ServiceFieldsValueState;
   readonly serviceTaxonomiesDetailsFieldsValue: ServiceTaxonomiesDetailsFieldsValueState;
   readonly contactDetailsFieldsValue: ContactDetailsFieldsValueState;
+  readonly dailyUpdate: DailyUpdateState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly filterShelter: FilterShelterState;
@@ -352,6 +357,7 @@ const rootReducer = combineReducers<IRootState>({
   serviceFieldsValue,
   serviceTaxonomiesDetailsFieldsValue,
   contactDetailsFieldsValue,
+  dailyUpdate,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
   filterActivity,

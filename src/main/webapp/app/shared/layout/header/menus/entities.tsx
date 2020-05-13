@@ -23,6 +23,11 @@ export const EntitiesMenu = props => (
       &nbsp;
       <Translate contentKey="global.menu.entities.option" />
     </DropdownItem>
+    <DropdownItem tag={Link} to="/entity/daily-update">
+      <FontAwesomeIcon icon="asterisk" />
+      &nbsp;
+      <Translate contentKey="global.menu.entities.dailyUpdate" />
+    </DropdownItem>
     <DropdownItem tag={Link} to="/entity/system-account">
       <FontAwesomeIcon icon="asterisk" />
       &nbsp;

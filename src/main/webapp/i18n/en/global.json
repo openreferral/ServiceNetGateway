@@ -16,6 +16,7 @@
       "entities": {
         "main": "Entities",
         "systemAccount": "System Account",
+        "dailyUpdate": "Daily Update",
         "documentUpload": "Document Upload",
         "organization": "Organization",
         "service": "Service",
