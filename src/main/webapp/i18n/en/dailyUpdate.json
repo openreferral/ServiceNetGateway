@@ -1,0 +1,9 @@
+{
+  "serviceNetApp": {
+    "dailyUpdate": {
+      "created": "A new Daily Update is created with identifier {{ param }}",
+      "updated": "A Daily Update is updated with identifier {{ param }}",
+      "deleted": "A Daily Update is deleted with identifier {{ param }}"
+    }
+  }
+}
