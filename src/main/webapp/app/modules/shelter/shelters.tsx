@@ -64,10 +64,17 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
     }
   };
 
-  getEntities = () => {
+  getEntities = (isResetting = false) => {
     const { activePage, itemsPerPage, sort, order } = this.state;
     if (this.props.isAuthenticated) {
-      return this.props.searchEntities(this.state.searchPhrase, activePage - 1, itemsPerPage, `${sort},${order}`, this.props.shelterFilter);
+      return this.props.searchEntities(
+        this.state.searchPhrase,
+        activePage - 1,
+        itemsPerPage,
+        `${sort},${order}`,
+        this.props.shelterFilter,
+        isResetting
+      );
     }
   };
 
@@ -121,7 +128,7 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
     this.props.reset();
     if (!this.state.loggingOut) {
       this.setState({ activePage: 1 }, () => {
-        this.getEntities();
+        this.getEntities(true);
       });
     } else {
       this.setState({ activePage: 1, loggingOut: false });
