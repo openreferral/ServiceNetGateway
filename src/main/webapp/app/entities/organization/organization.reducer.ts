@@ -6,11 +6,12 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IOrganization, defaultValue } from 'app/shared/model/organization.model';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
-import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
+import { ISimpleOrganization, defaultSimpleOrganization } from 'app/shared/model/simple-organization.model';
 
 export const ACTION_TYPES = {
   FETCH_ORGANIZATION_LIST: 'organization/FETCH_ORGANIZATION_LIST',
   FETCH_ORGANIZATION: 'organization/FETCH_ORGANIZATION',
+  FETCH_SIMPLE_ORGANIZATION: 'organization/FETCH_SIMPLE_ORGANIZATION',
   CREATE_ORGANIZATION: 'organization/CREATE_ORGANIZATION',
   UPDATE_ORGANIZATION: 'organization/UPDATE_ORGANIZATION',
   DELETE_ORGANIZATION: 'organization/DELETE_ORGANIZATION',
@@ -23,19 +24,20 @@ const initialState = {
   errorMessage: null,
   entities: [] as ReadonlyArray<IOrganization>,
   entity: defaultValue,
+  providersEntity: defaultSimpleOrganization,
   updating: false,
   totalItems: 0,
   updateSuccess: false
 };
 
 export type OrganizationState = Readonly<typeof initialState>;
-
 // Reducer
 
 export default (state: OrganizationState = initialState, action): OrganizationState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION):
+    case REQUEST(ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION):
       return {
         ...state,
         errorMessage: null,
@@ -53,6 +55,7 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
       };
     case FAILURE(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
     case FAILURE(ACTION_TYPES.FETCH_ORGANIZATION):
+    case FAILURE(ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.CREATE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.UPDATE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.DELETE_ORGANIZATION):
@@ -75,6 +78,12 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         ...state,
         loading: false,
         entity: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION):
+      return {
+        ...state,
+        loading: false,
+        providersEntity: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.CREATE_ORGANIZATION):
     case SUCCESS(ACTION_TYPES.UPDATE_ORGANIZATION):
@@ -130,10 +139,10 @@ export const getEntity: ICrudGetAction<IOrganization> = id => {
   };
 };
 
-export const getProviderEntity: ICrudGetAction<IOrganization> = id => {
+export const getProviderEntity: ICrudGetAction<ISimpleOrganization> = id => {
   const requestUrl = `${SERVICENET_API_URL}/provider-organization/${id}`;
   return {
-    type: ACTION_TYPES.FETCH_ORGANIZATION,
+    type: ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION,
     payload: axios.get<ISimpleOrganization>(requestUrl)
   };
 };
