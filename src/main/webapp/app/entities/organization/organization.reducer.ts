@@ -6,6 +6,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IOrganization, defaultValue } from 'app/shared/model/organization.model';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 
 export const ACTION_TYPES = {
   FETCH_ORGANIZATION_LIST: 'organization/FETCH_ORGANIZATION_LIST',
@@ -126,6 +127,14 @@ export const getEntity: ICrudGetAction<IOrganization> = id => {
   return {
     type: ACTION_TYPES.FETCH_ORGANIZATION,
     payload: axios.get<IOrganization>(requestUrl)
+  };
+};
+
+export const getProviderEntity: ICrudGetAction<IOrganization> = id => {
+  const requestUrl = `${SERVICENET_API_URL}/provider-organization/${id}`;
+  return {
+    type: ACTION_TYPES.FETCH_ORGANIZATION,
+    payload: axios.get<ISimpleOrganization>(requestUrl)
   };
 };
 
