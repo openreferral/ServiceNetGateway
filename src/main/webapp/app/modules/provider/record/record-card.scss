@@ -2,15 +2,12 @@ div.card.record-card {
   font-family: 'Muli', serif;
   font-size: 12px;
   height: 220px;
-  margin-right: 5%;
-  margin-left: 5%;
+  box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
 
   &.new-record {
     display: flex !important;
     align-items: center;
     padding: 0 1em;
-    margin-right: 5%;
-    margin-left: 5%;
     width: auto !important;
     h1 {
       font-size: 30px;

@@ -2,10 +2,13 @@
 
 .provider {
   min-height: 100vh;
+  position: inherit;
+  overflow: auto;
+  background-color: #f5f9fc;
 
   .background {
     background: url('../../../static/images/background-provider.svg') no-repeat center top;
-    background-size: cover;
+    background-size: contain;
     position: relative;
   }
   > * {
@@ -31,17 +34,8 @@
     align-self: center;
   }
 
-  .hero-image {
-    height: 25vh;
-    position: relative;
-  }
-
   .hero-text {
     text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     color: #2d2d2d;
   }
 
@@ -61,11 +55,9 @@
     margin-right: auto;
     width: 90vw;
     display: block;
-    margin-top: -20px;
   }
 
   .pagination-container {
-    margin-top: 10px;
     display: flex;
     margin-left: auto;
     margin-right: auto;
@@ -81,14 +73,53 @@
     display: flex !important;
   }
 
+  .pill {
+    display: block;
+    span {
+      margin-right: 8px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      border: 1px black solid;
+      padding: 2px 2rem;
+      border-radius: 16px;
+      transition: 0.5s;
+    }
+
+    .button-pill {
+      span:hover {
+        background-color: #333b52;
+        color: white;
+      }
+    }
+  }
+
+  .progress-bar {
+    background-color: #e8895a;
+  }
+
+  .progress {
+    border: 1px solid black;
+    width: 10vw;
+    border-radius: 10px;
+    background-color: white;
+  }
+
   @media only screen and (max-width: 768px) {
     .app-container {
       padding-top: $paddingTopMobile !important;
     }
 
-    .hero-image {
-      height: 150px;
-      position: relative;
+    .pill {
+      display: grid;
+    }
+
+    .mobile-invisible {
+      display: none !important;
+    }
+
+    .progress {
+      width: 30vw;
     }
 
     .hello-text {
@@ -96,13 +127,14 @@
     }
 
     .avatar-big {
-      width: 30px !important;
-      height: 30px !important;
+      width: 35px !important;
+      height: 35px !important;
     }
 
     .hero-text {
       width: 100vw;
-      transform: translate(-50%, -50%) !important;
+      padding-top: 10px;
+      //transform: translate(-50%, -50%) !important;
     }
   }
 
@@ -265,5 +297,12 @@
   /* Styling of overlay */
   .bm-overlay {
     background: rgba(0, 0, 0, 0.3);
+  }
+
+  .all-records-container {
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90vw;
   }
 }

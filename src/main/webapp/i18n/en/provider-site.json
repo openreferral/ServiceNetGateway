@@ -2,6 +2,10 @@
   "providerSite": {
     "searchPlaceholder": "Search by organization name or keyword",
     "hello": "Hello ",
-    "anyUpdates": "Any updates to your records?"
+    "anyUpdates": "Any updates to your records?",
+    "loadMore": "Load more",
+    "allRecords": "All records",
+    "filter": "Filter",
+    "sort": "Sort"
   }
 }

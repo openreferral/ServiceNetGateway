@@ -31,13 +31,14 @@ const ServiceColumn = service => (
   </div>
 );
 
-const LocationColumn = location => (
-  <div className="location">
-    <span>
-      <FontAwesomeIcon icon={faCircle} className="blue" /> {location.physicalAddress.city}, {location.physicalAddress.stateProvince}
-    </span>
-  </div>
-);
+const LocationColumn = location =>
+  location.physicalAddress && (
+    <div className="location">
+      <span>
+        <FontAwesomeIcon icon={faCircle} className="blue" /> {location.physicalAddress.city}, {location.physicalAddress.stateProvince}
+      </span>
+    </div>
+  );
 
 const RemainderCount = count => <span className="remainder blue">+ {count}</span>;
 
@@ -65,7 +66,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   render() {
     const { record, user } = this.props;
     return (
-      <Card className="record-card">
+      <Card className="record-card mx-3 mb-4">
         <CardTitle>
           <div className="bookmark">
             {record.organization.accountId === user.systemAccountId ? (

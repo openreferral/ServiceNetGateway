@@ -85,7 +85,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
 
     return (
       <Slider ref={c => (this.slider = c)} {...settings}>
-        <Card className="record-card new-record">
+        <Card className="record-card new-record mx-3 mb-4">
           <CardBody>
             <div>
               <h1>
