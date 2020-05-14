@@ -16,6 +16,7 @@ import reducer, {
 } from 'app/entities/organization/organization.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IOrganization, defaultValue } from 'app/shared/model/organization.model';
+import { defaultSimpleOrganization } from 'app/shared/model/simple-organization.model';
 
 // tslint:disable no-invalid-template-strings
 describe('Entities reducer tests', () => {
@@ -32,6 +33,7 @@ describe('Entities reducer tests', () => {
     errorMessage: null,
     entities: [] as ReadonlyArray<IOrganization>,
     entity: defaultValue,
+    providersEntity: defaultSimpleOrganization,
     updating: false,
     totalItems: 0,
     updateSuccess: false
