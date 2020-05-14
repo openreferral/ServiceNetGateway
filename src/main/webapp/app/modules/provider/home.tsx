@@ -5,6 +5,7 @@ import React from 'react';
 import { IRootState } from 'app/shared/reducers';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
+import AllRecords from './all-records';
 
 export interface IHomeProps extends StateProps, DispatchProps {}
 
@@ -19,7 +20,7 @@ export class Home extends React.Component<IHomeProps> {
       <div className="background">
         <div>
           <div className="hero-image">
-            <div className="hero-text">
+            <div className="hero-text py-2">
               <div className="hero-avatar">
                 <Avatar size="big" name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
               </div>
@@ -34,6 +35,9 @@ export class Home extends React.Component<IHomeProps> {
         </div>
         <div className="user-cards-container">
           <UserRecords />
+        </div>
+        <div className="all-records-container">
+          <AllRecords />
         </div>
       </div>
     );
