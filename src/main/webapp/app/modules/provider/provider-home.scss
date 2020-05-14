@@ -105,13 +105,37 @@
     background-color: white;
   }
 
+  .control-line-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+
+  .sort-container {
+    display: flex;
+  }
+
   @media only screen and (max-width: 768px) {
     .app-container {
       padding-top: $paddingTopMobile !important;
     }
 
+    .control-line-container {
+      display: block;
+      padding: 1rem;
+    }
+
+    .sort-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+
     .pill {
-      display: grid;
+      display: block;
+      span {
+        padding: 2px 1.5rem;
+      }
     }
 
     .mobile-invisible {

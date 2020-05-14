@@ -42,18 +42,20 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     const { allRecords, allRecordsTotal } = this.props;
     return (
       <div>
-        <div className="d-flex justify-content-between py-3 mx-3">
-          <div className="d-flex">
+        <div className="control-line-container">
+          <div className="d-flex justify-content-between">
             <b className="align-self-center">
               <Translate contentKey="providerSite.allRecords" />
             </b>
-            <div className="align-self-center ml-4">{allRecords && allRecords.length}</div>
-            <div className="mx-2 align-self-center">
-              <Progress value={((allRecords && allRecords.length) / allRecordsTotal) * 100} />
+            <div className="d-flex">
+              <div className="align-self-center ml-4">{allRecords && allRecords.length}</div>
+              <div className="mx-2 align-self-center">
+                <Progress value={((allRecords && allRecords.length) / allRecordsTotal) * 100} />
+              </div>
+              <div className="align-self-center">{allRecordsTotal}</div>
             </div>
-            <div className="align-self-center">{allRecordsTotal}</div>
           </div>
-          <div className="d-flex mobile-invisible">
+          <div className="sort-container">
             <div className="pill">
               <Translate contentKey="providerSite.sort" />
             </div>
@@ -69,7 +71,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           </div>
         </div>
-        <Row noGutters c>
+        <Row noGutters>
           {_.map(allRecords, record => (
             <Col md={4}>
               <div className="mb-4">
