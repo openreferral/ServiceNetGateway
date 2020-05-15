@@ -375,7 +375,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       <AvGroup className="flex">
                         <div className="required" />
                         <AvSelect
-                          name={'services[' + i + '].type'}
+                          name={'services[' + i + '].taxonomyIds'}
                           validate={{
                             required: { value: true, errorMessage: translate('entity.validation.required') }
                           }}

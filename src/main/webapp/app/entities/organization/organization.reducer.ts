@@ -165,6 +165,15 @@ export const createUserOwnedEntity: ICrudPutAction<IOrganization> = entity => as
   return result;
 };
 
+export const updateUserOwnedEntity: ICrudPutAction<IOrganization> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.UPDATE_ORGANIZATION,
+    payload: axios.put(`${apiUrl}/user-owned`, cleanEntity(entity))
+  });
+  dispatch(getEntities());
+  return result;
+};
+
 export const updateEntity: ICrudPutAction<IOrganization> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_ORGANIZATION,
