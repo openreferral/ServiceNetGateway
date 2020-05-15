@@ -256,15 +256,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                             <FontAwesomeIcon icon="circle" className="orange" /> <b>{srv.name}</b>
                           </span>
                         </CardTitle>
-                        <CardBody>
-                          {srv.type && srv.type.length > 0
-                            ? srv.type.map(t => (
-                                <span className="pill" key={t}>
-                                  {t}
-                                </span>
-                              ))
-                            : null}
-                        </CardBody>
+                        <CardBody>{srv.type && <span className="pill">{srv.type}</span>}</CardBody>
                       </Card>
                     ))
                   ) : (
