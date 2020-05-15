@@ -43,6 +43,20 @@
       "locationsDescription": "This will help partners make better referrals. You can add multiple locations covering all your services.",
       "services": "Tell us more about the services you offer",
       "servicesDescription": "This will help partners make better referrals. You can add multiple services from all locations."
+    },
+    "singleRecordView": {
+      "back": "Back To All Records",
+      "dailyUpdates": "Daily Updates",
+      "noNewUpdates": "No new updates",
+      "orgDetails": "Organization Details",
+      "orgName": "Organization Name",
+      "orgDescr": "Organization Details",
+      "orgWebsite": "Website",
+      "orgEmail": "Main Email Address",
+      "locDetails": "Location Details",
+      "srvDetails": "Service Details",
+      "noServices": "No Services Provided",
+      "noLocations": "No Locations Provided"
     }
   }
 }
