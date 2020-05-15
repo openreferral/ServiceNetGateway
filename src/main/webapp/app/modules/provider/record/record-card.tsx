@@ -3,6 +3,7 @@ import './record-card.scss';
 import React from 'react';
 import { TextFormat, Translate } from 'react-jhipster';
 import { Card, CardBody, CardTitle } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -91,7 +92,9 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
         </CardTitle>
         <CardBody>
           <div id={measureId(record.organization.id)} style={containerStyle} />
-          <div className="organization-name">{record.organization.name}</div>
+          <div className="organization-name">
+            <Link to={`single-record-view/${record.organization.id}`}>{record.organization.name}</Link>
+          </div>
           <section className="services">
             {record.services.length > 0 ? (
               <AutoSizer disableHeight>
