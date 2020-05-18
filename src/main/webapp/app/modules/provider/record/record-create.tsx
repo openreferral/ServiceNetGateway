@@ -129,8 +129,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     if (locationCount > 1) {
       locations.pop();
       // filter out this location from services
-      services.forEach(service => service['locationIndexes'] = service['locationIndexes'].filter(
-        value => value !== locations.length));
+      services.forEach(service => (service['locationIndexes'] = service['locationIndexes'].filter(value => value !== locations.length)));
       this.setState({
         locationCount: locationCount - 1,
         locations,
@@ -142,9 +141,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   getLocations = () =>
     Array.apply(null, { length: this.state.locationCount }).map((e, i) => {
       const location = this.state.locations[i];
-      return (
-        { value: i, label: i + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') }
-      );
+      return { value: i, label: i + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') };
     });
 
   onLocationChange = (i, fieldName) => ({ target }) => {
@@ -192,7 +189,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
                   <img src={PeopleLogo} height={100} alt="Organization" />
-                  <h2><Translate contentKey="record.heading.organization" /></h2>
+                  <h2>
+                    <Translate contentKey="record.heading.organization" />
+                  </h2>
                   <div className="description">
                     <Translate contentKey="record.heading.organizationDescription" />
                   </div>
@@ -210,20 +209,10 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
-                  <AvInput
-                    id="organization-description"
-                    type="textarea"
-                    name="description"
-                    placeholder={translate('record.description')}
-                  />
+                  <AvInput id="organization-description" type="textarea" name="description" placeholder={translate('record.description')} />
                 </AvGroup>
                 <AvGroup>
-                  <AvField
-                    id="organization-url"
-                    type="text"
-                    name="url"
-                    placeholder={translate('record.url')}
-                  />
+                  <AvField id="organization-url" type="text" name="url" placeholder={translate('record.url')} />
                 </AvGroup>
                 <AvGroup>
                   <AvField
@@ -239,7 +228,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               </Col>
               <div className="buttons navigation-buttons">
                 <Button onClick={() => this.props.history.goBack()} className="go-back">
-                  { '<' } <Translate contentKey="record.navigation.goBack" />
+                  {'<'} <Translate contentKey="record.navigation.goBack" />
                 </Button>
                 <Button onClick={() => this.toggle(LOCATION_TAB)} className="pull-right">
                   <Translate contentKey="record.navigation.addLocations" /> >
@@ -250,14 +239,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
                   <img src={BuildingLogo} height={100} alt="Location" />
-                  <h2><Translate contentKey="record.heading.locations" /></h2>
+                  <h2>
+                    <Translate contentKey="record.heading.locations" />
+                  </h2>
                   <div className="description">
                     <Translate contentKey="record.heading.locationsDescription" />
                   </div>
                 </div>
                 {Array.apply(null, { length: locationCount }).map((e, i) => (
                   <Row className="item location">
-                    <Col md={1}><h4>{i + 1}.</h4></Col>
+                    <Col md={1}>
+                      <h4>{i + 1}.</h4>
+                    </Col>
                     <Col md={11}>
                       <AvGroup className="flex">
                         <div className="required" />
@@ -330,18 +323,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 ))}
               </Col>
               <div className="buttons list-buttons">
-                {this.state.locationCount === 1 ? null :
+                {this.state.locationCount === 1 ? null : (
                   <Button onClick={this.removeLocation}>
-                    <Translate contentKey="record.remove"/>
+                    <Translate contentKey="record.remove" />
                   </Button>
-                }
+                )}
                 <Button onClick={this.addAnotherLocation} className="add-another">
                   + <Translate contentKey="record.addAnother" />
                 </Button>
               </div>
               <div className="buttons navigation-buttons">
                 <Button onClick={() => this.toggle(ORGANIZATION_TAB)} className="go-back">
-                  { '<' } <Translate contentKey="record.navigation.goBack" />
+                  {'<'} <Translate contentKey="record.navigation.goBack" />
                 </Button>
                 <Button onClick={() => this.toggle(SERVICE_TAB)} className="pull-right">
                   <Translate contentKey="record.navigation.addServices" /> >
@@ -352,14 +345,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
                   <img src={ServiceLogo} height={100} alt="Service" />
-                  <h2><Translate contentKey="record.heading.services" /></h2>
+                  <h2>
+                    <Translate contentKey="record.heading.services" />
+                  </h2>
                   <div className="description">
                     <Translate contentKey="record.heading.servicesDescription" />
                   </div>
                 </div>
                 {Array.apply(null, { length: serviceCount }).map((e, i) => (
                   <Row className="item service">
-                    <Col md={1}><h4>{i + 1}.</h4></Col>
+                    <Col md={1}>
+                      <h4>{i + 1}.</h4>
+                    </Col>
                     <Col md={11}>
                       <AvGroup className="flex">
                         <div className="required" />
@@ -426,18 +423,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 ))}
               </Col>
               <div className="buttons list-buttons">
-                {this.state.serviceCount === 1 ? null :
+                {this.state.serviceCount === 1 ? null : (
                   <Button onClick={this.removeService} type="primary">
-                    <Translate contentKey="record.remove"/>
+                    <Translate contentKey="record.remove" />
                   </Button>
-                }
+                )}
                 <Button onClick={this.addAnotherService} className="add-another">
                   + <Translate contentKey="record.addAnother" />
                 </Button>
               </div>
               <div className="buttons navigation-buttons">
                 <Button onClick={() => this.toggle(LOCATION_TAB)} className="go-back">
-                  { '<' } <Translate contentKey="record.navigation.goBack" />
+                  {'<'} <Translate contentKey="record.navigation.goBack" />
                 </Button>
                 <Button id="submit" type="submit" disabled={updating} className="pull-right">
                   <FontAwesomeIcon icon="save" />
@@ -457,8 +454,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   locations: storeState.location.entities,
   updating: storeState.organization.updating,
   updateSuccess: storeState.organization.updateSuccess,
-  taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(
-    taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
+  taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
 });
 
 const mapDispatchToProps = {

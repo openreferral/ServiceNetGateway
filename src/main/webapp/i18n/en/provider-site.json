@@ -6,6 +6,11 @@
     "loadMore": "Load more",
     "allRecords": "All records",
     "filter": "Filter",
-    "sort": "Sort"
+    "sort": "Sort",
+    "close": "Close",
+    "sortProperties": {
+      "updatedAt": "Recently updated",
+      "name": "Alphabetical"
+    }
   }
 }

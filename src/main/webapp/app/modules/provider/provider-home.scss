@@ -73,37 +73,6 @@
     display: flex !important;
   }
 
-  .pill {
-    display: block;
-    span {
-      margin-right: 8px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      border: 1px black solid;
-      padding: 2px 2rem;
-      border-radius: 16px;
-      transition: 0.5s;
-    }
-
-    .button-pill {
-      span:hover {
-        background-color: #333b52;
-        color: white;
-        cursor: pointer;
-      }
-    }
-
-    .disabled {
-      span {
-        background-color: #7b7b7b80 !important;
-        color: white;
-        border: 1px #7b7b7b80 solid;
-        cursor: default;
-      }
-    }
-  }
-
   .progress-bar {
     background-color: #e8895a;
   }
@@ -339,4 +308,43 @@
     margin-right: auto;
     width: 90vw;
   }
+}
+
+.pill {
+  display: block;
+
+  span {
+    margin-right: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px black solid;
+    padding: 2px 2rem;
+    border-radius: 16px;
+    transition: 0.5s;
+  }
+
+  .button-pill {
+    span:hover {
+      background-color: #333b52;
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+  .disabled {
+    span {
+      background-color: #7b7b7b80 !important;
+      color: white;
+      border: 1px #7b7b7b80 solid;
+    }
+
+    span:hover {
+      cursor: auto !important;
+    }
+  }
+}
+
+.sort-menu-item {
+  cursor: pointer;
 }
