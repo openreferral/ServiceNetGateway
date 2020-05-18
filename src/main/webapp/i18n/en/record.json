@@ -63,6 +63,8 @@
       "noServiceName": "No Service Name Provided",
       "noLocations": "No Locations Provided",
       "untyped": "Untyped"
-    }
+    },
+    "deactivateQuestion": "Are you sure you want to deactivate this record?",
+    "discardQuestion": "Are you sure you want to discard your changes?"
   }
 }

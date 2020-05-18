@@ -5,7 +5,7 @@ import { Badge, Button, Card, CardBody, CardTitle, Col, Collapse, Label, Row } f
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { getProviderEntity, updateUserOwnedEntity } from 'app/entities/organization/organization.reducer';
+import { getProviderEntity, updateUserOwnedEntity, deactivateEntity } from 'app/entities/organization/organization.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,6 +21,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 import ServiceLogo from '../../../../static/images/service.svg';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT } from 'app/config/constants';
+import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 
 export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{id: string}> {}
 
@@ -34,6 +35,7 @@ export interface IRecordEditViewState {
   invalidLocations: number[];
   invalidServices: number[];
   latestDailyUpdate: any;
+  openDialogs: string[];
 }
 
 const ORGANIZATION = 'organization';
@@ -62,7 +64,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     invalidServices: [],
     openLocation: -1,
     openService: -1,
-    latestDailyUpdate: {}
+    latestDailyUpdate: {},
+    openDialogs: []
   };
 
   componentDidMount() {
@@ -129,6 +132,26 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     }
     this.setState({ invalidSections, invalidServices, invalidLocations, openSections });
   };
+
+  openDialog = name => () => {
+    this.setState({
+      openDialogs: [...this.state.openDialogs, name]
+    });
+  }
+
+  closeDialog = name => () => {
+    this.setState({
+      openDialogs: this.state.openDialogs.filter(dialog => dialog !== name)
+    });
+  };
+
+  handleConfirmDeactivate = () => {
+    this.props.deactivateEntity(this.props.match.params.id);
+  }
+
+  handleConfirmDiscard = () => {
+    this.props.history.goBack();
+  }
 
   addAnotherService = () => {
     const services = this.state.services.concat({ ...serviceModel });
@@ -535,10 +558,27 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             </Collapse>
           </Card>
           <div className="buttons navigation-buttons">
-            <Button onClick={() => this.props.history.goBack()} className="go-back">
-              Discard Changes
+            {this.state.openDialogs.indexOf('deactivate') !== -1 && (
+              <ConfirmationDialog
+                question={translate('record.deactivateQuestion')}
+                handleClose={this.closeDialog('deactivate')}
+                handleConfirm={this.handleConfirmDeactivate}
+              />
+            )}
+            <Button onClick={this.openDialog('deactivate')} className="deactivate">
+              Deactivate Record
             </Button>
             <div className="pull-right">
+              {this.state.openDialogs.indexOf('discard') !== -1 && (
+                <ConfirmationDialog
+                  question={translate('record.discardQuestion')}
+                  handleClose={this.closeDialog('discard')}
+                  handleConfirm={this.handleConfirmDiscard}
+                />
+              )}
+              <Button onClick={this.openDialog('discard')} className="go-back">
+                Discard Changes
+              </Button>
               <Button id="submit" type="submit" disabled={updating} color="primary">
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
@@ -564,7 +604,8 @@ const mapStateToProps = (storeState: IRootState) => ({
 const mapDispatchToProps = {
   getProviderTaxonomies,
   updateUserOwnedEntity,
-  getProviderEntity
+  getProviderEntity,
+  deactivateEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
