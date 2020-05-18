@@ -93,6 +93,15 @@
         cursor: pointer;
       }
     }
+
+    .disabled {
+      span {
+        background-color: #7b7b7b80 !important;
+        color: white;
+        border: 1px #7b7b7b80 solid;
+        cursor: default;
+      }
+    }
   }
 
   .progress-bar {

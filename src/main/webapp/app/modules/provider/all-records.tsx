@@ -34,12 +34,15 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.props.getAllProviderRecords(activePage, itemsPerPage, false);
   };
 
-  handleLoadMore = () => {
-    this.setState({ activePage: this.state.activePage + 1 }, () => this.getAllRecords());
+  handleLoadMore = hasReachedMaxItems => {
+    if (!hasReachedMaxItems) {
+      this.setState({ activePage: this.state.activePage + 1 }, () => this.getAllRecords());
+    }
   };
 
   render() {
     const { allRecords, allRecordsTotal } = this.props;
+    const hasReachedMaxItems = allRecords.length === parseInt(allRecordsTotal, 10);
     return (
       <div>
         <div className="control-line-container">
@@ -82,7 +85,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           <Col />
         </Row>
         <div className="pill mb-4 text-center">
-          <div className="d-inline button-pill" onClick={() => this.handleLoadMore()}>
+          <div
+            className={`d-inline button-pill ${hasReachedMaxItems ? 'disabled' : ''}`}
+            onClick={() => this.handleLoadMore(hasReachedMaxItems)}
+          >
             <Translate contentKey="providerSite.loadMore" />
           </div>
         </div>
