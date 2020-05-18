@@ -19,6 +19,7 @@ const REMAINDER_WIDTH = 25;
 
 export interface IRecordCardProps extends StateProps, DispatchProps {
   record: any;
+  link: string;
 }
 
 export interface IRecordCardState {
@@ -65,7 +66,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   }
 
   render() {
-    const { record, user } = this.props;
+    const { record, user, link } = this.props;
     return (
       <Card className="record-card mx-3 mb-4">
         <CardTitle>
@@ -93,7 +94,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
         <CardBody>
           <div id={measureId(record.organization.id)} style={containerStyle} />
           <div className="organization-name">
-            <Link to={`single-record-view/${record.organization.id}`}>{record.organization.name}</Link>
+            <Link to={link}>{record.organization.name}</Link>
           </div>
           <section className="services">
             {record.services.length > 0 ? (
