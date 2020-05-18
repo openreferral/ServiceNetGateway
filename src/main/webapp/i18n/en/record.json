@@ -16,6 +16,8 @@
     "addAnother": "Add Another",
     "remove": "Remove",
     "location": {
+      "add": "Add Location",
+      "remove": "Remove this Location",
       "address1": "Address 1",
       "address2": "Address 2",
       "city": "City",
@@ -23,6 +25,8 @@
       "zipcode": "Zip Code"
     },
     "service": {
+      "add": "Add Service",
+      "remove": "Remove this Service",
       "name": "Service Name",
       "type": "Service Type",
       "description": "Service Description",
