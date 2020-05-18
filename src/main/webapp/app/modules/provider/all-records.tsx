@@ -78,7 +78,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           {_.map(allRecords, record => (
             <Col md={4}>
               <div className="mb-4">
-                <RecordCard key={record.organization.id} record={record} />
+                <RecordCard key={record.organization.id} record={record} link={`single-record-view/${record.organization.id}`} />
               </div>
             </Col>
           ))}

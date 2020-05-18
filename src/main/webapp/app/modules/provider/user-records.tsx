@@ -100,7 +100,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
           </CardBody>
         </Card>
         {_.map(records, record => (
-          <RecordCard key={record.organization.id} record={record} />
+          <RecordCard key={record.organization.id} record={record} link={`record/${record.organization.id}/edit`} />
         ))}
       </Slider>
     );
