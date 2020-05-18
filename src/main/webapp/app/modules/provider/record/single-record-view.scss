@@ -129,13 +129,11 @@
   }
 
   .srv-card {
-    transition: width 2s;
     &:hover {
       background-color: #f0f0f0;
     }
     &:active {
       background-color: #e0e0e0;
-      width: 100% !important;
     }
   }
 }

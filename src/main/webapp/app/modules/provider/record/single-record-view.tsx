@@ -8,12 +8,38 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import { getProviderEntity } from 'app/entities/organization/organization.reducer';
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
 // @ts-ignore
 import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
+
+const LocationColumn = location => {
+  if (!location) {
+    return <div />;
+  }
+  return (
+    <div className="location">
+      <span>
+        <FontAwesomeIcon icon="circle" className="blue" /> {location.city}, {location.ca}
+      </span>
+    </div>
+  );
+};
+
+const ServiceColumn = service => (
+  <div className="pill">
+    <span>{service.name}</span>
+  </div>
+);
+
+const RemainderCount = count => <span className="remainder blue">+ {count}</span>;
+
+const REMAINDER_WIDTH = 25;
 
 export interface ISingleRecordViewProps extends StateProps, DispatchProps, RouteComponentProps<{ orgId: string }> {
   record: any;
@@ -48,6 +74,12 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     this.props.getProviderEntity(this.props.match.params.orgId);
   }
 
+  componentWillUpdate(nextProps) {
+    if (nextProps.organization.id !== this.props.organization.id && nextProps.organization.locations && nextProps.organization.services) {
+      this.measureLocationsWidth(nextProps.organization);
+    }
+  }
+
   showServiceDetails = serviceIdx => this.setState({ detailsView: true, currentServiceIdx: serviceIdx });
 
   closeServiceDetails = () => this.setState({ detailsView: false });
@@ -70,8 +102,27 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     }
   };
 
+  measureLocationsWidth = organization =>
+    measureWidths([
+      ...organization.services.map(item => ServiceColumn(item)),
+      ...organization.locations.map(item => LocationColumn(item))
+    ]).then((serviceAndLocationWidths: any[]) => {
+      this.setState({
+        serviceWidths: serviceAndLocationWidths.slice(0, organization.services.length),
+        locationWidths: serviceAndLocationWidths.slice(organization.services.length)
+      });
+    });
+
   render() {
-    const { isOrganizationOpen, isServicesOpen, isLocationsOpen, currentServiceIdx, detailsView } = this.state;
+    const {
+      isOrganizationOpen,
+      isServicesOpen,
+      isLocationsOpen,
+      currentServiceIdx,
+      detailsView,
+      locationWidths,
+      serviceWidths
+    } = this.state;
     const { organization } = this.props;
     const locationsCount = organization && organization.locations ? organization.locations.length : 0;
     const servicesCount = organization && organization.services ? organization.services.length : 0;
@@ -87,32 +138,68 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           <Card className="record-card">
             <CardTitle className="card-title">
               <div className="d-flex w-100 justify-content-between">
-                <div>
-                  {organization.name}
+                <div className="w-100">
+                  <h3>
+                    <b>{organization.name}</b>
+                  </h3>
                   <section className="services pt-2">
-                    {servicesCount > 0
-                      ? organization.services.map(service => (
-                          <div className="pill">
-                            <span>{service.name}</span>
-                          </div>
-                        ))
-                      : null}
+                    {servicesCount > 0 ? (
+                      <AutoSizer disableHeight>
+                        {({ width }) => {
+                          const itemCount = getColumnCount(serviceWidths, width, REMAINDER_WIDTH);
+                          const overflow = itemCount < servicesCount;
+                          const totalItemCount = itemCount + (overflow ? 1 : 0);
+                          return (
+                            <List
+                              height={20}
+                              itemCount={totalItemCount}
+                              itemSize={width / totalItemCount}
+                              layout="horizontal"
+                              width={width}
+                              style={{ flex: 1, class: 'pills', overflow: 'none' }}
+                            >
+                              {({ index }) => {
+                                return index === itemCount
+                                  ? RemainderCount(servicesCount - itemCount)
+                                  : ServiceColumn(organization.services[index]);
+                              }}
+                            </List>
+                          );
+                        }}
+                      </AutoSizer>
+                    ) : null}
                   </section>
                 </div>
                 <img src={PeopleLogo} height={100} alt="Organization" className="d-none d-sm-block mx-5" />
               </div>
             </CardTitle>
             <CardBody>
-              <section className="locations p-2">
-                {locationsCount > 0
-                  ? organization.locations.map(location => (
-                      <div className="location">
-                        <span>
-                          <FontAwesomeIcon icon="circle" className="blue" /> {location.city}, {location.ca}
-                        </span>
-                      </div>
-                    ))
-                  : null}
+              <section className="locations p-2" id="locations">
+                {locationsCount > 0 ? (
+                  <AutoSizer disableHeight>
+                    {({ width }) => {
+                      const itemCount = getColumnCount(locationWidths, width, REMAINDER_WIDTH);
+                      const overflow = itemCount < locationsCount;
+                      const totalItemCount = itemCount + (overflow ? 1 : 0);
+                      return (
+                        <List
+                          height={20}
+                          itemCount={totalItemCount}
+                          itemSize={width / totalItemCount}
+                          layout="horizontal"
+                          width={width}
+                          style={{ flex: 1, class: 'pills' }}
+                        >
+                          {({ index }) => {
+                            return index === itemCount
+                              ? RemainderCount(locationsCount - itemCount)
+                              : LocationColumn(organization.locations[index]);
+                          }}
+                        </List>
+                      );
+                    }}
+                  </AutoSizer>
+                ) : null}
               </section>
             </CardBody>
           </Card>
