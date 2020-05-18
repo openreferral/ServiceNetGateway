@@ -146,28 +146,29 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
-  removeService = () => {
+  removeService = i => () => {
     const { services } = this.state;
-    if (services.length > 1) {
-      services.pop();
-      this.setState({
-        services
-      });
-    }
+    services.splice(i, 1);
+    this.setState({
+      services,
+      openService: -1
+    });
   };
 
-  removeLocation = () => {
+  removeLocation = i => () => {
     const { locations, services } = this.state;
-    if (locations.length > 1) {
-      locations.pop();
-      // filter out this location from services
-      services.forEach(service => service['locationIndexes'] = service['locationIndexes'].filter(
-        value => value !== locations.length));
-      this.setState({
-        locations,
-        services
-      });
-    }
+    locations.splice(i, 1);
+    // filter out this location from services
+    services.forEach(service => {
+      service['locationIndexes'] = service['locationIndexes']
+      .filter(value => value !== i)
+      .map(idx => (idx > i) ? idx - 1 : idx);
+    });
+    this.setState({
+      locations,
+      services,
+      openLocation: -1
+    });
   };
 
   getLocations = () =>
@@ -386,19 +387,21 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                             />
                           </Col>
                         </Row>
-                        <Button onClick={this.openLocation(-1)} className="pull-right">Done</Button>
+                        <div className="buttons">
+                          <Button onClick={this.removeLocation(i)}>
+                            <FontAwesomeIcon icon="trash" />
+                            &nbsp;
+                            <Translate contentKey="record.location.remove"/>
+                          </Button>
+                          <Button onClick={this.openLocation(-1)} className="pull-right">Done</Button>
+                        </div>
                       </CardBody>
                     </Card>
                 </div>
                 )}
                 <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
-                  {locations.length === 1 ? null :
-                    <Button onClick={this.removeLocation}>
-                      <Translate contentKey="record.remove"/>
-                    </Button>
-                  }
                   <Button onClick={this.addAnotherLocation} className="add-another">
-                    + <Translate contentKey="record.addAnother" />
+                    + <Translate contentKey="record.location.add" />
                   </Button>
                 </div>
               </CardBody>
@@ -511,19 +514,21 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                             isMulti
                           />
                         </AvGroup>
-                        <Button onClick={this.openService(-1)} className="pull-right">Done</Button>
+                        <div className="buttons">
+                          <Button onClick={this.removeService(i)}>
+                            <FontAwesomeIcon icon="trash" />
+                            &nbsp;
+                            <Translate contentKey="record.service.remove"/>
+                          </Button>
+                          <Button onClick={this.openService(-1)} className="pull-right">Done</Button>
+                        </div>
                       </CardBody>
                     </Card>
                   </div>
                 )}
                 <div className={openService === -1 ? 'buttons list-buttons' : 'd-none'}>
-                  {services.length === 1 ? null :
-                    <Button onClick={this.removeService}>
-                      <Translate contentKey="record.remove"/>
-                    </Button>
-                  }
                   <Button onClick={this.addAnotherService} className="add-another">
-                    + <Translate contentKey="record.addAnother" />
+                    + <Translate contentKey="record.service.add" />
                   </Button>
                 </div>
               </CardBody>
