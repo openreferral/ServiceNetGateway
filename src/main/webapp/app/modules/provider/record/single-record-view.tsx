@@ -2,7 +2,7 @@ import './single-record-view.scss';
 
 import React from 'react';
 import { Collapse, Button, CardBody, Card, CardTitle } from 'reactstrap';
-import { Translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
@@ -141,25 +141,33 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               <CardBody className="details">
                 <section>
                   <h5>
-                    <Translate contentKey="record.singleRecordView.orgName" />
+                    <b>
+                      <Translate contentKey="record.singleRecordView.orgName" />
+                    </b>
                   </h5>
                   <span>{organization.name}</span>
                 </section>
                 <section>
                   <h5>
-                    <Translate contentKey="record.singleRecordView.orgDescr" />
+                    <b>
+                      <Translate contentKey="record.singleRecordView.orgDescr" />
+                    </b>
                   </h5>
                   <span>{organization.description}</span>
                 </section>
                 <section>
                   <h5>
-                    <Translate contentKey="record.singleRecordView.orgWebsite" />
+                    <b>
+                      <Translate contentKey="record.singleRecordView.orgWebsite" />
+                    </b>
                   </h5>
                   <span className="text-break">{organization.url}</span>
                 </section>
                 <section>
                   <h5>
-                    <Translate contentKey="record.singleRecordView.orgEmail" />
+                    <b>
+                      <Translate contentKey="record.singleRecordView.orgEmail" />
+                    </b>
                   </h5>
                   <span>{organization.email}</span>
                 </section>
@@ -221,7 +229,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           </Card>
         </div>
 
-        <div className="col-md-8 offset-md-2 pt-4 mb-2">
+        <div className="col-md-8 offset-md-2 pt-4 mb-5">
           <Card className="record-card">
             <CardTitle onClick={this.toggleServices} className="collapse-toggle">
               <div className="d-flex justify-content-center align-items-center">
@@ -253,10 +261,13 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <Card className="record-card detail-card col-md-4 col-xs-12 mb-2 mx-2 pt-3">
                         <CardTitle>
                           <span>
-                            <FontAwesomeIcon icon="circle" className="orange" /> <b>{srv.name}</b>
+                            <FontAwesomeIcon icon="circle" className="orange" />{' '}
+                            <b>{srv.name ? srv.name : translate('record.singleRecordView.noServiceName')}</b>
                           </span>
                         </CardTitle>
-                        <CardBody>{srv.type && <span className="pill">{srv.type}</span>}</CardBody>
+                        <CardBody>
+                          <span className="pill">{srv.type ? srv.type : translate('record.singleRecordView.untyped')}</span>
+                        </CardBody>
                       </Card>
                     ))
                   ) : (
