@@ -71,8 +71,8 @@ export const getProviderRecords = () => ({
   payload: axios.get(userRecordApiUrl)
 });
 
-export const getAllProviderRecords = (page, itemsPerPage, isInitLoading = true) => {
-  const pageableUrl = `${allRecordApiUrl}?page=${page}&size=${itemsPerPage}`;
+export const getAllProviderRecords = (page, itemsPerPage, sort, isInitLoading = true) => {
+  const pageableUrl = `${allRecordApiUrl}?page=${page}&size=${itemsPerPage}&sort=${sort}`;
   return {
     type: ACTION_TYPES.FETCH_ALL_RECORDS,
     payload: axios.get(pageableUrl),
