@@ -1,13 +1,13 @@
 import './record-edit.scss';
 
 import React from 'react';
-import { Button, Col, Row, Collapse, Card, CardTitle, CardBody, Badge, Label } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardTitle, Col, Collapse, Label, Row } from 'reactstrap';
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { updateUserOwnedEntity, getProviderEntity } from 'app/entities/organization/organization.reducer';
+import { getProviderEntity, updateUserOwnedEntity } from 'app/entities/organization/organization.reducer';
 import { IRootState } from 'app/shared/reducers';
-import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { US_STATES } from 'app/shared/util/us-states';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
@@ -81,7 +81,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       this.setState({
         locations: this.props.organization.locations || this.state.locations,
         services: this.props.organization.services || this.state.services,
-        latestDailyUpdate: [...this.props.organization.dailyUpdates].pop() || {}
+        latestDailyUpdate: this.props.organization.dailyUpdates.find(du => du.expiry === null) || {}
       });
     }
   }
@@ -183,9 +183,13 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
-  onServiceChange = (i, fieldName) => event => {
+  onServiceChange = (i, fieldName, defaultValue = null) => event => {
     const services = this.state.services;
-    services[i][fieldName] = (event.target) ? event.target.value : event;
+    let value = (event != null && event.target) ? event.target.value : event;
+    if (value == null) {
+      value = defaultValue;
+    }
+    services[i][fieldName] = value;
     this.setState({
       services
     });
@@ -501,7 +505,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                           <AvSelect
                             name={'services[' + i + '].locationIndexes'}
                             value={(services.length > i) ? services[i]['locationIndexes'] : []}
-                            onChange={this.onServiceChange(i, 'locationIndexes')}
+                            onChange={this.onServiceChange(i, 'locationIndexes', [])}
                             options={this.getLocations()}
                             // @ts-ignore
                             isMulti
