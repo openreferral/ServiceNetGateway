@@ -103,14 +103,14 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       };
       this.props.updateUserOwnedEntity(entity);
     } else {
-      const indexRegexp = /(?<=\[).+?(?=])/;
+      const indexRegexp = /\[?([0-9]+?)\]?/;
       errors.forEach(err => {
         if (err.includes(LOCATION)) {
           invalidSections.indexOf(LOCATION) === -1 && invalidSections.push(LOCATION);
           openSections.indexOf(LOCATION) === -1 && openSections.push(LOCATION);
           const matches = indexRegexp.exec(err);
           if (matches) {
-            invalidLocations.push(parseInt(matches[0], 10));
+            invalidLocations.push(parseInt(matches[1], 10));
           }
         }
         if (err.includes(SERVICE)) {
@@ -118,7 +118,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           openSections.indexOf(SERVICE) === -1 && openSections.push(SERVICE);
           const matches = indexRegexp.exec(err);
           if (matches) {
-            invalidServices.push(parseInt(matches[0][0], 10));
+            invalidServices.push(parseInt(matches[1], 10));
           }
         }
       });
