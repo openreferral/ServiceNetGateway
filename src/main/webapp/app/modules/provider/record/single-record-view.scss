@@ -1,3 +1,5 @@
+@import '../../../bootstrap-variables';
+
 .single-record-view {
   .record-card {
     .pill {
@@ -17,12 +19,16 @@
   }
 
   .card-title {
+    color: $gray-900 !important;
     &.collapse-toggle {
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      padding: 15px !important;
+      .pill {
+        background-color: #f0f0f0;
+        border: 1px solid #f0f0f0;
+      }
     }
 
     margin-bottom: 0;
@@ -75,21 +81,7 @@
 
 @media only screen and (max-width: 768px) {
   .single-record-view {
-    .card-title {
-      h3 {
-        font-size: 12px;
-      }
-      span {
-        font-size: 10px;
-      }
-    }
     .card-body {
-      h5 {
-        font-size: 12px;
-      }
-      span {
-        font-size: 10px;
-      }
       &.details {
         section {
           margin: auto !important;

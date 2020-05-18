@@ -56,7 +56,9 @@
       "locDetails": "Location Details",
       "srvDetails": "Service Details",
       "noServices": "No Services Provided",
-      "noLocations": "No Locations Provided"
+      "noServiceName": "No Service Name Provided",
+      "noLocations": "No Locations Provided",
+      "untyped": "Untyped"
     }
   }
 }
