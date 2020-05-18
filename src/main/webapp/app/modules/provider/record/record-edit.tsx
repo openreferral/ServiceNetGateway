@@ -81,7 +81,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       this.setState({
         locations: this.props.organization.locations || this.state.locations,
         services: this.props.organization.services || this.state.services,
-        latestDailyUpdate: [...this.props.organization.dailyUpdates].pop() || {}
+        latestDailyUpdate: this.props.organization.dailyUpdates.find(du => du.expiry === null) || {}
       });
     }
   }
