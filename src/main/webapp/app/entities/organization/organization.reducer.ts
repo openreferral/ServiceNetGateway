@@ -15,6 +15,7 @@ export const ACTION_TYPES = {
   CREATE_ORGANIZATION: 'organization/CREATE_ORGANIZATION',
   UPDATE_ORGANIZATION: 'organization/UPDATE_ORGANIZATION',
   DELETE_ORGANIZATION: 'organization/DELETE_ORGANIZATION',
+  DEACTIVATE_ORGANIZATION: 'organization/DEACTIVATE_ORGANIZATION',
   SET_BLOB: 'organization/SET_BLOB',
   RESET: 'organization/RESET'
 };
@@ -47,6 +48,7 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case REQUEST(ACTION_TYPES.CREATE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.UPDATE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.DELETE_ORGANIZATION):
+    case REQUEST(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
       return {
         ...state,
         errorMessage: null,
@@ -59,6 +61,7 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case FAILURE(ACTION_TYPES.CREATE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.UPDATE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.DELETE_ORGANIZATION):
+    case FAILURE(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
       return {
         ...state,
         loading: false,
@@ -94,6 +97,13 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         entity: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.DELETE_ORGANIZATION):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        entity: {}
+      };
+    case SUCCESS(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
       return {
         ...state,
         updating: false,
@@ -188,6 +198,16 @@ export const deleteEntity: ICrudDeleteAction<IOrganization> = id => async dispat
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_ORGANIZATION,
     payload: axios.delete(requestUrl)
+  });
+  dispatch(getEntities());
+  return result;
+};
+
+export const deactivateEntity: ICrudDeleteAction<IOrganization> = id => async dispatch => {
+  const requestUrl = `${apiUrl}/deactivate/${id}`;
+  const result = await dispatch({
+    type: ACTION_TYPES.DEACTIVATE_ORGANIZATION,
+    payload: axios.post(requestUrl)
   });
   dispatch(getEntities());
   return result;

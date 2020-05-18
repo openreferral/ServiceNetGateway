@@ -3,6 +3,10 @@
     "goBack": "Back",
     "title": "Benetech Service Net",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+    "dialog": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
     "menu": {
       "aboutUs": "About",
       "feedback": "Feedback",
