@@ -52,19 +52,17 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
     return (
       <div className="background single-record-view">
-        <Button tag={Link} to="/" color="" className="d-none d-sm-block position-fixed">
+        <Button tag={Link} to="/" color="" className="d-none d-sm-block position-fixed go-back">
           <FontAwesomeIcon icon="angle-left" />
           &nbsp;
           <Translate contentKey="record.singleRecordView.back" />
         </Button>
-        <div className="col-md-8 offset-md-2 pt-4">
-          <Card className="record-card p-2">
-            <CardTitle>
+        <div className="col-md-8 offset-md-2 section">
+          <Card className="record-card">
+            <CardTitle className="card-title">
               <div className="d-flex w-100 justify-content-between">
                 <div>
-                  <h3>
-                    <b>{organization.name}</b>
-                  </h3>
+                  {organization.name}
                   <section className="services pt-2">
                     {servicesCount > 0
                       ? organization.services.map(service => (
@@ -79,7 +77,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               </div>
             </CardTitle>
             <CardBody>
-              <section className="locations">
+              <section className="locations p-2">
                 {locationsCount > 0
                   ? organization.locations.map(location => (
                       <div className="location">
@@ -94,20 +92,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           </Card>
         </div>
 
-        <div className="col-md-8 offset-md-2 pt-4">
-          <Card className="record-card p-2">
-            <CardTitle>
-              <h5>
-                <b>
-                  <Translate contentKey="record.singleRecordView.dailyUpdates" />
-                </b>
-              </h5>
+        <div className="col-md-8 offset-md-2 section">
+          <Card className="record-card">
+            <CardTitle className="card-title">
+              <Translate contentKey="record.singleRecordView.dailyUpdates" />
             </CardTitle>
             <CardBody>
               {organization && organization.dailyUpdates && organization.dailyUpdates.length > 0 ? (
                 organization.dailyUpdates.map(dailyUpdate => <span key={dailyUpdate.id}>{dailyUpdate.update}</span>)
               ) : (
-                <div className="w-100 text-center">
+                <div className="w-100 text-center p-2">
                   <Translate contentKey="record.singleRecordView.noNewUpdates" />
                 </div>
               )}
@@ -115,60 +109,48 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           </Card>
         </div>
 
-        <div className="col-md-8 offset-md-2 pt-4">
+        <div className="col-md-8 offset-md-2 section">
           <Card className="record-card">
-            <CardTitle onClick={this.toggleOrganization} className="collapse-toggle">
+            <CardTitle onClick={this.toggleOrganization} className="collapse-toggle card-title">
               <div className="d-flex justify-content-center align-items-center">
-                <img src={PeopleLogo} height={30} alt="Organization" />
-                <h3>
-                  <b>
-                    &nbsp;
-                    <Translate contentKey="record.singleRecordView.orgDetails" />
-                  </b>
-                </h3>
+                <img src={PeopleLogo} height={25} alt="Organization" />
+                &nbsp;
+                <Translate contentKey="record.singleRecordView.orgDetails" />
               </div>
-              {isOrganizationOpen ? (
-                <h3>
-                  <FontAwesomeIcon icon="angle-up" />
-                </h3>
-              ) : (
-                <h3>
-                  <FontAwesomeIcon icon="angle-down" />
-                </h3>
-              )}
+              {isOrganizationOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
             </CardTitle>
             <Collapse isOpen={isOrganizationOpen}>
               <CardBody className="details">
                 <section>
-                  <h5>
+                  <h6>
                     <b>
                       <Translate contentKey="record.singleRecordView.orgName" />
                     </b>
-                  </h5>
+                  </h6>
                   <span>{organization.name}</span>
                 </section>
                 <section>
-                  <h5>
+                  <h6>
                     <b>
                       <Translate contentKey="record.singleRecordView.orgDescr" />
                     </b>
-                  </h5>
+                  </h6>
                   <span>{organization.description}</span>
                 </section>
                 <section>
-                  <h5>
+                  <h6>
                     <b>
                       <Translate contentKey="record.singleRecordView.orgWebsite" />
                     </b>
-                  </h5>
+                  </h6>
                   <span className="text-break">{organization.url}</span>
                 </section>
                 <section>
-                  <h5>
+                  <h6>
                     <b>
                       <Translate contentKey="record.singleRecordView.orgEmail" />
                     </b>
-                  </h5>
+                  </h6>
                   <span>{organization.email}</span>
                 </section>
               </CardBody>
@@ -176,29 +158,17 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           </Card>
         </div>
 
-        <div className="col-md-8 offset-md-2 pt-4">
+        <div className="col-md-8 offset-md-2 section">
           <Card className="record-card">
-            <CardTitle onClick={this.toggleLocations} className="collapse-toggle">
+            <CardTitle onClick={this.toggleLocations} className="collapse-toggle card-title">
               <div className="d-flex justify-content-center align-items-center">
-                <img src={BuildingLogo} height={30} alt="Location" />
-                <h3>
-                  <b>
-                    &nbsp;
-                    <Translate contentKey="record.singleRecordView.locDetails" />
-                  </b>
-                  &nbsp;
-                  <span className="pill">{locationsCount}</span>
-                </h3>
+                <img src={BuildingLogo} height={25} alt="Location" />
+                &nbsp;
+                <Translate contentKey="record.singleRecordView.locDetails" />
+                &nbsp;
+                <span className="badge badge-light badge-pill">{locationsCount}</span>
               </div>
-              {isLocationsOpen ? (
-                <h3>
-                  <FontAwesomeIcon icon="angle-up" />
-                </h3>
-              ) : (
-                <h3>
-                  <FontAwesomeIcon icon="angle-down" />
-                </h3>
-              )}
+              {isLocationsOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
             </CardTitle>
             <Collapse isOpen={isLocationsOpen}>
               <CardBody className="details">
@@ -229,29 +199,17 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           </Card>
         </div>
 
-        <div className="col-md-8 offset-md-2 pt-4 mb-5">
+        <div className="col-md-8 offset-md-2 mb-5 section">
           <Card className="record-card">
-            <CardTitle onClick={this.toggleServices} className="collapse-toggle">
+            <CardTitle onClick={this.toggleServices} className="collapse-toggle card-title">
               <div className="d-flex justify-content-center align-items-center">
-                <img src={ServiceLogo} height={30} alt="Service" />
-                <h3>
-                  <b>
-                    &nbsp;
-                    <Translate contentKey="record.singleRecordView.srvDetails" />
-                  </b>
-                  &nbsp;
-                  <span className="pill">{servicesCount}</span>
-                </h3>
+                <img src={ServiceLogo} height={25} alt="Service" />
+                &nbsp;
+                <Translate contentKey="record.singleRecordView.srvDetails" />
+                &nbsp;
+                <span className="badge badge-light badge-pill">{servicesCount}</span>
               </div>
-              {isServicesOpen ? (
-                <h3>
-                  <FontAwesomeIcon icon="angle-up" />
-                </h3>
-              ) : (
-                <h3>
-                  <FontAwesomeIcon icon="angle-down" />
-                </h3>
-              )}
+              {isServicesOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
             </CardTitle>
             <Collapse isOpen={isServicesOpen}>
               <CardBody className="details">
