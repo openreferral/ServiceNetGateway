@@ -8,9 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import { getProviderEntity } from 'app/entities/organization/organization.reducer';
+import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
+import { measureWidths, getColumnCount } from 'app/shared/util/measure-widths';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
 // @ts-ignore
@@ -71,6 +72,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   toggleLocations = () => this.setState({ isLocationsOpen: !this.state.isLocationsOpen });
 
   componentDidMount() {
+    if (!this.props.taxonomies || !this.props.taxonomies.length) {
+      this.props.getProviderTaxonomies();
+    }
     this.props.getProviderEntity(this.props.match.params.orgId);
   }
 
@@ -337,7 +341,13 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           </span>
                         </CardTitle>
                         <CardBody>
-                          <span className="pill">{srv.type ? srv.type : translate('record.singleRecordView.untyped')}</span>
+                          {srv.taxonomyIds.length > 0 ? (
+                            srv.taxonomyIds.map(srvTaxonomy => (
+                              <span className="pill mr-1">{this.props.taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name}</span>
+                            ))
+                          ) : (
+                            <span className="pill">{translate('record.singleRecordView.untyped')}</span>
+                          )}
                         </CardBody>
                       </Card>
                     ))
@@ -387,11 +397,13 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         <b>
                           <Translate contentKey="record.singleRecordView.srvTypes" />
                         </b>
-                        <span className="pill ml-2">
-                          {organization.services[currentServiceIdx].type
-                            ? organization.services[currentServiceIdx].type
-                            : translate('record.singleRecordView.untyped')}
-                        </span>
+                        {organization.services[currentServiceIdx].taxonomyIds.length > 0 ? (
+                          organization.services[currentServiceIdx].taxonomyIds.map(srvTaxonomy => (
+                            <span className="pill ml-2">{this.props.taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name}</span>
+                          ))
+                        ) : (
+                          <span className="pill ml-2">{translate('record.singleRecordView.untyped')}</span>
+                        )}
                       </h6>
                     </section>
                     <section>
@@ -444,10 +456,11 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 }
 
 const mapStateToProps = (rootState: IRootState) => ({
-  organization: rootState.organization.providersEntity
+  organization: rootState.organization.providersEntity,
+  taxonomies: rootState.taxonomy.providerTaxonomies
 });
 
-const mapDispatchToProps = { getProviderEntity };
+const mapDispatchToProps = { getProviderEntity, getProviderTaxonomies };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
