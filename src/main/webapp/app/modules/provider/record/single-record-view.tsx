@@ -32,13 +32,18 @@ const LocationColumn = location => {
   );
 };
 
-const ServiceColumn = service => (
-  <div className="pill">
-    <span>{service.name}</span>
-  </div>
-);
+const ServiceColumn = service => {
+  if (!service) {
+    return <div />;
+  }
+  return (
+    <div className="pill">
+      <span>{service.name}</span>
+    </div>
+  );
+};
 
-const RemainderCount = count => <span className="remainder blue">+ {count}</span>;
+const RemainderCount = count => <span className="remainder blue pl-0">+ {count}</span>;
 
 const REMAINDER_WIDTH = 25;
 
@@ -54,6 +59,7 @@ export interface ISingleRecordViewState {
   isLocationsOpen: boolean;
   currentServiceIdx: number;
   detailsView: boolean;
+  initialLoad: boolean;
 }
 
 class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRecordViewState> {
@@ -64,7 +70,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     isServicesOpen: false,
     isLocationsOpen: false,
     currentServiceIdx: 0,
-    detailsView: false
+    detailsView: false,
+    initialLoad: true
   };
 
   toggleOrganization = () => this.setState({ isOrganizationOpen: !this.state.isOrganizationOpen });
@@ -77,7 +84,11 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps.organization.id !== this.props.organization.id && nextProps.organization.locations && nextProps.organization.services) {
+    if (
+      (nextProps.organization.id !== this.props.organization.id || this.state.initialLoad) &&
+      nextProps.organization.locations &&
+      nextProps.organization.services
+    ) {
       this.measureLocationsWidth(nextProps.organization);
     }
   }
@@ -111,7 +122,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     ]).then((serviceAndLocationWidths: any[]) => {
       this.setState({
         serviceWidths: serviceAndLocationWidths.slice(0, organization.services.length),
-        locationWidths: serviceAndLocationWidths.slice(organization.services.length)
+        locationWidths: serviceAndLocationWidths.slice(organization.services.length),
+        initialLoad: false
       });
     });
 
@@ -339,14 +351,27 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           </span>
                         </CardTitle>
                         <CardBody>
-                          {srv.taxonomyIds.length > 0 ? (
-                            srv.taxonomyIds.map(srvTaxonomy => (
-                              <span className="pill mr-1">
-                                {taxonomies && taxonomies.length > 0
-                                  ? taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name
-                                  : translate('record.singleRecordView.untyped')}
-                              </span>
-                            ))
+                          {srv.taxonomyIds.length > 0 && taxonomies && taxonomies.length > 0 ? (
+                            srv.taxonomyIds.length > 2 ? (
+                              <>
+                                {srv.taxonomyIds.slice(0, 2).map(srvTaxonomy => (
+                                  <span className="pill mr-1">
+                                    {taxonomies && taxonomies.length > 0
+                                      ? taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name
+                                      : translate('record.singleRecordView.untyped')}
+                                  </span>
+                                ))}
+                                {RemainderCount(srv.taxonomyIds.length - 2)}
+                              </>
+                            ) : (
+                              srv.taxonomyIds.map(srvTaxonomy => (
+                                <span className="pill mr-1">
+                                  {taxonomies && taxonomies.length > 0
+                                    ? taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name
+                                    : translate('record.singleRecordView.untyped')}
+                                </span>
+                              ))
+                            )
                           ) : (
                             <span className="pill">{translate('record.singleRecordView.untyped')}</span>
                           )}
