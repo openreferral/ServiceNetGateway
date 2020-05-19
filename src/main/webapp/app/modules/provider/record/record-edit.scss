@@ -105,7 +105,7 @@
     margin-bottom: 1em;
     box-shadow: 0 3px 3px rgba(0, 0, 0, .2);
 
-    > .card-body, .collapse > .card-body {
+    > .card-body, .collapse > div {
       border-top: 2px #f0f0f0 solid;
     }
   }
@@ -176,6 +176,10 @@
     }
   }
 
+  .service-details, .location-details {
+    margin: -1em 0.5em 0.5em 0.5em;
+  }
+
   label {
     font-size: 16px;
     margin-bottom: 0.25em;
@@ -187,6 +191,7 @@
 
   .pull-right {
     float: right;
+    margin-left: auto;
   }
 
   .item:not(:first-of-type) {
@@ -196,6 +201,27 @@
   @media only screen and (max-width: 400px) {
     .nav-link {
       font-size: 12px;
+    }
+  }
+
+  .top-bar {
+    height: 40px;
+    align-items: center;
+    padding: 1em;
+  }
+
+  .locations {
+    .top-bar {
+      background-color: #E1EEFF;
+      .progress-bar {
+        background-color: #0071FE;
+      }
+    }
+  }
+
+  .services {
+    .top-bar {
+      background-color: #F5EFF1;
     }
   }
 }
