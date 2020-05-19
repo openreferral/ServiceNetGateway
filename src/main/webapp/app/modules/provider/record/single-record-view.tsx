@@ -125,7 +125,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
       locationWidths,
       serviceWidths
     } = this.state;
-    const { organization } = this.props;
+    const { organization, taxonomies } = this.props;
     const locationsCount = organization && organization.locations ? organization.locations.length : 0;
     const servicesCount = organization && organization.services ? organization.services.length : 0;
 
@@ -341,7 +341,11 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         <CardBody>
                           {srv.taxonomyIds.length > 0 ? (
                             srv.taxonomyIds.map(srvTaxonomy => (
-                              <span className="pill mr-1">{this.props.taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name}</span>
+                              <span className="pill mr-1">
+                                {taxonomies && taxonomies.length > 0
+                                  ? taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name
+                                  : translate('record.singleRecordView.untyped')}
+                              </span>
                             ))
                           ) : (
                             <span className="pill">{translate('record.singleRecordView.untyped')}</span>
@@ -397,7 +401,11 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         </b>
                         {organization.services[currentServiceIdx].taxonomyIds.length > 0 ? (
                           organization.services[currentServiceIdx].taxonomyIds.map(srvTaxonomy => (
-                            <span className="pill ml-2">{this.props.taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name}</span>
+                            <span className="pill ml-2">
+                              {taxonomies && taxonomies.length > 0
+                                ? taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name
+                                : translate('record.singleRecordView.untyped')}
+                            </span>
                           ))
                         ) : (
                           <span className="pill ml-2">{translate('record.singleRecordView.untyped')}</span>
