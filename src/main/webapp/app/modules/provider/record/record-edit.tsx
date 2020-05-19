@@ -1,7 +1,7 @@
 import './record-edit.scss';
 
 import React from 'react';
-import { Badge, Button, Card, CardBody, CardTitle, Col, Collapse, Label, Row } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardTitle, Col, Collapse, Label, Row, Progress } from 'reactstrap';
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
@@ -196,7 +196,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   getLocations = () =>
     this.state.locations.map((location, i) => (
-      { value: i, label: i + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') }
+      { value: i, label: (i + 1) + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') }
     ));
 
   onLocationChange = (i, fieldName) => ({ target }) => {
@@ -311,7 +311,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               </CardBody>
             </Collapse>
           </Card>
-          <Card className="section expandable">
+          <Card className="section expandable locations">
             <CardTitle onClick={this.toggle(LOCATION)} className="clickable">
               <img src={BuildingLogo} height={25} alt="Location" />
               Location Details
@@ -319,28 +319,43 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               <FontAwesomeIcon icon={openSections.includes(LOCATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg"/>
             </CardTitle>
             <Collapse isOpen={openSections.includes(LOCATION)}>
-              <CardBody>
-                {locations && locations.map((location, i) =>
-                    <div key={'location-' + i} className={openLocation === -1 ? 'd-inline-block' : 'd-block'}>
-                    <Card className={openLocation === -1 ? invalidLocations.includes(i) ? 'invalid clickable card-sm' : 'clickable card-sm' : 'd-none'}>
-                      <CardBody onClick={this.openLocation(i)} className={'location d-flex flex-row'}>
-                        <div className="card-left">
-                          <FontAwesomeIcon icon="pencil-alt" />
-                        </div>
-                        <div className="card-right">
-                          <div>
-                            <div className="card-heading">
-                              <FontAwesomeIcon icon={faCircle} className="edit" /> {location['city']}, {location['ca']}
-                            </div>
-                            <div>{location['address1']}</div>
-                            <div>{location['address2']}</div>
+              <div>
+                <div className={openLocation !== -1 ? 'd-flex top-bar' : 'd-none'}>
+                  <div onClick={this.openLocation(-1)} className="clickable"><FontAwesomeIcon icon="arrow-left" /> Back to All Locations</div>
+                  <div className="d-flex pull-right">
+                    <div onClick={this.openLocation((openLocation > 0) ? openLocation - 1 : openLocation)} className="clickable" >
+                      <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
+                    </div>
+                    <div className="align-self-center ml-1">{openLocation + 1}</div>
+                    <div className="mx-2 align-self-center">
+                      <Progress value={((openLocation + 1) / locations.length) * 100} />
+                    </div>
+                    <div className="align-self-center mr-1">{locations.length}</div>
+                    <div onClick={this.openLocation((openLocation < locations.length - 1) ? openLocation + 1 : openLocation)} className="clickable">
+                      <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
+                    </div>
+                  </div>
+                </div>
+                <CardBody>
+                  {locations && locations.map((location, i) =>
+                      <div key={'location-' + i} className={openLocation === -1 ? 'd-inline-block' : 'd-block'}>
+                      <Card className={openLocation === -1 ? invalidLocations.includes(i) ? 'invalid clickable card-sm' : 'clickable card-sm' : 'd-none'}>
+                        <CardBody onClick={this.openLocation(i)} className={'location d-flex flex-row'}>
+                          <div className="card-left">
+                            <FontAwesomeIcon icon="pencil-alt" />
                           </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                    <Card className={openLocation === i ? '' : 'd-none'}>
-                      <Button onClick={this.openLocation(-1)} className="mb-2"><FontAwesomeIcon icon="arrow-left" /> Back to All Locations</Button>
-                      <CardBody>
+                          <div className="card-right">
+                            <div>
+                              <div className="card-heading">
+                                <FontAwesomeIcon icon={faCircle} className="edit" /> {location['city']}, {location['ca']}
+                              </div>
+                              <div>{location['address1']}</div>
+                              <div>{location['address2']}</div>
+                            </div>
+                          </div>
+                        </CardBody>
+                      </Card>
+                      <div className={openLocation === i ? 'location-details' : 'd-none'}>
                         {location['id'] ? <AvField name={'locations[' + i + '].id'} value={location['id']} className="d-none" /> : ''}
                         <AvGroup>
                           <div className="flex">
@@ -418,19 +433,19 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                           </Button>
                           <Button onClick={this.openLocation(-1)} className="pull-right">Done</Button>
                         </div>
-                      </CardBody>
-                    </Card>
-                </div>
-                )}
-                <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
-                  <Button onClick={this.addAnotherLocation} className="add-another">
-                    + <Translate contentKey="record.location.add" />
-                  </Button>
-                </div>
-              </CardBody>
+                      </div>
+                  </div>
+                  )}
+                  <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
+                    <Button onClick={this.addAnotherLocation} className="add-another">
+                      + <Translate contentKey="record.location.add" />
+                    </Button>
+                  </div>
+                </CardBody>
+              </div>
             </Collapse>
           </Card>
-          <Card className="section expandable">
+          <Card className="section expandable services">
             <CardTitle onClick={this.toggle(SERVICE)} className="clickable">
               <img src={ServiceLogo} height={25} alt="Service" />
               Service Details
@@ -438,33 +453,48 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               <FontAwesomeIcon icon={openSections.includes(SERVICE) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg"/>
             </CardTitle>
             <Collapse isOpen={openSections.includes(SERVICE)}>
-              <CardBody>
-                {services && services.map((service, i) =>
-                  <div key={'service-' + i} className={openService === -1 ? 'd-inline-block' : 'd-block'}>
-                    <Card className={openService === -1 ? invalidServices.includes(i) ? 'invalid clickable card-sm' : 'clickable card-sm' : 'd-none'}>
-                      <CardBody onClick={this.openService(i)} className={'service d-flex flex-row'}>
-                        <div className="card-left">
-                          <FontAwesomeIcon icon="pencil-alt" />
-                        </div>
-                        <div className="card-right">
-                          <div>
-                            <div className="card-heading">
-                              <FontAwesomeIcon icon={faCircle} className="edit" /> {service['name']}
-                            </div>
-                            <div className="pills record-card">{taxonomyOptions.filter(to =>
-                              service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1).map(to => (
-                              <div className="pill pill-sm" key={to.value}>
-                                <span>{to.label}</span>
+              <div>
+                <div className={openService !== -1 ? 'd-flex top-bar' : 'd-none'}>
+                  <div onClick={this.openService(-1)} className="clickable"><FontAwesomeIcon icon="arrow-left" /> Back to All Services</div>
+                  <div className="d-flex pull-right">
+                    <div onClick={this.openService((openService > 0) ? openService - 1 : openService)} className="clickable" >
+                      <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
+                    </div>
+                    <div className="align-self-center ml-1">{openService + 1}</div>
+                    <div className="mx-2 align-self-center">
+                      <Progress value={((openService + 1) / services.length) * 100} />
+                    </div>
+                    <div className="align-self-center mr-1">{services.length}</div>
+                    <div onClick={this.openService((openService < services.length - 1) ? openService + 1 : openService)} className="clickable">
+                      <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
+                    </div>
+                  </div>
+                </div>
+                <CardBody>
+                  {services && services.map((service, i) =>
+                    <div key={'service-' + i} className={openService === -1 ? 'd-inline-block' : 'd-block'}>
+                      <Card className={openService === -1 ? invalidServices.includes(i) ? 'invalid clickable card-sm' : 'clickable card-sm' : 'd-none'}>
+                        <CardBody onClick={this.openService(i)} className={'service d-flex flex-row'}>
+                          <div className="card-left">
+                            <FontAwesomeIcon icon="pencil-alt" />
+                          </div>
+                          <div className="card-right">
+                            <div>
+                              <div className="card-heading">
+                                <FontAwesomeIcon icon={faCircle} className="edit" /> {service['name']}
                               </div>
-                            ))}
+                              <div className="pills record-card">{taxonomyOptions.filter(to =>
+                                service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1).map(to => (
+                                <div className="pill pill-sm" key={to.value}>
+                                  <span>{to.label}</span>
+                                </div>
+                              ))}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                    <Card className={openService === i ? '' : 'd-none'}>
-                      <Button onClick={this.openService(-1)} className="mb-2"><FontAwesomeIcon icon="arrow-left" /> Back to All Services</Button>
-                      <CardBody className="service">
+                        </CardBody>
+                      </Card>
+                      <div className={openService === i ? 'service-details' : 'd-none'}>
                         {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
                         <AvGroup>
                           <div className="flex">
@@ -545,16 +575,16 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                           </Button>
                           <Button onClick={this.openService(-1)} className="pull-right">Done</Button>
                         </div>
-                      </CardBody>
-                    </Card>
+                      </div>
+                    </div>
+                  )}
+                  <div className={openService === -1 ? 'buttons list-buttons' : 'd-none'}>
+                    <Button onClick={this.addAnotherService} className="add-another">
+                      + <Translate contentKey="record.service.add" />
+                    </Button>
                   </div>
-                )}
-                <div className={openService === -1 ? 'buttons list-buttons' : 'd-none'}>
-                  <Button onClick={this.addAnotherService} className="add-another">
-                    + <Translate contentKey="record.service.add" />
-                  </Button>
-                </div>
-              </CardBody>
+                </CardBody>
+              </div>
             </Collapse>
           </Card>
           <div className="buttons navigation-buttons">
