@@ -27,20 +27,21 @@ export interface IRecordCardState {
   locationWidths: any[];
 }
 
-const ServiceColumn = service => (
-  <div className="pill">
-    <span>{service.service.name}</span>
-  </div>
-);
+const ServiceColumn = service =>
+  service && service.service ? (
+    <div className="pill">
+      <span>{service.service.name}</span>
+    </div>
+  ) : null;
 
 const LocationColumn = location =>
-  location.physicalAddress && (
+  location && location.physicalAddress ? (
     <div className="location">
       <span>
         <FontAwesomeIcon icon={faCircle} className="blue" /> {location.physicalAddress.city}, {location.physicalAddress.stateProvince}
       </span>
     </div>
-  );
+  ) : null;
 
 const RemainderCount = count => <span className="remainder blue">+ {count}</span>;
 
