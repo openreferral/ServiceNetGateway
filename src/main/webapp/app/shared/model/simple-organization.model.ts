@@ -1,7 +1,7 @@
 import { Moment } from 'moment';
 
 export interface ISimpleOrganization {
-  id?: number;
+  id?: string;
   name?: string;
   description?: any;
   email?: string;

@@ -268,7 +268,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     const { openSections, locations, services, openLocation, openService, latestDailyUpdate,
       invalidSections, invalidLocations, invalidServices } = this.state;
     const { updating, taxonomyOptions, organization } = this.props;
-    return organization.id ? (
+    return organization.id && organization.id === this.props.match.params.id ? (
       <AvForm onSubmit={this.saveRecord} className="record-edit background" model={organization}>
         <div id={measureId(this.props.match.params.id)} style={containerStyle} />
         <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
@@ -357,7 +357,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 <div className={openLocation !== -1 ? 'd-flex top-bar' : 'd-none'}>
                   <div onClick={this.openLocation(-1)} className="clickable"><FontAwesomeIcon icon="arrow-left" /> Back to All Locations</div>
                   <div className="d-flex pull-right">
-                    <div onClick={this.openLocation((openLocation > 0) ? openLocation - 1 : openLocation)} className="clickable" >
+                    <div onClick={this.openLocation((openLocation > 0) ? openLocation - 1 : locations.length - 1)} className="clickable" >
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
                     </div>
                     <div className="align-self-center ml-1">{openLocation + 1}</div>
@@ -365,7 +365,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                       <Progress value={((openLocation + 1) / locations.length) * 100} />
                     </div>
                     <div className="align-self-center mr-1">{locations.length}</div>
-                    <div onClick={this.openLocation((openLocation < locations.length - 1) ? openLocation + 1 : openLocation)} className="clickable">
+                    <div onClick={this.openLocation((openLocation < locations.length - 1) ? openLocation + 1 : 0)} className="clickable">
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
                     </div>
                   </div>
@@ -491,7 +491,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 <div className={openService !== -1 ? 'd-flex top-bar' : 'd-none'}>
                   <div onClick={this.openService(-1)} className="clickable"><FontAwesomeIcon icon="arrow-left" /> Back to All Services</div>
                   <div className="d-flex pull-right">
-                    <div onClick={this.openService((openService > 0) ? openService - 1 : openService)} className="clickable" >
+                    <div onClick={this.openService((openService > 0) ? openService - 1 : services.length - 1)} className="clickable" >
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
                     </div>
                     <div className="align-self-center ml-1">{openService + 1}</div>
@@ -499,7 +499,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                       <Progress value={((openService + 1) / services.length) * 100} />
                     </div>
                     <div className="align-self-center mr-1">{services.length}</div>
-                    <div onClick={this.openService((openService < services.length - 1) ? openService + 1 : openService)} className="clickable">
+                    <div onClick={this.openService((openService < services.length - 1) ? openService + 1 : 0)} className="clickable">
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
                     </div>
                   </div>
