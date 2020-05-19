@@ -141,7 +141,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   getLocations = () =>
     Array.apply(null, { length: this.state.locationCount }).map((e, i) => {
       const location = this.state.locations[i];
-      return { value: i, label: i + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') };
+      return { value: i, label: (i + 1) + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') };
     });
 
   onLocationChange = (i, fieldName) => ({ target }) => {
