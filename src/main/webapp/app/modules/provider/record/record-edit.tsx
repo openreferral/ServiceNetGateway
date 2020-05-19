@@ -290,13 +290,16 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             </CardBody>
           </Card>
           <Card className="section">
-            <CardTitle>
-              <span>Any Daily Updates? (Last Updated:&nbsp;</span>
-              {latestDailyUpdate.createdAt ? (
-                <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-              ) : (
-                <Translate contentKey="recordCard.unknown" />
-              )})
+            <CardTitle className="d-block">
+              <div className="d-inline-block">Any Daily Updates?</div>
+              <div className="d-inline-block">
+                &nbsp;(Last Updated:&nbsp;
+                {latestDailyUpdate.createdAt ? (
+                  <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                ) : (
+                  <Translate contentKey="recordCard.unknown" />
+                )})
+              </div>
             </CardTitle>
             <CardBody>
               <AvInput
@@ -624,7 +627,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               />
             )}
             <Button onClick={this.openDialog('deactivate')} className="deactivate">
-              Deactivate Record
+              <span>Deactivate Record</span>
             </Button>
             <div className="pull-right">
               {this.state.openDialogs.indexOf('discard') !== -1 && (
