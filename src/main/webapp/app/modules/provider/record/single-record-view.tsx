@@ -72,9 +72,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   toggleLocations = () => this.setState({ isLocationsOpen: !this.state.isLocationsOpen });
 
   componentDidMount() {
-    if (!this.props.taxonomies || !this.props.taxonomies.length) {
-      this.props.getProviderTaxonomies();
-    }
+    this.props.getProviderTaxonomies();
     this.props.getProviderEntity(this.props.match.params.orgId);
   }
 
