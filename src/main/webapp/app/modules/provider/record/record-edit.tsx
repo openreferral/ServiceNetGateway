@@ -22,6 +22,7 @@ import ServiceLogo from '../../../../static/images/service.svg';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
+import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/measure-widths';
 
 export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{id: string}> {}
 
@@ -41,6 +42,7 @@ export interface IRecordEditViewState {
 const ORGANIZATION = 'organization';
 const LOCATION = 'location';
 const SERVICE = 'service';
+const MAX_PILLS_WIDTH = 400;
 
 const locationModel = {
   address1: '',
@@ -53,6 +55,15 @@ const locationModel = {
 const serviceModel = {
   locationIndexes: []
 };
+
+const TaxonomyOptionPill = taxonomyOption => (
+  <div className="pill pill-sm" key={taxonomyOption.value}>
+    <span>{taxonomyOption.label}</span>
+  </div>
+);
+
+const RemainderCount = count => <span className="remainder">+ {count}</span>;
+const measureId = idx => 'measure-svc-' + idx;
 
 export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEditViewState> {
   state: IRecordEditViewState = {
@@ -85,6 +96,14 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         locations: this.props.organization.locations || this.state.locations,
         services: this.props.organization.services || this.state.services,
         latestDailyUpdate: this.props.organization.dailyUpdates.find(du => du.expiry === null) || {}
+      });
+    }
+    if (prevProps.taxonomyOptions !== this.props.taxonomyOptions) {
+      measureWidths(
+        [...this.props.taxonomyOptions.map(item => TaxonomyOptionPill(item))],
+        measureId(this.props.match.params.id)
+      ).then((taxonomyWidths: any[]) => {
+        this.props.taxonomyOptions.forEach((to, i) => to['width'] = taxonomyWidths[i] || 200);
       });
     }
   }
@@ -231,12 +250,27 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   }
 
+  taxonomyPills = service => {
+    const taxonomyOptions = this.props.taxonomyOptions.filter(to =>
+      service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1);
+    const widths = taxonomyOptions.map(to => to['width']);
+    const itemCount = getColumnCount(widths, MAX_PILLS_WIDTH) || 0;
+    return <div className="pills record-card">{taxonomyOptions.slice(0, itemCount).map(to => (
+      <div className="pill pill-sm" key={to.value}>
+        <span>{to.label}</span>
+      </div>
+    ))}
+      {(itemCount < taxonomyOptions.length) ? RemainderCount(taxonomyOptions.length - itemCount) : ''}
+    </div>;
+  }
+
   render() {
     const { openSections, locations, services, openLocation, openService, latestDailyUpdate,
       invalidSections, invalidLocations, invalidServices } = this.state;
     const { updating, taxonomyOptions, organization } = this.props;
     return organization.id ? (
       <AvForm onSubmit={this.saveRecord} className="record-edit background" model={organization}>
+        <div id={measureId(this.props.match.params.id)} style={containerStyle} />
         <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
           <AvField name="id" value={organization.id} className="d-none" />
           <Card className="section">
@@ -483,13 +517,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                               <div className="card-heading">
                                 <FontAwesomeIcon icon={faCircle} className="edit" /> {service['name']}
                               </div>
-                              <div className="pills record-card">{taxonomyOptions.filter(to =>
-                                service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1).map(to => (
-                                <div className="pill pill-sm" key={to.value}>
-                                  <span>{to.label}</span>
-                                </div>
-                              ))}
-                              </div>
+                              {this.taxonomyPills(service)}
                             </div>
                           </div>
                         </CardBody>
