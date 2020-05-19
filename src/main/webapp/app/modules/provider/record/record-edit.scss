@@ -43,21 +43,6 @@
       }
 
       .card-right {
-        .pill-sm {
-          display: inline-block;
-          margin-top: 5px;
-
-          span {
-            margin-right: 8px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            border: 1px lightgrey solid;
-            padding: 2px 8px;
-            border-radius: 16px;
-          }
-        }
-
         svg {
           height: 0.5em;
           margin-bottom: 0.25em;
@@ -222,6 +207,21 @@
   .services {
     .top-bar {
       background-color: #F5EFF1;
+    }
+  }
+
+  .pill-sm {
+    display: inline-block;
+    margin-top: 5px;
+
+    span {
+      margin-right: 8px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      border: 1px lightgrey solid;
+      padding: 2px 8px;
+      border-radius: 16px;
     }
   }
 }

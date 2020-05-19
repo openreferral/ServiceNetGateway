@@ -12,15 +12,17 @@ export const containerStyle = {
 export const measureWidths = (elements, parentId = 'measure-layer') =>
   new Promise((resolve, reject) => {
     const measureLayer = document.getElementById(parentId);
-    try {
-      ReactDOM.render(elements, measureLayer, () => {
-        const rendered = document.getElementById(measureLayer.id);
-        const widths = [].slice.call(rendered.children).map(child => child.clientWidth);
-        ReactDOM.unmountComponentAtNode(rendered);
-        resolve(widths);
-      });
-    } catch {
-      reject();
+    if (measureLayer) {
+      try {
+        ReactDOM.render(elements, measureLayer, () => {
+          const rendered = document.getElementById(measureLayer.id);
+          const widths = [].slice.call(rendered.children).map(child => child.clientWidth);
+          ReactDOM.unmountComponentAtNode(rendered);
+          resolve(widths);
+        });
+      } catch {
+        reject();
+      }
     }
   });
 
