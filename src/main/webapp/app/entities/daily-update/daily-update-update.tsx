@@ -15,6 +15,8 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import AvSelect from '@availity/reactstrap-validation-select';
 
+const MAX_PAGE_SIZE = 2147483647;
+
 export interface IDailyUpdateUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
@@ -36,7 +38,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
       props.getEntity(props.match.params.id);
     }
 
-    props.getOrganizations();
+    props.getOrganizations(0, MAX_PAGE_SIZE, 'name');
   }, []);
 
   const onBlobChange = (isAnImage, name) => event => {
@@ -76,7 +78,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="serviceNetGatewayApp.serviceNetDailyUpdate.home.createOrEditLabel">Create or edit a DailyUpdate</h2>
+          <h2 id="serviceNetGatewayApp.serviceNetDailyUpdate.home.createOrEditLabel">Create or edit a Daily Update</h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
