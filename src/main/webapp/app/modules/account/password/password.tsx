@@ -8,8 +8,9 @@ import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { savePassword, reset } from './password.reducer';
+import { RouteComponentProps } from 'react-router-dom';
 
-export interface IUserPasswordProps extends StateProps, DispatchProps {}
+export interface IUserPasswordProps extends StateProps, DispatchProps, RouteComponentProps {}
 
 export interface IUserPasswordState {
   password: string;
@@ -31,6 +32,7 @@ export class PasswordPage extends React.Component<IUserPasswordProps, IUserPassw
 
   handleValidSubmit = (event, values) => {
     this.props.savePassword(values.currentPassword, values.newPassword);
+    this.props.history.push(`/`);
   };
 
   updatePassword = event => {
@@ -41,7 +43,7 @@ export class PasswordPage extends React.Component<IUserPasswordProps, IUserPassw
     const { account } = this.props;
 
     return (
-      <div>
+      <div className="m-3">
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="password-title">

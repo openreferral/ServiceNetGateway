@@ -8,8 +8,9 @@ import { locales, languages } from 'app/config/translation';
 import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
 import { saveAccountSettings, reset } from './settings.reducer';
+import { RouteComponentProps } from 'react-router-dom';
 
-export interface IUserSettingsProps extends StateProps, DispatchProps {}
+export interface IUserSettingsProps extends StateProps, DispatchProps, RouteComponentProps {}
 
 export interface IUserSettingsState {
   account: any;
@@ -32,13 +33,14 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
 
     this.props.saveAccountSettings(account);
     event.persist();
+    this.props.history.push(`/`);
   };
 
   render() {
     const { account } = this.props;
 
     return (
-      <div>
+      <div className="m-3">
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="settings-title">

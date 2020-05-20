@@ -41,10 +41,10 @@ export const Brand = props => (
         <Translate contentKey="global.menu.aboutUs" />
       </span>
     </NavLink>
-    <NavLink exact tag={Link} to="/contact" className="pl-0">
+    <a href={'mailto:servicenet@benetech.org'} className="pl-0">
       <span className="navbar-label text-dark header-link">
         <Translate contentKey="global.menu.contact" />
       </span>
-    </NavLink>
+    </a>
   </div>
 );
