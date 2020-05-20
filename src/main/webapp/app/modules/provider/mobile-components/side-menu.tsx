@@ -12,8 +12,14 @@ export const SideMenu = props => (
     <Link to={'/about-us'} onClick={() => props.toggleMenu()}>
       <Translate contentKey="global.menu.aboutUs" />
     </Link>
-    <Link to={'/contact'} onClick={() => props.toggleMenu()}>
+    <a href={'mailto:servicenet@benetech.org'} onClick={() => props.toggleMenu()}>
       <Translate contentKey="global.menu.contact" />
+    </a>
+    <Link to={'account/settings'} onClick={() => props.toggleMenu()}>
+      <Translate contentKey="global.menu.account.settings">Settings</Translate>
+    </Link>
+    <Link to={'account/password'} onClick={() => props.toggleMenu()}>
+      <Translate contentKey="global.menu.account.password">Password</Translate>
     </Link>
     <Link to={'/logout'} onClick={() => props.toggleMenu()}>
       <Translate contentKey="global.menu.account.logout">Sign out</Translate>
