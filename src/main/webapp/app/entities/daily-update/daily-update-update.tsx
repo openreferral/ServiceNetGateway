@@ -2,18 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { ICrudGetAction, ICrudGetAllAction, setFileData, byteSize, ICrudPutAction, translate } from 'react-jhipster';
+import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { setFileData, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { IOrganization } from 'app/shared/model/organization.model';
-import { getEntities as getOrganizations } from 'app/entities/organization/organization.reducer';
 import { getEntity, updateEntity, createEntity, setBlob, reset } from './daily-update.reducer';
-import { IDailyUpdate } from 'app/shared/model/ServiceNet/daily-update.model';
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import AvSelect from '@availity/reactstrap-validation-select';
+import { getProviderRecords, getAllProviderRecords } from 'app/modules/provider/provider-record.reducer';
 
 const MAX_PAGE_SIZE = 2147483647;
 
@@ -23,7 +20,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
   const [organizationId, setOrganizationId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { dailyUpdateEntity, organizations, loading, updating } = props;
+  const { dailyUpdateEntity, allRecords, loading, updating } = props;
 
   const { update } = dailyUpdateEntity;
 
@@ -38,7 +35,8 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
       props.getEntity(props.match.params.id);
     }
 
-    props.getOrganizations(0, MAX_PAGE_SIZE, 'name');
+    props.getAllProviderRecords(0, MAX_PAGE_SIZE, 'name', true);
+    props.getProviderRecords();
   }, []);
 
   const onBlobChange = (isAnImage, name) => event => {
@@ -126,17 +124,17 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
                     required: { value: true, errorMessage: translate('entity.validation.required') }
                   }}
                   name="organizationId"
-                  options={organizations
-                    ? organizations.map(otherEntity => (
-                      { value: otherEntity.id, label: otherEntity.name }
+                  options={allRecords
+                    ? allRecords.map(otherEntity => (
+                      { value: otherEntity.organization.id, label: otherEntity.organization.name }
                     ))
                     : []}
                 >
                   <option value="" key="0" />
-                  {organizations
-                    ? organizations.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.name}
+                  {allRecords
+                    ? allRecords.map(otherEntity => (
+                        <option value={otherEntity.organization.id} key={otherEntity.organization.id}>
+                          {otherEntity.organization.name}
                         </option>
                       ))
                     : null}
@@ -161,7 +159,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  organizations: storeState.organization.entities,
+  allRecords: storeState.providerRecord.allRecords.concat(storeState.providerRecord.records),
   dailyUpdateEntity: storeState.dailyUpdate.entity,
   loading: storeState.dailyUpdate.loading,
   updating: storeState.dailyUpdate.updating,
@@ -169,7 +167,8 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getOrganizations,
+  getAllProviderRecords,
+  getProviderRecords,
   getEntity,
   updateEntity,
   setBlob,
