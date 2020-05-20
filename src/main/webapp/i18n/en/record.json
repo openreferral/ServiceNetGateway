@@ -4,6 +4,12 @@
       "title": "Have more data to contribute?",
       "buttonLabel": "Add a new record"
     },
+    "edit": {
+      "title": "Updating Your Record",
+      "dailyUpdatesQuestion": "Any Daily Updates?",
+      "lastUpdated": "Last Updated",
+      "updateOrganizationDetails": "Update Organization Details"
+    },
     "name": "Organization Name",
     "description": "Organization Description",
     "url": "Organization Website",
@@ -22,7 +28,9 @@
       "address2": "Address 2",
       "city": "City",
       "ca": "CA",
-      "zipcode": "Zip Code"
+      "zipcode": "Zip Code",
+      "details": "Location Details",
+      "back": "Back to all Locations"
     },
     "service": {
       "add": "Add Service",
@@ -32,13 +40,18 @@
       "description": "Service Description",
       "applicationProcess": "Application Process",
       "eligibilityCriteria": "Eligibility Criteria",
-      "locations": "Which Locations Offer This Service?"
+      "locations": "Which Locations Offer This Service?",
+      "details": "Service Details",
+      "back": "Back to all Services"
     },
     "navigation": {
       "goBack": "Go Back",
       "addLocations": "Add Locations",
       "addServices": "Add Services",
-      "submit": "I'm Finished"
+      "submit": "I'm Finished",
+      "deactivate": "Deactivate Record",
+      "discard": "Discard Changes",
+      "done": "Done"
     },
     "heading": {
       "organization": "Tell us a bit about your organization!",
