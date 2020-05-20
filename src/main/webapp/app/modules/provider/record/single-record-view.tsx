@@ -2,7 +2,7 @@ import './single-record-view.scss';
 
 import React from 'react';
 import { Collapse, Button, CardBody, Card, CardTitle, Progress } from 'reactstrap';
-import { Translate, translate } from 'react-jhipster';
+import { TextFormat, Translate, translate } from 'react-jhipster';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
@@ -12,6 +12,7 @@ import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { measureWidths, getColumnCount } from 'app/shared/util/measure-widths';
+import { APP_DATE_FORMAT } from 'app/config/constants';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
 // @ts-ignore
@@ -140,6 +141,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     const { organization, taxonomies } = this.props;
     const locationsCount = organization && organization.locations ? organization.locations.length : 0;
     const servicesCount = organization && organization.services ? organization.services.length : 0;
+    const latestDailyUpdate = organization && organization.services ? organization.dailyUpdates.find(du => du.expiry === null) || {} : null;
 
     return (
       <div className="background single-record-view">
@@ -223,10 +225,23 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           <Card className="record-card">
             <CardTitle className="card-title">
               <Translate contentKey="record.singleRecordView.dailyUpdates" />
+              &nbsp;
+              {latestDailyUpdate && latestDailyUpdate.update ? (
+                <span>
+                  ({translate('record.singleRecordView.lastUpdated')}
+                  :&nbsp;
+                  {latestDailyUpdate.createdAt ? (
+                    <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                  ) : (
+                    <Translate contentKey="recordCard.unknown" />
+                  )}
+                  )
+                </span>
+              ) : null}
             </CardTitle>
-            <CardBody>
-              {organization && organization.dailyUpdates && organization.dailyUpdates.length > 0 ? (
-                organization.dailyUpdates.map(dailyUpdate => <span key={dailyUpdate.id}>{dailyUpdate.update}</span>)
+            <CardBody className="p-2">
+              {latestDailyUpdate && latestDailyUpdate.update ? (
+                <span className="p-0">{latestDailyUpdate.update}</span>
               ) : (
                 <div className="w-100 text-center p-2">
                   <Translate contentKey="record.singleRecordView.noNewUpdates" />

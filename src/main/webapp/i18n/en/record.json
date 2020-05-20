@@ -67,7 +67,8 @@
       "noServices": "No Services Provided",
       "noServiceName": "No Service Name Provided",
       "noLocations": "No Locations Provided",
-      "untyped": "Untyped"
+      "untyped": "Untyped",
+      "lastUpdated": "Last updated"
     },
     "deactivateQuestion": "Are you sure you want to deactivate this record?",
     "discardQuestion": "Are you sure you want to discard your changes?"
