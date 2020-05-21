@@ -35,7 +35,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
       props.getEntity(props.match.params.id);
     }
 
-    props.getAllProviderRecords(0, MAX_PAGE_SIZE, 'name', true);
+    props.getAllProviderRecords(0, MAX_PAGE_SIZE, 'name', '', true);
     props.getProviderRecords();
   }, []);
 

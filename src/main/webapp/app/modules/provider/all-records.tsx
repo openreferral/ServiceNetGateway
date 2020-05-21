@@ -36,21 +36,25 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   }
 
   componentDidMount() {
-    const { itemsPerPage, sort, order } = this.state;
-    this.props.getAllProviderRecords(0, itemsPerPage, `${sort},${order}`, this.props.providerFilter);
+    this.getRecords(true);
   }
 
   componentDidUpdate(prevProps) {
     const { itemsPerPage, sort, order } = this.state;
 
-    if (this.props.providerFilter !== prevProps.providerFilter) {
-      this.props.getAllProviderRecords(0, itemsPerPage, `${sort},${order}`, this.props.providerFilter);
+    if (this.props.providerFilter !== prevProps.providerFilter 
+      || prevProps.search !== this.props.search) {
+      this.getRecords(true);
     }
   }
 
-  getAllRecords = () => {
+  getRecords(isInitLoading = false) {
     const { itemsPerPage, activePage, sort, order } = this.state;
-    this.props.getAllProviderRecords(activePage, itemsPerPage, `${sort},${order}`, this.props.providerFilter, false);
+    this.props.getAllProviderRecords(activePage, itemsPerPage, `${sort},${order}`, this.props.providerFilter, this.props.search, isInitLoading);
+  }
+
+  getAllRecords = () => {
+    this.getRecords(false);
   };
 
   handleLoadMore = hasReachedMaxItems => {
@@ -73,7 +77,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     ReactGA.event({ category: 'UserActions', action: 'Sorting Records' });
 
     this.setState({ sort, order, activePage: 0 }, () => {
-      this.props.getAllProviderRecords(0, this.state.itemsPerPage, `${sort},${order}`, this.props.providerFilter, true);
+      this.props.getAllProviderRecords(0, this.state.itemsPerPage, `${sort},${order}`, this.props.providerFilter, this.props.search, true);
     });
   };
 
@@ -179,7 +183,8 @@ const mapStateToProps = state => ({
   allRecords: state.providerRecord.allRecords,
   allRecordsTotal: state.providerRecord.allRecordsTotal,
   account: state.authentication.account,
-  providerFilter: state.providerFilter.filter
+  providerFilter: state.providerFilter.filter,
+  search: state.search.text
 });
 
 const mapDispatchToProps = {
