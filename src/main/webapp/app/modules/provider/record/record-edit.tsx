@@ -275,7 +275,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <AvField name="id" value={organization.id} className="d-none" />
           <Card className="section">
             <CardTitle>
-              Updating Your Record
+              <Translate contentKey="record.edit.title" />
             </CardTitle>
             <CardBody>
               <AvField
@@ -291,9 +291,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           </Card>
           <Card className="section">
             <CardTitle className="d-block">
-              <div className="d-inline-block">Any Daily Updates?</div>
+              <div className="d-inline-block"><Translate contentKey="record.edit.dailyUpdatesQuestion" /></div>
               <div className="d-inline-block">
-                &nbsp;(Last Updated:&nbsp;
+                &nbsp;(<Translate contentKey="record.edit.lastUpdated" />:&nbsp;
                 {latestDailyUpdate.createdAt ? (
                   <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                 ) : (
@@ -313,7 +313,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <Card className="section expandable">
             <CardTitle onClick={this.toggle(ORGANIZATION)} className="clickable">
               <img src={PeopleLogo} height={25} alt="Organization" />
-              Update Organization Details
+              <Translate contentKey="record.edit.updateOrganizationDetails" />
               <FontAwesomeIcon icon={openSections.includes(ORGANIZATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg"/>
             </CardTitle>
             <Collapse isOpen={openSections.includes(ORGANIZATION)}>
@@ -351,14 +351,17 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <Card className="section expandable locations">
             <CardTitle onClick={this.toggle(LOCATION)} className="clickable">
               <img src={BuildingLogo} height={25} alt="Location" />
-              Location Details
+              <Translate contentKey="record.location.details"/>
               <Badge color="light" pill>{locations.length}</Badge>
               <FontAwesomeIcon icon={openSections.includes(LOCATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg"/>
             </CardTitle>
             <Collapse isOpen={openSections.includes(LOCATION)}>
               <div>
                 <div className={openLocation !== -1 ? 'd-flex top-bar' : 'd-none'}>
-                  <div onClick={this.openLocation(-1)} className="clickable"><FontAwesomeIcon icon="arrow-left" /> Back to All Locations</div>
+                  <div onClick={this.openLocation(-1)} className="clickable">
+                    <FontAwesomeIcon icon="arrow-left" />&nbsp;
+                    <Translate contentKey="record.location.back"/>
+                  </div>
                   <div className="d-flex pull-right">
                     <div onClick={this.openLocation((openLocation > 0) ? openLocation - 1 : locations.length - 1)} className="clickable" >
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
@@ -468,7 +471,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                             &nbsp;
                             <Translate contentKey="record.location.remove"/>
                           </Button>
-                          <Button onClick={this.openLocation(-1)} className="pull-right">Done</Button>
+                          <Button onClick={this.openLocation(-1)} className="pull-right">
+                            <Translate contentKey="record.navigation.done" />
+                          </Button>
                         </div>
                       </div>
                   </div>
@@ -485,14 +490,17 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <Card className="section expandable services">
             <CardTitle onClick={this.toggle(SERVICE)} className="clickable">
               <img src={ServiceLogo} height={25} alt="Service" />
-              Service Details
+              <Translate contentKey="record.service.details"/>
               <Badge color="light" pill>{services.length}</Badge>
               <FontAwesomeIcon icon={openSections.includes(SERVICE) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg"/>
             </CardTitle>
             <Collapse isOpen={openSections.includes(SERVICE)}>
               <div>
                 <div className={openService !== -1 ? 'd-flex top-bar' : 'd-none'}>
-                  <div onClick={this.openService(-1)} className="clickable"><FontAwesomeIcon icon="arrow-left" /> Back to All Services</div>
+                  <div onClick={this.openService(-1)} className="clickable">
+                    <FontAwesomeIcon icon="arrow-left" />&nbsp;
+                    <Translate contentKey="record.service.back"/>
+                  </div>
                   <div className="d-flex pull-right">
                     <div onClick={this.openService((openService > 0) ? openService - 1 : services.length - 1)} className="clickable" >
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
@@ -604,7 +612,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                             &nbsp;
                             <Translate contentKey="record.service.remove"/>
                           </Button>
-                          <Button onClick={this.openService(-1)} className="pull-right">Done</Button>
+                          <Button onClick={this.openService(-1)} className="pull-right">
+                            <Translate contentKey="record.navigation.done" />
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -627,7 +637,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               />
             )}
             <Button onClick={this.openDialog('deactivate')} className="deactivate">
-              <span>Deactivate Record</span>
+              <Translate contentKey="record.navigation.deactivate" />
             </Button>
             <div className="pull-right">
               {this.state.openDialogs.indexOf('discard') !== -1 && (
@@ -638,7 +648,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 />
               )}
               <Button onClick={this.openDialog('discard')} className="go-back">
-                Discard Changes
+                <Translate contentKey="record.navigation.discard" />
               </Button>
               <Button id="submit" type="submit" disabled={updating} color="primary">
                 <FontAwesomeIcon icon="save" />
