@@ -33,7 +33,8 @@
       "account": "Account",
       "funding": "Funding",
       "programs": "Programs",
-      "services": "Services"
+      "services": "Services",
+      "providerName": "Provider Name"
     }
   }
 }
