@@ -223,7 +223,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
         <div className="col-md-8 offset-md-2 card-section">
           <Card className="record-card">
-            <CardTitle className="card-title">
+            <CardTitle className="card-title flex-wrap">
               <Translate contentKey="record.singleRecordView.dailyUpdates" />
               &nbsp;
               {latestDailyUpdate && latestDailyUpdate.update ? (
