@@ -343,8 +343,73 @@
       cursor: auto !important;
     }
   }
+
+  .apply {
+    span {
+      background-color: #e78859 !important;
+      color: white;
+      border: 1px black solid;
+    }
+  }
 }
 
 .sort-menu-item {
   cursor: pointer;
+}
+
+.multi-select-pill {
+  span {
+    display: flex !important;
+    padding: 2px 1rem;
+  }
+  span:hover {
+    cursor: pointer;
+  }
+}
+
+.filter-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: 0.125rem;
+  border-top-right-radius: 0.125rem;
+}
+
+.filter-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  margin-bottom: 50px;
+}
+
+.filter-footer {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1rem;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  height: 50px;
+  border-top: 1px solid #dee2e6;
+  border-bottom-right-radius: 0.125rem;
+  border-bottom-left-radius: 0.125rem;
+}
+
+.filter-card {
+  min-height: calc(440px + 1.5rem);
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  font-family: 'Muli', serif;
+  font-size: 12px;
+  box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.filter-modal {
+  background: rgba(0, 0, 0, 0);
+  border: none;
 }

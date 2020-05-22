@@ -1,7 +1,7 @@
 import React from 'react';
 import { getAllProviderRecords } from './provider-record.reducer';
 import { connect } from 'react-redux';
-import { Col, Row, Progress } from 'reactstrap';
+import { Col, Row, Progress, Modal } from 'reactstrap';
 import _ from 'lodash';
 import RecordCard from 'app/modules/provider/record/record-card';
 import { IPaginationBaseState, Translate } from 'react-jhipster';
@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SortSection from 'app/modules/provider/sort-section';
 import { getSearchPreferences, PROVIDER_SORT_ARRAY, setProviderSort } from 'app/shared/util/search-utils';
 import ReactGA from 'react-ga';
+import ButtonPill from './shared/button-pill';
+import FilterCard from './filter-card';
+import MediaQuery from 'react-responsive';
 
 export interface IAllRecordsProps extends StateProps, DispatchProps {}
 
@@ -16,6 +19,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   itemsPerPage: number;
   activePage: number;
   sortingOpened: boolean;
+  filterOpened: boolean;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
@@ -26,18 +30,27 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       itemsPerPage: 6,
       activePage: 0,
       sortingOpened: false,
+      filterOpened: false,
       ...providerSearchPreferences
     };
   }
 
   componentDidMount() {
     const { itemsPerPage, sort, order } = this.state;
-    this.props.getAllProviderRecords(0, itemsPerPage, `${sort},${order}`, true);
+    this.props.getAllProviderRecords(0, itemsPerPage, `${sort},${order}`, this.props.providerFilter);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { itemsPerPage, sort, order } = this.state;
+
+    if (this.props.providerFilter !== prevProps.providerFilter) {
+      this.props.getAllProviderRecords(0, itemsPerPage, `${sort},${order}`, this.props.providerFilter);
+    }
   }
 
   getAllRecords = () => {
     const { itemsPerPage, activePage, sort, order } = this.state;
-    this.props.getAllProviderRecords(activePage, itemsPerPage, `${sort},${order}`, false);
+    this.props.getAllProviderRecords(activePage, itemsPerPage, `${sort},${order}`, this.props.providerFilter, false);
   };
 
   handleLoadMore = hasReachedMaxItems => {
@@ -50,22 +63,69 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({ sortingOpened: !this.state.sortingOpened });
   };
 
+  toggleFilter = () => {
+    this.setState({ filterOpened: !this.state.filterOpened });
+  };
+
   sort = (sort, order) => {
     setProviderSort(this.props.account.login, sort, order);
 
     ReactGA.event({ category: 'UserActions', action: 'Sorting Records' });
 
     this.setState({ sort, order, activePage: 0 }, () => {
-      this.props.getAllProviderRecords(0, this.state.itemsPerPage, `${sort},${order}`, true);
+      this.props.getAllProviderRecords(0, this.state.itemsPerPage, `${sort},${order}`, this.props.providerFilter, true);
     });
+  };
+
+  mapRecords = (records, colSize = 4) =>
+    _.map(records, record => (
+      <Col key={record.organization.id} md={colSize}>
+        <div className="mb-4">
+          <RecordCard record={record} link={`single-record-view/${record.organization.id}`} />
+        </div>
+      </Col>
+    ));
+
+  mapWithFilter = allRecords => {
+    const { filterOpened } = this.state;
+    const elementsBesideFilter = _.slice(allRecords, 0, 4);
+    const elementsAfterFilter = _.slice(allRecords, 4);
+    return (
+      <div className="m-0 p-0 w-100">
+        <Row noGutters>
+          <Col md={12}>
+            <Row noGutters>
+              <Col md={8}>
+                <Row noGutters>{this.mapRecords(elementsBesideFilter, 6)}</Row>
+              </Col>
+              <Col md={4}>
+                <div className="filter-card mx-3 mb-4">
+                  <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} />
+                </div>
+              </Col>
+            </Row>
+          </Col>
+          <Col md={12}>
+            <Row noGutters>{this.mapRecords(elementsAfterFilter, 4)}</Row>
+          </Col>
+        </Row>
+      </div>
+    );
   };
 
   render() {
     const { allRecords, allRecordsTotal } = this.props;
-    const { sortingOpened } = this.state;
+    const { sortingOpened, filterOpened } = this.state;
     const hasReachedMaxItems = allRecords.length === parseInt(allRecordsTotal, 10);
     return (
       <div>
+        <MediaQuery maxDeviceWidth={768}>
+          <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
+            <div className="filter-card mx-3 mb-4">
+              <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} />
+            </div>
+          </Modal>
+        </MediaQuery>
         <div className="control-line-container">
           <div className="d-flex justify-content-between">
             <b className="align-self-center">
@@ -95,20 +155,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 <FontAwesomeIcon icon="bars" />
               </span>
             </div>
-            <div className="pill">
-              <Translate contentKey="providerSite.filter" />
-            </div>
+            <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" />
           </div>
         </div>
         <Row noGutters>
-          {_.map(allRecords, record => (
-            <Col md={4}>
-              <div className="mb-4">
-                <RecordCard key={record.organization.id} record={record} link={`single-record-view/${record.organization.id}`} />
-              </div>
-            </Col>
-          ))}
-          <Col />
+          <MediaQuery maxDeviceWidth={768}>{this.mapRecords(allRecords)}</MediaQuery>
+          <MediaQuery minDeviceWidth={769}>{filterOpened ? this.mapWithFilter(allRecords) : this.mapRecords(allRecords)}</MediaQuery>
         </Row>
         <div className="pill mb-4 text-center">
           <div
@@ -126,7 +178,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 const mapStateToProps = state => ({
   allRecords: state.providerRecord.allRecords,
   allRecordsTotal: state.providerRecord.allRecordsTotal,
-  account: state.authentication.account
+  account: state.authentication.account,
+  providerFilter: state.providerFilter.filter
 });
 
 const mapDispatchToProps = {

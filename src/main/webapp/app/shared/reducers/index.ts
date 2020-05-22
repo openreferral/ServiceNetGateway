@@ -215,6 +215,7 @@ import requestLogger, { RequestLoggerState } from 'app/entities/request-logger/r
 import clientManagement, { ClientManagementState } from 'app/modules/administration/client-management/client-management.reducer';
 import dataStatus, { DataStatusState } from 'app/modules/data-status/data-status.reducer';
 import providerRecord, { ProviderRecordsState } from 'app/modules/provider/provider-record.reducer';
+import providerFilter, { ProviderFilterState } from 'app/modules/provider/provider-filter.reducer';
 
 // prettier-ignore
 import dailyUpdate, {
@@ -293,6 +294,7 @@ export interface IRootState {
   readonly dataStatus: DataStatusState;
   readonly requestLogger: RequestLoggerState;
   readonly providerRecord: ProviderRecordsState;
+  readonly providerFilter: ProviderFilterState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -365,7 +367,8 @@ const rootReducer = combineReducers<IRootState>({
   feedback,
   requestLogger,
   dataStatus,
-  providerRecord
+  providerRecord,
+  providerFilter
 });
 
 export default rootReducer;

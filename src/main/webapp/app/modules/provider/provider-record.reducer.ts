@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import _ from 'lodash';
 
 export const ACTION_TYPES = {
   FETCH_RECORDS: 'records/FETCH_RECORDS',
@@ -71,13 +72,18 @@ export const getProviderRecords = () => ({
   payload: axios.get(userRecordApiUrl)
 });
 
-export const getAllProviderRecords = (page, itemsPerPage, sort, isInitLoading = true) => {
+export const getAllProviderRecords = (page, itemsPerPage, sort, filter, isInitLoading = true) => {
   const pageableUrl = `${allRecordApiUrl}?page=${page}&size=${itemsPerPage}&sort=${sort}`;
   return {
     type: ACTION_TYPES.FETCH_ALL_RECORDS,
-    payload: axios.get(pageableUrl),
+    payload: axios.post(pageableUrl, clearFilter(filter)),
     meta: {
       isInitLoading
     }
   };
 };
+
+const clearFilter = filter => ({
+  ...filter,
+  serviceTypes: _.map(filter.serviceTypes, s => s.value)
+});

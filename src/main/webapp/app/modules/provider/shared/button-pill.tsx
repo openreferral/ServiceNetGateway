@@ -3,8 +3,10 @@ import { Translate } from 'react-jhipster';
 
 const ButtonPill = props => (
   <div className="pill button-pill" onClick={props.onClick}>
-    <div className="d-inline button-pill">
-      <Translate contentKey={props.translate} />
+    <div className={`d-inline button-pill ${props.additionalClass}`}>
+      <b>
+        <Translate contentKey={props.translate} />
+      </b>
     </div>
   </div>
 );

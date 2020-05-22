@@ -38,7 +38,9 @@ const SortActivity = props => {
       <MediaQuery maxDeviceWidth={768}>
         <ButtonPill onClick={toggleSort} translate="providerSite.sort" />
         <Modal isOpen={dropdownOpen} centered toggle={toggleSort}>
-          <ModalHeader>Sort</ModalHeader>
+          <ModalHeader>
+            <Translate contentKey="providerSite.sort" />
+          </ModalHeader>
           <ModalBody>{menuContent}</ModalBody>
           <ModalFooter>
             <ButtonPill onClick={toggleSort} translate="providerSite.close" />
