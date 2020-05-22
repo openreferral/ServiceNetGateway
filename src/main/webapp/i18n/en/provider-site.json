@@ -6,8 +6,16 @@
     "loadMore": "Load more",
     "allRecords": "All records",
     "filter": "Filter",
+    "filterRecords": "Filter records",
     "sort": "Sort",
     "close": "Close",
+    "clear": "Clear",
+    "apply": "Apply",
+    "location": "Locations",
+    "serviceType": "Service type",
+    "city": "City",
+    "county": "County",
+    "zipCode": "ZIP code",
     "sortProperties": {
       "updatedAt": "Recently updated",
       "name": "Alphabetical"
