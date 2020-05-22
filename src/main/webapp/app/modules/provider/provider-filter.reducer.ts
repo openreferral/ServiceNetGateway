@@ -3,13 +3,18 @@ export const ACTION_TYPES = {
   RESET_FILTER: 'providerFilter/RESET_FILTER'
 };
 
-const initialState = {
-  filter: {
-    city: '',
+const FILTER_DEFAULT = {
+  city: '',
     region: '',
     zip: '',
     serviceTypes: [] as any[]
-  }
+};
+
+const initialState = {
+  filter: {
+    ...FILTER_DEFAULT
+  },
+  defaultFilter: FILTER_DEFAULT
 };
 
 export type ProviderFilterState = Readonly<typeof initialState>;

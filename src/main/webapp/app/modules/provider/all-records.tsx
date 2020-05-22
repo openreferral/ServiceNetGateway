@@ -42,7 +42,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   componentDidUpdate(prevProps) {
     const { itemsPerPage, sort, order } = this.state;
 
-    if (this.props.providerFilter !== prevProps.providerFilter 
+    if (this.props.providerFilter !== prevProps.providerFilter
       || prevProps.search !== this.props.search) {
       this.getRecords(true);
     }
