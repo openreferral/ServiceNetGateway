@@ -221,6 +221,10 @@ import providerFilter, { ProviderFilterState } from 'app/modules/provider/provid
 import dailyUpdate, {
   DailyUpdateState
 } from 'app/entities/daily-update/daily-update.reducer';
+
+// prettier-ignore
+import search, { SearchState } from 'app/modules/provider/menus/search.reducer';
+
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -295,6 +299,7 @@ export interface IRootState {
   readonly requestLogger: RequestLoggerState;
   readonly providerRecord: ProviderRecordsState;
   readonly providerFilter: ProviderFilterState;
+  readonly search: SearchState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -368,7 +373,8 @@ const rootReducer = combineReducers<IRootState>({
   requestLogger,
   dataStatus,
   providerRecord,
-  providerFilter
+  providerFilter,
+  search
 });
 
 export default rootReducer;

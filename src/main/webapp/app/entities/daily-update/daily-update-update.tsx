@@ -35,7 +35,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
       props.getEntity(props.match.params.id);
     }
 
-    props.getAllProviderRecords(0, MAX_PAGE_SIZE, 'name', true);
+    props.getAllProviderRecords(0, MAX_PAGE_SIZE, 'name', props.defaultFilter, '', true);
     props.getProviderRecords();
   }, []);
 
@@ -163,7 +163,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   dailyUpdateEntity: storeState.dailyUpdate.entity,
   loading: storeState.dailyUpdate.loading,
   updating: storeState.dailyUpdate.updating,
-  updateSuccess: storeState.dailyUpdate.updateSuccess
+  updateSuccess: storeState.dailyUpdate.updateSuccess,
+  defaultFilter: storeState.providerFilter.defaultFilter
 });
 
 const mapDispatchToProps = {
