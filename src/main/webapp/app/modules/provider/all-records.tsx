@@ -40,17 +40,21 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   }
 
   componentDidUpdate(prevProps) {
-    const { itemsPerPage, sort, order } = this.state;
-
-    if (this.props.providerFilter !== prevProps.providerFilter
-      || prevProps.search !== this.props.search) {
+    if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
       this.getRecords(true);
     }
   }
 
   getRecords(isInitLoading = false) {
     const { itemsPerPage, activePage, sort, order } = this.state;
-    this.props.getAllProviderRecords(activePage, itemsPerPage, `${sort},${order}`, this.props.providerFilter, this.props.search, isInitLoading);
+    this.props.getAllProviderRecords(
+      activePage,
+      itemsPerPage,
+      `${sort},${order}`,
+      this.props.providerFilter,
+      this.props.search,
+      isInitLoading
+    );
   }
 
   getAllRecords = () => {
@@ -69,6 +73,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   toggleFilter = () => {
     this.setState({ filterOpened: !this.state.filterOpened });
+  };
+
+  getFirstPage = () => {
+    this.setState({ activePage: 0 });
   };
 
   sort = (sort, order) => {
@@ -104,7 +112,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </Col>
               <Col md={4}>
                 <div className="filter-card mx-3 mb-4">
-                  <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} />
+                  <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} getFirstPage={this.getFirstPage} />
                 </div>
               </Col>
             </Row>
@@ -126,7 +134,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         <MediaQuery maxDeviceWidth={768}>
           <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
             <div className="filter-card mx-3 mb-4">
-              <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} />
+              <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} getFirstPage={this.getFirstPage} />
             </div>
           </Modal>
         </MediaQuery>
