@@ -4,10 +4,11 @@ import React from 'react';
 import axios from 'axios';
 import { Row, Col, Card, CardText, CardBody, CardTitle, CardGroup } from 'reactstrap';
 import { Translate, translate, TextFormat } from 'react-jhipster';
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import HideRecordButton from 'app/shared/layout/hide-record-button';
 import { toast } from 'react-toastify';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import IconSpan from 'app/shared/layout/icon-span';
 
 const ActivityElement = props => {
   const maxConflicts = 3;
@@ -34,7 +35,9 @@ const ActivityElement = props => {
         <CardGroup>
           <Card className="activity-card">
             <CardBody className="activity-card-body">
-              <CardTitle className="activity-left-card-title">{props.activity.organizationName}</CardTitle>
+              <IconSpan visible={props.activity.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+                <CardTitle className="activity-left-card-title">{props.activity.organizationName}</CardTitle>
+              </IconSpan>
               <CardText>{props.activity.accountName}</CardText>
             </CardBody>
           </Card>

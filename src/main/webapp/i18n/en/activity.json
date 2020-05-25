@@ -115,7 +115,8 @@
         "conflictPlusZero": " has a conflicting {{ fieldName }}"
       },
       "lastPartnerUpdate": "Last Partner Update ",
-      "hideRecord": "Done with this record"
+      "hideRecord": "Done with this record",
+      "serviceProviderOrgTooltip": "This record is maintained by the service provider"
     }
   }
 }
