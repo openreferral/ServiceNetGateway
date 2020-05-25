@@ -13,6 +13,7 @@ import { updateFilter, reset } from './provider-filter.reducer';
 export interface IFilterCardProps extends StateProps, DispatchProps {
   dropdownOpen: boolean;
   toggleFilter: Function;
+  getFirstPage: Function;
 }
 
 export interface IFilterCardState {
@@ -50,11 +51,13 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
 
   applyFilter = () => {
     const filter = { ...this.state };
+    this.props.getFirstPage();
     this.props.updateFilter({ ...filter });
     this.props.toggleFilter();
   };
 
   resetFilter = () => {
+    this.props.getFirstPage();
     this.props.reset();
     this.props.toggleFilter();
   };
