@@ -17,13 +17,14 @@ import HideRecordButton from 'app/shared/layout/hide-record-button';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import Select from 'react-select';
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import DismissModal from '../shared/components/dismiss-modal';
 import SuccessModal from '../shared/components/success-modal';
 import FieldsDisplaySettingsPanel from '../multiple/fields-display-settings-panel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 import { Details as DetailClass } from '../single/details';
+import IconSpan from 'app/shared/layout/icon-span';
 
 export interface IAllRecordsViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -219,7 +220,9 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
         <Row className="row flex-row flex-nowrap">
           {baseRecord ? (
             <div className={`record ${isOneRecord ? 'one-record m-0 w-50' : ''}`}>
-              <h2>{baseRecord.organization.name}</h2>
+              <IconSpan visible={baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+                <h2>{baseRecord.organization.name}</h2>
+              </IconSpan>
               <h4 className="from">
                 {systemAccountName === baseProviderName ? (
                   <Translate contentKey="multiRecordView.yourData" />
@@ -281,7 +284,11 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
                         {matches[idx] ? (matches[idx].similarity * 100).toFixed(2) : 0}%
                       </h5>
                     </div>
-                    <h2 className="mr-4">{partnerRecord.organization.name}</h2>
+                    <div className="mr-4">
+                      <IconSpan visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+                        <h2>{partnerRecord.organization.name}</h2>
+                      </IconSpan>
+                    </div>
                     <h4 className="from">
                       <Translate contentKey="multiRecordView.from" />
                       {partnerRecord.organization.accountName}

@@ -86,3 +86,10 @@
   width: fit-content;
   min-width: 100%;
 }
+
+.icon-span {
+  svg {
+    align-self: center;
+    font-size: 1.5rem;
+  }
+}

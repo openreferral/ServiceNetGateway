@@ -8,8 +8,9 @@ import Tabs from './tabs';
 import { getBaseRecord, getMatches } from '../shared/shared-record-view.reducer';
 import { RouteComponentProps } from 'react-router-dom';
 import { TextFormat, Translate } from 'react-jhipster';
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
+import IconSpan from 'app/shared/layout/icon-span';
 
 export interface ISingleRecordViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {
   showClipboard: boolean;
@@ -35,7 +36,9 @@ export class SingleRecordView extends React.Component<ISingleRecordViewProp, ISi
     const content = activityRecord ? (
       <Row>
         <Col>
-          <h2>{activityRecord.organization.name}</h2>
+          <IconSpan visible={activityRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+            <h2>{activityRecord.organization.name}</h2>
+          </IconSpan>
           <h5>
             {activityRecord.organization.accountId === user.systemAccountId ? (
               <Translate contentKey="multiRecordView.yourData" />

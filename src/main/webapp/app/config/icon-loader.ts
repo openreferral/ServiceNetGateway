@@ -53,6 +53,7 @@ import { faMedapps } from '@fortawesome/free-brands-svg-icons/faMedapps';
 import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 import { faTh } from '@fortawesome/free-solid-svg-icons/faTh';
 import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
+import { faUserFriends } from '@fortawesome/free-solid-svg-icons/faUserFriends';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -112,6 +113,7 @@ export const loadIcons = () => {
     faMedapps,
     faBars,
     faTh,
-    faCircle
+    faCircle,
+    faUserFriends
   );
 };
