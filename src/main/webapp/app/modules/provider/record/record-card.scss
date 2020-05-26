@@ -74,6 +74,11 @@ div.card.record-card {
     }
   }
 
+  .services .remainder {
+    position: fixed;
+    top: 0.25em;
+  }
+
   .blue {
     color: #0c32ff;
   }
@@ -85,12 +90,10 @@ div.card.record-card {
   .pill {
     display: inline-block;
     span {
-      margin-right: 8px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
       border: 1px lightgrey solid;
-      padding: 2px 8px;
       border-radius: 16px;
     }
   }

@@ -11,7 +11,7 @@ import { getProviderEntity } from 'app/entities/organization/organization.reduce
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { measureWidths, getColumnCount } from 'app/shared/util/measure-widths';
+import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
@@ -20,7 +20,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
 
-const LocationColumn = location => {
+const LocationPill = location => {
   if (!location) {
     return <div />;
   }
@@ -33,7 +33,7 @@ const LocationColumn = location => {
   );
 };
 
-const ServiceColumn = service => {
+const ServicePill = service => {
   if (!service) {
     return <div />;
   }
@@ -44,8 +44,16 @@ const ServiceColumn = service => {
   );
 };
 
+const TaxonomyOptionPill = taxonomyOption => (
+  <div className="pill pill-sm" key={taxonomyOption.value}>
+    <span>{taxonomyOption.label}</span>
+  </div>
+);
+
 const RemainderCount = count => <span className="remainder blue pl-0">+ {count}</span>;
 
+const measureId = idx => 'measure-svc-' + idx;
+const MAX_PILLS_WIDTH = 250;
 const REMAINDER_WIDTH = 25;
 
 export interface ISingleRecordViewProps extends StateProps, DispatchProps, RouteComponentProps<{ orgId: string }> {
@@ -85,12 +93,22 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   }
 
   componentWillUpdate(nextProps) {
-    if (
-      (nextProps.organization.id !== this.props.organization.id || this.state.initialLoad) &&
-      nextProps.organization.locations &&
-      nextProps.organization.services
-    ) {
-      this.measureLocationsWidth(nextProps.organization);
+    if (nextProps.organization.id !== this.props.organization.id || this.state.initialLoad) {
+      if (nextProps.organization.locations &&
+        nextProps.organization.services) {
+        this.measureLocationsWidth(nextProps.organization);
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps: Readonly<ISingleRecordViewProps>, prevState: Readonly<ISingleRecordViewState>) {
+    if (this.props.taxonomyOptions !== prevProps.taxonomyOptions) {
+      measureWidths(
+        [...this.props.taxonomyOptions.map(item => TaxonomyOptionPill(item))],
+        measureId(this.props.match.params.orgId)
+      ).then((taxonomyWidths: any[]) => {
+        this.props.taxonomyOptions.forEach((to, i) => to['width'] = taxonomyWidths[i]);
+      });
     }
   }
 
@@ -118,8 +136,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
   measureLocationsWidth = organization =>
     measureWidths([
-      ...organization.services.map(item => ServiceColumn(item)),
-      ...organization.locations.map(item => LocationColumn(item))
+      ...organization.services.map(item => ServicePill(item)),
+      ...organization.locations.map(item => LocationPill(item))
     ]).then((serviceAndLocationWidths: any[]) => {
       this.setState({
         serviceWidths: serviceAndLocationWidths.slice(0, organization.services.length),
@@ -127,6 +145,20 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
         initialLoad: false
       });
     });
+
+  taxonomyPills = service => {
+    const taxonomyOptions = this.props.taxonomyOptions.filter(to =>
+      service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1);
+    const widths = taxonomyOptions.map(to => to['width'] || 200);
+    const itemCount = getColumnCount(widths, MAX_PILLS_WIDTH) || 0;
+    return <div>{taxonomyOptions.slice(0, itemCount).map(to => (
+      <div className="pill pill-sm" key={to.value}>
+        <span>{to.label}</span>
+      </div>
+    ))}
+      {(itemCount < taxonomyOptions.length) ? RemainderCount(taxonomyOptions.length - itemCount) : ''}
+    </div>;
+  }
 
   render() {
     const {
@@ -138,13 +170,14 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
       locationWidths,
       serviceWidths
     } = this.state;
-    const { organization, taxonomies } = this.props;
+    const { organization, taxonomyOptions } = this.props;
     const locationsCount = organization && organization.locations ? organization.locations.length : 0;
     const servicesCount = organization && organization.services ? organization.services.length : 0;
     const latestDailyUpdate = organization && organization.services ? organization.dailyUpdates.find(du => du.expiry === null) || {} : null;
 
     return (
       <div className="background single-record-view">
+        <div id={measureId(this.props.match.params.orgId)} style={containerStyle} />
         <Button tag={Link} to="/" color="" className="d-none d-sm-block position-fixed go-back">
           <FontAwesomeIcon icon="angle-left" />
           &nbsp;
@@ -177,7 +210,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                               {({ index }) => {
                                 return index === itemCount
                                   ? RemainderCount(servicesCount - itemCount)
-                                  : ServiceColumn(organization.services[index]);
+                                  : ServicePill(organization.services[index]);
                               }}
                             </List>
                           );
@@ -209,7 +242,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           {({ index }) => {
                             return index === itemCount
                               ? RemainderCount(locationsCount - itemCount)
-                              : LocationColumn(organization.locations[index]);
+                              : LocationPill(organization.locations[index]);
                           }}
                         </List>
                       );
@@ -314,7 +347,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             </CardTitle>
             <Collapse isOpen={isLocationsOpen}>
               <CardBody className="details">
-                <section className="row row-cols-2 col-12 offset-md-2">
+                <section className="row col-12 details-view">
                   {locationsCount > 0 ? (
                     organization.locations.map(loc => (
                       <Card className="record-card loc-card col-md-4 col-xs-12 mb-2 mx-2 pt-3">
@@ -355,7 +388,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             </CardTitle>
             <Collapse isOpen={isServicesOpen}>
               <CardBody className="details">
-                <section className={`row row-cols-2 col-12 offset-md-2 ${detailsView ? 'd-none' : ''}`}>
+                <section className={`row col-12 details-view ${detailsView ? 'd-none' : ''}`}>
                   {servicesCount > 0 ? (
                     organization.services.map((srv, idx) => (
                       <Card className="record-card srv-card col-md-4 col-xs-12 mb-2 mx-2 pt-3" onClick={() => this.showServiceDetails(idx)}>
@@ -366,30 +399,13 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           </span>
                         </CardTitle>
                         <CardBody>
-                          {srv.taxonomyIds.length > 0 && taxonomies && taxonomies.length > 0 ? (
-                            srv.taxonomyIds.length > 2 ? (
-                              <>
-                                {srv.taxonomyIds.slice(0, 2).map(srvTaxonomy => (
-                                  <span className="pill mr-1">
-                                    {taxonomies && taxonomies.length > 0
-                                      ? taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name
-                                      : translate('record.singleRecordView.untyped')}
-                                  </span>
-                                ))}
-                                {RemainderCount(srv.taxonomyIds.length - 2)}
-                              </>
+                          <div className="services pills">
+                            {srv.taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
+                              this.taxonomyPills(srv)
                             ) : (
-                              srv.taxonomyIds.map(srvTaxonomy => (
-                                <span className="pill mr-1">
-                                  {taxonomies && taxonomies.length > 0
-                                    ? taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name
-                                    : translate('record.singleRecordView.untyped')}
-                                </span>
-                              ))
-                            )
-                          ) : (
-                            <span className="pill">{translate('record.singleRecordView.untyped')}</span>
-                          )}
+                              <span className="pill">{translate('record.singleRecordView.untyped')}</span>
+                            )}
+                          </div>
                         </CardBody>
                       </Card>
                     ))
@@ -399,38 +415,40 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 </section>
                 {servicesCount > 0 ? (
                   <div className={`service p-0 ${detailsView ? '' : 'd-none'}`}>
-                    <section className="header d-flex justify-content-between align-items-center">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <FontAwesomeIcon icon="circle" className="orange" />
-                        &nbsp;
-                        <h5 className="mb-0">
-                          <b>
-                            {organization.services[currentServiceIdx].name
-                              ? organization.services[currentServiceIdx].name
-                              : translate('record.singleRecordView.noServiceName')}
-                          </b>
-                        </h5>
-                      </div>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div className="p-2 mr-1 arrow-navigation" onClick={() => this.prevService(servicesCount)}>
-                          <FontAwesomeIcon icon="angle-left" size="lg" />
+                    <section className="header">
+                      <div className="d-inline-block w-100 d-md-flex justify-content-between">
+                        <div className="d-inline-flex align-items-center service-name">
+                          <FontAwesomeIcon icon="circle" className="orange" />
+                          &nbsp;
+                          <h5 className="mb-0">
+                            <b>
+                              {organization.services[currentServiceIdx].name
+                                ? organization.services[currentServiceIdx].name
+                                : translate('record.singleRecordView.noServiceName')}
+                            </b>
+                          </h5>
                         </div>
-                        <div className="d-flex justify-content-center mr-1">
-                          <div className="align-self-center">
-                            <b>{currentServiceIdx + 1}</b>
+                        <div className="d-inline-flex align-items-center pull-right">
+                          <div className="p-2 mr-1 arrow-navigation" onClick={() => this.prevService(servicesCount)}>
+                            <FontAwesomeIcon icon="angle-left" size="lg" />
                           </div>
-                          <div className="mx-2 align-self-center">
-                            <Progress value={((currentServiceIdx + 1) / servicesCount) * 100} />
+                          <div className="d-flex justify-content-center mr-1">
+                            <div className="align-self-center">
+                              <b>{currentServiceIdx + 1}</b>
+                            </div>
+                            <div className="mx-2 align-self-center">
+                              <Progress value={((currentServiceIdx + 1) / servicesCount) * 100} />
+                            </div>
+                            <div className="align-self-center">
+                              <b>{servicesCount}</b>
+                            </div>
                           </div>
-                          <div className="align-self-center">
-                            <b>{servicesCount}</b>
+                          <div className="p-2 arrow-navigation" onClick={() => this.nextService(servicesCount)}>
+                            <FontAwesomeIcon icon="angle-right" size="lg" />
                           </div>
-                        </div>
-                        <div className="p-2 mr-5 arrow-navigation" onClick={() => this.nextService(servicesCount)}>
-                          <FontAwesomeIcon icon="angle-right" size="lg" />
-                        </div>
-                        <div className="p-2 arrow-navigation" onClick={this.closeServiceDetails}>
-                          <FontAwesomeIcon icon="times" size="lg" />
+                          <div className="p-2 arrow-navigation" onClick={this.closeServiceDetails}>
+                            <FontAwesomeIcon icon="times" size="lg" />
+                          </div>
                         </div>
                       </div>
                     </section>
@@ -441,14 +459,14 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         </b>
                         {organization.services[currentServiceIdx].taxonomyIds.length > 0 ? (
                           organization.services[currentServiceIdx].taxonomyIds.map(srvTaxonomy => (
-                            <span className="pill ml-2">
-                              {taxonomies && taxonomies.length > 0
-                                ? taxonomies.find(taxonomy => taxonomy.id === srvTaxonomy).name
+                            <span className="pill ml-1 mr-1 mb-1">
+                              {taxonomyOptions && taxonomyOptions.length > 0
+                                ? taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy).label
                                 : translate('record.singleRecordView.untyped')}
                             </span>
                           ))
                         ) : (
-                          <span className="pill ml-2">{translate('record.singleRecordView.untyped')}</span>
+                          <span className="pill">{translate('record.singleRecordView.untyped')}</span>
                         )}
                       </h6>
                     </section>
@@ -482,7 +500,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.srvLocations" />
                         </b>
                         {organization.services[currentServiceIdx].locationIndexes.map(locIdx => (
-                          <span className="pill ml-2">
+                          <span className="pill ml-1 mr-1 mb-1">
                             <FontAwesomeIcon icon="circle" className="blue" size="xs" />
                             &nbsp;
                             {organization.locations[locIdx].city}, {organization.locations[locIdx].ca}
@@ -503,7 +521,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
 const mapStateToProps = (rootState: IRootState) => ({
   organization: rootState.organization.providersEntity,
-  taxonomies: rootState.taxonomy.providerTaxonomies
+  taxonomyOptions: rootState.taxonomy.providerTaxonomies.map(
+    taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
 });
 
 const mapDispatchToProps = { getProviderEntity, getProviderTaxonomies };
