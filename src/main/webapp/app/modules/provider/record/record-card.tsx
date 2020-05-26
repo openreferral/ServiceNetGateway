@@ -2,7 +2,7 @@ import './record-card.scss';
 
 import React from 'react';
 import { TextFormat, Translate } from 'react-jhipster';
-import { Card, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardBody, CardTitle, UncontrolledTooltip } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -14,6 +14,7 @@ import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/m
 import { connect } from 'react-redux';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
+import _ from 'lodash';
 
 const REMAINDER_WIDTH = 25;
 
@@ -66,6 +67,26 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     });
   }
 
+  getOwnerInfo = record => {
+    if (record) {
+      if (record.owner && (record.owner.firstName || record.owner.lastName)) {
+        const tooltipId = _.uniqueId('record-owner-span-');
+        return (
+          <div className="d-inline-flex" id={tooltipId}>
+            {`${_.get(record, 'owner.firstName', '')} ${_.get(record, 'owner.lastName', '')}`}
+            <UncontrolledTooltip placement="top" autohide={false} target={tooltipId}>
+              {record.owner.email}
+            </UncontrolledTooltip>
+          </div>
+        );
+      } else {
+        return <div className="d-inline-flex">{record.owner.email}</div>;
+      }
+    } else {
+      return null;
+    }
+  };
+
   render() {
     const { record, user, link } = this.props;
     return (
@@ -88,7 +109,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
               )}
             </div>
             <div className="updated-by">
-              <Translate contentKey="recordCard.by" /> {record.organization.accountName}
+              <Translate contentKey="recordCard.by" /> {this.getOwnerInfo(record)}
             </div>
           </div>
         </CardTitle>
