@@ -5,6 +5,10 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+
+  &.without-icon {
+    padding-left: 2rem !important;
+  }
 }
 
 .activity-row {

@@ -36,7 +36,7 @@ export class SingleRecordView extends React.Component<ISingleRecordViewProp, ISi
     const content = activityRecord ? (
       <Row>
         <Col>
-          <IconSpan visible={activityRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+          <IconSpan iconSize="1.5rem" visible={activityRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
             <h2>{activityRecord.organization.name}</h2>
           </IconSpan>
           <h5>

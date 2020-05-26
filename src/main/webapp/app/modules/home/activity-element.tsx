@@ -29,16 +29,18 @@ const ActivityElement = props => {
       });
   };
 
+  const isSystemProviderRecord = props.activity.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER;
+
   return (
     <Row className="activity-row" id={props.activity.organizationId}>
       <Col>
         <CardGroup>
           <Card className="activity-card">
-            <CardBody className="activity-card-body">
-              <IconSpan visible={props.activity.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+            <CardBody className={`activity-card-body ${isSystemProviderRecord ? 'pl-1' : ' without-icon'}`}>
+              <IconSpan containerClass={isSystemProviderRecord ? 'pl-0' : 'pl-2'} visible={isSystemProviderRecord}>
                 <CardTitle className="activity-left-card-title">{props.activity.organizationName}</CardTitle>
+                <CardText>{props.activity.accountName}</CardText>
               </IconSpan>
-              <CardText>{props.activity.accountName}</CardText>
             </CardBody>
           </Card>
           <Card className="activity-right-card">

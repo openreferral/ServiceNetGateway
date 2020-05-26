@@ -111,30 +111,30 @@ export class Details extends React.Component<ISingleRecordViewProp, ISingleRecor
                       key={match.id}
                       to={`/multi-record-view/${match.organizationRecordId}/${match.partnerVersionId}`}
                       onClick={this.handleMatchClick}
-                      className="match"
+                      className={`match ${match.providerName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? 'pl-0' : ''}`}
                     >
                       <IconSpan visible={match.providerName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
                         <h5>{match.partnerVersionName}</h5>
-                      </IconSpan>
-                      <div className="match-details">
-                        <div>{match.providerName}</div>
-                        <div className="text-right">
-                          {match.numberOfLocations}{' '}
-                          <Translate
-                            contentKey={'singleRecordView.details.compare.' + (match.numberOfLocations > 1 ? 'locations' : 'location')}
-                          />{' '}
-                          {' / '}
-                          {Object.keys(match.locationMatches).length}{' '}
-                          <Translate
-                            contentKey={
-                              'singleRecordView.details.compare.' + (Object.keys(match.locationMatches).length > 1 ? 'matches' : 'match')
-                            }
-                          />
+                        <div className="match-details">
+                          <div>{match.providerName}</div>
+                          <div className="text-right">
+                            {match.numberOfLocations}{' '}
+                            <Translate
+                              contentKey={'singleRecordView.details.compare.' + (match.numberOfLocations > 1 ? 'locations' : 'location')}
+                            />{' '}
+                            {' / '}
+                            {Object.keys(match.locationMatches).length}{' '}
+                            <Translate
+                              contentKey={
+                                'singleRecordView.details.compare.' + (Object.keys(match.locationMatches).length > 1 ? 'matches' : 'match')
+                              }
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-right" title={translate('singleRecordView.details.compare.sinceLastUpdatedTooltip')}>
-                        {match.freshness} <Translate contentKey="singleRecordView.details.compare.sinceLastUpdated" />
-                      </div>
+                        <div className="text-right" title={translate('singleRecordView.details.compare.sinceLastUpdatedTooltip')}>
+                          {match.freshness} <Translate contentKey="singleRecordView.details.compare.sinceLastUpdated" />
+                        </div>
+                      </IconSpan>
                     </Link>
                   ))
               : null}

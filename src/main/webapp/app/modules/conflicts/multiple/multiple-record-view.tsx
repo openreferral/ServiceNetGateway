@@ -268,7 +268,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
         <Row>
           {baseRecord ? (
             <Col sm="6">
-              <IconSpan visible={baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+              <IconSpan iconSize="1.5rem" visible={baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
                 <h2>{baseRecord.organization.name}</h2>
               </IconSpan>
               <h4 className="from">
@@ -320,7 +320,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
               <Row>
                 <Col>
                   <div className="mr-4">
-                    <IconSpan visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+                    <IconSpan iconSize="1.5rem" visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
                       <h2>{partnerRecord.organization.name}</h2>
                     </IconSpan>
                   </div>
