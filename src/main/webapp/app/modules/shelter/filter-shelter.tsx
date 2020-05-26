@@ -230,12 +230,18 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
                         />
                       </Col>
                       <Col md="3">
-                        <Translate contentKey="serviceNetApp.shelter.home.filter.showOnlyAvailableBeds" />
-                        <input
-                          checked={this.state.showOnlyAvailableBeds}
-                          type="checkbox"
-                          onChange={this.handleShowOnlyAvailableBedsChange}
-                        />
+                        <div className="form-check form-check-inline float-right">
+                          <input
+                            checked={this.state.showOnlyAvailableBeds}
+                            type="checkbox"
+                            id="applyShowOnlyAvailableBeds"
+                            className="form-check-input"
+                            onChange={this.handleShowOnlyAvailableBedsChange}
+                          />
+                          <label className="form-check-label" htmlFor="applyShowOnlyAvailableBeds">
+                            <Translate contentKey="serviceNetApp.shelter.home.filter.showOnlyAvailableBeds" />
+                          </label>
+                        </div>
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.shelter.home.filter.onlyShowSheltersThat" />
