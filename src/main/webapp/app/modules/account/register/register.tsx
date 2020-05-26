@@ -24,7 +24,14 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
   }
 
   handleValidSubmit = (event, values) => {
-    this.props.handleRegister(values.username, values.email, values.firstPassword, this.props.currentLocale);
+    this.props.handleRegister(
+      values.username,
+      values.email,
+      values.firstPassword,
+      values.firstName,
+      values.lastName,
+      this.props.currentLocale
+    );
     event.preventDefault();
   };
 
@@ -66,6 +73,16 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                   minLength: { value: 5, errorMessage: translate('global.messages.validate.email.minlength') },
                   maxLength: { value: 254, errorMessage: translate('global.messages.validate.email.maxlength') }
                 }}
+              />
+              <AvField
+                name="firstName"
+                label={translate('global.form.firstName')}
+                placeholder={translate('global.form.firstName.placeholder')}
+              />
+              <AvField
+                name="lastName"
+                label={translate('global.form.lastName')}
+                placeholder={translate('global.form.lastName.placeholder')}
               />
               <AvField
                 name="firstPassword"
