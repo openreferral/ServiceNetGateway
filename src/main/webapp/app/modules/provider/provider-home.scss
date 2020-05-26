@@ -314,6 +314,14 @@
     font-family: 'Muli', sans-serif;
     font-size: 13px;
   }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance:none;
+  }
+
+  [placeholder] {
+    text-overflow: ellipsis;
+  }
 }
 
 .pill {
