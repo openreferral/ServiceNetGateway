@@ -439,7 +439,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                               name={'locations[' + i + '].ca'}
                               onChange={this.onLocationChange(i, 'ca')}
                               placeholder={translate('record.location.ca')}
-                              value={locationModel['ca']}
+                              value={location['ca'] || locationModel['ca']}
                               validate={{
                                 required: { value: true, errorMessage: translate('entity.validation.required') }
                               }}
