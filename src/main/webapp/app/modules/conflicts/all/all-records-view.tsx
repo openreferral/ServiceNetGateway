@@ -220,7 +220,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
         <Row className="row flex-row flex-nowrap">
           {baseRecord ? (
             <div className={`record ${isOneRecord ? 'one-record m-0 w-50' : ''}`}>
-              <IconSpan visible={baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+              <IconSpan iconSize="1.5rem" visible={baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
                 <h2>{baseRecord.organization.name}</h2>
               </IconSpan>
               <h4 className="from">
@@ -285,7 +285,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
                       </h5>
                     </div>
                     <div className="mr-4">
-                      <IconSpan visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+                      <IconSpan iconSize="1.5rem" visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
                         <h2>{partnerRecord.organization.name}</h2>
                       </IconSpan>
                     </div>
