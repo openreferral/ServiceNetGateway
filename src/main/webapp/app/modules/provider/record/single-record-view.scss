@@ -6,14 +6,23 @@
     top: 60px;
   }
 
+  .pull-right {
+    float: right;
+    margin-left: auto;
+  }
+
   .card-section {
     margin-bottom: 1rem;
+  }
+
+  .details-view {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 
   .record-card {
     .pill {
       font-size: 12px !important;
-      margin: 1px 0;
     }
 
     section {
@@ -25,6 +34,7 @@
     }
 
     height: auto !important;
+    min-width: 250px;
   }
 
   .loc-card,
@@ -37,6 +47,10 @@
 
     font-size: 16px;
     font-weight: bold;
+    > span {
+      max-height: 4.5em;
+      overflow: hidden;
+    }
 
     img {
       margin-right: 0.5em;
@@ -50,7 +64,6 @@
       margin-left: auto;
     }
 
-    margin-bottom: 0;
     &.collapse-toggle {
       display: flex;
       justify-content: space-between;
@@ -93,6 +106,10 @@
           border-bottom: 1px solid #e4e4e4 !important;
           &.header {
             background-color: oldlace;
+            .service-name {
+              flex-grow: 1;
+              min-height: 37px;
+            }
           }
         }
         .progress {

@@ -110,13 +110,6 @@
       margin-top: 0.5rem;
     }
 
-    .pill {
-      display: block;
-      span {
-        padding: 2px 1.5rem;
-      }
-    }
-
     .mobile-invisible {
       display: none !important;
     }
@@ -324,16 +317,25 @@
   }
 }
 
+.pills {
+  padding-left: 0 !important;
+}
+
 .pill {
-  display: block;
+  display: inline-block;
+  max-width: 220px;
+  padding-right: 8px;
 
   span {
-    margin-right: 8px;
+    max-width: 100%;
+    overflow: hidden;
+    vertical-align: top;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     border: 1px black solid;
-    padding: 2px 2rem;
+    padding: 2px 8px;
     border-radius: 16px;
     transition: 0.5s;
   }
