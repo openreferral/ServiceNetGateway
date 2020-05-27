@@ -293,7 +293,7 @@
   /* Individual item */
   .bm-item {
     display: inline-block;
-    font-size: 2em;
+    font-size: 1.5em;
     color: #333e51;
   }
 
@@ -315,8 +315,8 @@
     font-size: 13px;
   }
 
-  input[type="search"]::-webkit-search-cancel-button {
-    -webkit-appearance:none;
+  input[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
   }
 
   [placeholder] {
@@ -426,4 +426,9 @@
 .filter-modal {
   background: rgba(0, 0, 0, 0);
   border: none;
+}
+
+.side-menu-container {
+  outline: none;
+  display: grid !important;
 }
