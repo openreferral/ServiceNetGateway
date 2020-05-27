@@ -174,7 +174,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           <MediaQuery maxDeviceWidth={768}>{this.mapRecords(allRecords)}</MediaQuery>
           <MediaQuery minDeviceWidth={769}>{filterOpened ? this.mapWithFilter(allRecords) : this.mapRecords(allRecords)}</MediaQuery>
         </Row>
-        <div className="pill mb-4 text-center">
+        <div className="button-pill mb-4 text-center">
           <div
             className={`d-inline button-pill ${hasReachedMaxItems ? 'disabled' : ''}`}
             onClick={() => this.handleLoadMore(hasReachedMaxItems)}

@@ -321,12 +321,11 @@
   padding-left: 0 !important;
 }
 
-.pill {
-  display: inline-block;
-  max-width: 220px;
-  padding-right: 8px;
+.button-pill {
+  display: block;
 
   span {
+    margin-right: 8px;
     max-width: 100%;
     overflow: hidden;
     vertical-align: top;
@@ -335,17 +334,15 @@
     text-align: center;
     text-decoration: none;
     border: 1px black solid;
-    padding: 2px 8px;
+    padding: 2px 2rem;
     border-radius: 16px;
     transition: 0.5s;
   }
 
-  .button-pill {
-    span:hover {
-      background-color: #333b52;
-      color: white;
-      cursor: pointer;
-    }
+  span:hover {
+    background-color: #333b52;
+    color: white;
+    cursor: pointer;
   }
 
   .disabled {
@@ -366,6 +363,26 @@
       color: white;
       border: 1px black solid;
     }
+  }
+}
+
+.pill {
+  display: inline-block;
+  max-width: 220px;
+  padding-right: 8px;
+
+  span {
+    max-width: 100%;
+    overflow: hidden;
+    vertical-align: top;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    text-decoration: none;
+    border: 1px black solid;
+    padding: 2px 8px;
+    border-radius: 16px;
+    transition: 0.5s;
   }
 }
 
