@@ -11,7 +11,7 @@ import { IRootState } from 'app/shared/reducers';
 import { IBeds } from 'app/shared/model/beds.model';
 import { getEntities as getBeds } from 'app/entities/beds/beds.reducer';
 import { IOption } from 'app/shared/model/option.model';
-import { getLanguages, getDefinedCoverageAreas, getTags } from 'app/entities/option/option.reducer';
+import { getLanguages, getDefinedCoverageAreas, getTags, reset as optionReset } from 'app/entities/option/option.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './shelter.reducer';
 import { IShelter } from 'app/shared/model/shelter.model';
 // tslint:disable-next-line:no-unused-variable
@@ -77,6 +77,10 @@ export class ShelterUpdate extends React.Component<IShelterUpdateProps, IShelter
     this.props.getLanguages();
     this.props.getDefinedCoverageAreas();
     this.props.getTags();
+  }
+
+  componentWillUnmount() {
+    this.props.optionReset();
   }
 
   saveEntity = (event, errors, values) => {
@@ -478,7 +482,8 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
+  optionReset
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
