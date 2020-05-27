@@ -4,7 +4,7 @@ import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Button, Col, Row } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { Prompt, RouteComponentProps } from 'react-router-dom';
 import { createUserOwnedEntity } from 'app/entities/organization/organization.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
@@ -18,16 +18,19 @@ import BuildingLogo from '../../../../static/images/building.svg';
 import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
+import _ from 'lodash';
 
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export interface IRecordCreateViewState {
+  organization: object;
   activeTab: string;
   locationCount: number;
   locations: object[];
   services: object[];
   serviceCount: number;
   invalidTabs: string[];
+  leaving: boolean;
 }
 
 const ORGANIZATION_TAB = 'organization';
@@ -41,9 +44,23 @@ const locationModel = {
   ca: 'CA',
   zipcode: ''
 };
+const initialLocations = [{ ...locationModel }];
 
 const serviceModel = {
+  name: '',
+  taxonomyIds: [],
+  description: '',
+  applicationProcess: '',
+  eligibilityCriteria: '',
   locationIndexes: []
+};
+const initialServices = [{ ...serviceModel }];
+
+const organizationModel = {
+  name: '',
+  description: '',
+  url: '',
+  email: ''
 };
 
 export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecordCreateViewState> {
@@ -51,9 +68,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     activeTab: ORGANIZATION_TAB,
     locationCount: 1,
     serviceCount: 1,
-    locations: [{ ...locationModel }],
-    services: [{ ...serviceModel }],
-    invalidTabs: []
+    organization: _.cloneDeep(organizationModel),
+    locations: _.cloneDeep(initialLocations),
+    services: _.cloneDeep(initialServices),
+    invalidTabs: [],
+    leaving: false
   };
 
   componentDidMount() {
@@ -62,7 +81,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      this.props.history.push('/');
+      this.setState({
+        leaving: true
+      }, () => this.props.history.push('/'));
     }
   }
 
@@ -144,6 +165,14 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
       return { value: i, label: (i + 1) + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') };
     });
 
+  onOrganizationChange = fieldName => ({ target }) => {
+    const organization = this.state.organization;
+    organization[fieldName] = target.value;
+    this.setState({
+      organization
+    });
+  };
+
   onLocationChange = (i, fieldName) => ({ target }) => {
     const locations = this.state.locations;
     locations[i][fieldName] = target.value;
@@ -152,8 +181,12 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     });
   };
 
-  onServiceChange = (i, fieldName) => value => {
+  onServiceChange = (i, fieldName, defaultValue = null) => event => {
     const services = this.state.services;
+    let value = (event != null && event.target) ? event.target.value : event;
+    if (value == null) {
+      value = defaultValue;
+    }
     services[i][fieldName] = value;
     this.setState({
       services
@@ -161,7 +194,8 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   };
 
   render() {
-    const { activeTab, invalidTabs, locationCount, serviceCount } = this.state;
+    const { organization, locations, services,
+      activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
     const { updating, taxonomyOptions } = this.props;
     return (
       <div className="record-create">
@@ -184,6 +218,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
         </Nav>
 
         <AvForm model={{}} onSubmit={this.saveRecord} className="background">
+          <Prompt
+            when={!leaving && (!_.isEqual(organization, organizationModel)
+            || !_.isEqual(locations, initialLocations) || !_.isEqual(services, initialServices))}
+            message={location => `You have unsaved data, are you sure you want to leave?`}
+          />
           <TabContent activeTab={activeTab}>
             <TabPane tabId={ORGANIZATION_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
@@ -206,13 +245,26 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
                     placeholder={translate('record.name')}
+                    onChange={this.onOrganizationChange('name')}
                   />
                 </AvGroup>
                 <AvGroup>
-                  <AvInput id="organization-description" type="textarea" name="description" placeholder={translate('record.description')} />
+                  <AvInput
+                    id="organization-description"
+                    type="textarea"
+                    name="description"
+                    placeholder={translate('record.description')}
+                    onChange={this.onOrganizationChange('description')}
+                  />
                 </AvGroup>
                 <AvGroup>
-                  <AvField id="organization-url" type="text" name="url" placeholder={translate('record.url')} />
+                  <AvField
+                    id="organization-url"
+                    type="text"
+                    name="url"
+                    placeholder={translate('record.url')}
+                    onChange={this.onOrganizationChange('url')}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <AvField
@@ -223,6 +275,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       maxLength: { value: 50, errorMessage: translate('entity.validation.maxlength', { max: 50 }) }
                     }}
                     placeholder={translate('record.email')}
+                    onChange={this.onOrganizationChange('email')}
                   />
                 </AvGroup>
               </Col>
@@ -367,6 +420,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                           validate={{
                             required: { value: true, errorMessage: translate('entity.validation.required') }
                           }}
+                          onChange={this.onServiceChange(i, 'name')}
                         />
                       </AvGroup>
                       <AvGroup className="flex">
@@ -380,6 +434,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                           // @ts-ignore
                           isMulti
                           placeholder={translate('record.service.type')}
+                          onChange={this.onServiceChange(i, 'taxonomyIds')}
                         />
                       </AvGroup>
                       <AvGroup className="flex">
@@ -391,6 +446,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                           validate={{
                             required: { value: true, errorMessage: translate('entity.validation.required') }
                           }}
+                          onChange={this.onServiceChange(i, 'description')}
                         />
                       </AvGroup>
                       <AvGroup>
@@ -398,6 +454,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                           type="textarea"
                           name={'services[' + i + '].applicationProcess'}
                           placeholder={translate('record.service.applicationProcess')}
+                          onChange={this.onServiceChange(i, 'applicationProcess')}
                         />
                       </AvGroup>
                       <AvGroup>
@@ -405,6 +462,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                           type="textarea"
                           name={'services[' + i + '].eligibilityCriteria'}
                           placeholder={translate('record.service.eligibilityCriteria')}
+                          onChange={this.onServiceChange(i, 'eligibilityCriteria')}
                         />
                       </AvGroup>
                       <AvGroup>
