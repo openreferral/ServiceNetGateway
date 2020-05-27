@@ -16,6 +16,15 @@
     "city": "City",
     "county": "County",
     "zipCode": "ZIP code",
+    "menu": {
+      "deactivatedRecords": "Deactivated Records"
+    },
+    "deactivatedRecords": {
+      "name": "Name",
+      "lastUpdated": "Last Updated",
+      "deactivatedDate": "Deactivated Date",
+      "activate": "Activate"
+    },
     "sortProperties": {
       "updatedAt": "Recently updated",
       "name": "Alphabetical"

@@ -13,6 +13,9 @@ const accountMenuItemsAuthenticated = () => (
     <DropdownItem tag={Link} to="/account/password">
       <FontAwesomeIcon icon="clock" /> <Translate contentKey="global.menu.account.password">Password</Translate>
     </DropdownItem>
+    <DropdownItem tag={Link} to="/deactivated-records">
+      <FontAwesomeIcon icon="clipboard-list" /> <Translate contentKey="providerSite.menu.deactivatedRecords">Deactivated Records</Translate>
+    </DropdownItem>
     <DropdownItem tag={Link} to="/logout">
       <FontAwesomeIcon icon="sign-out-alt" /> <Translate contentKey="global.menu.account.logout">Sign out</Translate>
     </DropdownItem>
