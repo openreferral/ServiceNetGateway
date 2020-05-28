@@ -50,7 +50,7 @@ export default (state: DeactivatedRecordsState = initialState, action): Deactiva
 };
 
 const deactivatedRecordApiUrl = SERVICENET_API_URL + '/deactivated-provider-records';
-const reactivateRecordUrl = SERVICENET_API_URL + '/organizations/reactivate/';
+const reactivateRecordUrl = SERVICENET_API_URL + '/organizations/reactivate';
 
 export const getDeactivatedProviderRecords = () => ({
   type: ACTION_TYPES.FETCH_DEACTIVATED_RECORDS,

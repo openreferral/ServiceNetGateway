@@ -19,8 +19,8 @@ export class DeactivatedRecords extends React.Component<IDeactivatedRecordsProps
   render() {
     const { deactivatedRecords } = this.props;
     return (
-      <div className="px-lg-5">
-        <Table>
+      <div className="px-1 px-lg-5">
+        <Table size="sm">
           <thead>
             <tr>
               <th>
