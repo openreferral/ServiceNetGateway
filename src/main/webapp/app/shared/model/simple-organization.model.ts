@@ -12,5 +12,5 @@ export interface ISimpleOrganization {
   dailyUpdates?: any[];
 }
 
-export const defaultSimpleOrganization: Readonly<ISimpleOrganization> = {
+export const defaultSimpleOrganization: ISimpleOrganization = {
 };

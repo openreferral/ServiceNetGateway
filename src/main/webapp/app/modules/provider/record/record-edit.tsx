@@ -4,7 +4,7 @@ import React from 'react';
 import { Badge, Button, Card, CardBody, CardTitle, Col, Collapse, Label, Row, Progress } from 'reactstrap';
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Prompt } from 'react-router-dom';
 import { getProviderEntity, updateUserOwnedEntity, deactivateEntity } from 'app/entities/organization/organization.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
@@ -23,12 +23,12 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/measure-widths';
+import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 
 export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{id: string}> {}
 
 export interface IRecordEditViewState {
-  locations: object[];
-  services: object[];
+  organization: ISimpleOrganization;
   openSections: string[];
   invalidSections: string[];
   openLocation: number;
@@ -37,6 +37,7 @@ export interface IRecordEditViewState {
   invalidServices: number[];
   latestDailyUpdate: any;
   openDialogs: string[];
+  leaving: boolean;
 }
 
 const ORGANIZATION = 'organization';
@@ -67,8 +68,10 @@ const measureId = idx => 'measure-svc-' + idx;
 
 export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEditViewState> {
   state: IRecordEditViewState = {
-    locations: [{ ...locationModel }],
-    services: [{ ...serviceModel }],
+    organization: {
+      locations: [{ ...locationModel }],
+      services: [{ ...serviceModel }]
+    },
     openSections: [],
     invalidSections: [],
     invalidLocations: [],
@@ -76,7 +79,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     openLocation: -1,
     openService: -1,
     latestDailyUpdate: {},
-    openDialogs: []
+    openDialogs: [],
+    leaving: false
   };
 
   componentDidMount() {
@@ -86,15 +90,23 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      this.props.history.push('/');
+      this.setState({
+        leaving: true
+      }, () => this.props.history.push('/'));
     }
   }
 
   componentDidUpdate(prevProps: Readonly<IRecordEditViewProp>, prevState: Readonly<IRecordEditViewState>) {
     if (prevProps.organization !== this.props.organization) {
+      const organization = _.cloneDeep(this.props.organization);
+      if (!organization.locations || organization.locations.length === 0) {
+        organization.locations = this.state.organization.locations;
+      }
+      if (!organization.services || organization.services.length === 0) {
+        organization.services = this.state.organization.services;
+      }
       this.setState({
-        locations: this.props.organization.locations || this.state.locations,
-        services: this.props.organization.services || this.state.services,
+        organization,
         latestDailyUpdate: this.props.organization.dailyUpdates.find(du => du.expiry === null) || {}
       });
     }
@@ -169,72 +181,83 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   }
 
   handleConfirmDiscard = () => {
-    this.props.history.goBack();
+    this.setState({
+      leaving: true
+    }, () => this.props.history.goBack());
   }
 
   addAnotherService = () => {
-    const services = this.state.services.concat({ ...serviceModel });
+    const organization = this.state.organization;
+    organization.services = organization.services.concat({ ...serviceModel });
     this.setState({
-      services,
-      openService: services.length - 1
+      organization,
+      openService: organization.services.length - 1
     });
   };
 
   addAnotherLocation = () => {
-    const locations = this.state.locations.concat({ ...locationModel });
+    const organization = this.state.organization;
+    organization.locations = organization.locations.concat({ ...locationModel });
     this.setState({
-      locations,
-      openLocation: locations.length - 1
+      organization,
+      openLocation: organization.locations.length - 1
     });
   };
 
   removeService = i => () => {
-    const { services } = this.state;
-    services.splice(i, 1);
+    const { organization } = this.state;
+    organization.services.splice(i, 1);
     this.setState({
-      services,
+      organization,
       openService: -1
     });
   };
 
   removeLocation = i => () => {
-    const { locations, services } = this.state;
-    locations.splice(i, 1);
+    const { organization } = this.state;
+    organization.locations.splice(i, 1);
     // filter out this location from services
-    services.forEach(service => {
+    organization.services.forEach(service => {
       service['locationIndexes'] = service['locationIndexes']
       .filter(value => value !== i)
       .map(idx => (idx > i) ? idx - 1 : idx);
     });
     this.setState({
-      locations,
-      services,
+      organization,
       openLocation: -1
     });
   };
 
   getLocations = () =>
-    this.state.locations.map((location, i) => (
+    this.state.organization.locations.map((location, i) => (
       { value: i, label: (i + 1) + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') }
     ));
 
-  onLocationChange = (i, fieldName) => ({ target }) => {
-    const locations = this.state.locations;
-    locations[i][fieldName] = target.value;
+  onOrganizationChange = fieldName => ({ target }) => {
+    const organization = this.state.organization;
+    organization[fieldName] = target.value;
     this.setState({
-      locations
+      organization
+    });
+  };
+
+  onLocationChange = (i, fieldName) => ({ target }) => {
+    const organization = this.state.organization;
+    organization.locations[i][fieldName] = target.value;
+    this.setState({
+      organization
     });
   };
 
   onServiceChange = (i, fieldName, defaultValue = null) => event => {
-    const services = this.state.services;
+    const organization = this.state.organization;
     let value = (event != null && event.target) ? event.target.value : event;
     if (value == null) {
       value = defaultValue;
     }
-    services[i][fieldName] = value;
+    organization.services[i][fieldName] = value;
     this.setState({
-      services
+      organization
     });
   };
 
@@ -265,11 +288,16 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   }
 
   render() {
-    const { openSections, locations, services, openLocation, openService, latestDailyUpdate,
-      invalidSections, invalidLocations, invalidServices } = this.state;
-    const { updating, taxonomyOptions, organization } = this.props;
+    const { openSections, organization, openLocation, openService, latestDailyUpdate,
+      invalidSections, invalidLocations, invalidServices, leaving } = this.state;
+    const { updating, taxonomyOptions } = this.props;
+    const { locations, services } = organization;
     return organization.id && organization.id === this.props.match.params.id ? (
       <AvForm onSubmit={this.saveRecord} className="record-edit background" model={organization}>
+        <Prompt
+          when={!leaving && !_.isEqual(organization, this.props.organization)}
+          message={location => `You have unsaved data, are you sure you want to leave?`}
+        />
         <div id={measureId(this.props.match.params.id)} style={containerStyle} />
         <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
           <AvField name="id" value={organization.id} className="d-none" />
@@ -286,6 +314,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   required: { value: true, errorMessage: translate('entity.validation.required') }
                 }}
                 placeholder={translate('record.name')}
+                onChange={this.onOrganizationChange('name')}
               />
             </CardBody>
           </Card>
@@ -307,6 +336,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 type="textarea"
                 name="update"
                 value={latestDailyUpdate.update}
+                onChange={this.onOrganizationChange('update')}
               />
             </CardBody>
           </Card>
@@ -324,6 +354,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                     id="organization-description"
                     type="textarea"
                     name="description"
+                    onChange={this.onOrganizationChange('description')}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -332,6 +363,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                     id="organization-url"
                     type="text"
                     name="url"
+                    onChange={this.onOrganizationChange('url')}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -343,6 +375,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                     validate={{
                       maxLength: { value: 50, errorMessage: translate('entity.validation.maxlength', { max: 50 }) }
                     }}
+                    onChange={this.onOrganizationChange('email')}
                   />
                 </AvGroup>
               </CardBody>
