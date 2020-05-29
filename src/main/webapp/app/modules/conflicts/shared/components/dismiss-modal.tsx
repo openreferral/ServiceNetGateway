@@ -44,11 +44,9 @@ class DismissModal extends React.Component<IDismissModalProps> {
             </Row>
           </ModalBody>
           <ModalFooter>
-            <div className="submit-button-container">
-              <Button color="primary" type="submit">
-                <Translate contentKey="multiRecordView.dismiss.remove">Yes, remove this</Translate>
-              </Button>
-            </div>
+            <Button color="primary" type="submit">
+              <Translate contentKey="multiRecordView.dismiss.remove">Yes, remove this</Translate>
+            </Button>
             <button type="button" onClick={handleClose} className="btn close-button">
               <Translate contentKey="multiRecordView.dismiss.cancel">Cancel</Translate>
             </button>

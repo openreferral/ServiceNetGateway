@@ -451,14 +451,3 @@
   outline: none;
   display: grid !important;
 }
-
-.submit-button-container {
-  .btn:not(.disabled):hover {
-    margin-top: 0 !important;
-    border-bottom-width: 4px !important;
-  }
-
-  &:hover {
-    padding-bottom: 0 !important;
-  }
-}
