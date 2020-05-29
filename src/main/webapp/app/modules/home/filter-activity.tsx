@@ -598,20 +598,18 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                     </Row>
                     <Row>
                       <Col md={{ size: 2, offset: 10 }}>
-                        <Button
-                          color="primary"
-                          onClick={this.applyFilter}
-                          disabled={!this.state.filtersChanged}
-                          style={{ marginTop: '1rem' }}
-                          block
-                        >
-                          <Translate contentKey="serviceNetApp.activity.home.filter.applyFilter" />
-                        </Button>
+                        <div className="pt-3">
+                          <Button color="primary" onClick={this.applyFilter} disabled={!this.state.filtersChanged} block>
+                            <Translate contentKey="serviceNetApp.activity.home.filter.applyFilter" />
+                          </Button>
+                        </div>
                       </Col>
                       <Col md={{ size: 2, offset: 10 }}>
-                        <Button color="primary" onClick={this.resetFilter} style={{ marginTop: '1rem' }} block>
-                          <Translate contentKey="serviceNetApp.activity.home.filter.resetFilter" />
-                        </Button>
+                        <div className="pt-3">
+                          <Button color="primary" onClick={this.resetFilter} block>
+                            <Translate contentKey="serviceNetApp.activity.home.filter.resetFilter" />
+                          </Button>
+                        </div>
                       </Col>
                     </Row>
                   </TabPane>
