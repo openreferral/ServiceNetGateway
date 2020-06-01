@@ -226,6 +226,10 @@ import dailyUpdate, {
 // prettier-ignore
 import search, { SearchState } from 'app/modules/provider/menus/search.reducer';
 
+// prettier-ignore
+import silo, {
+  SiloState
+} from 'app/entities/silo/silo.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -292,6 +296,7 @@ export interface IRootState {
   readonly serviceTaxonomiesDetailsFieldsValue: ServiceTaxonomiesDetailsFieldsValueState;
   readonly contactDetailsFieldsValue: ContactDetailsFieldsValueState;
   readonly dailyUpdate: DailyUpdateState;
+  readonly silo: SiloState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly filterShelter: FilterShelterState;
@@ -367,6 +372,7 @@ const rootReducer = combineReducers<IRootState>({
   serviceTaxonomiesDetailsFieldsValue,
   contactDetailsFieldsValue,
   dailyUpdate,
+  silo,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
   filterActivity,
