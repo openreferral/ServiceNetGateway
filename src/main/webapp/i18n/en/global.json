@@ -70,7 +70,8 @@
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "requestLogger": "Request Logger",
         "userManagement": "User management",
-        "clientManagement": "Client management"
+        "clientManagement": "Client management",
+        "silo": "Silo"
       },
       "account": {
         "main": "Account",

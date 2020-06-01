@@ -13,6 +13,11 @@ export const EntitiesMenu = props => (
       &nbsp;
       <Translate contentKey="global.menu.entities.shelter" />
     </DropdownItem>
+    <DropdownItem tag={Link} to="/entity/silo">
+      <FontAwesomeIcon icon="asterisk" fixedWidth />
+      &nbsp;
+      <Translate contentKey="global.menu.entities.silo" />
+    </DropdownItem>
     <DropdownItem tag={Link} to="/entity/beds">
       <FontAwesomeIcon icon="asterisk" fixedWidth />
       &nbsp;

@@ -10,6 +10,7 @@ import { getEntities as getShelters } from 'app/entities/shelter/shelter.reducer
 import { locales, languages } from 'app/config/translation';
 import { getUser, getRoles, getSystemAccounts, updateUser, createUser, reset } from './user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
+import { getAllSilos } from 'app/entities/silo/silo.reducer';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
@@ -31,6 +32,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     this.props.getRoles();
     this.props.getSystemAccounts();
     this.props.getShelters();
+    this.props.getAllSilos();
   }
 
   componentWillUnmount() {
@@ -52,7 +54,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
 
   render() {
     const isInvalid = false;
-    const { user, loading, updating, roles, systemAccounts, shelters } = this.props;
+    const { user, loading, updating, roles, systemAccounts, shelters, allSilos } = this.props;
     return (
       <div>
         <Row className="justify-content-center">
@@ -209,6 +211,19 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     ))}
                   </AvInput>
                 </AvGroup>
+                <AvGroup>
+                  <Label for="siloId">
+                    <Translate contentKey="userManagement.silo">Silo</Translate>
+                  </Label>
+                  <AvInput type="select" className="form-control" name="siloId" value={user.siloId}>
+                    <option value="" key="0" />
+                    {allSilos.map(s => (
+                      <option value={s.id} key={s.id}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </AvInput>
+                </AvGroup>
                 {user.authorities.includes('ROLE_SACRAMENTO') ? (
                   <AvGroup>
                     <Label for="shelters">
@@ -251,10 +266,20 @@ const mapStateToProps = (storeState: IRootState) => ({
   systemAccounts: storeState.userManagement.systemAccounts,
   loading: storeState.userManagement.loading,
   updating: storeState.userManagement.updating,
-  shelters: storeState.shelter.entities
+  shelters: storeState.shelter.entities,
+  allSilos: storeState.silo.allSilos
 });
 
-const mapDispatchToProps = { getUser, getRoles, getSystemAccounts, getShelters, updateUser, createUser, reset };
+const mapDispatchToProps = {
+  getUser,
+  getRoles,
+  getSystemAccounts,
+  getShelters,
+  updateUser,
+  createUser,
+  reset,
+  getAllSilos
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
