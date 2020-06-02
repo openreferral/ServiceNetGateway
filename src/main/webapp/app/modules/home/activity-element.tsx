@@ -9,6 +9,7 @@ import HideRecordButton from 'app/shared/layout/hide-record-button';
 import { toast } from 'react-toastify';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 import IconSpan from 'app/shared/layout/icon-span';
+import OwnerInfo from 'app/shared/layout/owner-info';
 
 const ActivityElement = props => {
   const maxConflicts = 3;
@@ -39,7 +40,9 @@ const ActivityElement = props => {
             <CardBody className={`activity-card-body ${isSystemProviderRecord ? 'pl-1' : ' without-icon'}`}>
               <IconSpan containerClass={isSystemProviderRecord ? 'pl-0' : 'pl-2'} visible={isSystemProviderRecord}>
                 <CardTitle className="activity-left-card-title">{props.activity.organizationName}</CardTitle>
-                <CardText>{props.activity.accountName}</CardText>
+                <CardText>
+                  {isSystemProviderRecord ? <OwnerInfo record={props.activity} direction="right" /> : props.activity.accountName}
+                </CardText>
               </IconSpan>
             </CardBody>
           </Card>
@@ -48,7 +51,11 @@ const ActivityElement = props => {
             <CardBody>
               {conflictsToDisplay.map((conflict, i) => (
                 <CardTitle className="activity-right-card-title" key={`activityCard${i}`}>
-                  {conflict.partnerName}
+                  {conflict.partnerName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
+                    <OwnerInfo record={conflict} direction="top" />
+                  ) : (
+                    conflict.partnerName
+                  )}
                   <Translate
                     contentKey="serviceNetApp.activity.unresolved.conflictPlusZero"
                     interpolate={{ fieldName: conflict.fieldName }}

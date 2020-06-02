@@ -27,6 +27,7 @@ import Select from 'react-select';
 import { Details as DetailClass } from '../single/details';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 import IconSpan from 'app/shared/layout/icon-span';
+import OwnerInfo from 'app/shared/layout/owner-info';
 
 export interface IMultipleRecordViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -277,7 +278,11 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                 ) : (
                   <div>
                     <Translate contentKey="multiRecordView.from" />
-                    {baseProviderName}
+                    {baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
+                      <OwnerInfo record={baseRecord} direction="right" />
+                    ) : (
+                      baseProviderName
+                    )}
                   </div>
                 )}
               </h4>
@@ -326,7 +331,11 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                   </div>
                   <h4 className="from">
                     <Translate contentKey="multiRecordView.from" />
-                    {partnerRecord.organization.accountName}
+                    {partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
+                      <OwnerInfo record={partnerRecord} direction="right" />
+                    ) : (
+                      partnerRecord.organization.accountName
+                    )}
                   </h4>
                   <h5>
                     <Translate contentKey="multiRecordView.lastCompleteReview" />
