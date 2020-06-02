@@ -11,6 +11,7 @@ import { TextFormat, Translate } from 'react-jhipster';
 import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
 import IconSpan from 'app/shared/layout/icon-span';
+import OwnerInfo from 'app/shared/layout/owner-info';
 
 export interface ISingleRecordViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {
   showClipboard: boolean;
@@ -33,10 +34,11 @@ export class SingleRecordView extends React.Component<ISingleRecordViewProp, ISi
 
   render() {
     const { activityRecord, user } = this.props;
+    const isServiceProviderRecord = activityRecord && activityRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER;
     const content = activityRecord ? (
       <Row>
         <Col>
-          <IconSpan iconSize="1.5rem" visible={activityRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+          <IconSpan iconSize="1.5rem" visible={isServiceProviderRecord}>
             <h2>{activityRecord.organization.name}</h2>
           </IconSpan>
           <h5>
@@ -44,7 +46,12 @@ export class SingleRecordView extends React.Component<ISingleRecordViewProp, ISi
               <Translate contentKey="multiRecordView.yourData" />
             ) : (
               <span>
-                <Translate contentKey="singleRecordView.partnerName" /> {activityRecord.organization.accountName}
+                <Translate contentKey="singleRecordView.partnerName" />
+                {isServiceProviderRecord ? (
+                  <OwnerInfo record={activityRecord} direction="right" />
+                ) : (
+                  activityRecord.organization.accountName
+                )}
               </span>
             )}
           </h5>

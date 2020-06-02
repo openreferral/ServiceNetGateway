@@ -25,6 +25,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 import { Details as DetailClass } from '../single/details';
 import IconSpan from 'app/shared/layout/icon-span';
+import OwnerInfo from 'app/shared/layout/owner-info';
 
 export interface IAllRecordsViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -229,7 +230,11 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
                 ) : (
                   <div>
                     <Translate contentKey="multiRecordView.from" />
-                    {baseProviderName}
+                    {baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
+                      <OwnerInfo record={baseRecord} direction="right" />
+                    ) : (
+                      baseProviderName
+                    )}
                   </div>
                 )}
               </h4>
@@ -269,7 +274,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
           )}
           <Col className={`partner-records row flex-row flex-nowrap ${isOneRecord ? 'one-record m-0 w-50' : ''}`}>
             {partnerRecords.map((partnerRecord, idx) => (
-              <div className={`record flex-grow-1 ${isOneRecord ? 'm-0' : ''}`}>
+              <div key={`partner-record-${idx}`} className={`record flex-grow-1 ${isOneRecord ? 'm-0' : ''}`}>
                 <Row>
                   <Col>
                     <div style={{ float: 'right' }}>
@@ -291,7 +296,11 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
                     </div>
                     <h4 className="from">
                       <Translate contentKey="multiRecordView.from" />
-                      {partnerRecord.organization.accountName}
+                      {partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
+                        <OwnerInfo record={partnerRecord} direction="right" />
+                      ) : (
+                        partnerRecord.organization.accountName
+                      )}
                     </h4>
                     <h5>
                       <Translate contentKey="multiRecordView.lastCompleteReview" />

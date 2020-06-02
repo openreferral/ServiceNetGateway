@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
+import OwnerInfo from 'app/shared/layout/owner-info';
 
 const REMAINDER_WIDTH = 25;
 
@@ -109,7 +110,8 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
               )}
             </div>
             <div className="updated-by">
-              <Translate contentKey="recordCard.by" /> {this.getOwnerInfo(record)}
+              <Translate contentKey="recordCard.by" />
+              <OwnerInfo record={record} direction="top" />
             </div>
           </div>
         </CardTitle>
