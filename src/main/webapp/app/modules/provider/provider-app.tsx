@@ -21,11 +21,13 @@ import { getUser } from 'app/modules/administration/user-management/user-managem
 import { SideMenu } from './mobile-components/side-menu';
 import MediaQuery from 'react-responsive';
 import Routes from './routes';
+import NotConfiguredAccountModal from './not-configured-account-modal';
 
 export interface IProviderSiteProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export interface IProviderSiteState {
   menuOpen: boolean;
+  isConfigurationModalOpened: boolean;
 }
 
 export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSiteState> {
@@ -33,7 +35,8 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
     super(props);
 
     this.state = {
-      menuOpen: false
+      menuOpen: false,
+      isConfigurationModalOpened: false
     };
   }
 
@@ -47,9 +50,16 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
     this.setState({ menuOpen: !this.state.menuOpen });
   };
 
+  toggleAppNotConfigured = () => {
+    this.setState({ isConfigurationModalOpened: !this.state.isConfigurationModalOpened });
+  };
+
   render() {
-    const { match, isAdmin } = this.props;
-    const { menuOpen } = this.state;
+    const { match, isAdmin, account } = this.props;
+    const { menuOpen, isConfigurationModalOpened } = this.state;
+
+    const hasUserSilo = account && account.siloId !== null;
+    const isLoggingOut = this.props.location.state && this.props.location.state.loggingOut;
 
     const HeaderComponent = (
       <div>
@@ -90,6 +100,10 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
 
     return (
       <div className="provider" id="provider-home-view-container">
+        <NotConfiguredAccountModal
+          isOpened={!isLoggingOut && !isConfigurationModalOpened && !hasUserSilo}
+          toggle={this.toggleAppNotConfigured}
+        />
         <SideMenu menuOpen={menuOpen} toggleMenu={this.toggleMenu} />
         <div className="app-container">
           <ToastContainer
@@ -97,9 +111,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             className="toastify-container"
             toastClassName="toastify-toast"
           />
-          <ErrorBoundary>
-            {HeaderComponent}
-          </ErrorBoundary>
+          <ErrorBoundary>{HeaderComponent}</ErrorBoundary>
           <ErrorBoundary>
             <Routes isAdmin={isAdmin} match={match} />
           </ErrorBoundary>
