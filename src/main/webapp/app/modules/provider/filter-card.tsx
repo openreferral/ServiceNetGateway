@@ -5,7 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonPill from './shared/button-pill';
 import Select from 'react-select';
 import { connect } from 'react-redux';
-import { getPostalCodeList, getRegionList, getCityList, getPartnerList, getTaxonomyMap } from 'app/modules/home/filter-activity.reducer';
+import {
+  getPostalCodeListForServiceProviders as getPostalCodeList,
+  getRegionListForServiceProviders as getRegionList,
+  getCityListForServiceProviders as getCityList,
+  getPartnerList,
+  getTaxonomyMap
+} from 'app/modules/home/filter-activity.reducer';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
 import { updateFilter, reset } from './provider-filter.reducer';
