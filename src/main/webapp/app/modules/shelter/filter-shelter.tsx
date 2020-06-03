@@ -101,7 +101,7 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
   handleCountyChange = selectedCounty => {
     this.setState({ selectedCounty, filtersChanged: true });
 
-    const definedCoverageAreas = selectedCounty.map(county => county.value);
+    const definedCoverageAreas = selectedCounty ? selectedCounty.map(county => county.value) : [];
 
     this.props.updateShelterFilter({ ...this.props.shelterFilter, definedCoverageAreas });
   };

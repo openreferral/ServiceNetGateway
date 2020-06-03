@@ -80,7 +80,7 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
 
   searchEntities = () => {
     this.props.reset();
-    return this.getEntities();
+    return this.getEntities(true);
   };
 
   changeSearchPhrase = event => {
