@@ -153,6 +153,30 @@ export const getCityList = () => {
   };
 };
 
+export const getPostalCodeListForServiceProviders = () => {
+  const requestUrl = `${SERVICENET_API_URL}/activity-filter/service-providers/get-postal-codes`;
+  return {
+    type: ACTION_TYPES.FETCH_POSTAL_CODE_LIST,
+    payload: axios.get<any>(requestUrl)
+  };
+};
+
+export const getRegionListForServiceProviders = () => {
+  const requestUrl = `${SERVICENET_API_URL}/activity-filter/service-providers/get-regions`;
+  return {
+    type: ACTION_TYPES.FETCH_REGION_LIST,
+    payload: axios.get<any>(requestUrl)
+  };
+};
+
+export const getCityListForServiceProviders = () => {
+  const requestUrl = `${SERVICENET_API_URL}/activity-filter/service-providers/get-cities`;
+  return {
+    type: ACTION_TYPES.FETCH_CITY_LIST,
+    payload: axios.get<any>(requestUrl)
+  };
+};
+
 export const getPartnerList = () => {
   const requestUrl = `${SERVICENET_API_URL}/system-accounts`;
   return {
