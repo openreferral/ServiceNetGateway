@@ -15,7 +15,7 @@ export const SiloDeleteDialog = (props: ISiloDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/silo' + props.location.search);
+    props.history.push('/entity/silo' + props.location.search);
   };
 
   useEffect(
@@ -29,6 +29,7 @@ export const SiloDeleteDialog = (props: ISiloDeleteDialogProps) => {
 
   const confirmDelete = () => {
     props.deleteEntity(props.siloEntity.id);
+    handleClose();
   };
 
   const { siloEntity } = props;

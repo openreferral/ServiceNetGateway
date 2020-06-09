@@ -18,7 +18,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { ISilo, defaultValue } from 'app/shared/model/ServiceNet/silo.model';
 
 describe('Entities reducer tests', () => {
-  function isEmpty(element): boolean {
+  function isEmpty(element) {
     if (element instanceof Array) {
       return element.length === 0;
     } else {
@@ -258,6 +258,13 @@ describe('Entities reducer tests', () => {
         },
         {
           type: SUCCESS(ACTION_TYPES.DELETE_SILO),
+          payload: resolvedObject
+        },
+        {
+          type: REQUEST(ACTION_TYPES.FETCH_SILO_LIST)
+        },
+        {
+          type: SUCCESS(ACTION_TYPES.FETCH_SILO_LIST),
           payload: resolvedObject
         }
       ];
