@@ -26,6 +26,10 @@ export const SiloDetail = (props: ISiloDetailProps) => {
             <span id="name">Name</span>
           </dt>
           <dd>{siloEntity.name}</dd>
+          <dt>
+            <span>Registration link</span>
+          </dt>
+          <dd>{`${window.location.origin}/#/register/${siloEntity.name}`}</dd>
         </dl>
         <Button tag={Link} to="/silo" replace color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
