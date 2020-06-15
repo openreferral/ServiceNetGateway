@@ -34,6 +34,11 @@ export type AuthenticationState = Readonly<typeof initialState>;
 
 export default (state: AuthenticationState = initialState, action): AuthenticationState => {
   switch (action.type) {
+    case REQUEST(ACTION_TYPES.LOGOUT):
+      return {
+        ...state,
+        loggingOut: true
+      };
     case REQUEST(ACTION_TYPES.LOGIN):
     case REQUEST(ACTION_TYPES.GET_SESSION):
       return {
@@ -70,7 +75,7 @@ export default (state: AuthenticationState = initialState, action): Authenticati
       return {
         ...initialState,
         showModalLogin: true,
-        loggingOut: false
+        loggingOut: true
       };
     case SUCCESS(ACTION_TYPES.GET_SESSION): {
       const isAuthenticated = action.payload && action.payload.data && action.payload.data.activated;
