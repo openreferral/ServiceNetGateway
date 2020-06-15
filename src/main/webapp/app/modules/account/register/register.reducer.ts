@@ -2,7 +2,7 @@ import axios from 'axios';
 import { translate } from 'react-jhipster';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { AUTH_API_URL } from 'app/shared/util/service-url.constants';
+import { AUTH_API_URL, SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   CREATE_ACCOUNT: 'register/CREATE_ACCOUNT',
@@ -50,6 +50,15 @@ export default (state: RegisterState = initialState, action): RegisterState => {
 export const handleRegister = (login, email, password, firstName, lastName, langKey = 'en') => ({
   type: ACTION_TYPES.CREATE_ACCOUNT,
   payload: axios.post(AUTH_API_URL + '/register', { login, email, password, firstName, lastName, langKey }),
+  meta: {
+    successMessage: translate('register.messages.success')
+  }
+});
+
+// Actions
+export const handleRegisterWithinSilo = (siloName, login, email, password, firstName, lastName, langKey = 'en') => ({
+  type: ACTION_TYPES.CREATE_ACCOUNT,
+  payload: axios.post(SERVICENET_API_URL + `/register/${siloName}`, { login, email, password, firstName, lastName, langKey }),
   meta: {
     successMessage: translate('register.messages.success')
   }
