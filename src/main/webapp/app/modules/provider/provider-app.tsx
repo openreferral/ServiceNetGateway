@@ -39,8 +39,6 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
 
   componentDidMount() {
     this.props.getUser(this.props.account.login);
-    this.props.getSession();
-    this.props.getProfile();
   }
 
   toggleMenu = () => {
@@ -48,7 +46,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
   };
 
   render() {
-    const { match, isAdmin } = this.props;
+    const { match, isAdmin, account, loggingOut } = this.props;
     const { menuOpen } = this.state;
 
     const HeaderComponent = (
@@ -97,11 +95,9 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             className="toastify-container"
             toastClassName="toastify-toast"
           />
+          <ErrorBoundary>{HeaderComponent}</ErrorBoundary>
           <ErrorBoundary>
-            {HeaderComponent}
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <Routes isAdmin={isAdmin} match={match} />
+            {!loggingOut && <Routes isAdmin={isAdmin} match={match} location={this.props.location} account={this.props.account} />}
           </ErrorBoundary>
         </div>
       </div>
@@ -121,7 +117,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, activity 
   isInProduction: applicationProfile.inProduction,
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
   userLogin: authentication.account.login,
-  isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0
+  isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
+  loggingOut: authentication.loggingOut
 });
 
 const mapDispatchToProps = {

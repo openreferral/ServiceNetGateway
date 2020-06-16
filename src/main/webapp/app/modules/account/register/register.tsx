@@ -1,14 +1,15 @@
 import React from 'react';
-import { Translate, translate } from 'react-jhipster';
+import { Translate, translate, getUrlParameter } from 'react-jhipster';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Row, Col, Alert, Button } from 'reactstrap';
 
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { IRootState } from 'app/shared/reducers';
-import { handleRegister, reset } from './register.reducer';
+import { handleRegister, handleRegisterWithinSilo, reset } from './register.reducer';
 
-export interface IRegisterProps extends StateProps, DispatchProps {}
+export interface IRegisterProps extends StateProps, DispatchProps, RouteComponentProps<{ siloName: any }> {}
 
 export interface IRegisterState {
   password: string;
@@ -24,14 +25,26 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
   }
 
   handleValidSubmit = (event, values) => {
-    this.props.handleRegister(
-      values.username,
-      values.email,
-      values.firstPassword,
-      values.firstName,
-      values.lastName,
-      this.props.currentLocale
-    );
+    if (this.props.match.params.siloName) {
+      this.props.handleRegisterWithinSilo(
+        this.props.match.params.siloName,
+        values.username,
+        values.email,
+        values.firstPassword,
+        values.firstName,
+        values.lastName,
+        this.props.currentLocale
+      );
+    } else {
+      this.props.handleRegister(
+        values.username,
+        values.email,
+        values.firstPassword,
+        values.firstName,
+        values.lastName,
+        this.props.currentLocale
+      );
+    }
     event.preventDefault();
   };
 
@@ -140,7 +153,7 @@ const mapStateToProps = ({ locale }: IRootState) => ({
   currentLocale: locale.currentLocale
 });
 
-const mapDispatchToProps = { handleRegister, reset };
+const mapDispatchToProps = { handleRegister, handleRegisterWithinSilo, reset };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 

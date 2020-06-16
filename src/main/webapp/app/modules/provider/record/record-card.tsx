@@ -2,7 +2,7 @@ import './record-card.scss';
 
 import React from 'react';
 import { TextFormat, Translate } from 'react-jhipster';
-import { Card, CardBody, CardTitle, UncontrolledTooltip } from 'reactstrap';
+import { Card, CardBody, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -14,9 +14,13 @@ import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/m
 import { connect } from 'react-redux';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
-import _ from 'lodash';
+import OwnerInfo from 'app/shared/layout/owner-info';
 
 const REMAINDER_WIDTH = 25;
+const ONE_HOUR = 1000 * 60 * 60;
+const LESS_THAN_24_HOURS = '#6AB9A4';
+const LESS_THAN_48_HOURS = '#FAB28C';
+const MORE_THAN_48_HOURS = '#808080';
 
 export interface IRecordCardProps extends StateProps, DispatchProps {
   record: any;
@@ -67,23 +71,22 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     });
   }
 
-  getOwnerInfo = record => {
-    if (record) {
-      if (record.owner && (record.owner.firstName || record.owner.lastName)) {
-        const tooltipId = _.uniqueId('record-owner-span-');
-        return (
-          <div className="d-inline-flex" id={tooltipId}>
-            {`${_.get(record, 'owner.firstName', '')} ${_.get(record, 'owner.lastName', '')}`}
-            <UncontrolledTooltip placement="top" autohide={false} target={tooltipId}>
-              {record.owner.email}
-            </UncontrolledTooltip>
-          </div>
-        );
-      } else {
-        return <div className="d-inline-flex">{record.owner.email}</div>;
-      }
+  getBookmarkColor = () => {
+    const { record } = this.props;
+    const latestDailyUpdate = record.dailyUpdates.find(du => du.expiry === null);
+
+    if (latestDailyUpdate === undefined) {
+      return 'rgba(0, 0, 0, 0)';
     } else {
-      return null;
+      const timeDelta = Date.now() - new Date(latestDailyUpdate.createdAt).getTime();
+      const hours = Math.ceil(timeDelta / ONE_HOUR);
+      if (hours < 24) {
+        return LESS_THAN_24_HOURS;
+      } else if (hours < 48) {
+        return LESS_THAN_48_HOURS;
+      } else {
+        return MORE_THAN_48_HOURS;
+      }
     }
   };
 
@@ -93,11 +96,11 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       <Card className="record-card mx-3 mb-4">
         <CardTitle>
           <div className="bookmark">
-            {record.organization.accountId === user.systemAccountId ? (
-              <FontAwesomeIcon icon={faBookmarkSolid} size={'lg'} />
-            ) : (
-              <FontAwesomeIcon icon={faBookmark} size={'lg'} />
-            )}
+            <FontAwesomeIcon
+              icon={record.organization.accountId === user.systemAccountId ? faBookmarkSolid : faBookmark}
+              size={'lg'}
+              color={this.getBookmarkColor()}
+            />
           </div>
           <div className="last-update">
             <div>
@@ -109,7 +112,8 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
               )}
             </div>
             <div className="updated-by">
-              <Translate contentKey="recordCard.by" /> {this.getOwnerInfo(record)}
+              <Translate contentKey="recordCard.by" />
+              <OwnerInfo record={record} direction="top" />
             </div>
           </div>
         </CardTitle>

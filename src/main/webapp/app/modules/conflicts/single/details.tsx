@@ -16,6 +16,7 @@ import _ from 'lodash';
 import { getNotHiddenMatchesByOrg, getPartnerRecords } from 'app/modules/conflicts/shared/shared-record-view.reducer';
 import { SYSTEM_ACCOUNTS } from 'app/config/constants';
 import IconSpan from 'app/shared/layout/icon-span';
+import OwnerInfo from 'app/shared/layout/owner-info';
 
 export interface ISingleRecordViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {
   activity: IActivityRecord;
@@ -116,7 +117,13 @@ export class Details extends React.Component<ISingleRecordViewProp, ISingleRecor
                       <IconSpan visible={match.providerName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
                         <h5>{match.partnerVersionName}</h5>
                         <div className="match-details">
-                          <div>{match.providerName}</div>
+                          <div>
+                            {match.providerName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
+                              <OwnerInfo record={match} direction="right" />
+                            ) : (
+                              match.providerName
+                            )}
+                          </div>
                           <div className="text-right">
                             {match.numberOfLocations}{' '}
                             <Translate

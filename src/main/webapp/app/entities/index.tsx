@@ -52,6 +52,7 @@ import ServiceTaxonomiesDetailsFieldsValue from './service-taxonomies-details-fi
 import ContactDetailsFieldsValue from './contact-details-fields-value';
 import RequestLogger from './request-logger';
 import DailyUpdate from './daily-update';
+import Silo from './silo';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -106,6 +107,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/contact-details-fields-value`} component={ContactDetailsFieldsValue} />
       <ErrorBoundaryRoute path={`${match.url}/request-logger`} component={RequestLogger} />
       <ErrorBoundaryRoute path={`${match.url}/daily-update`} component={DailyUpdate} />
+      <ErrorBoundaryRoute path={`${match.url}/silo`} component={Silo} />
       {/* jhipster-needle-add-route-path - JHipster will routes here */}
     </Switch>
   </div>
