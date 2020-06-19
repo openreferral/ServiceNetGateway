@@ -62,7 +62,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
               <div className="self-align-center">
                 <SearchBar />
               </div>
-              <div className="self-align-center">
+              {/* d-none until implemented */}
+              <div className="self-align-center d-none">
                 <Badge className="bell-bagde" color="info">
                   13
                 </Badge>

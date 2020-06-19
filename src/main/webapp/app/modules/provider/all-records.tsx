@@ -160,7 +160,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               order={this.state.order}
               sortFunc={this.sort}
             />
-            <div className="pill">
+            {/* d-none until implemented */}
+            <div className="pill d-none">
               <span>
                 <FontAwesomeIcon icon="th" />
                 {' | '}
