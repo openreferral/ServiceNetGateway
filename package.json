@@ -58,6 +58,7 @@
     "redux-promise-middleware": "6.1.2",
     "redux-thunk": "2.3.0",
     "slick-carousel": "1.8.1",
+    "swagger-ui-dist": "3.27.0",
     "tslib": "1.9.3",
     "uuid": "3.3.2"
   },
