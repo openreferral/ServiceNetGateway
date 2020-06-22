@@ -92,6 +92,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
 
   render() {
     const { record, user, link } = this.props;
+    const latestDailyUpdate = record.dailyUpdates.find(du => du.expiry === null);
     return (
       <Card className="record-card mx-3 mb-4">
         <CardTitle>
@@ -122,6 +123,18 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           <div className="organization-name">
             <Link to={link}>{record.organization.name}</Link>
           </div>
+          {latestDailyUpdate ? (
+            <div className="latest-daily-update">
+              <span>
+                Update (<TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                ):
+              </span>
+              <br />
+              <span>{latestDailyUpdate.update}</span>
+            </div>
+          ) : (
+            <div style={{ height: '30px' }} />
+          )}
           <section className="services">
             {record.services.length > 0 ? (
               <AutoSizer disableHeight>
