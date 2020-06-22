@@ -5,12 +5,14 @@ import { Redirect } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import { logout } from 'app/shared/reducers/authentication';
 import { reset } from 'app/entities/fields-display-settings/fields-display-settings.reducer';
+import { reset as resetProviderFilters } from 'app/modules/provider/provider-filter.reducer';
 
 export interface ILogoutProps extends StateProps, DispatchProps {}
 
 export class Logout extends React.Component<ILogoutProps> {
   componentDidMount() {
     this.props.reset();
+    this.props.resetProviderFilters();
     this.props.logout();
   }
 
@@ -31,7 +33,7 @@ export class Logout extends React.Component<ILogoutProps> {
 
 const mapStateToProps = (storeState: IRootState) => ({});
 
-const mapDispatchToProps = { logout, reset };
+const mapDispatchToProps = { logout, reset, resetProviderFilters };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
