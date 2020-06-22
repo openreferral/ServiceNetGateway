@@ -1,7 +1,7 @@
 div.card.record-card {
   font-family: 'Muli', serif;
   font-size: 12px;
-  height: 220px;
+  height: 250px;
   box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
 
   &.new-record {
@@ -108,6 +108,18 @@ div.card.record-card {
       }
     }
   }
+}
+
+.latest-daily-update {
+  padding-left: 20px;
+  line-height: 15px;
+  height: 30px;
+  padding-right: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media only screen and (max-width: 1000px) {
