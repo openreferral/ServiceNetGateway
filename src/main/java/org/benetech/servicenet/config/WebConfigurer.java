@@ -137,6 +137,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
             source.registerCorsConfiguration("/auth/**", config);
             source.registerCorsConfiguration("/*/api/**", config);
             source.registerCorsConfiguration("/services/*/api/**", config);
+            source.registerCorsConfiguration("/services/*/partner-api/**", config);
             source.registerCorsConfiguration("/*/management/**", config);
             source.registerCorsConfiguration("/*/oauth/**", config);
         }
