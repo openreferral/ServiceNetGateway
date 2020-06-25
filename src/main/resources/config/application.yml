@@ -168,7 +168,18 @@ jhipster:
   swagger:
     default-include-pattern: /api/.*
     title: ServiceNetGateway API
-    description: ServiceNetGateway API documentation
+    description: |
+      ### ServiceNetGateway service API documentation. To explore other services API documentation select proper definition:
+
+      | Definition | Service |
+      | ---------- | --------|
+      | default | Gateway |
+      | servicenet | Core |
+      | servicenetauth | Auth |
+
+      ---
+
+      **To check documentation for externally available API endpoints, check core service documentation and filter for _external-access_ tag**
     version: 0.0.1
     terms-of-service-url:
     contact-name:
