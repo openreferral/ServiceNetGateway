@@ -30,6 +30,8 @@
       "name": "Alphabetical"
     },
     "appNotConfiguredMessage": "Your account has not been configured. Please contact servicenet@benetech.org to complete set-up.",
-    "alert": "Alert"
+    "alert": "Alert",
+    "mapView": "Map View",
+    "gridView": "Grid View"
   }
 }
