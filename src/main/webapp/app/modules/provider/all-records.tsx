@@ -287,16 +287,16 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           </div>
         </div>
         {isMapView ? (
-          <Row className="mb-4">
-            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2">
+          <Row className="mb-4 mx-3">
+            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 px-0">
               <Map
                 googleMapURL={mapUrl}
                 records={allRecords}
                 lat={selectedLat}
                 lng={selectedLng}
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `400px` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
+                loadingElement={<div style={{ height: '100%' }} />}
+                containerElement={<div style={{ height: '400px' }} />}
+                mapElement={<div style={{ height: '100%' }} />}
                 onMarkerClick={this.selectRecord}
               />
             </Col>
