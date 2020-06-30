@@ -262,16 +262,20 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               <div className="button-pill" onClick={this.toggleMapView}>
                 <span>
                   <FontAwesomeIcon icon="th" />
-                  &nbsp;
-                  {translate('providerSite.gridView')}
+                  <MediaQuery minDeviceWidth={768}>
+                    &nbsp;
+                    {translate('providerSite.gridView')}
+                  </MediaQuery>
                 </span>
               </div>
             ) : (
               <div className="button-pill" onClick={this.toggleMapView}>
                 <span>
                   <FontAwesomeIcon icon="map" />
-                  &nbsp;
-                  {translate('providerSite.mapView')}
+                  <MediaQuery minDeviceWidth={768}>
+                    &nbsp;
+                    {translate('providerSite.mapView')}
+                  </MediaQuery>
                 </span>
               </div>
             )}
@@ -288,7 +292,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         </div>
         {isMapView ? (
           <Row className="mb-4 mx-3">
-            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 px-0">
+            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view">
               <Map
                 googleMapURL={mapUrl}
                 records={allRecords}
@@ -301,7 +305,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               />
             </Col>
             {isRecordHighlighted && selected && !filterOpened ? (
-              <Col md={4}>
+              <Col md={4} className={`col-md-4 pr-0 selected-record`}>
                 <RecordCard record={selected} link={`single-record-view/${selected.organization.id}`} />
               </Col>
             ) : null}
