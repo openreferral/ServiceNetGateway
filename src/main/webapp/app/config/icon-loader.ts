@@ -55,6 +55,7 @@ import { faTh } from '@fortawesome/free-solid-svg-icons/faTh';
 import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons/faUserFriends';
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons/faClipboardList';
+import { faMap } from '@fortawesome/free-solid-svg-icons/faMap';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -116,6 +117,7 @@ export const loadIcons = () => {
     faTh,
     faCircle,
     faUserFriends,
-    faClipboardList
+    faClipboardList,
+    faMap
   );
 };
