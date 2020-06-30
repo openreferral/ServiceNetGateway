@@ -132,6 +132,14 @@
       padding-top: 10px;
       //transform: translate(-50%, -50%) !important;
     }
+
+    .map-view {
+      padding-right: 0 !important;
+    }
+
+    .selected-record {
+      padding-left: 0 !important;
+    }
   }
 
   .avatar {
@@ -450,4 +458,17 @@
 .side-menu-container {
   outline: none;
   display: grid !important;
+}
+
+.map-view {
+  padding-right: 0.5rem !important;
+}
+
+.selected-record {
+  padding-left: 1.5rem !important;
+}
+
+.selected-record > div {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
