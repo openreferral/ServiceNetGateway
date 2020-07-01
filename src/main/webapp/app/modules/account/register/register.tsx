@@ -33,6 +33,9 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
         values.firstPassword,
         values.firstName,
         values.lastName,
+        values.organizationName,
+        values.organizationUrl,
+        values.phoneNumber,
         this.props.currentLocale
       );
     } else {
@@ -42,6 +45,9 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
         values.firstPassword,
         values.firstName,
         values.lastName,
+        values.organizationName,
+        values.organizationUrl,
+        values.phoneNumber,
         this.props.currentLocale
       );
     }
@@ -96,6 +102,46 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                 name="lastName"
                 label={translate('global.form.lastName')}
                 placeholder={translate('global.form.lastName.placeholder')}
+              />
+              <AvField
+                name="organizationName"
+                label={translate('userManagement.organizationName')}
+                placeholder={translate('userManagement.organizationName.placeholder')}
+                type="text"
+                validate={{
+                  required: {
+                    value: true,
+                    errorMessage: translate('register.messages.validate.organizationName.required')
+                  }
+                }}
+              />
+              <AvField
+                name="organizationUrl"
+                label={translate('userManagement.organizationUrl')}
+                placeholder={translate('userManagement.organizationUrl.placeholder')}
+                type="text"
+                validate={{
+                  maxLength: {
+                    value: 254,
+                    errorMessage: translate('register.messages.validate.organizationUrl.maxlength')
+                  },
+                  pattern: {
+                    value: '^((http|https)://)?(www.)?[0-9a-zA-Z\\-]+\\..+$',
+                    errorMessage: translate('register.messages.validate.organizationUrl.pattern')
+                  }
+                }}
+              />
+              <AvField
+                name="phoneNumber"
+                label={translate('userManagement.phoneNumber')}
+                placeholder={translate('userManagement.phoneNumber.placeholder')}
+                type="text"
+                validate={{
+                  pattern: {
+                    value: '^\\([0-9]{3}\\)-[0-9]{3}-[0-9]{4}$',
+                    errorMessage: translate('register.messages.validate.phoneNumber.pattern')
+                  }
+                }}
               />
               <AvField
                 name="firstPassword"

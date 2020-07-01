@@ -28,6 +28,12 @@
     "lastModifiedDate": "Modified date",
     "systemAccount": "System Account",
     "shelters": "Shelters",
-    "silo": "Silo"
+    "silo": "Silo",
+    "organizationName": "Organization Name",
+    "organizationUrl": "Organization URL",
+    "phoneNumber": "Phone Number",
+    "organizationName.placeholder": "Your Organization Name",
+    "organizationUrl.placeholder": "Your Organization URL",
+    "phoneNumber.placeholder": "Your Phone Number (XXX)-XXX-XXXX"
   }
 }

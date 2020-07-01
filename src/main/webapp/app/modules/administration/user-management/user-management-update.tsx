@@ -168,6 +168,59 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     value={user.email}
                   />
                 </AvGroup>
+                <AvGroup>
+                  <Label for="organizationName">
+                    <Translate contentKey="userManagement.organizationName">Organization Name</Translate>
+                  </Label>
+                  <AvField
+                    type="text"
+                    className="form-control"
+                    name="organizationName"
+                    validate={{
+                      required: {
+                        value: true,
+                        errorMessage: translate('register.messages.validate.organizationName.required')
+                      }
+                    }}
+                    value={user.organizationName}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label for="organizationUrl">
+                    <Translate contentKey="userManagement.organizationUrl">Organization URL</Translate>
+                  </Label>
+                  <AvField
+                    type="text"
+                    className="form-control"
+                    name="organizationUrl"
+                    validate={{
+                      minLength: { value: 5, errorMessage: translate('global.messages.validate.organizationUrl.minlength') },
+                      maxLength: { value: 254, errorMessage: translate('global.messages.validate.organizationUrl.maxlength') },
+                      pattern: {
+                        value: '^((http|https)://)?(www.)?[0-9a-zA-Z\\-]+\\..+$',
+                        errorMessage: translate('register.messages.validate.organizationUrl.pattern')
+                      }
+                    }}
+                    value={user.organizationUrl}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label for="phoneNumber">
+                    <Translate contentKey="userManagement.phoneNumber">Phone Number</Translate>
+                  </Label>
+                  <AvField
+                    type="text"
+                    className="form-control"
+                    name="phoneNumber"
+                    validate={{
+                      pattern: {
+                        value: '^\\([0-9]{3}\\)-[0-9]{3}-[0-9]{4}$',
+                        errorMessage: translate('register.messages.validate.phoneNumber.pattern')
+                      }
+                    }}
+                    value={user.phoneNumber}
+                  />
+                </AvGroup>
                 <AvGroup check>
                   <Label>
                     <AvInput type="checkbox" name="activated" value={user.activated} />{' '}
