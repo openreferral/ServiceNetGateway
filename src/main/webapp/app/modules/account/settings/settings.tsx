@@ -90,6 +90,52 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
                 }}
                 value={account.email}
               />
+              {/* Organization Name */}
+              <AvField
+                name="organizationName"
+                label={translate('userManagement.organizationName')}
+                placeholder={translate('userManagement.organizationName.placeholder')}
+                type="text"
+                validate={{
+                  required: {
+                    value: true,
+                    errorMessage: translate('register.messages.validate.organizationName.required')
+                  }
+                }}
+                value={account.organizationName}
+              />
+              {/* Organization URL */}
+              <AvField
+                name="organizationUrl"
+                label={translate('userManagement.organizationUrl')}
+                placeholder={translate('userManagement.organizationUrl.placeholder')}
+                type="text"
+                validate={{
+                  maxLength: {
+                    value: 254,
+                    errorMessage: translate('register.messages.validate.organizationUrl.maxlength')
+                  },
+                  pattern: {
+                    value: '^((http|https)://)?(www.)?[0-9a-zA-Z\\-]+\\..+$',
+                    errorMessage: translate('register.messages.validate.organizationUrl.pattern')
+                  }
+                }}
+                value={account.organizationUrl}
+              />
+              {/* Phone Number */}
+              <AvField
+                name="phoneNumber"
+                label={translate('userManagement.phoneNumber')}
+                placeholder={translate('userManagement.phoneNumber.placeholder')}
+                type="text"
+                validate={{
+                  pattern: {
+                    value: '^\\([0-9]{3}\\)-[0-9]{3}-[0-9]{4}$',
+                    errorMessage: translate('register.messages.validate.phoneNumber.pattern')
+                  }
+                }}
+                value={account.phoneNumber}
+              />
               {/* Language key */}
               <AvField
                 type="select"

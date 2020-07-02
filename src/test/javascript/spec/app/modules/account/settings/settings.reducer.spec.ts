@@ -81,7 +81,7 @@ describe('Settings reducer tests', () => {
       const mockStore = configureStore([thunk, promiseMiddleware]);
       store = mockStore({ authentication: { account: { langKey: 'en' } } });
       axios.get = sinon.stub().returns(Promise.resolve(resolvedObject));
-      axios.post = sinon.stub().returns(Promise.resolve(resolvedObject));
+      axios.put = sinon.stub().returns(Promise.resolve(resolvedObject));
     });
 
     it('dispatches UPDATE_ACCOUNT_PENDING and UPDATE_ACCOUNT_FULFILLED actions', async () => {
