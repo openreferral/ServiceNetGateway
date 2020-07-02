@@ -47,18 +47,59 @@ export default (state: RegisterState = initialState, action): RegisterState => {
 };
 
 // Actions
-export const handleRegister = (login, email, password, firstName, lastName, langKey = 'en') => ({
+export const handleRegister = (
+  login,
+  email,
+  password,
+  firstName,
+  lastName,
+  organizationName,
+  organizationUrl,
+  phoneNumber,
+  langKey = 'en'
+) => ({
   type: ACTION_TYPES.CREATE_ACCOUNT,
-  payload: axios.post(AUTH_API_URL + '/register', { login, email, password, firstName, lastName, langKey }),
+  payload: axios.post(SERVICENET_API_URL + '/register', {
+    login,
+    email,
+    password,
+    firstName,
+    lastName,
+    organizationName,
+    organizationUrl,
+    phoneNumber,
+    langKey
+  }),
   meta: {
     successMessage: translate('register.messages.success')
   }
 });
 
 // Actions
-export const handleRegisterWithinSilo = (siloName, login, email, password, firstName, lastName, langKey = 'en') => ({
+export const handleRegisterWithinSilo = (
+  siloName,
+  login,
+  email,
+  password,
+  firstName,
+  lastName,
+  organizationName,
+  organizationUrl,
+  phoneNumber,
+  langKey = 'en'
+) => ({
   type: ACTION_TYPES.CREATE_ACCOUNT,
-  payload: axios.post(SERVICENET_API_URL + `/register/${siloName}`, { login, email, password, firstName, lastName, langKey }),
+  payload: axios.post(SERVICENET_API_URL + `/register/${siloName}`, {
+    login,
+    email,
+    password,
+    firstName,
+    lastName,
+    organizationName,
+    organizationUrl,
+    phoneNumber,
+    langKey
+  }),
   meta: {
     successMessage: translate('register.messages.success')
   }
