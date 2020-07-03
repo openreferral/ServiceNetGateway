@@ -20,7 +20,7 @@
           "maxlength": "Your organization URL cannot be longer than 254 characters."
         },
         "phoneNumber": {
-          "pattern": "This field should follow pattern: (XXX)-XXX-XXXX."
+          "pattern": "This field should follow pattern: 1 (XXX) XXX-XXXX or (XXX) XXX-XXXX."
         }
       },
       "success": "<strong>Your registration request has been received.</strong>  You will get an email when your account has been approved.",

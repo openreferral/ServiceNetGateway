@@ -4,6 +4,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Badge } from 'reactstrap';
 import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { formatPhoneNumber } from 'react-phone-number-input';
 
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { languages } from 'app/config/translation';
@@ -64,7 +65,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
           <dt>
             <Translate contentKey="userManagement.phoneNumber">Phone Number</Translate>
           </dt>
-          <dd>{user.phoneNumber}</dd>
+          <dd>{formatPhoneNumber(user.phoneNumber)}</dd>
           <dt>
             <Translate contentKey="userManagement.langKey">Lang Key</Translate>
           </dt>

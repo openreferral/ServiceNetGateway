@@ -1,8 +1,11 @@
 import React from 'react';
-import { Button, Col, Alert, Row } from 'reactstrap';
+import { Button, Col, Label, Row } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
-import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
+// tslint:disable-next-line:no-submodule-imports
+import Input from 'react-phone-number-input/input';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 import { locales, languages } from 'app/config/translation';
 import { IRootState } from 'app/shared/reducers';
@@ -14,9 +17,15 @@ export interface IUserSettingsProps extends StateProps, DispatchProps, RouteComp
 
 export interface IUserSettingsState {
   account: any;
+  phoneNumber: string;
 }
 
 export class SettingsPage extends React.Component<IUserSettingsProps, IUserSettingsState> {
+  state: IUserSettingsState = {
+    account: this.props.account,
+    phoneNumber: this.props.account.phoneNumber
+  };
+
   componentDidMount() {
     this.props.getSession();
   }
@@ -26,9 +35,13 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
   }
 
   handleValidSubmit = (event, values) => {
+    if (this.state.phoneNumber && !isPossiblePhoneNumber(this.state.phoneNumber)) {
+      return;
+    }
     const account = {
       ...this.props.account,
-      ...values
+      ...values,
+      phoneNumber: this.state.phoneNumber
     };
 
     this.props.saveAccountSettings(account);
@@ -36,8 +49,13 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
     this.props.history.push(`/`);
   };
 
+  setPhoneNumber = phoneNumber => {
+    this.setState({ phoneNumber });
+  };
+
   render() {
     const { account } = this.props;
+    const { phoneNumber } = this.state;
 
     return (
       <div className="m-3">
@@ -123,19 +141,24 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
                 value={account.organizationUrl}
               />
               {/* Phone Number */}
-              <AvField
-                name="phoneNumber"
-                label={translate('userManagement.phoneNumber')}
-                placeholder={translate('userManagement.phoneNumber.placeholder')}
-                type="text"
-                validate={{
-                  pattern: {
-                    value: '^\\([0-9]{3}\\)-[0-9]{3}-[0-9]{4}$',
-                    errorMessage: translate('register.messages.validate.phoneNumber.pattern')
-                  }
-                }}
-                value={account.phoneNumber}
-              />
+              <AvGroup className="form-group">
+                <Label for="phoneNumber" className={`${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'text-danger' : ''}`}>
+                  <Translate contentKey="userManagement.phoneNumber">Phone Number</Translate>
+                </Label>
+                <Input
+                  className="form-control"
+                  name="phoneNumber"
+                  label={translate('userManagement.phoneNumber')}
+                  placeholder={translate('userManagement.phoneNumber.placeholder')}
+                  country="US"
+                  value={phoneNumber}
+                  onChange={this.setPhoneNumber}
+                />
+                {phoneNumber &&
+                  !isPossiblePhoneNumber(phoneNumber) && (
+                    <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                  )}
+              </AvGroup>
               {/* Language key */}
               <AvField
                 type="select"

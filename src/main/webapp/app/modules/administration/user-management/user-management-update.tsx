@@ -6,6 +6,9 @@ import { AvForm, AvGroup, AvInput, AvField, AvFeedback } from 'availity-reactstr
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getEntities as getShelters } from 'app/entities/shelter/shelter.reducer';
+// tslint:disable-next-line:no-submodule-imports
+import Input from 'react-phone-number-input/input';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 import { locales, languages } from 'app/config/translation';
 import { getUser, getRoles, getSystemAccounts, updateUser, createUser, reset } from './user-management.reducer';
@@ -16,11 +19,13 @@ export interface IUserManagementUpdateProps extends StateProps, DispatchProps, R
 
 export interface IUserManagementUpdateState {
   isNew: boolean;
+  phoneNumber: string;
 }
 
 export class UserManagementUpdate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
-    isNew: !this.props.match.params || !this.props.match.params.login
+    isNew: !this.props.match.params || !this.props.match.params.login,
+    phoneNumber: this.props.user.phoneNumber
   };
 
   componentDidMount() {
@@ -40,10 +45,14 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
   }
 
   saveUser = (event, values) => {
+    if (this.state.phoneNumber && !isPossiblePhoneNumber(this.state.phoneNumber)) {
+      return;
+    }
+    const user = { ...values, phoneNumber: this.state.phoneNumber };
     if (this.state.isNew) {
-      this.props.createUser(values);
+      this.props.createUser(user);
     } else {
-      this.props.updateUser(values);
+      this.props.updateUser(user);
     }
     this.handleClose();
   };
@@ -52,9 +61,14 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     this.props.history.push('/admin/user-management');
   };
 
+  setPhoneNumber = phoneNumber => {
+    this.setState({ phoneNumber });
+  };
+
   render() {
     const isInvalid = false;
     const { user, loading, updating, roles, systemAccounts, shelters, allSilos } = this.props;
+    const { phoneNumber } = this.state;
     return (
       <div>
         <Row className="justify-content-center">
@@ -204,22 +218,22 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     value={user.organizationUrl}
                   />
                 </AvGroup>
-                <AvGroup>
-                  <Label for="phoneNumber">
+                <AvGroup className="form-group">
+                  <Label for="phoneNumber" className={`${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'text-danger' : ''}`}>
                     <Translate contentKey="userManagement.phoneNumber">Phone Number</Translate>
                   </Label>
-                  <AvField
-                    type="text"
+                  <Input
                     className="form-control"
                     name="phoneNumber"
-                    validate={{
-                      pattern: {
-                        value: '^\\([0-9]{3}\\)-[0-9]{3}-[0-9]{4}$',
-                        errorMessage: translate('register.messages.validate.phoneNumber.pattern')
-                      }
-                    }}
-                    value={user.phoneNumber}
+                    label={translate('userManagement.phoneNumber')}
+                    country="US"
+                    value={phoneNumber}
+                    onChange={this.setPhoneNumber}
                   />
+                  {phoneNumber &&
+                    !isPossiblePhoneNumber(phoneNumber) && (
+                      <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                    )}
                 </AvGroup>
                 <AvGroup check>
                   <Label>
