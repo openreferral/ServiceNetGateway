@@ -2,8 +2,11 @@ import React from 'react';
 import { Translate, translate, getUrlParameter } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Row, Col, Alert, Button } from 'reactstrap';
+import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
+import { Row, Col, Alert, Button, Label } from 'reactstrap';
+// tslint:disable-next-line:no-submodule-imports
+import Input from 'react-phone-number-input/input';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { IRootState } from 'app/shared/reducers';
@@ -13,18 +16,27 @@ export interface IRegisterProps extends StateProps, DispatchProps, RouteComponen
 
 export interface IRegisterState {
   password: string;
+  phoneNumber: string;
 }
 
 export class RegisterPage extends React.Component<IRegisterProps, IRegisterState> {
   state: IRegisterState = {
-    password: ''
+    password: '',
+    phoneNumber: ''
   };
 
   componentWillUnmount() {
     this.props.reset();
   }
 
+  setPhoneNumber = phoneNumber => {
+    this.setState({ phoneNumber });
+  };
+
   handleValidSubmit = (event, values) => {
+    if (this.state.phoneNumber && !isPossiblePhoneNumber(this.state.phoneNumber)) {
+      return;
+    }
     if (this.props.match.params.siloName) {
       this.props.handleRegisterWithinSilo(
         this.props.match.params.siloName,
@@ -35,7 +47,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
         values.lastName,
         values.organizationName,
         values.organizationUrl,
-        values.phoneNumber,
+        this.state.phoneNumber,
         this.props.currentLocale
       );
     } else {
@@ -47,7 +59,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
         values.lastName,
         values.organizationName,
         values.organizationUrl,
-        values.phoneNumber,
+        this.state.phoneNumber,
         this.props.currentLocale
       );
     }
@@ -59,6 +71,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
   };
 
   render() {
+    const { phoneNumber } = this.state;
     return (
       <div>
         <Row className="justify-content-center">
@@ -131,18 +144,24 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                   }
                 }}
               />
-              <AvField
-                name="phoneNumber"
-                label={translate('userManagement.phoneNumber')}
-                placeholder={translate('userManagement.phoneNumber.placeholder')}
-                type="text"
-                validate={{
-                  pattern: {
-                    value: '^\\([0-9]{3}\\)-[0-9]{3}-[0-9]{4}$',
-                    errorMessage: translate('register.messages.validate.phoneNumber.pattern')
-                  }
-                }}
-              />
+              <AvGroup className="form-group">
+                <Label for="phoneNumber" className={`${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'text-danger' : ''}`}>
+                  <Translate contentKey="userManagement.phoneNumber">Phone Number</Translate>
+                </Label>
+                <Input
+                  className="form-control"
+                  name="phoneNumber"
+                  label={translate('userManagement.phoneNumber')}
+                  placeholder={translate('userManagement.phoneNumber.placeholder')}
+                  country="US"
+                  value={phoneNumber}
+                  onChange={this.setPhoneNumber}
+                />
+                {this.state.phoneNumber &&
+                  !isPossiblePhoneNumber(phoneNumber) && (
+                    <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                  )}
+              </AvGroup>
               <AvField
                 name="firstPassword"
                 label={translate('global.form.newpassword')}
