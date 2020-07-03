@@ -34,6 +34,12 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
     this.props.reset();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.account && prevProps.account && this.props.account.phoneNumber !== prevProps.account.phoneNumber) {
+      this.setState({ phoneNumber: this.props.account.phoneNumber });
+    }
+  }
+
   handleValidSubmit = (event, values) => {
     if (this.state.phoneNumber && !isPossiblePhoneNumber(this.state.phoneNumber)) {
       return;

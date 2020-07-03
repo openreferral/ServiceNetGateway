@@ -40,6 +40,12 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     this.props.getAllSilos();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.user && prevProps.user && this.props.user.phoneNumber !== prevProps.user.phoneNumber) {
+      this.setState({ phoneNumber: this.props.user.phoneNumber });
+    }
+  }
+
   componentWillUnmount() {
     this.props.reset();
   }
