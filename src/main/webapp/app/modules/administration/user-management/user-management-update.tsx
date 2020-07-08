@@ -297,7 +297,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     ))}
                   </AvInput>
                 </AvGroup>
-                {user.authorities.includes('ROLE_SACRAMENTO') ? (
+                {user.authorities && user.authorities.includes('ROLE_SACRAMENTO') ? (
                   <AvGroup>
                     <Label for="shelters">
                       <Translate contentKey="userManagement.shelters">Shelters</Translate>
