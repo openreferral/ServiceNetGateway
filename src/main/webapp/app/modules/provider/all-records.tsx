@@ -1,4 +1,4 @@
-import React, { ComponentClass, StatelessComponent } from 'react';
+import React, { ComponentClass, FunctionComponent } from 'react';
 import { getAllProviderRecords } from './provider-record.reducer';
 import { connect } from 'react-redux';
 import { Col, Row, Progress, Modal } from 'reactstrap';
@@ -14,6 +14,13 @@ import FilterCard from './filter-card';
 import MediaQuery from 'react-responsive';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { GOOGLE_API_KEY } from 'app/config/constants';
+
+const MOBILE_WIDTH_BREAKPOINT = 768;
+const DESKTOP_WIDTH_BREAKPOINT = 769;
+const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
+const GRID_VIEW = 'GRID';
+const LIST_VIEW = 'LIST';
+const INACTIVE_COLOR = '#9aaabb';
 
 declare global {
   // tslint:disable-next-line:interface-name
@@ -32,6 +39,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   sortingOpened: boolean;
   filterOpened: boolean;
   isMapView: boolean;
+  recordViewType: 'GRID' | 'LIST';
   isRecordHighlighted: boolean;
   selectedRecord: string;
   selectedLat: number;
@@ -39,8 +47,8 @@ export interface IAllRecordsState extends IPaginationBaseState {
 }
 
 const withLatLong = (
-  wrappedComponent: string | ComponentClass<any> | StatelessComponent<any>
-): string | React.ComponentClass<any> | React.StatelessComponent<any> => wrappedComponent;
+  wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
+): string | React.ComponentClass<any> | React.FunctionComponent<any> => wrappedComponent;
 
 const extractMarkerLocations = props => {
   const markerLocations = [];
@@ -90,7 +98,6 @@ const Map = withScriptjs(
     })
   )
 );
-const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
   constructor(props) {
@@ -106,6 +113,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       selectedRecord: null,
       selectedLat: null,
       selectedLng: null,
+      recordViewType: GRID_VIEW,
       ...providerSearchPreferences
     };
   }
@@ -144,6 +152,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   toggleSorting = () => {
     this.setState({ sortingOpened: !this.state.sortingOpened });
+  };
+
+  toggleViewType = () => {
+    this.setState({ recordViewType: this.state.recordViewType === GRID_VIEW ? LIST_VIEW : GRID_VIEW });
   };
 
   toggleFilter = () => {
@@ -194,14 +206,20 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     });
   };
 
-  mapRecords = (records, colSize = 4) =>
-    _.map(records, record => (
-      <Col key={record.organization.id} md={colSize}>
+  mapRecords = ({ records, colSize = 4, isInAllRecordSection = false }) => {
+    const { recordViewType } = this.state;
+    return _.map(records, record => (
+      <Col key={record.organization.id} md={recordViewType === LIST_VIEW && isInAllRecordSection ? 12 : colSize}>
         <div className="mb-4">
-          <RecordCard record={record} link={`single-record-view/${record.organization.id}`} />
+          <RecordCard
+            fullWidth={recordViewType === LIST_VIEW && isInAllRecordSection}
+            record={record}
+            link={`single-record-view/${record.organization.id}`}
+          />
         </div>
       </Col>
     ));
+  };
 
   mapWithFilter = allRecords => {
     const { filterOpened } = this.state;
@@ -213,7 +231,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           <Col md={12}>
             <Row noGutters>
               <Col md={8}>
-                <Row noGutters>{this.mapRecords(elementsBesideFilter, 6)}</Row>
+                <Row noGutters>{this.mapRecords({ isInAllRecordSection: false, records: elementsBesideFilter, colSize: 6 })}</Row>
               </Col>
               <Col md={4}>
                 <div className="filter-card mx-3 mb-4">
@@ -223,21 +241,81 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </Row>
           </Col>
           <Col md={12}>
-            <Row noGutters>{this.mapRecords(elementsAfterFilter, 4)}</Row>
+            <Row noGutters>{this.mapRecords({ isInAllRecordSection: true, records: elementsAfterFilter, colSize: 4 })}</Row>
           </Col>
         </Row>
       </div>
     );
   };
 
-  render() {
-    const { allRecords, allRecordsTotal } = this.props;
-    const { sortingOpened, filterOpened, isMapView, isRecordHighlighted, selectedRecord, selectedLat, selectedLng } = this.state;
+  mapView = () => {
+    const { allRecords } = this.props;
+    const { filterOpened, isRecordHighlighted, selectedRecord, selectedLat, selectedLng } = this.state;
     const selected = allRecords && selectedRecord ? allRecords.find(record => record.organization.id === this.state.selectedRecord) : null;
+    return (
+      <Row className="mb-4 mx-3">
+        <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view">
+          <Map
+            googleMapURL={mapUrl}
+            records={allRecords}
+            lat={selectedLat}
+            lng={selectedLng}
+            loadingElement={<div style={{ height: '100%' }} />}
+            containerElement={<div style={{ height: '400px' }} />}
+            mapElement={<div style={{ height: '100%' }} />}
+            onMarkerClick={this.selectRecord}
+          />
+        </Col>
+        {isRecordHighlighted && selected && !filterOpened ? (
+          <Col md={4} className={`col-md-4 pr-0 selected-record`}>
+            <RecordCard record={selected} link={`single-record-view/${selected.organization.id}`} />
+          </Col>
+        ) : null}
+        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+          {filterOpened &&
+            !isRecordHighlighted && (
+              <Col md={4}>
+                <div className="filter-card mx-3 mb-4">
+                  <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} getFirstPage={this.getFirstPage} />
+                </div>
+              </Col>
+            )}
+        </MediaQuery>
+      </Row>
+    );
+  };
+
+  gridView = () => {
+    const { allRecords, allRecordsTotal } = this.props;
+    const { filterOpened } = this.state;
     const hasReachedMaxItems = allRecords.length === parseInt(allRecordsTotal, 10);
     return (
       <div>
-        <MediaQuery maxDeviceWidth={768}>
+        <Row noGutters>
+          <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>{this.mapRecords({ records: allRecords })}</MediaQuery>
+          <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+            {filterOpened ? this.mapWithFilter(allRecords) : this.mapRecords({ records: allRecords, isInAllRecordSection: true })}
+          </MediaQuery>
+        </Row>
+
+        <div className="mb-4 text-center">
+          <ButtonPill
+            onClick={() => this.handleLoadMore(hasReachedMaxItems)}
+            additionalClass={`d-inline ${hasReachedMaxItems ? 'disabled' : ''}`}
+          >
+            <Translate contentKey="providerSite.loadMore" />
+          </ButtonPill>
+        </div>
+      </div>
+    );
+  };
+
+  render() {
+    const { allRecords, allRecordsTotal } = this.props;
+    const { sortingOpened, filterOpened, isMapView, recordViewType } = this.state;
+    return (
+      <div>
+        <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
             <div className="filter-card mx-3 mb-4">
               <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} getFirstPage={this.getFirstPage} />
@@ -258,27 +336,24 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           </div>
           <div className="sort-container">
-            {isMapView ? (
-              <div className="button-pill" onClick={this.toggleMapView}>
+            <ButtonPill onClick={this.toggleMapView}>
+              <span>
+                <FontAwesomeIcon icon={isMapView ? 'th' : 'map'} />
+                &nbsp;
+                <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+                  {translate(isMapView ? 'providerSite.gridView' : 'providerSite.mapView')}
+                </MediaQuery>
+              </span>
+            </ButtonPill>
+            <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+              <ButtonPill onClick={this.toggleViewType}>
                 <span>
-                  <FontAwesomeIcon icon="th" />
-                  <MediaQuery minDeviceWidth={768}>
-                    &nbsp;
-                    {translate('providerSite.gridView')}
-                  </MediaQuery>
+                  <FontAwesomeIcon color={recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
+                  {' | '}
+                  <FontAwesomeIcon color={recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR} icon="bars" />
                 </span>
-              </div>
-            ) : (
-              <div className="button-pill" onClick={this.toggleMapView}>
-                <span>
-                  <FontAwesomeIcon icon="map" />
-                  <MediaQuery minDeviceWidth={768}>
-                    &nbsp;
-                    {translate('providerSite.mapView')}
-                  </MediaQuery>
-                </span>
-              </div>
-            )}
+              </ButtonPill>
+            </MediaQuery>
             <SortSection
               dropdownOpen={sortingOpened}
               toggleSort={() => this.toggleSorting()}
@@ -290,52 +365,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" />
           </div>
         </div>
-        {isMapView ? (
-          <Row className="mb-4 mx-3">
-            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view">
-              <Map
-                googleMapURL={mapUrl}
-                records={allRecords}
-                lat={selectedLat}
-                lng={selectedLng}
-                loadingElement={<div style={{ height: '100%' }} />}
-                containerElement={<div style={{ height: '400px' }} />}
-                mapElement={<div style={{ height: '100%' }} />}
-                onMarkerClick={this.selectRecord}
-              />
-            </Col>
-            {isRecordHighlighted && selected && !filterOpened ? (
-              <Col md={4} className={`col-md-4 pr-0 selected-record`}>
-                <RecordCard record={selected} link={`single-record-view/${selected.organization.id}`} />
-              </Col>
-            ) : null}
-            <MediaQuery minDeviceWidth={769}>
-              {filterOpened &&
-                !isRecordHighlighted && (
-                  <Col md={4}>
-                    <div className="filter-card mx-3 mb-4">
-                      <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} getFirstPage={this.getFirstPage} />
-                    </div>
-                  </Col>
-                )}
-            </MediaQuery>
-          </Row>
-        ) : (
-          <div>
-            <Row noGutters>
-              <MediaQuery maxDeviceWidth={768}>{this.mapRecords(allRecords)}</MediaQuery>
-              <MediaQuery minDeviceWidth={769}>{filterOpened ? this.mapWithFilter(allRecords) : this.mapRecords(allRecords)}</MediaQuery>
-            </Row>
-            <div className="button-pill mb-4 text-center">
-              <div
-                className={`d-inline button-pill ${hasReachedMaxItems ? 'disabled' : ''}`}
-                onClick={() => this.handleLoadMore(hasReachedMaxItems)}
-              >
-                <Translate contentKey="providerSite.loadMore" />
-              </div>
-            </div>
-          </div>
-        )}
+        {isMapView ? <this.mapView /> : <this.gridView />}
       </div>
     );
   }

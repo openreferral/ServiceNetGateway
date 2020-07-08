@@ -1,7 +1,7 @@
 import 'react-datepicker/dist/react-datepicker.css';
 
 import _ from 'lodash';
-import React, { ComponentClass, StatelessComponent } from 'react';
+import React, { ComponentClass, FunctionComponent } from 'react';
 import { Button, Col, Container, Row, Collapse, Card, CardBody, TabPane, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import Select from 'react-select';
@@ -49,8 +49,8 @@ const INITIAL_STATE = {
 };
 
 const withLatLong = (
-  wrappedComponent: string | ComponentClass<any> | StatelessComponent<any>
-): string | React.ComponentClass<any> | React.StatelessComponent<any> => wrappedComponent;
+  wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
+): string | React.ComponentClass<any> | React.FunctionComponent<any> => wrappedComponent;
 
 const Map = withScriptjs(
   withGoogleMap(

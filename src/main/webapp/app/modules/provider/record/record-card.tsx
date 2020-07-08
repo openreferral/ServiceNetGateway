@@ -25,6 +25,7 @@ const MORE_THAN_48_HOURS = '#808080';
 export interface IRecordCardProps extends StateProps, DispatchProps {
   record: any;
   link: string;
+  fullWidth?: boolean;
 }
 
 export interface IRecordCardState {
@@ -90,76 +91,106 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     }
   };
 
-  render() {
-    const { record, user, link } = this.props;
-    const latestDailyUpdate = record.dailyUpdates.find(du => du.expiry === null);
+  cardTitle = () => {
+    const { record, user, fullWidth } = this.props;
     return (
-      <Card className="record-card mx-3 mb-4">
-        <CardTitle>
-          <div className="bookmark">
-            <FontAwesomeIcon
-              icon={record.organization.accountId === user.systemAccountId ? faBookmarkSolid : faBookmark}
-              size={'lg'}
-              color={this.getBookmarkColor()}
-            />
+      <CardTitle>
+        <div className="bookmark">
+          <FontAwesomeIcon
+            icon={record.organization.accountId === user.systemAccountId ? faBookmarkSolid : faBookmark}
+            size={'lg'}
+            color={this.getBookmarkColor()}
+          />
+        </div>
+        <div className={`last-update${fullWidth ? '-full-width' : ''}`}>
+          <div>
+            <Translate contentKey="recordCard.lastUpdate" />
+            {record.lastUpdated ? (
+              <TextFormat value={record.lastUpdated} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+            ) : (
+              <Translate contentKey="recordCard.unknown" />
+            )}
           </div>
-          <div className="last-update">
-            <div>
-              <Translate contentKey="recordCard.lastUpdate" />
-              {record.lastUpdated ? (
-                <TextFormat value={record.lastUpdated} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-              ) : (
-                <Translate contentKey="recordCard.unknown" />
-              )}
-            </div>
-            <div className="updated-by">
-              <Translate contentKey="recordCard.by" />
-              <OwnerInfo record={record} direction="top" />
-            </div>
+          <div className={`updated-by ${fullWidth ? 'ml-3' : ''}`}>
+            <Translate contentKey="recordCard.by" />
+            <OwnerInfo record={record} direction="top" />
           </div>
-        </CardTitle>
-        <CardBody>
-          <div id={measureId(record.organization.id)} style={containerStyle} />
-          <div className="organization-name">
+        </div>
+      </CardTitle>
+    );
+  };
+
+  serviceSection = () => {
+    const { record } = this.props;
+    return (
+      <section className="services pt-0">
+        {record.services.length > 0 ? (
+          <AutoSizer disableHeight>
+            {({ width }) => {
+              const itemCount = getColumnCount(this.state.serviceWidths, width, REMAINDER_WIDTH);
+              const overflow = itemCount < record.services.length;
+              const totalItemCount = itemCount + (overflow ? 1 : 0);
+              return (
+                <List
+                  height={50}
+                  itemCount={totalItemCount}
+                  itemSize={width / totalItemCount}
+                  layout="horizontal"
+                  width={width}
+                  style={{ flex: 1, class: 'pills' }}
+                >
+                  {({ index }) =>
+                    index === itemCount ? RemainderCount(record.services.length - itemCount) : ServiceColumn(record.services[index])
+                  }
+                </List>
+              );
+            }}
+          </AutoSizer>
+        ) : null}
+      </section>
+    );
+  };
+
+  getHeader = () => {
+    const { record, link, fullWidth } = this.props;
+    return fullWidth ? (
+      <div className="mb-2">
+        <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', height: '2em' }}>
+          <div className="organization-name-full-width">
             <Link to={link}>{record.organization.name}</Link>
           </div>
+          <div className="w-100 ml-5">{fullWidth && <this.serviceSection />}</div>
+        </span>
+      </div>
+    ) : (
+      <div className="organization-name">
+        <Link to={link}>{record.organization.name}</Link>
+      </div>
+    );
+  };
+
+  render() {
+    const { record, fullWidth } = this.props;
+    const latestDailyUpdate = record.dailyUpdates.find(du => du.expiry === null);
+    return (
+      <Card className={`record-card${fullWidth ? '-full-width' : ''} mx-3 mb-4`}>
+        <this.cardTitle />
+        <CardBody>
+          <div id={measureId(record.organization.id)} style={containerStyle} />
+          <this.getHeader />
           {latestDailyUpdate ? (
-            <div className="latest-daily-update">
+            <div className={`latest-daily-update${fullWidth ? '-full-width' : ''} mb-1`}>
               <span>
                 Update (<TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                 ):
               </span>
-              <br />
+              {!fullWidth ? <br /> : ' '}
               <span>{latestDailyUpdate.update}</span>
             </div>
           ) : (
             <div style={{ height: '30px' }} />
           )}
-          <section className="services">
-            {record.services.length > 0 ? (
-              <AutoSizer disableHeight>
-                {({ width }) => {
-                  const itemCount = getColumnCount(this.state.serviceWidths, width, REMAINDER_WIDTH);
-                  const overflow = itemCount < record.services.length;
-                  const totalItemCount = itemCount + (overflow ? 1 : 0);
-                  return (
-                    <List
-                      height={50}
-                      itemCount={totalItemCount}
-                      itemSize={width / totalItemCount}
-                      layout="horizontal"
-                      width={width}
-                      style={{ flex: 1, class: 'pills' }}
-                    >
-                      {({ index }) =>
-                        index === itemCount ? RemainderCount(record.services.length - itemCount) : ServiceColumn(record.services[index])
-                      }
-                    </List>
-                  );
-                }}
-              </AutoSizer>
-            ) : null}
-          </section>
+          {!fullWidth && <this.serviceSection />}
           <section className="locations">
             {record.locations.length > 0 ? (
               <AutoSizer disableHeight>

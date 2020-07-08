@@ -1,4 +1,4 @@
-import React, { ComponentClass, StatelessComponent } from 'react';
+import React, { ComponentClass, FunctionComponent } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Row, Col, Card, CardBody, CardTitle, Button } from 'reactstrap';
 import { Translate } from 'react-jhipster';
@@ -13,8 +13,8 @@ import { connect } from 'react-redux';
 export interface IShelterDetailsProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 const withLatLong = (
-  wrappedComponent: string | ComponentClass<any> | StatelessComponent<any>
-): string | React.ComponentClass<any> | React.StatelessComponent<any> => wrappedComponent;
+  wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
+): string | React.ComponentClass<any> | React.FunctionComponent<any> => wrappedComponent;
 
 const Map = withScriptjs(
   withGoogleMap(
