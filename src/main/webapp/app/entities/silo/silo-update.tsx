@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './silo.reducer';
+import { Translate } from 'react-jhipster';
 
 export interface ISiloUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -75,6 +76,12 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
                   Name
                 </Label>
                 <AvField id="silo-name" type="text" name="name" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="activeLabel" check>
+                  <AvInput id="silo-public" type="checkbox" className="form-control" name="public" />
+                  <Translate contentKey="serviceNetApp.silo.isPublic">Public</Translate>
+                </Label>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/entity/silo" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />

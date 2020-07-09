@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Table } from 'reactstrap';
-import { getSortState, JhiPagination, getPaginationItemsNumber } from 'react-jhipster';
+import { getSortState, JhiPagination, getPaginationItemsNumber, Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -72,10 +72,13 @@ export const Silo = (props: ISiloProps) => {
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  ID <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="serviceNetApp.silo.id" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('name')}>
-                  Name <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="serviceNetApp.silo.name" /> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('isPublic')}>
+                  <Translate contentKey="serviceNetApp.silo.isPublic" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -89,6 +92,7 @@ export const Silo = (props: ISiloProps) => {
                     </Button>
                   </td>
                   <td>{silo.name}</td>
+                  <td>{silo.public ? 'true' : 'false'}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${silo.id}`} color="info" size="sm">

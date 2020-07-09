@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './silo.reducer';
+import { Translate } from 'react-jhipster';
 
 export interface ISiloDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -26,6 +27,10 @@ export const SiloDetail = (props: ISiloDetailProps) => {
             <span id="name">Name</span>
           </dt>
           <dd>{siloEntity.name}</dd>
+          <dt>
+            <Translate contentKey="serviceNetApp.silo.isPublic" />
+          </dt>
+          <dd>{siloEntity.public ? 'true' : 'false'}</dd>
           <dt>
             <span>Registration link</span>
           </dt>
