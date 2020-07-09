@@ -1,12 +1,16 @@
 import React from 'react';
 import { Translate } from 'react-jhipster';
 
-const ButtonPill = props => (
-  <div className="button-pill" onClick={props.onClick}>
-    <div className={`d-inline ${props.additionalClass}`}>
-      <b>
-        <Translate contentKey={props.translate} />
-      </b>
+const ButtonPill = ({ additionalClass = '', onClick = () => {}, translate = '', children = null }) => (
+  <div className="button-pill" onClick={onClick}>
+    <div className={`d-inline ${additionalClass}`}>
+      {translate ? (
+        <b>
+          <Translate contentKey={translate} />
+        </b>
+      ) : (
+        children
+      )}
     </div>
   </div>
 );

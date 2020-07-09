@@ -442,7 +442,7 @@
 }
 
 .filter-card {
-  min-height: calc(440px + 1.5rem);
+  min-height: calc(100% - 1.5rem);
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.125);
   font-family: 'Muli', serif;

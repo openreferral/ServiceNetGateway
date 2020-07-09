@@ -4,6 +4,11 @@ div.card.record-card {
   height: 250px;
   box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
 
+  &-full-width {
+    @extend .record-card;
+    height: unset;
+  }
+
   &.new-record {
     display: flex !important;
     align-items: center;
@@ -44,6 +49,14 @@ div.card.record-card {
     }
     .last-update {
       flex: 1;
+
+      &-full-width {
+        @extend .last-update;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+      }
     }
     .updated-by {
       font-size: 10px;
@@ -61,6 +74,12 @@ div.card.record-card {
       font-weight: bold;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      &-full-width {
+        @extend .organization-name;
+        overflow: unset;
+        height: 2em;
+      }
     }
     > * {
       padding-left: 20px;
@@ -120,6 +139,11 @@ div.card.record-card {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  &-full-width {
+    @extend .latest-daily-update;
+    white-space: unset;
+  }
 }
 
 @media only screen and (max-width: 1000px) {
