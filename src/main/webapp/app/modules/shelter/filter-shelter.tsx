@@ -8,6 +8,7 @@ import { initialState, getLanguages, getDefinedCoverageAreas, getTags } from 'ap
 import ReactGA from 'react-ga';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { GOOGLE_API_KEY } from 'app/config/constants';
+import _ from 'lodash';
 
 import { connect } from 'react-redux';
 
@@ -52,7 +53,7 @@ const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geomet
 export class FilterShelter extends React.Component<IFilterShelterProps, IFilterShelterState> {
   state: IFilterShelterState = {
     selectedCounty: this.props.shelterFilter.definedCoverageAreas.map(county => ({ label: county, value: county })),
-    tags: this.props.shelterFilter.tags.map(tag => ({ label: tag.value, value: tag.value })),
+    tags: this.props.shelterFilter.tags,
     shelterFilter: [],
     showOnlyAvailableBeds: false,
     filtersChanged: false,
@@ -83,18 +84,22 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
     const definedCoverageAreas = initialState.definedCoverageAreas.map(county => county.value);
     const tags = initialState.tags.map(tag => tag.value);
 
-    this.props.updateShelterFilter({
-      ...this.props.shelterFilter,
-      definedCoverageAreas,
-      tags,
-      showOnlyAvailableBeds: false,
-      applyLocationSearch: false,
-      latitude: null,
-      longitude: null,
-      radius: 1
-    });
+    this.props.updateShelterFilter(
+      {
+        ...this.props.shelterFilter,
+        definedCoverageAreas,
+        tags,
+        showOnlyAvailableBeds: false,
+        applyLocationSearch: false,
+        latitude: null,
+        longitude: null,
+        radius: 1
+      },
+      () => {
+        this.props.resetShelterFilter();
+      }
+    );
 
-    this.props.resetShelterFilter();
     ReactGA.event({ category: 'UserActions', action: 'Shelter - Filter Reset' });
   };
 
@@ -124,7 +129,7 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
     this.props.updateShelterFilter({ ...this.props.shelterFilter, tags });
   };
 
-  isTagSelected = value => this.state.tags.indexOf(value) > -1;
+  isTagSelected = value => _.some(this.state.tags, tag => tag === value);
 
   getRadiusValue = value => {
     const labels = {
