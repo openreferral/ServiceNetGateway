@@ -52,7 +52,7 @@ const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geomet
 export class FilterShelter extends React.Component<IFilterShelterProps, IFilterShelterState> {
   state: IFilterShelterState = {
     selectedCounty: this.props.shelterFilter.definedCoverageAreas.map(county => ({ label: county, value: county })),
-    tags: this.props.shelterFilter.tags.map(tag => ({ label: tag.value, value: tag.value })),
+    tags: this.props.shelterFilter.tags,
     shelterFilter: [],
     showOnlyAvailableBeds: false,
     filtersChanged: false,
@@ -124,7 +124,7 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
     this.props.updateShelterFilter({ ...this.props.shelterFilter, tags });
   };
 
-  isTagSelected = value => this.state.tags.indexOf(value) > -1;
+  isTagSelected = value => _.some(this.state.tags, tag => tag === value);
 
   getRadiusValue = value => {
     const labels = {
