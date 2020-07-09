@@ -8,6 +8,7 @@ import { initialState, getLanguages, getDefinedCoverageAreas, getTags } from 'ap
 import ReactGA from 'react-ga';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { GOOGLE_API_KEY } from 'app/config/constants';
+import _ from 'lodash';
 
 import { connect } from 'react-redux';
 
@@ -83,18 +84,22 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
     const definedCoverageAreas = initialState.definedCoverageAreas.map(county => county.value);
     const tags = initialState.tags.map(tag => tag.value);
 
-    this.props.updateShelterFilter({
-      ...this.props.shelterFilter,
-      definedCoverageAreas,
-      tags,
-      showOnlyAvailableBeds: false,
-      applyLocationSearch: false,
-      latitude: null,
-      longitude: null,
-      radius: 1
-    });
+    this.props.updateShelterFilter(
+      {
+        ...this.props.shelterFilter,
+        definedCoverageAreas,
+        tags,
+        showOnlyAvailableBeds: false,
+        applyLocationSearch: false,
+        latitude: null,
+        longitude: null,
+        radius: 1
+      },
+      () => {
+        this.props.resetShelterFilter();
+      }
+    );
 
-    this.props.resetShelterFilter();
     ReactGA.event({ category: 'UserActions', action: 'Shelter - Filter Reset' });
   };
 

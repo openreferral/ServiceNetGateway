@@ -32,10 +32,12 @@ export default (state: FilterShelterState = initialState, action): FilterShelter
   }
 };
 
-// tslint:disable-next-line:ter-arrow-body-style
-export const updateShelterFilter = shelterFilter => {
-  return {
+export const updateShelterFilter = (shelterFilter, callback?) => async dispatch => {
+  await dispatch({
     type: ACTION_TYPES.UPDATE_SHELTER_FILTER,
     payload: shelterFilter
-  };
+  });
+  if (callback) {
+    callback();
+  }
 };
