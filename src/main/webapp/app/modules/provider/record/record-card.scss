@@ -74,6 +74,7 @@ div.card.record-card {
       font-weight: bold;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
 
       &-full-width {
         @extend .organization-name;
