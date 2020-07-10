@@ -1,5 +1,5 @@
 import React, { ComponentClass, FunctionComponent } from 'react';
-import { getAllProviderRecords } from './provider-record.reducer';
+import { getAllProviderRecords, getAllProviderRecordsForMap, selectRecord } from './provider-record.reducer';
 import { connect } from 'react-redux';
 import { Col, Row, Progress, Modal } from 'reactstrap';
 import _ from 'lodash';
@@ -41,7 +41,6 @@ export interface IAllRecordsState extends IPaginationBaseState {
   isMapView: boolean;
   recordViewType: 'GRID' | 'LIST';
   isRecordHighlighted: boolean;
-  selectedRecord: string;
   selectedLat: number;
   selectedLng: number;
 }
@@ -54,13 +53,11 @@ const extractMarkerLocations = props => {
   const markerLocations = [];
   if (props.records) {
     props.records.map(record => {
-      const orgId = record.organization.id;
+      const orgId = record.id;
       if (record.locations) {
-        record.locations.map(l => {
-          if (l.location.geocodingResults) {
-            l.location.geocodingResults.map(geoResult =>
-              markerLocations.push({ orgId, lat: geoResult.latitude, lng: geoResult.longitude })
-            );
+        record.locations.map(geocodingResult => {
+          if (geocodingResult) {
+            markerLocations.push({ orgId, lat: geocodingResult.latitude, lng: geocodingResult.longitude });
           }
         });
       }
@@ -110,7 +107,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       filterOpened: false,
       isMapView: false,
       isRecordHighlighted: false,
-      selectedRecord: null,
       selectedLat: null,
       selectedLng: null,
       recordViewType: GRID_VIEW,
@@ -163,16 +159,15 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   getRecordsForMap = () => {
-    const { sort, order } = this.state;
-    this.props.getAllProviderRecords(0, this.props.allRecordsTotal, `${sort},${order}`, this.props.providerFilter, this.props.search, true);
+    this.props.getAllProviderRecordsForMap();
   };
 
   selectRecord = record => {
     const { orgId, lat, lng } = record;
+    this.props.selectRecord(orgId);
     this.setState({
       isRecordHighlighted: true,
       filterOpened: false,
-      selectedRecord: orgId,
       selectedLat: lat,
       selectedLng: lng
     });
@@ -186,7 +181,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       isMapView: !this.state.isMapView,
       filterOpened: false,
       isRecordHighlighted: false,
-      selectedRecord: null,
       selectedLat: null,
       selectedLng: null
     });
@@ -249,15 +243,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapView = () => {
-    const { allRecords } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedRecord, selectedLat, selectedLng } = this.state;
-    const selected = allRecords && selectedRecord ? allRecords.find(record => record.organization.id === this.state.selectedRecord) : null;
+    const { allRecordsForMap, selectedRecord } = this.props;
+    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng } = this.state;
     return (
       <Row className="mb-4 mx-3">
         <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view">
           <Map
             googleMapURL={mapUrl}
-            records={allRecords}
+            records={allRecordsForMap}
             lat={selectedLat}
             lng={selectedLng}
             loadingElement={<div style={{ height: '100%' }} />}
@@ -266,9 +259,9 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             onMarkerClick={this.selectRecord}
           />
         </Col>
-        {isRecordHighlighted && selected && !filterOpened ? (
+        {isRecordHighlighted && selectedRecord && !filterOpened ? (
           <Col md={4} className={`col-md-4 pr-0 selected-record`}>
-            <RecordCard record={selected} link={`single-record-view/${selected.organization.id}`} />
+            <RecordCard record={selectedRecord} link={`single-record-view/${selectedRecord.organization.id}`} />
           </Col>
         ) : null}
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
@@ -376,11 +369,15 @@ const mapStateToProps = state => ({
   allRecordsTotal: state.providerRecord.allRecordsTotal,
   account: state.authentication.account,
   providerFilter: state.providerFilter.filter,
-  search: state.search.text
+  search: state.search.text,
+  allRecordsForMap: state.providerRecord.allRecordsForMap,
+  selectedRecord: state.providerRecord.selectedRecord
 });
 
 const mapDispatchToProps = {
-  getAllProviderRecords
+  getAllProviderRecords,
+  getAllProviderRecordsForMap,
+  selectRecord
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

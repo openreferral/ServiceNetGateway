@@ -5,7 +5,9 @@ import _ from 'lodash';
 
 export const ACTION_TYPES = {
   FETCH_RECORDS: 'records/FETCH_RECORDS',
-  FETCH_ALL_RECORDS: 'records/FETCH_ALL_RECORDS'
+  FETCH_ALL_RECORDS: 'records/FETCH_ALL_RECORDS',
+  FETCH_ALL_RECORDS_FOR_MAP: 'records/FETCH_ALL_RECORDS_FOR_MAP',
+  SELECT_RECORD: 'records/SELECT_RECORD'
 };
 
 const initialState = {
@@ -15,7 +17,9 @@ const initialState = {
   updateSuccess: false,
   records: [] as any[],
   allRecords: [] as any[],
-  allRecordsTotal: 0
+  allRecordsForMap: [] as any[],
+  allRecordsTotal: 0,
+  selectedRecord: null
 };
 
 export type ProviderRecordsState = Readonly<typeof initialState>;
@@ -25,6 +29,12 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_RECORDS):
     case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS):
+    case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
+      return {
+        ...state,
+        selectedRecord: null
+      };
+    case REQUEST(ACTION_TYPES.SELECT_RECORD):
       return {
         ...state,
         errorMessage: null,
@@ -33,6 +43,8 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
       };
     case FAILURE(ACTION_TYPES.FETCH_RECORDS):
     case FAILURE(ACTION_TYPES.FETCH_ALL_RECORDS):
+    case FAILURE(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
+    case FAILURE(ACTION_TYPES.SELECT_RECORD):
       return {
         ...state,
         loading: false,
@@ -57,6 +69,18 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         allRecords: payload,
         allRecordsTotal: action.payload.headers['x-total-count']
       };
+    case SUCCESS(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        allRecordsForMap: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.SELECT_RECORD):
+      return {
+        ...state,
+        selectedRecord: action.payload.data
+      };
     default:
       return state;
   }
@@ -64,6 +88,8 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
 
 const userRecordApiUrl = SERVICENET_API_URL + '/provider-records';
 const allRecordApiUrl = SERVICENET_API_URL + '/all-provider-records';
+const allRecordForMapApiUrl = SERVICENET_API_URL + '/all-provider-records-map';
+const selectRecordApiUrl = SERVICENET_API_URL + '/select-record';
 
 // Actions
 
@@ -82,6 +108,16 @@ export const getAllProviderRecords = (page, itemsPerPage, sort, filter, search, 
     }
   };
 };
+
+export const getAllProviderRecordsForMap = () => ({
+  type: ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP,
+  payload: axios.get(allRecordForMapApiUrl)
+});
+
+export const selectRecord = id => ({
+  type: ACTION_TYPES.SELECT_RECORD,
+  payload: axios.get(`${selectRecordApiUrl}/${id}`)
+});
 
 const clearFilter = filter => ({
   ...filter,
