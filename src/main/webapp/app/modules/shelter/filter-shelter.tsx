@@ -17,11 +17,9 @@ export interface IFilterShelterState {
   tags: any;
   shelterFilter: any;
   filtersChanged: boolean;
-  showOnlyAvailableBeds: boolean;
   activeTab: string;
   lat: number;
   lng: number;
-  applyLocationSearch: boolean;
 }
 
 export interface IFilterShelterProps extends StateProps, DispatchProps {
@@ -48,6 +46,10 @@ const Map = withScriptjs(
     ))
   )
 );
+
+const isFiltersChangedInitially = props =>
+  (props.shelterFilter.tags && props.shelterFilter.tags.length > 0) || props.showOnlyAvailableBeds || props.applyLocationSearch;
+
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 
 export class FilterShelter extends React.Component<IFilterShelterProps, IFilterShelterState> {
@@ -55,12 +57,10 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
     selectedCounty: this.props.shelterFilter.definedCoverageAreas.map(county => ({ label: county, value: county })),
     tags: this.props.shelterFilter.tags,
     shelterFilter: [],
-    showOnlyAvailableBeds: false,
-    filtersChanged: false,
+    filtersChanged: isFiltersChangedInitially(this.props),
     activeTab: 'optionsTab',
     lat: null,
-    lng: null,
-    applyLocationSearch: false
+    lng: null
   };
 
   componentDidMount() {
@@ -77,7 +77,6 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
     this.setState({
       selectedCounty: [],
       tags: [],
-      showOnlyAvailableBeds: false,
       filtersChanged: true
     });
 
@@ -112,8 +111,8 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
   };
 
   handleShowOnlyAvailableBedsChange = event => {
-    const showOnlyAvailableBeds = !this.state.showOnlyAvailableBeds;
-    this.setState({ showOnlyAvailableBeds, filtersChanged: true });
+    const showOnlyAvailableBeds = event.target.checked;
+    this.setState({ filtersChanged: true });
     this.props.updateShelterFilter({ ...this.props.shelterFilter, showOnlyAvailableBeds });
   };
 
@@ -195,7 +194,7 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
   };
 
   render() {
-    const { filterCollapseExpanded, definedCoverageAreas, tags } = this.props;
+    const { filterCollapseExpanded, definedCoverageAreas, tags, showOnlyAvailableBeds } = this.props;
     const { activeTab } = this.state;
     const radiusOptions = [1, 2, 3, 4, 5, 10, 20].map(number => ({ label: `${number} mile${number > 1 ? 's' : ''}`, value: number }));
 
@@ -237,7 +236,7 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
                       <Col md="3">
                         <div className="form-check form-check-inline float-right">
                           <input
-                            checked={this.state.showOnlyAvailableBeds}
+                            checked={showOnlyAvailableBeds}
                             type="checkbox"
                             id="applyShowOnlyAvailableBeds"
                             className="form-check-input"
@@ -347,7 +346,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   applyLocationSearch: storeState.filterShelter.shelterFilter.applyLocationSearch,
   latitude: storeState.filterShelter.shelterFilter.latitude,
   longitude: storeState.filterShelter.shelterFilter.longitude,
-  radius: storeState.filterShelter.shelterFilter.radius
+  radius: storeState.filterShelter.shelterFilter.radius,
+  showOnlyAvailableBeds: storeState.filterShelter.shelterFilter.showOnlyAvailableBeds
 });
 
 const mapDispatchToProps = { getLanguages, getDefinedCoverageAreas, getTags, updateShelterFilter };
