@@ -155,11 +155,13 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     const { record, link, fullWidth } = this.props;
     return fullWidth ? (
       <div className="mb-2">
-        <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', height: '2em' }}>
-          <div className="organization-name-full-width">
-            <Link to={link}>{record.organization.name}</Link>
+        <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', height: '2em' }}>
+          <Link className="organization-name-full-width" to={link}>
+            {record.organization.name}
+          </Link>
+          <div style={{ flex: 1 }} className="ml-5">
+            {fullWidth && <this.serviceSection />}
           </div>
-          <div className="w-100 ml-5">{fullWidth && <this.serviceSection />}</div>
         </span>
       </div>
     ) : (
