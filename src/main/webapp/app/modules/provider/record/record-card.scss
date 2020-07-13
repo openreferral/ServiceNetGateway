@@ -78,8 +78,8 @@ div.card.record-card {
 
       &-full-width {
         @extend .organization-name;
-        overflow: unset;
         height: 2em;
+        max-width: 70%;
       }
     }
     > * {
