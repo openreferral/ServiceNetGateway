@@ -6,6 +6,30 @@ This is a "gateway" application intended to be part of a microservice architectu
 
 This application is configured for Service Discovery and Configuration with Consul. On launch, it will refuse to start if it is not able to connect to Consul at [http://localhost:8500](http://localhost:8500). For more information, read our documentation on [Service Discovery and Configuration with Consul][].
 
+## Running Docker Hub hosted images
+
+You can run ServiceNet with Docker Hub hosted Docker images with following commands.
+
+With external DB and env variables setup:
+
+    docker-compose -f src/main/docker/app-docker-registry.yml up -d
+
+With Postgres in a container:
+
+    docker-compose -f src/main/docker/app-docker-registry.yml -f src/main/docker/postgresql.yml up -d
+
+With 'staging' version tag:
+
+    SN_VERSION_TAG=staging docker-compose -f src/main/docker/app-docker-registry.yml up -d
+
+Or set SN_VERSION_TAG inside .env file
+
+## Running Docker Hub hosted images in Docker Swarm
+
+Running with Docker Swarm:
+
+     docker stack deploy -c src/main/docker/app-docker-registry.yml servicenet
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:

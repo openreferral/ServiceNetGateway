@@ -11,6 +11,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_HOST:-servicenet-postgresql}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-ServiceNet}?currentSchema=gateway
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USERNAME:-postgres}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - JHIPSTER_OAUTH2_CLIENT_SECRET=${JHIPSTER_OAUTH2_CLIENT_SECRET:-changeme}
       - SPRING_OAUTH2_CLIENT_SECRET=${SPRING_OAUTH2_CLIENT_SECRET:-changeme}
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
@@ -50,16 +51,6 @@ services:
       - JHIPSTER_OAUTH2_CLIENT_SECRET=${JHIPSTER_OAUTH2_CLIENT_SECRET:-changeme}
       - SPRING_OAUTH2_CLIENT_SECRET=${SPRING_OAUTH2_CLIENT_SECRET:-changeme}
       - JHIPSTER_SLEEP=10 # gives time for other services to boot before the application
-
-  servicenet-postgresql:
-    image: postgres:10.12
-    volumes:
-      - ./init-db.sql:/docker-entrypoint-initdb.d/1-init.sql
-    environment:
-      - POSTGRES_USER=${POSTGRES_USERNAME:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
-    ports:
-      - 5432:5432
 
   servicenet-mongo:
     image: mongo:4.0
