@@ -1,8 +1,10 @@
 version: '3.1'
+
 services:
   servicenet-postgresql:
     image: postgres:10.12
-    # volumes:
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/1-init.sql
     #     - ~/volumes/jhipster/ServiceNetGateway/postgresql/:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=${POSTGRES_USERNAME:-postgres}
