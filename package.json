@@ -126,7 +126,7 @@
     "sourcemap-istanbul-instrumenter-loader": "0.2.0",
     "stripcomment-loader": "0.1.0",
     "style-loader": "0.22.1",
-    "swagger-ui": "3.22.3",
+    "swagger-ui": "3.23.11",
     "terser-webpack-plugin": "2.3.5",
     "thread-loader": "2.1.3",
     "to-string-loader": "1.1.5",
