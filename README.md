@@ -26,9 +26,13 @@ Or set SN_VERSION_TAG inside .env file
 
 ## Running Docker Hub hosted images in Docker Swarm
 
-Running with Docker Swarm:
+Running with `docker-compose` as pre-processor of `.env` file:
 
-     docker stack deploy -c src/main/docker/app-docker-registry.yml servicenet
+     docker stack deploy -c <(docker-compose -f src/main/docker/app-docker-registry.yml config) sn
+
+Running in a subshell with `.profile` file env variables configuration:
+
+    (. ~/.profile && docker stack deploy -c src/main/docker/app-docker-registry.yml sn)
 
 ## Development
 
