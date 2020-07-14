@@ -1,3 +1,5 @@
+import { IUserGroup } from '../../shared/model/user-group.model';
+
 export interface IUser {
   id?: any;
   login?: string;
@@ -19,6 +21,7 @@ export interface IUser {
   systemAccountId?: number;
   shelters?: any[];
   siloId?: string;
+  userGroups?: IUserGroup[];
 }
 
 export const defaultValue: Readonly<IUser> = {
@@ -41,5 +44,6 @@ export const defaultValue: Readonly<IUser> = {
   systemAccountName: '',
   systemAccountId: null,
   siloId: '',
-  shelters: []
+  shelters: [],
+  userGroups: []
 };
