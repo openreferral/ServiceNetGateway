@@ -20,7 +20,7 @@ jobs:
       with:
         java-version: 11
     - name: Build with Google Jib
-      run: ./mvnw -Pprod package jib:dockerBuild --no-transfer-progress
+      run: ./mvnw -Pprod package jib:dockerBuild --no-transfer-progress -DskipTests
     - name: Docker tag appropriately
       run: docker tag servicenetgateway johnhbenetech/servicenetgateway:${CONTAINER_TAG}
     - name: Docker login
