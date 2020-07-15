@@ -71,7 +71,8 @@
         "requestLogger": "Request Logger",
         "userManagement": "User management",
         "clientManagement": "Client management",
-        "silo": "Silo"
+        "silo": "Silo",
+        "userGroup": "User Group"
       },
       "account": {
         "main": "Account",

@@ -14,6 +14,7 @@ import { locales, languages } from 'app/config/translation';
 import { getUser, getRoles, getSystemAccounts, updateUser, createUser, reset } from './user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { getAllSilos } from 'app/entities/silo/silo.reducer';
+import { getEntities as getUserGroups } from '../../../entities/user-group/user-group.reducer';
 
 export interface IUserManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ login: string }> {}
 
@@ -38,6 +39,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     this.props.getSystemAccounts();
     this.props.getShelters();
     this.props.getAllSilos();
+    this.props.getUserGroups();
   }
 
   componentDidUpdate(prevProps) {
@@ -73,7 +75,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
 
   render() {
     const isInvalid = false;
-    const { user, loading, updating, roles, systemAccounts, shelters, allSilos } = this.props;
+    const { user, loading, updating, roles, systemAccounts, shelters, allSilos, userGroups } = this.props;
     const { phoneNumber } = this.state;
     return (
       <div>
@@ -297,6 +299,18 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     ))}
                   </AvInput>
                 </AvGroup>
+                <AvGroup>
+                  <Label for="userGroups">
+                    <Translate contentKey="userManagement.profiles">Profiles</Translate>
+                  </Label>
+                  <AvInput type="select" className="form-control" name="userGroups" value={user.userGroups} multiple>
+                    {userGroups.map(group => (
+                      <option value={group.id} key={group.name}>
+                        {group.name}
+                      </option>
+                    ))}
+                  </AvInput>
+                </AvGroup>
                 {user.authorities && user.authorities.includes('ROLE_SACRAMENTO') ? (
                   <AvGroup>
                     <Label for="shelters">
@@ -340,7 +354,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.userManagement.loading,
   updating: storeState.userManagement.updating,
   shelters: storeState.shelter.entities,
-  allSilos: storeState.silo.allSilos
+  allSilos: storeState.silo.allSilos,
+  userGroups: storeState.userGroup.entities
 });
 
 const mapDispatchToProps = {
@@ -351,7 +366,8 @@ const mapDispatchToProps = {
   updateUser,
   createUser,
   reset,
-  getAllSilos
+  getAllSilos,
+  getUserGroups
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

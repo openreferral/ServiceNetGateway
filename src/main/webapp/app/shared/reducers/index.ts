@@ -230,6 +230,10 @@ import search, { SearchState } from 'app/modules/provider/menus/search.reducer';
 import silo, {
   SiloState
 } from 'app/entities/silo/silo.reducer';
+// prettier-ignore
+import userGroup, {
+  UserGroupState
+} from 'app/entities/user-group/user-group.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -297,6 +301,7 @@ export interface IRootState {
   readonly contactDetailsFieldsValue: ContactDetailsFieldsValueState;
   readonly dailyUpdate: DailyUpdateState;
   readonly silo: SiloState;
+  readonly userGroup: UserGroupState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly filterShelter: FilterShelterState;
@@ -373,6 +378,7 @@ const rootReducer = combineReducers<IRootState>({
   contactDetailsFieldsValue,
   dailyUpdate,
   silo,
+  userGroup,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
   filterActivity,
