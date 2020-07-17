@@ -301,9 +301,10 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                 </AvGroup>
                 <AvGroup>
                   <Label for="userGroups">
-                    <Translate contentKey="userManagement.profiles">Profiles</Translate>
+                    <Translate contentKey="userManagement.userGroups">User Groups</Translate>
                   </Label>
                   <AvInput type="select" className="form-control" name="userGroups" value={user.userGroups} multiple>
+                    <option value={null} />
                     {userGroups.map(group => (
                       <option value={group.id} key={group.name}>
                         {group.name}
