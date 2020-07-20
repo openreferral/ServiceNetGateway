@@ -141,7 +141,7 @@ export const deleteEntity: ICrudDeleteAction<IUserGroup> = id => async dispatch 
     type: ACTION_TYPES.DELETE_USERGROUP,
     payload: axios.delete(requestUrl)
   });
-  await dispatch(getEntities());
+  dispatch(getEntities());
   return result;
 };
 
