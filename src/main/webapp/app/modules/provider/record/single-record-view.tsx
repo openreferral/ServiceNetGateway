@@ -12,7 +12,7 @@ import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
 // @ts-ignore
@@ -88,14 +88,14 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   toggleLocations = () => this.setState({ isLocationsOpen: !this.state.isLocationsOpen });
 
   componentDidMount() {
-    this.props.getProviderTaxonomies();
-    this.props.getProviderEntity(this.props.match.params.orgId);
+    const siloName = this.getSiloName();
+    this.props.getProviderTaxonomies(SYSTEM_ACCOUNTS.SERVICE_PROVIDER, siloName);
+    this.props.getProviderEntity(this.props.match.params.orgId, siloName);
   }
 
   componentWillUpdate(nextProps) {
     if (nextProps.organization.id !== this.props.organization.id || this.state.initialLoad) {
-      if (nextProps.organization.locations &&
-        nextProps.organization.services) {
+      if (nextProps.organization.locations && nextProps.organization.services) {
         this.measureLocationsWidth(nextProps.organization);
       }
     }
@@ -103,12 +103,11 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
   componentDidUpdate(prevProps: Readonly<ISingleRecordViewProps>, prevState: Readonly<ISingleRecordViewState>) {
     if (this.props.taxonomyOptions !== prevProps.taxonomyOptions) {
-      measureWidths(
-        [...this.props.taxonomyOptions.map(item => TaxonomyOptionPill(item))],
-        measureId(this.props.match.params.orgId)
-      ).then((taxonomyWidths: any[]) => {
-        this.props.taxonomyOptions.forEach((to, i) => to['width'] = taxonomyWidths[i]);
-      });
+      measureWidths([...this.props.taxonomyOptions.map(item => TaxonomyOptionPill(item))], measureId(this.props.match.params.orgId)).then(
+        (taxonomyWidths: any[]) => {
+          this.props.taxonomyOptions.forEach((to, i) => (to['width'] = taxonomyWidths[i]));
+        }
+      );
     }
   }
 
@@ -147,18 +146,31 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     });
 
   taxonomyPills = service => {
-    const taxonomyOptions = this.props.taxonomyOptions.filter(to =>
-      service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1);
+    const taxonomyOptions = this.props.taxonomyOptions.filter(
+      to => service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1
+    );
     const widths = taxonomyOptions.map(to => to['width'] || 200);
     const itemCount = getColumnCount(widths, MAX_PILLS_WIDTH) || 0;
-    return <div>{taxonomyOptions.slice(0, itemCount).map(to => (
-      <div className="pill pill-sm" key={to.value}>
-        <span>{to.label}</span>
+    return (
+      <div>
+        {taxonomyOptions.slice(0, itemCount).map(to => (
+          <div className="pill pill-sm" key={to.value}>
+            <span>{to.label}</span>
+          </div>
+        ))}
+        {itemCount < taxonomyOptions.length ? RemainderCount(taxonomyOptions.length - itemCount) : ''}
       </div>
-    ))}
-      {(itemCount < taxonomyOptions.length) ? RemainderCount(taxonomyOptions.length - itemCount) : ''}
-    </div>;
-  }
+    );
+  };
+
+  getSiloName = () => {
+    if (this.props.match && this.props.match.url && this.props.match.url.includes('public')) {
+      // take name of silo that is in the url
+      const siloName = this.props.match.url.split('public/')[1].split('/')[0];
+      return siloName;
+    }
+    return null;
+  };
 
   render() {
     const {
@@ -174,11 +186,11 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     const locationsCount = organization && organization.locations ? organization.locations.length : 0;
     const servicesCount = organization && organization.services ? organization.services.length : 0;
     const latestDailyUpdate = organization && organization.services ? organization.dailyUpdates.find(du => du.expiry === null) || {} : null;
-
+    const siloName = this.getSiloName();
     return (
       <div className="background single-record-view">
         <div id={measureId(this.props.match.params.orgId)} style={containerStyle} />
-        <Button tag={Link} to="/" color="" className="d-none d-sm-block position-fixed go-back">
+        <Button tag={Link} to={siloName ? `/public/${siloName}` : '/'} color="" className="d-none d-sm-block position-fixed go-back">
           <FontAwesomeIcon icon="angle-left" />
           &nbsp;
           <Translate contentKey="record.singleRecordView.back" />
@@ -521,8 +533,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
 const mapStateToProps = (rootState: IRootState) => ({
   organization: rootState.organization.providersEntity,
-  taxonomyOptions: rootState.taxonomy.providerTaxonomies.map(
-    taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
+  taxonomyOptions: rootState.taxonomy.providerTaxonomies.map(taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
 });
 
 const mapDispatchToProps = { getProviderEntity, getProviderTaxonomies };

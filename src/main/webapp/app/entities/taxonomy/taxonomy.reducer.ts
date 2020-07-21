@@ -5,7 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ITaxonomy, defaultValue } from 'app/shared/model/taxonomy.model';
-import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { SERVICENET_API_URL, SERVICENET_PUBLIC_API_URL } from 'app/shared/util/service-url.constants';
 import { SYSTEM_ACCOUNTS } from 'app/config/constants';
 
 export const ACTION_TYPES = {
@@ -111,6 +111,7 @@ export default (state: TaxonomyState = initialState, action): TaxonomyState => {
 
 const apiUrl = SERVICENET_API_URL + '/taxonomies';
 const serviceProviderApiUrl = SERVICENET_API_URL + '/provider-taxonomies';
+const serviceProviderPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/provider-taxonomies';
 
 // Actions
 
@@ -122,11 +123,12 @@ export const getEntities: ICrudGetAllAction<ITaxonomy> = (page, size, sort) => {
   };
 };
 
-export const getProviderTaxonomies = (provider = SYSTEM_ACCOUNTS.SERVICE_PROVIDER) => {
-  const requestUrl = `${serviceProviderApiUrl}${'/' + provider}`;
+export const getProviderTaxonomies = (provider = SYSTEM_ACCOUNTS.SERVICE_PROVIDER, siloName = '') => {
+  const baseUrl = siloName ? serviceProviderPublicApiUrl : serviceProviderApiUrl;
+  const requestUrl = `${baseUrl}${'/' + provider}`;
   return {
     type: ACTION_TYPES.FETCH_PROVIDER_TAXONOMY_LIST,
-    payload: axios.get<ITaxonomy>(`${requestUrl}?cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<ITaxonomy>(`${requestUrl}?cacheBuster=${new Date().getTime()}&siloName=${siloName}`)
   };
 };
 
