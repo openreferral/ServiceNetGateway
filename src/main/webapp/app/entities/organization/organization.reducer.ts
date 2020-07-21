@@ -5,7 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IOrganization, defaultValue } from 'app/shared/model/organization.model';
-import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { SERVICENET_API_URL, SERVICENET_PUBLIC_API_URL } from 'app/shared/util/service-url.constants';
 import { ISimpleOrganization, defaultSimpleOrganization } from 'app/shared/model/simple-organization.model';
 
 export const ACTION_TYPES = {
@@ -149,8 +149,9 @@ export const getEntity: ICrudGetAction<IOrganization> = id => {
   };
 };
 
-export const getProviderEntity: ICrudGetAction<ISimpleOrganization> = id => {
-  const requestUrl = `${SERVICENET_API_URL}/provider-organization/${id}`;
+export const getProviderEntity = (id, siloName = '') => {
+  const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
+  const requestUrl = `${baseUrl}/provider-organization/${id}?siloName=${siloName}`;
   return {
     type: ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION,
     payload: axios.get<ISimpleOrganization>(requestUrl)

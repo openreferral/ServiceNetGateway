@@ -11,9 +11,17 @@
     background-size: contain;
     position: relative;
   }
+
+  .background-public {
+    @extend .background;
+    width: 100vw;
+    height: calc(100vh - #{$paddingTop});
+  }
+
   > * {
     font-family: 'Muli', sans-serif;
   }
+
   .app-container {
     padding-top: $paddingTop !important;
   }
@@ -88,10 +96,26 @@
     display: flex;
     justify-content: space-between;
     padding: 1rem;
+
+    &-public {
+      @extend .control-line-container;
+    }
   }
 
   .sort-container {
     display: flex;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .control-line-container-public {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      background: #ffffff;
+      border-radius: 3rem;
+      margin: 0 1rem 1.5rem 1rem;
+      box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
+    }
   }
 
   @media only screen and (max-width: 768px) {
@@ -308,6 +332,13 @@
     margin-left: auto;
     margin-right: auto;
     width: 90vw;
+
+    &-public {
+      @extend .all-records-container;
+      margin-top: 0;
+      padding-top: 5rem;
+      margin-bottom: 5rem;
+    }
   }
 
   .btn {
