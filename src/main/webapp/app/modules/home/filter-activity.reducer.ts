@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { ORGANIZATION, getDefaultSearchFieldOptions } from 'app/modules/home/filter.constants';
-import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { SERVICENET_API_URL, SERVICENET_PUBLIC_API_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   FETCH_POSTAL_CODE_LIST: 'filterActivity/FETCH_POSTAL_CODE_LIST',
@@ -153,40 +153,45 @@ export const getCityList = () => {
   };
 };
 
-export const getPostalCodeListForServiceProviders = () => {
-  const requestUrl = `${SERVICENET_API_URL}/activity-filter/service-providers/get-postal-codes`;
+export const getPostalCodeListForServiceProviders = (siloName = '') => {
+  const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
+  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-postal-codes?siloName=${siloName}`;
   return {
     type: ACTION_TYPES.FETCH_POSTAL_CODE_LIST,
     payload: axios.get<any>(requestUrl)
   };
 };
 
-export const getRegionListForServiceProviders = () => {
-  const requestUrl = `${SERVICENET_API_URL}/activity-filter/service-providers/get-regions`;
+export const getRegionListForServiceProviders = (siloName = '') => {
+  const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
+  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-regions?siloName=${siloName}`;
   return {
     type: ACTION_TYPES.FETCH_REGION_LIST,
     payload: axios.get<any>(requestUrl)
   };
 };
 
-export const getCityListForServiceProviders = () => {
-  const requestUrl = `${SERVICENET_API_URL}/activity-filter/service-providers/get-cities`;
+export const getCityListForServiceProviders = (siloName = '') => {
+  const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
+  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-cities?siloName=${siloName}`;
   return {
     type: ACTION_TYPES.FETCH_CITY_LIST,
     payload: axios.get<any>(requestUrl)
   };
 };
 
-export const getPartnerList = () => {
-  const requestUrl = `${SERVICENET_API_URL}/system-accounts`;
+export const getPartnerList = (siloName = '') => {
+  const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
+  const requestUrl = `${baseUrl}/system-accounts`;
   return {
     type: ACTION_TYPES.FETCH_PARTNER_LIST,
     payload: axios.get<any>(requestUrl)
   };
 };
 
-export const getTaxonomyMap = () => {
-  const requestUrl = `${SERVICENET_API_URL}/activity-filter/get-taxonomies`;
+export const getTaxonomyMap = (siloName = '') => {
+  const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
+  const requestUrl = `${baseUrl}/activity-filter/get-taxonomies`;
   return {
     type: ACTION_TYPES.FETCH_TAXONOMY_LIST,
     payload: axios.get<any>(requestUrl)

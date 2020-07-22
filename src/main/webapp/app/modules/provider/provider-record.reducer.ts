@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { SERVICENET_API_URL, SERVICENET_PUBLIC_API_URL } from 'app/shared/util/service-url.constants';
 import _ from 'lodash';
 
 export const ACTION_TYPES = {
@@ -88,8 +88,11 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
 
 const userRecordApiUrl = SERVICENET_API_URL + '/provider-records';
 const allRecordApiUrl = SERVICENET_API_URL + '/all-provider-records';
+const allRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/all-provider-records';
 const allRecordForMapApiUrl = SERVICENET_API_URL + '/all-provider-records-map';
 const selectRecordApiUrl = SERVICENET_API_URL + '/select-record';
+const allRecordForMapPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/all-provider-records-map';
+const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
 
 // Actions
 
@@ -109,15 +112,32 @@ export const getAllProviderRecords = (page, itemsPerPage, sort, filter, search, 
   };
 };
 
-export const getAllProviderRecordsForMap = () => ({
-  type: ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP,
-  payload: axios.get(allRecordForMapApiUrl)
-});
+export const getAllProviderRecordsPublic = (silo, page, itemsPerPage, sort, filter, search, isInitLoading = true) => {
+  const pageableUrl = `${allRecordPublicApiUrl}/${silo}?search=${search ? search : ''}&page=${page}&size=${itemsPerPage}&sort=${sort}`;
+  return {
+    type: ACTION_TYPES.FETCH_ALL_RECORDS,
+    payload: axios.post(pageableUrl, clearFilter(filter)),
+    meta: {
+      isInitLoading
+    }
+  };
+};
 
-export const selectRecord = id => ({
-  type: ACTION_TYPES.SELECT_RECORD,
-  payload: axios.get(`${selectRecordApiUrl}/${id}`)
-});
+export const getAllProviderRecordsForMap = (siloName = '') => {
+  const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}` : allRecordForMapApiUrl;
+  return {
+    type: ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP,
+    payload: axios.get(baseUrl)
+  };
+};
+
+export const selectRecord = (id, siloName = '') => {
+  const baseUrl = siloName ? selectRecordPublicApiUrl : selectRecordApiUrl;
+  return {
+    type: ACTION_TYPES.SELECT_RECORD,
+    payload: axios.get(`${baseUrl}/${id}?siloName=${siloName}`)
+  };
+};
 
 const clearFilter = filter => ({
   ...filter,

@@ -1,5 +1,5 @@
 import React, { ComponentClass, FunctionComponent } from 'react';
-import { getAllProviderRecords, getAllProviderRecordsForMap, selectRecord } from './provider-record.reducer';
+import { getAllProviderRecords, getAllProviderRecordsForMap, selectRecord, getAllProviderRecordsPublic } from './provider-record.reducer';
 import { connect } from 'react-redux';
 import { Col, Row, Progress, Modal } from 'reactstrap';
 import _ from 'lodash';
@@ -31,7 +31,10 @@ declare global {
 
 window.google = window.google || {};
 
-export interface IAllRecordsProps extends StateProps, DispatchProps {}
+export interface IAllRecordsProps extends StateProps, DispatchProps {
+  siloName?: string;
+  urlBase: string;
+}
 
 export interface IAllRecordsState extends IPaginationBaseState {
   itemsPerPage: number;
@@ -99,7 +102,7 @@ const Map = withScriptjs(
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
   constructor(props) {
     super(props);
-    const { providerSearchPreferences } = getSearchPreferences(this.props.account.login);
+    const { providerSearchPreferences } = this.props.account ? getSearchPreferences(this.props.account.login) : null;
     this.state = {
       itemsPerPage: 6,
       activePage: 0,
@@ -126,14 +129,28 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   getRecords(isInitLoading = false) {
     const { itemsPerPage, activePage, sort, order } = this.state;
-    this.props.getAllProviderRecords(
-      activePage,
-      itemsPerPage,
-      `${sort},${order}`,
-      this.props.providerFilter,
-      this.props.search,
-      isInitLoading
-    );
+    const { siloName } = this.props;
+
+    if (siloName) {
+      this.props.getAllProviderRecordsPublic(
+        siloName,
+        activePage,
+        itemsPerPage,
+        `${sort},${order}`,
+        this.props.providerFilter,
+        this.props.search,
+        isInitLoading
+      );
+    } else {
+      this.props.getAllProviderRecords(
+        activePage,
+        itemsPerPage,
+        `${sort},${order}`,
+        this.props.providerFilter,
+        this.props.search,
+        isInitLoading
+      );
+    }
   }
 
   getAllRecords = () => {
@@ -159,12 +176,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   getRecordsForMap = () => {
-    this.props.getAllProviderRecordsForMap();
+    const { siloName } = this.props;
+    this.props.getAllProviderRecordsForMap(siloName);
   };
 
   selectRecord = record => {
+    const { siloName } = this.props;
     const { orgId, lat, lng } = record;
-    this.props.selectRecord(orgId);
+    this.props.selectRecord(orgId, siloName);
     this.setState({
       isRecordHighlighted: true,
       filterOpened: false,
@@ -191,24 +210,27 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   sort = (sort, order) => {
-    setProviderSort(this.props.account.login, sort, order);
+    if (this.props.account) {
+      setProviderSort(this.props.account.login, sort, order);
+    }
 
     ReactGA.event({ category: 'UserActions', action: 'Sorting Records' });
 
     this.setState({ sort, order, activePage: 0 }, () => {
-      this.props.getAllProviderRecords(0, this.state.itemsPerPage, `${sort},${order}`, this.props.providerFilter, this.props.search, true);
+      this.getRecords(true);
     });
   };
 
   mapRecords = ({ records, colSize = 4, isInAllRecordSection = false }) => {
     const { recordViewType } = this.state;
+    const { urlBase } = this.props;
     return _.map(records, record => (
       <Col key={record.organization.id} md={recordViewType === LIST_VIEW && isInAllRecordSection ? 12 : colSize}>
         <div className="mb-4">
           <RecordCard
             fullWidth={recordViewType === LIST_VIEW && isInAllRecordSection}
             record={record}
-            link={`single-record-view/${record.organization.id}`}
+            link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${record.organization.id}`}
           />
         </div>
       </Col>
@@ -217,6 +239,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   mapWithFilter = allRecords => {
     const { filterOpened } = this.state;
+    const { siloName } = this.props;
     const elementsBesideFilter = _.slice(allRecords, 0, 4);
     const elementsAfterFilter = _.slice(allRecords, 4);
     return (
@@ -229,7 +252,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </Col>
               <Col md={4}>
                 <div className="filter-card mx-3 mb-4">
-                  <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} getFirstPage={this.getFirstPage} />
+                  <FilterCard
+                    siloName={siloName}
+                    dropdownOpen={filterOpened}
+                    toggleFilter={this.toggleFilter}
+                    getFirstPage={this.getFirstPage}
+                  />
                 </div>
               </Col>
             </Row>
@@ -243,7 +271,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapView = () => {
-    const { allRecordsForMap, selectedRecord } = this.props;
+    const { allRecordsForMap, selectedRecord, urlBase, siloName } = this.props;
     const { filterOpened, isRecordHighlighted, selectedLat, selectedLng } = this.state;
     return (
       <Row className="mb-4 mx-3">
@@ -261,7 +289,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         </Col>
         {isRecordHighlighted && selectedRecord && !filterOpened ? (
           <Col md={4} className={`col-md-4 pr-0 selected-record`}>
-            <RecordCard record={selectedRecord} link={`single-record-view/${selectedRecord.organization.id}`} />
+            <RecordCard
+              record={selectedRecord}
+              link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+            />
           </Col>
         ) : null}
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
@@ -269,7 +300,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             !isRecordHighlighted && (
               <Col md={4}>
                 <div className="filter-card mx-3 mb-4">
-                  <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} getFirstPage={this.getFirstPage} />
+                  <FilterCard
+                    siloName={siloName}
+                    dropdownOpen={filterOpened}
+                    toggleFilter={this.toggleFilter}
+                    getFirstPage={this.getFirstPage}
+                  />
                 </div>
               </Col>
             )}
@@ -304,18 +340,23 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   render() {
-    const { allRecords, allRecordsTotal } = this.props;
+    const { allRecords, allRecordsTotal, siloName } = this.props;
     const { sortingOpened, filterOpened, isMapView, recordViewType } = this.state;
     return (
       <div>
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
             <div className="filter-card mx-3 mb-4">
-              <FilterCard dropdownOpen={filterOpened} toggleFilter={this.toggleFilter} getFirstPage={this.getFirstPage} />
+              <FilterCard
+                siloName={siloName}
+                dropdownOpen={filterOpened}
+                toggleFilter={this.toggleFilter}
+                getFirstPage={this.getFirstPage}
+              />
             </div>
           </Modal>
         </MediaQuery>
-        <div className="control-line-container">
+        <div className={`control-line-container${siloName ? '-public' : ''}`}>
           <div className="d-flex justify-content-between">
             <b className="align-self-center">
               <Translate contentKey="providerSite.allRecords" />
@@ -377,7 +418,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   getAllProviderRecords,
   getAllProviderRecordsForMap,
-  selectRecord
+  selectRecord,
+  getAllProviderRecordsPublic
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -20,6 +20,7 @@ export interface IFilterCardProps extends StateProps, DispatchProps {
   dropdownOpen: boolean;
   toggleFilter: Function;
   getFirstPage: Function;
+  siloName?: string;
 }
 
 export interface IFilterCardState {
@@ -41,12 +42,13 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
   }
 
   componentDidMount() {
+    const { siloName } = this.props;
     if (!this.props.isLoggingOut) {
-      this.props.getPostalCodeList();
-      this.props.getRegionList();
-      this.props.getCityList();
-      this.props.getPartnerList();
-      this.props.getTaxonomyMap();
+      this.props.getPostalCodeList(siloName);
+      this.props.getRegionList(siloName);
+      this.props.getCityList(siloName);
+      this.props.getPartnerList(siloName);
+      this.props.getTaxonomyMap(siloName);
       this.setState({ ...this.props.filter });
     }
   }

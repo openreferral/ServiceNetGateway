@@ -24,6 +24,8 @@ import { containerStyle } from 'app/shared/util/measure-widths';
 import ProviderApp from 'app/modules/provider/provider-app';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import Logout from 'app/modules/login/logout';
+import Routes from './modules/provider/public-routes';
+import PublicApp from './modules/provider/public-app';
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -81,11 +83,13 @@ export class App extends React.Component<IAppProps> {
       <Router>
         <div id="measure-layer" style={containerStyle} />
         <Switch>
+          <Route path="/public/:siloName?/" component={PublicApp} />
           <ErrorBoundaryRoute path="/logout" component={Logout} />
-          {this.props.isServiceProvider && !this.props.isAdmin
-            ? <Route path="/" component={ProviderApp} isAdmin={this.props.isAdmin}/>
-            : <Route path="/" render={() => app}/>
-          }
+          {this.props.isServiceProvider && !this.props.isAdmin ? (
+            <Route path="/" component={ProviderApp} isAdmin={this.props.isAdmin} />
+          ) : (
+            <Route path="/" render={() => app} />
+          )}
         </Switch>
       </Router>
     );
