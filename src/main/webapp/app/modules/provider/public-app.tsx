@@ -16,7 +16,6 @@ import ErrorBoundary from 'app/shared/error/error-boundary';
 import { Home as MainHome } from 'app/modules/home/home';
 import { RouteComponentProps } from 'react-router-dom';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
-import { SideMenu } from './mobile-components/side-menu';
 import Routes from './public-routes';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -34,24 +33,10 @@ export interface IPublicAppState {
 }
 
 export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      menuOpen: false
-    };
-  }
-
-  toggleMenu = () => {
-    this.setState({ menuOpen: !this.state.menuOpen });
-  };
-
   render() {
-    const { menuOpen } = this.state;
     const { match } = this.props;
     return (
       <div className="provider-public" id="provider-home-view-container">
-        <SideMenu menuOpen={menuOpen} toggleMenu={this.toggleMenu} />
         <div className="app-container-public">
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}

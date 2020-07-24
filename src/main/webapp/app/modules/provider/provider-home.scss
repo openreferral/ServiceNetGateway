@@ -130,6 +130,17 @@
       padding-top: $paddingTop !important;
     }
 
+    .all-records-container-public {
+      padding-top: 1rem !important;
+    }
+
+    .control-line-container-public {
+      background: white;
+      border-radius: 3rem;
+      margin-bottom: 1rem;
+      box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
+    }
+
     .control-line-container {
       display: block;
       padding: 1rem;
@@ -349,7 +360,7 @@
     &-public {
       @extend .all-records-container;
       margin-top: 0;
-      padding-top: 5rem;
+      padding-top: 4rem;
       margin-bottom: 5rem;
     }
   }
