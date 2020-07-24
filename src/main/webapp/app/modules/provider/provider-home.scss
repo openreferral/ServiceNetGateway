@@ -1,6 +1,7 @@
 @import 'app-variables';
 
-.provider {
+.provider,
+.provider-public {
   min-height: 100vh;
   position: inherit;
   overflow: auto;
@@ -14,7 +15,6 @@
 
   .background-public {
     @extend .background;
-    width: 100vw;
     height: calc(100vh - #{$paddingTop});
   }
 
@@ -24,6 +24,9 @@
 
   .app-container {
     padding-top: $paddingTop !important;
+    &-public {
+      @extend .app-container;
+    }
   }
 
   #provider-home-view-container {
@@ -123,9 +126,19 @@
       padding-top: $paddingTopMobile !important;
     }
 
+    .app-container-public {
+      padding-top: $paddingTop !important;
+    }
+
     .control-line-container {
       display: block;
       padding: 1rem;
+    }
+
+    .background-public {
+      @extend .background;
+      width: 100vw;
+      height: calc(100vh - #{$paddingTopMobile});
     }
 
     .sort-container {
