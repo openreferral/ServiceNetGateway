@@ -81,9 +81,12 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      this.setState({
-        leaving: true
-      }, () => this.props.history.push('/'));
+      this.setState(
+        {
+          leaving: true
+        },
+        () => this.props.history.push('/')
+      );
     }
   }
 
@@ -162,7 +165,10 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   getLocations = () =>
     Array.apply(null, { length: this.state.locationCount }).map((e, i) => {
       const location = this.state.locations[i];
-      return { value: i, label: (i + 1) + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') };
+      return {
+        value: i,
+        label: i + 1 + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ')
+      };
     });
 
   onOrganizationChange = fieldName => ({ target }) => {
@@ -183,8 +189,8 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
 
   onServiceChange = (i, fieldName, defaultValue = null) => event => {
     const services = this.state.services;
-    let value = (event != null && event.target) ? event.target.value : event;
-    if (value == null) {
+    let value = event != null && event.target ? event.target.value : event;
+    if (value === null) {
       value = defaultValue;
     }
     services[i][fieldName] = value;
@@ -194,8 +200,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   };
 
   render() {
-    const { organization, locations, services,
-      activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
+    const { organization, locations, services, activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
     const { updating, taxonomyOptions } = this.props;
     return (
       <div className="record-create">
@@ -219,8 +224,12 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
 
         <AvForm model={{}} onSubmit={this.saveRecord} className="background">
           <Prompt
-            when={!leaving && (!_.isEqual(organization, organizationModel)
-            || !_.isEqual(locations, initialLocations) || !_.isEqual(services, initialServices))}
+            when={
+              !leaving &&
+              (!_.isEqual(organization, organizationModel) ||
+                !_.isEqual(locations, initialLocations) ||
+                !_.isEqual(services, initialServices))
+            }
             message={location => `You have unsaved data, are you sure you want to leave?`}
           />
           <TabContent activeTab={activeTab}>
@@ -469,7 +478,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         <AvSelect
                           name={'services[' + i + '].locationIndexes'}
                           value={this.state.services[i]['locationIndexes']}
-                          onChange={this.onServiceChange(i, 'locationIndexes')}
+                          onChange={this.onServiceChange(i, 'locationIndexes', [])}
                           options={this.getLocations()}
                           // @ts-ignore
                           isMulti
