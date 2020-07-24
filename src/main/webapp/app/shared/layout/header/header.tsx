@@ -2,6 +2,7 @@ import './header.scss';
 import React from 'react';
 import { Translate, Storage } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, Collapse } from 'reactstrap';
+import MediaQuery from 'react-responsive';
 
 import LoadingBar from 'react-redux-loading-bar';
 
@@ -70,6 +71,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         <LoadingBar className="loading-bar" />
         <Navbar expand="sm" fixed="top" className="navbar-light bg-white">
           <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
+          <MediaQuery maxDeviceWidth={768}>
+            <div className="brand-logo">
+              <div className="brand-icon ">
+                <img src="content/images/benetech-logo.png" alt="Logo" />
+              </div>
+            </div>
+          </MediaQuery>
           <Brand isSacramento={isSacramento} />
           <FeedbackButton isSacramento={isSacramento} />
           <Collapse isOpen={this.state.menuOpen} navbar>
