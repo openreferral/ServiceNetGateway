@@ -50,9 +50,9 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
     const { menuOpen } = this.state;
     const { match } = this.props;
     return (
-      <div className="provider" id="provider-home-view-container">
+      <div className="provider-public" id="provider-home-view-container">
         <SideMenu menuOpen={menuOpen} toggleMenu={this.toggleMenu} />
-        <div className="app-container">
+        <div className="app-container-public">
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}
             className="toastify-container"
