@@ -31,6 +31,22 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
       tag="button"
       type="button"
     />
+    <MediaQuery
+      maxDeviceWidth={768}
+    >
+      <div
+        className="brand-logo"
+      >
+        <div
+          className="brand-icon "
+        >
+          <img
+            alt="Logo"
+            src="content/images/benetech-logo.png"
+          />
+        </div>
+      </div>
+    </MediaQuery>
     <Component
       isSacramento={false}
     />
@@ -105,6 +121,22 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       tag="button"
       type="button"
     />
+    <MediaQuery
+      maxDeviceWidth={768}
+    >
+      <div
+        className="brand-logo"
+      >
+        <div
+          className="brand-icon "
+        >
+          <img
+            alt="Logo"
+            src="content/images/benetech-logo.png"
+          />
+        </div>
+      </div>
+    </MediaQuery>
     <Component
       isSacramento={false}
     />

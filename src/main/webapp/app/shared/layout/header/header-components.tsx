@@ -3,6 +3,7 @@ import { Translate } from 'react-jhipster';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, NavItem, NavLink, NavbarBrand } from 'reactstrap';
 import { NavLink as Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import MediaQuery from 'react-responsive';
 
 import appConfig from 'app/config/constants';
 
@@ -27,7 +28,9 @@ export const BrandIcon = props => (
 export const Brand = props => (
   <div className="d-flex align-items-center">
     <NavbarBrand tag={Link} to={props.isSacramento ? '/shelters' : '/'} className="brand-logo d-flex align-items-center mr-1">
-      <BrandIcon />
+      <MediaQuery minDeviceWidth={769}>
+        <BrandIcon />
+      </MediaQuery>
       <span className="navbar-version mt-1">{appConfig.VERSION}</span>
     </NavbarBrand>
     <NavLink exact tag={Link} to="/about-us" className="pl-0">
