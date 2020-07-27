@@ -56,6 +56,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
               userLogin={this.props.userLogin}
               isSacramento={this.props.isSacramento}
               isShelterOwner={this.props.isShelterOwner}
+              match={match}
             />
           </ErrorBoundary>
           <div>
