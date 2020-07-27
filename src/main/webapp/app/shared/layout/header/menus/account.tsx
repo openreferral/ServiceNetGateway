@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink as Link } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { NavDropdown } from '../header-components';
+import _ from 'lodash';
 
 const accountMenuItemsAuthenticated = (isAdmin, isSacramento) => (
   <>
@@ -24,20 +25,24 @@ const accountMenuItemsAuthenticated = (isAdmin, isSacramento) => (
   </>
 );
 
-const accountMenuItems = (
-  <>
-    <DropdownItem id="login-item" tag={Link} to="/login">
-      <FontAwesomeIcon icon="sign-in-alt" /> <Translate contentKey="global.menu.account.login">Sign in</Translate>
-    </DropdownItem>
-    <DropdownItem tag={Link} to="/register">
-      <FontAwesomeIcon icon="sign-in-alt" /> <Translate contentKey="global.menu.account.register">Register</Translate>
-    </DropdownItem>
-  </>
-);
+const accountMenuItems = match => {
+  const siloName = _.get(match, 'params.siloName', '');
 
-export const AccountMenu = ({ isAuthenticated = false, userLogin, isAdmin = false, isSacramento = false }) => (
+  return (
+    <>
+      <DropdownItem id="login-item" tag={Link} to="/login">
+        <FontAwesomeIcon icon="sign-in-alt" /> <Translate contentKey="global.menu.account.login">Sign in</Translate>
+      </DropdownItem>
+      <DropdownItem tag={Link} to={`/register${!_.isEmpty(siloName) ? `/${siloName}` : ''}`}>
+        <FontAwesomeIcon icon="sign-in-alt" /> <Translate contentKey="global.menu.account.register">Register</Translate>
+      </DropdownItem>
+    </>
+  );
+};
+
+export const AccountMenu = ({ isAuthenticated = false, userLogin, isAdmin = false, isSacramento = false, match = {} }) => (
   <NavDropdown icon="user" name={userLogin ? userLogin : translate('global.menu.account.main')} id="account-menu">
-    {isAuthenticated ? accountMenuItemsAuthenticated(isAdmin, isSacramento) : accountMenuItems}
+    {isAuthenticated ? accountMenuItemsAuthenticated(isAdmin, isSacramento) : accountMenuItems(match)}
   </NavDropdown>
 );
 

@@ -21,6 +21,7 @@ export interface IHeaderProps {
   userLogin: string;
   isShelterOwner: boolean;
   isStaging: boolean;
+  match?: any;
 }
 
 export interface IHeaderState {
@@ -60,7 +61,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       isInProduction,
       userLogin,
       isSacramento,
-      isShelterOwner
+      isShelterOwner,
+      match
     } = this.props;
 
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
@@ -89,7 +91,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
               {isAuthenticated && isAdmin && <Upload />}
               {isAuthenticated && isAdmin && <AdminMenu showSwagger={isSwaggerEnabled} showDatabase={!isInProduction} />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
-              <AccountMenu isAuthenticated={isAuthenticated} userLogin={userLogin} isAdmin={isAdmin} isSacramento={isSacramento} />
+              <AccountMenu
+                isAuthenticated={isAuthenticated}
+                userLogin={userLogin}
+                isAdmin={isAdmin}
+                isSacramento={isSacramento}
+                match={match}
+              />
             </Nav>
           </Collapse>
         </Navbar>
