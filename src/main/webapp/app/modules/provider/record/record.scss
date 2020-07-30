@@ -64,6 +64,71 @@ section.locations {
   }
 }
 
+.flex {
+  display: flex;
+  flex-direction: row;
+
+  textarea,
+  select,
+  .form-group,
+  div.av-select {
+    flex: 1;
+    margin-bottom: 0;
+  }
+}
+
+div.required:before {
+  content: '*';
+}
+
+div.required {
+  font-size: 16px;
+  margin-left: -0.5em;
+  margin-right: 0.25em;
+  color: red;
+}
+
+.buttons {
+  &.navigation-buttons {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    display: flex;
+    button {
+      white-space: normal;
+    }
+  }
+
+  &.list-buttons {
+    text-align: center;
+
+    button {
+      padding: 5px 15px;
+      font-size: 15px;
+      font-weight: bold;
+      text-transform: none;
+      border-radius: 8px;
+    }
+  }
+}
+
+.heading {
+  img {
+    margin-bottom: 0.5em;
+  }
+
+  margin-top: 1.5em;
+  text-align: center;
+  margin-bottom: 2em;
+
+  h2 {
+    color: black;
+  }
+}
+
+div.invalid-feedback:empty {
+  display: none;
+}
+
 /* ================= RECORD CARD =================== */
 
 div.card.record-card {
@@ -199,26 +264,10 @@ div.card.record-card {
 /* ================= RECORD CREATE ================= */
 
 .record-create {
-  div.invalid-feedback:empty {
-    display: none;
-  }
-
   .btn {
     &:not(.disabled):hover {
       margin-top: -1px;
       border-bottom-width: 1px;
-    }
-  }
-
-  .heading {
-    img {
-      margin-bottom: 0.5em;
-    }
-    margin-top: 1.5em;
-    text-align: center;
-    margin-bottom: 2em;
-    h2 {
-      color: black;
     }
   }
 
@@ -248,49 +297,6 @@ div.card.record-card {
     padding-top: 1em;
     padding-left: 2em;
     padding-right: 2em;
-  }
-  .flex {
-    display: flex;
-    flex-direction: row;
-
-    textarea,
-    select,
-    .form-group,
-    div.av-select {
-      flex: 1;
-      margin-bottom: 0;
-    }
-  }
-
-  div.required:before {
-    content: '*';
-  }
-  div.required {
-    font-size: 22px;
-    margin-left: -0.75em;
-    margin-right: 0.25em;
-    color: red;
-  }
-
-  .buttons {
-    &.navigation-buttons {
-      margin-top: 2em;
-    }
-    &.list-buttons {
-      text-align: center;
-      button {
-        padding: 5px 15px;
-        font-size: 15px;
-        font-weight: bold;
-        text-transform: none;
-        border-radius: 8px;
-      }
-      .add-another {
-        background-color: #6ec1ab;
-        color: white;
-        border: 1px solid #8194b2;
-      }
-    }
   }
 
   .item:not(:first-of-type) {
@@ -445,74 +451,9 @@ div.card.record-card {
     }
   }
 
-  div.invalid-feedback:empty {
-    display: none;
-  }
-
   button {
     margin-top: 0 !important;
     border-bottom-width: 0 !important;
-  }
-
-  .heading {
-    img {
-      margin-bottom: 0.5em;
-    }
-
-    margin-top: 1.5em;
-    text-align: center;
-    margin-bottom: 2em;
-
-    h2 {
-      color: black;
-    }
-  }
-
-  .flex {
-    display: flex;
-    flex-direction: row;
-
-    textarea,
-    select,
-    .form-group,
-    div.av-select {
-      flex: 1;
-      margin-bottom: 0;
-    }
-  }
-
-  div.required:before {
-    content: '*';
-  }
-
-  div.required {
-    font-size: 16px;
-    margin-left: -0.5em;
-    margin-right: 0.25em;
-    color: red;
-  }
-
-  .buttons {
-    &.navigation-buttons {
-      margin-top: 2em;
-      margin-bottom: 1em;
-      display: flex;
-      button {
-        white-space: normal;
-      }
-    }
-
-    &.list-buttons {
-      text-align: center;
-
-      button {
-        padding: 5px 15px;
-        font-size: 15px;
-        font-weight: bold;
-        text-transform: none;
-        border-radius: 8px;
-      }
-    }
   }
 
   .service-details,
