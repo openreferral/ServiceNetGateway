@@ -123,7 +123,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   componentDidUpdate(prevProps) {
     if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
-      this.getRecords(true);
+      if (this.state.isMapView) {
+        this.getRecordsForMap();
+      } else {
+        this.getRecords(true);
+      }
     }
   }
 
@@ -176,8 +180,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   getRecordsForMap = () => {
-    const { siloName } = this.props;
-    this.props.getAllProviderRecordsForMap(siloName);
+    const { siloName, providerFilter, search } = this.props;
+    this.props.getAllProviderRecordsForMap(siloName, providerFilter, search);
   };
 
   selectRecord = record => {
