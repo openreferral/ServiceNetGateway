@@ -1,4 +1,4 @@
-import './record-create.scss';
+import './record.scss';
 
 import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Button, Col, Row } from 'reactstrap';

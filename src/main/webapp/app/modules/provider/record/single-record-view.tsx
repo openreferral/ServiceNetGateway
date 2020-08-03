@@ -1,4 +1,4 @@
-import './single-record-view.scss';
+import './record.scss';
 
 import React from 'react';
 import { Collapse, Button, CardBody, Card, CardTitle, Progress } from 'reactstrap';
@@ -38,14 +38,14 @@ const ServicePill = service => {
     return <div />;
   }
   return (
-    <div className="pill">
+    <div className="pill d-inline-flex">
       <span>{service.name}</span>
     </div>
   );
 };
 
 const TaxonomyOptionPill = taxonomyOption => (
-  <div className="pill pill-sm" key={taxonomyOption.value}>
+  <div className="pill mt-2" key={taxonomyOption.value}>
     <span>{taxonomyOption.label}</span>
   </div>
 );
@@ -154,7 +154,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     return (
       <div>
         {taxonomyOptions.slice(0, itemCount).map(to => (
-          <div className="pill pill-sm" key={to.value}>
+          <div className="pill mt-2" key={to.value}>
             <span>{to.label}</span>
           </div>
         ))}
@@ -188,16 +188,17 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     const latestDailyUpdate = organization && organization.services ? organization.dailyUpdates.find(du => du.expiry === null) || {} : null;
     const siloName = this.getSiloName();
     return (
-      <div className="background single-record-view">
+      <div className="single-record-view background">
         <div id={measureId(this.props.match.params.orgId)} style={containerStyle} />
         <Button tag={Link} to={siloName ? `/public/${siloName}` : '/'} color="" className="d-none d-sm-block position-fixed go-back">
           <FontAwesomeIcon icon="angle-left" />
           &nbsp;
           <Translate contentKey="record.singleRecordView.back" />
         </Button>
-        <div className="col-md-8 offset-md-2 card-section">
-          <Card className="record-card">
-            <CardTitle className="card-title">
+
+        <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+          <Card className="section">
+            <CardTitle>
               <div className="d-flex w-100 justify-content-between">
                 <div className="w-100">
                   <h3>
@@ -217,7 +218,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                               itemSize={width / totalItemCount}
                               layout="horizontal"
                               width={width}
-                              style={{ flex: 1, class: 'pills', overflow: 'none' }}
+                              style={{ flex: 1, overflow: 'none' }}
+                              className="pl-0"
                             >
                               {({ index }) => {
                                 return index === itemCount
@@ -234,7 +236,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 <img src={PeopleLogo} height={100} alt="Organization" className="d-none d-sm-block mx-5" />
               </div>
             </CardTitle>
-            <CardBody>
+            <CardBody className="p-0 border-top-0">
               <section className="locations p-2" id="locations">
                 {locationsCount > 0 ? (
                   <AutoSizer disableHeight>
@@ -249,7 +251,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           itemSize={width / totalItemCount}
                           layout="horizontal"
                           width={width}
-                          style={{ flex: 1, class: 'pills' }}
+                          style={{ flex: 1, overflow: 'hidden' }}
+                          className="pl-0"
                         >
                           {({ index }) => {
                             return index === itemCount
@@ -264,10 +267,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               </section>
             </CardBody>
           </Card>
-        </div>
 
-        <div className="col-md-8 offset-md-2 card-section">
-          <Card className="record-card">
+          <Card className="section">
             <CardTitle className="card-title flex-wrap">
               <Translate contentKey="record.singleRecordView.dailyUpdates" />
               &nbsp;
@@ -284,7 +285,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 </span>
               ) : null}
             </CardTitle>
-            <CardBody className="p-2">
+            <CardBody className="p-2 border-top-0">
               {latestDailyUpdate && latestDailyUpdate.update ? (
                 <span className="p-0">{latestDailyUpdate.update}</span>
               ) : (
@@ -294,11 +295,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               )}
             </CardBody>
           </Card>
-        </div>
 
-        <div className="col-md-8 offset-md-2 card-section">
-          <Card className="record-card">
-            <CardTitle onClick={this.toggleOrganization} className="collapse-toggle card-title">
+          <Card className="section">
+            <CardTitle onClick={this.toggleOrganization} className="clickable">
               <div className="d-flex justify-content-center align-items-center">
                 <img src={PeopleLogo} height={25} alt="Organization" />
                 &nbsp;
@@ -307,7 +306,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               {isOrganizationOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
             </CardTitle>
             <Collapse isOpen={isOrganizationOpen}>
-              <CardBody className="details organization">
+              <CardBody className="details organization p-0">
                 <section>
                   <h6>
                     <b>
@@ -343,11 +342,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               </CardBody>
             </Collapse>
           </Card>
-        </div>
 
-        <div className="col-md-8 offset-md-2 card-section">
-          <Card className="record-card">
-            <CardTitle onClick={this.toggleLocations} className="collapse-toggle card-title">
+          <Card className="section">
+            <CardTitle onClick={this.toggleLocations} className="clickable">
               <div className="d-flex justify-content-center align-items-center">
                 <img src={BuildingLogo} height={25} alt="Location" />
                 &nbsp;
@@ -358,24 +355,26 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               {isLocationsOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
             </CardTitle>
             <Collapse isOpen={isLocationsOpen}>
-              <CardBody className="details">
-                <section className="row col-12 details-view">
+              <CardBody className="details p-0">
+                <section>
                   {locationsCount > 0 ? (
                     organization.locations.map(loc => (
-                      <Card className="record-card loc-card col-md-4 col-xs-12 mb-2 mx-2 pt-3">
-                        <CardTitle>
-                          <span>
-                            <FontAwesomeIcon icon="circle" className="blue" size="xs" />{' '}
-                            <b>
-                              {loc.city}, {loc.ca}
-                            </b>
-                          </span>
-                        </CardTitle>
-                        <CardBody>
-                          <p className="m-0">{loc.address1}</p>
-                          <p>{loc.zipcode}</p>
-                        </CardBody>
-                      </Card>
+                      <div className="d-inline-block col-md-4 col-xs-12 p-0">
+                        <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3 pt-3">
+                          <CardTitle>
+                            <span>
+                              <FontAwesomeIcon icon="circle" className="blue" size="xs" />{' '}
+                              <b>
+                                {loc.city}, {loc.ca}
+                              </b>
+                            </span>
+                          </CardTitle>
+                          <CardBody>
+                            <p className="m-0">{loc.address1}</p>
+                            <p>{loc.zipcode}</p>
+                          </CardBody>
+                        </Card>
+                      </div>
                     ))
                   ) : (
                     <Translate contentKey="record.singleRecordView.noLocations" />
@@ -384,11 +383,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               </CardBody>
             </Collapse>
           </Card>
-        </div>
 
-        <div className="col-md-8 offset-md-2 mb-5 section">
-          <Card className="record-card">
-            <CardTitle onClick={this.toggleServices} className="collapse-toggle card-title">
+          <Card className="section services mb-5">
+            <CardTitle onClick={this.toggleServices} className="clickable">
               <div className="d-flex justify-content-center align-items-center">
                 <img src={ServiceLogo} height={25} alt="Service" />
                 &nbsp;
@@ -399,27 +396,34 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               {isServicesOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
             </CardTitle>
             <Collapse isOpen={isServicesOpen}>
-              <CardBody className="details">
-                <section className={`row col-12 details-view ${detailsView ? 'd-none' : ''}`}>
+              <CardBody className="details p-0">
+                <section className={detailsView ? 'd-none' : ''}>
                   {servicesCount > 0 ? (
                     organization.services.map((srv, idx) => (
-                      <Card className="record-card srv-card col-md-4 col-xs-12 mb-2 mx-2 pt-3" onClick={() => this.showServiceDetails(idx)}>
-                        <CardTitle>
-                          <span>
-                            <FontAwesomeIcon icon="circle" className="orange" size="xs" />{' '}
-                            <b>{srv.name ? srv.name : translate('record.singleRecordView.noServiceName')}</b>
-                          </span>
-                        </CardTitle>
-                        <CardBody>
-                          <div className="services pills">
-                            {srv.taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
-                              this.taxonomyPills(srv)
-                            ) : (
-                              <span className="pill">{translate('record.singleRecordView.untyped')}</span>
-                            )}
-                          </div>
-                        </CardBody>
-                      </Card>
+                      <div className="d-inline-block col-md-4 col-xs-12 p-0">
+                        <Card
+                          className="record-card clickable details-card ml-0 mb-3 mr-0 mr-md-3"
+                          onClick={() => this.showServiceDetails(idx)}
+                        >
+                          <CardTitle>
+                            <span>
+                              <FontAwesomeIcon icon="circle" className="orange" size="xs" />{' '}
+                              <b>{srv.name ? srv.name : translate('record.singleRecordView.noServiceName')}</b>
+                            </span>
+                          </CardTitle>
+                          <CardBody>
+                            <div className="services pl-2">
+                              {srv.taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
+                                this.taxonomyPills(srv)
+                              ) : (
+                                <div className="pill">
+                                  <span>{translate('record.singleRecordView.untyped')}</span>
+                                </div>
+                              )}
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </div>
                     ))
                   ) : (
                     <Translate contentKey="record.singleRecordView.noServices" />
@@ -427,7 +431,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 </section>
                 {servicesCount > 0 ? (
                   <div className={`service p-0 ${detailsView ? '' : 'd-none'}`}>
-                    <section className="header">
+                    <section className="d-flex top-bar">
                       <div className="d-inline-block w-100 d-md-flex justify-content-between">
                         <div className="d-inline-flex align-items-center service-name">
                           <FontAwesomeIcon icon="circle" className="orange" />
@@ -441,44 +445,44 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           </h5>
                         </div>
                         <div className="d-inline-flex align-items-center pull-right">
-                          <div className="p-2 mr-1 arrow-navigation" onClick={() => this.prevService(servicesCount)}>
-                            <FontAwesomeIcon icon="angle-left" size="lg" />
+                          <div className="p-2 mr-1 clickable" onClick={() => this.prevService(servicesCount)}>
+                            <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
                           </div>
                           <div className="d-flex justify-content-center mr-1">
-                            <div className="align-self-center">
-                              <b>{currentServiceIdx + 1}</b>
-                            </div>
-                            <div className="mx-2 align-self-center">
+                            <div className="align-self-cente">{currentServiceIdx + 1}</div>
+                            <div className="align-self-center mx-2">
                               <Progress value={((currentServiceIdx + 1) / servicesCount) * 100} />
                             </div>
-                            <div className="align-self-center">
-                              <b>{servicesCount}</b>
-                            </div>
+                            <div className="align-self-center">{servicesCount}</div>
                           </div>
-                          <div className="p-2 arrow-navigation" onClick={() => this.nextService(servicesCount)}>
-                            <FontAwesomeIcon icon="angle-right" size="lg" />
+                          <div className="p-2 clickable" onClick={() => this.nextService(servicesCount)}>
+                            <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
                           </div>
-                          <div className="p-2 arrow-navigation" onClick={this.closeServiceDetails}>
-                            <FontAwesomeIcon icon="times" size="lg" />
+                          <div className="p-2 clickable" onClick={this.closeServiceDetails}>
+                            <FontAwesomeIcon icon={['fas', 'times']} />
                           </div>
                         </div>
                       </div>
                     </section>
                     <section>
-                      <h6>
-                        <b>
+                      <h6 className="d-flex align-items-center flex-wrap">
+                        <b className="mb-1">
                           <Translate contentKey="record.singleRecordView.srvTypes" />
                         </b>
                         {organization.services[currentServiceIdx].taxonomyIds.length > 0 ? (
                           organization.services[currentServiceIdx].taxonomyIds.map(srvTaxonomy => (
-                            <span className="pill ml-1 mr-1 mb-1">
-                              {taxonomyOptions && taxonomyOptions.length > 0
-                                ? taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy).label
-                                : translate('record.singleRecordView.untyped')}
-                            </span>
+                            <div className="pill mb-1">
+                              <span className="ml-1">
+                                {taxonomyOptions && taxonomyOptions.length > 0
+                                  ? taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy).label
+                                  : translate('record.singleRecordView.untyped')}
+                              </span>
+                            </div>
                           ))
                         ) : (
-                          <span className="pill">{translate('record.singleRecordView.untyped')}</span>
+                          <div className="pill">
+                            <span>{translate('record.singleRecordView.untyped')}</span>
+                          </div>
                         )}
                       </h6>
                     </section>
@@ -507,16 +511,18 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <span>{organization.services[currentServiceIdx].eligibilityCriteria}</span>
                     </section>
                     <section>
-                      <h6>
-                        <b>
+                      <h6 className="d-flex align-items-center flex-wrap">
+                        <b className="mb-1">
                           <Translate contentKey="record.singleRecordView.srvLocations" />
                         </b>
                         {organization.services[currentServiceIdx].locationIndexes.map(locIdx => (
-                          <span className="pill ml-1 mr-1 mb-1">
-                            <FontAwesomeIcon icon="circle" className="blue" size="xs" />
-                            &nbsp;
-                            {organization.locations[locIdx].city}, {organization.locations[locIdx].ca}
-                          </span>
+                          <div className="pill mb-1">
+                            <span className="ml-1">
+                              <FontAwesomeIcon icon="circle" className="blue" size="xs" />
+                              &nbsp;
+                              {organization.locations[locIdx].city}, {organization.locations[locIdx].ca}
+                            </span>
+                          </div>
                         ))}
                       </h6>
                     </section>

@@ -1,4 +1,4 @@
-import './record-card.scss';
+import './record.scss';
 
 import React from 'react';
 import { TextFormat, Translate } from 'react-jhipster';
@@ -137,7 +137,8 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
                   itemSize={width / totalItemCount}
                   layout="horizontal"
                   width={width}
-                  style={{ flex: 1, class: 'pills' }}
+                  style={{ flex: 1 }}
+                  className="pl-0"
                 >
                   {({ index }) =>
                     index === itemCount ? RemainderCount(record.services.length - itemCount) : ServiceColumn(record.services[index])

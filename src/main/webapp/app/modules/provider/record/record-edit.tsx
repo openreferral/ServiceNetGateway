@@ -1,4 +1,4 @@
-import './record-edit.scss';
+import './record.scss';
 
 import React from 'react';
 import { Badge, Button, Card, CardBody, CardTitle, Col, Collapse, Label, Row, Progress } from 'reactstrap';
@@ -25,7 +25,7 @@ import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/measure-widths';
 import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 
-export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{id: string}> {}
+export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IRecordEditViewState {
   organization: ISimpleOrganization;
@@ -58,7 +58,7 @@ const serviceModel = {
 };
 
 const TaxonomyOptionPill = taxonomyOption => (
-  <div className="pill pill-sm" key={taxonomyOption.value}>
+  <div className="pill mt-2" key={taxonomyOption.value}>
     <span>{taxonomyOption.label}</span>
   </div>
 );
@@ -90,9 +90,12 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      this.setState({
-        leaving: true
-      }, () => this.props.history.push('/'));
+      this.setState(
+        {
+          leaving: true
+        },
+        () => this.props.history.push('/')
+      );
     }
   }
 
@@ -111,18 +114,18 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       });
     }
     if (prevProps.taxonomyOptions !== this.props.taxonomyOptions) {
-      measureWidths(
-        [...this.props.taxonomyOptions.map(item => TaxonomyOptionPill(item))],
-        measureId(this.props.match.params.id)
-      ).then((taxonomyWidths: any[]) => {
-        this.props.taxonomyOptions.forEach((to, i) => to['width'] = taxonomyWidths[i] || 200);
-      });
+      measureWidths([...this.props.taxonomyOptions.map(item => TaxonomyOptionPill(item))], measureId(this.props.match.params.id)).then(
+        (taxonomyWidths: any[]) => {
+          this.props.taxonomyOptions.forEach((to, i) => (to['width'] = taxonomyWidths[i] || 200));
+        }
+      );
     }
   }
 
-  toggle = section => () => this.setState({
-    openSections: _.xor(this.state.openSections, [section])
-  });
+  toggle = section => () =>
+    this.setState({
+      openSections: _.xor(this.state.openSections, [section])
+    });
 
   saveRecord = (event, errors, values) => {
     const invalidSections = [];
@@ -168,7 +171,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     this.setState({
       openDialogs: [...this.state.openDialogs, name]
     });
-  }
+  };
 
   closeDialog = name => () => {
     this.setState({
@@ -178,13 +181,16 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   handleConfirmDeactivate = () => {
     this.props.deactivateEntity(this.props.match.params.id);
-  }
+  };
 
   handleConfirmDiscard = () => {
-    this.setState({
-      leaving: true
-    }, () => this.props.history.goBack());
-  }
+    this.setState(
+      {
+        leaving: true
+      },
+      () => this.props.history.goBack()
+    );
+  };
 
   addAnotherService = () => {
     const organization = this.state.organization;
@@ -218,9 +224,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     organization.locations.splice(i, 1);
     // filter out this location from services
     organization.services.forEach(service => {
-      service['locationIndexes'] = service['locationIndexes']
-      .filter(value => value !== i)
-      .map(idx => (idx > i) ? idx - 1 : idx);
+      service['locationIndexes'] = service['locationIndexes'].filter(value => value !== i).map(idx => (idx > i ? idx - 1 : idx));
     });
     this.setState({
       organization,
@@ -229,9 +233,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   };
 
   getLocations = () =>
-    this.state.organization.locations.map((location, i) => (
-      { value: i, label: (i + 1) + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ') }
-    ));
+    this.state.organization.locations.map((location, i) => ({
+      value: i,
+      label: i + 1 + '. ' + [location['address1'], location['address2'], location['city']].filter(item => item).join(', ')
+    }));
 
   onOrganizationChange = fieldName => ({ target }) => {
     const organization = this.state.organization;
@@ -251,7 +256,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   onServiceChange = (i, fieldName, defaultValue = null) => event => {
     const organization = this.state.organization;
-    let value = (event != null && event.target) ? event.target.value : event;
+    let value = event != null && event.target ? event.target.value : event;
     if (value == null) {
       value = defaultValue;
     }
@@ -265,31 +270,44 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     this.setState({
       openLocation: i
     });
-  }
+  };
 
   openService = i => () => {
     this.setState({
       openService: i
     });
-  }
+  };
 
   taxonomyPills = service => {
-    const taxonomyOptions = this.props.taxonomyOptions.filter(to =>
-      service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1);
+    const taxonomyOptions = this.props.taxonomyOptions.filter(
+      to => service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1
+    );
     const widths = taxonomyOptions.map(to => to['width']);
     const itemCount = getColumnCount(widths, MAX_PILLS_WIDTH) || 0;
-    return <div className="pills record-card">{taxonomyOptions.slice(0, itemCount).map(to => (
-      <div className="pill pill-sm" key={to.value}>
-        <span>{to.label}</span>
+    return (
+      <div className="pl-0 record-card">
+        {taxonomyOptions.slice(0, itemCount).map(to => (
+          <div className="pill mt-2" key={to.value}>
+            <span>{to.label}</span>
+          </div>
+        ))}
+        {itemCount < taxonomyOptions.length ? RemainderCount(taxonomyOptions.length - itemCount) : ''}
       </div>
-    ))}
-      {(itemCount < taxonomyOptions.length) ? RemainderCount(taxonomyOptions.length - itemCount) : ''}
-    </div>;
-  }
+    );
+  };
 
   render() {
-    const { openSections, organization, openLocation, openService, latestDailyUpdate,
-      invalidSections, invalidLocations, invalidServices, leaving } = this.state;
+    const {
+      openSections,
+      organization,
+      openLocation,
+      openService,
+      latestDailyUpdate,
+      invalidSections,
+      invalidLocations,
+      invalidServices,
+      leaving
+    } = this.state;
     const { updating, taxonomyOptions } = this.props;
     const { locations, services } = organization;
     return organization.id && organization.id === this.props.match.params.id ? (
@@ -320,14 +338,19 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           </Card>
           <Card className="section">
             <CardTitle className="d-block">
-              <div className="d-inline-block"><Translate contentKey="record.edit.dailyUpdatesQuestion" /></div>
               <div className="d-inline-block">
-                &nbsp;(<Translate contentKey="record.edit.lastUpdated" />:&nbsp;
+                <Translate contentKey="record.edit.dailyUpdatesQuestion" />
+              </div>
+              <div className="d-inline-block">
+                &nbsp;(
+                <Translate contentKey="record.edit.lastUpdated" />
+                :&nbsp;
                 {latestDailyUpdate.createdAt ? (
                   <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                 ) : (
                   <Translate contentKey="recordCard.unknown" />
-                )})
+                )}
+                )
               </div>
             </CardTitle>
             <CardBody>
@@ -344,10 +367,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             <CardTitle onClick={this.toggle(ORGANIZATION)} className="clickable">
               <img src={PeopleLogo} height={25} alt="Organization" />
               <Translate contentKey="record.edit.updateOrganizationDetails" />
-              <FontAwesomeIcon icon={openSections.includes(ORGANIZATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg"/>
+              <FontAwesomeIcon icon={openSections.includes(ORGANIZATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg" />
             </CardTitle>
             <Collapse isOpen={openSections.includes(ORGANIZATION)}>
-              <CardBody>
+              <CardBody className="details">
                 <AvGroup>
                   <Label>{translate('record.description')}</Label>
                   <AvInput
@@ -359,12 +382,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 </AvGroup>
                 <AvGroup>
                   <Label>{translate('record.url')}</Label>
-                  <AvField
-                    id="organization-url"
-                    type="text"
-                    name="url"
-                    onChange={this.onOrganizationChange('url')}
-                  />
+                  <AvField id="organization-url" type="text" name="url" onChange={this.onOrganizationChange('url')} />
                 </AvGroup>
                 <AvGroup>
                   <Label>{translate('record.email')}</Label>
@@ -384,133 +402,156 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <Card className="section expandable locations">
             <CardTitle onClick={this.toggle(LOCATION)} className="clickable">
               <img src={BuildingLogo} height={25} alt="Location" />
-              <Translate contentKey="record.location.details"/>
-              <Badge color="light" pill>{locations.length}</Badge>
-              <FontAwesomeIcon icon={openSections.includes(LOCATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg"/>
+              <Translate contentKey="record.location.details" />
+              <Badge color="light" pill>
+                {locations.length}
+              </Badge>
+              <FontAwesomeIcon icon={openSections.includes(LOCATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg" />
             </CardTitle>
             <Collapse isOpen={openSections.includes(LOCATION)}>
-              <div>
+              <div className="border-top-0">
                 <div className={openLocation !== -1 ? 'd-flex top-bar' : 'd-none'}>
-                  <div onClick={this.openLocation(-1)} className="clickable">
-                    <FontAwesomeIcon icon="arrow-left" />&nbsp;
-                    <Translate contentKey="record.location.back"/>
+                  <div onClick={this.openLocation(-1)} className="clickable ml-md-4">
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <Translate contentKey="record.location.back" />
                   </div>
                   <div className="d-flex pull-right">
-                    <div onClick={this.openLocation((openLocation > 0) ? openLocation - 1 : locations.length - 1)} className="clickable" >
+                    <div
+                      onClick={this.openLocation(openLocation > 0 ? openLocation - 1 : locations.length - 1)}
+                      className="p-md-2 clickable"
+                    >
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
                     </div>
-                    <div className="align-self-center ml-1">{openLocation + 1}</div>
-                    <div className="mx-2 align-self-center">
+                    <div className="align-self-center ml-1 ml-md-0">{openLocation + 1}</div>
+                    <div className="align-self-center mx-2">
                       <Progress value={((openLocation + 1) / locations.length) * 100} />
                     </div>
-                    <div className="align-self-center mr-1">{locations.length}</div>
-                    <div onClick={this.openLocation((openLocation < locations.length - 1) ? openLocation + 1 : 0)} className="clickable">
+                    <div className="align-self-center mr-1 mr-md-0">{locations.length}</div>
+                    <div
+                      onClick={this.openLocation(openLocation < locations.length - 1 ? openLocation + 1 : 0)}
+                      className="p-md-2 clickable mr-md-4"
+                    >
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
                     </div>
                   </div>
                 </div>
-                <CardBody>
-                  {locations && locations.map((location, i) =>
-                      <div key={'location-' + i} className={openLocation === -1 ? 'd-inline-block' : 'd-block'}>
-                      <Card className={openLocation === -1 ? invalidLocations.includes(i) ? 'invalid clickable card-sm' : 'clickable card-sm' : 'd-none'}>
-                        <CardBody onClick={this.openLocation(i)} className={'location d-flex flex-row'}>
-                          <div className="card-left">
-                            <FontAwesomeIcon icon="pencil-alt" />
-                          </div>
-                          <div className="card-right">
-                            <div>
-                              <div className="card-heading">
-                                <FontAwesomeIcon icon={faCircle} className="edit" /> {location['city']}, {location['ca']}
+                <CardBody className="details">
+                  {locations &&
+                    locations.map((location, i) => (
+                      <>
+                        <div
+                          key={'location-' + i}
+                          className={`col-md-4 col-xs-12 p-0 ${openLocation === -1 ? 'd-inline-block' : 'd-block'}`}
+                        >
+                          <Card
+                            className={
+                              openLocation === -1
+                                ? invalidLocations.includes(i)
+                                  ? 'invalid clickable card-sm record-card details-card'
+                                  : 'clickable card-sm record-card details-card'
+                                : 'd-none'
+                            }
+                          >
+                            <CardBody onClick={this.openLocation(i)} className={'locations d-flex flex-row'}>
+                              <div className="card-left">
+                                <FontAwesomeIcon icon="pencil-alt" />
                               </div>
-                              <div>{location['address1']}</div>
-                              <div>{location['address2']}</div>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                      <div className={openLocation === i ? 'location-details' : 'd-none'}>
-                        {location['id'] ? <AvField name={'locations[' + i + '].id'} value={location['id']} className="d-none" /> : ''}
-                        <AvGroup>
-                          <div className="flex">
-                            <div className="required" />
-                            <Label>{translate('record.location.address1')}</Label>
-                          </div>
-                          <AvInput
-                            type="textarea"
-                            name={'locations[' + i + '].address1'}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            onChange={this.onLocationChange(i, 'address1')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label>{translate('record.location.address2')}</Label>
-                          <AvInput
-                            type="textarea"
-                            name={'locations[' + i + '].address2'}
-                            onChange={this.onLocationChange(i, 'address2')}
-                          />
-                        </AvGroup>
-                        <Row>
-                          <Col md={7} className="flex mb-3">
-                            <div className="required" />
-                            <AvInput
-                              type="text"
-                              name={'locations[' + i + '].city'}
-                              onChange={this.onLocationChange(i, 'city')}
-                              placeholder={translate('record.location.city')}
-                              validate={{
-                                required: { value: true, errorMessage: translate('entity.validation.required') }
-                              }}
-                            />
-                          </Col>
-                          <Col md={2} className="flex mb-3">
-                            <div className="required" />
-                            <AvField
-                              type="select"
-                              name={'locations[' + i + '].ca'}
-                              onChange={this.onLocationChange(i, 'ca')}
-                              placeholder={translate('record.location.ca')}
-                              value={location['ca'] || locationModel['ca']}
-                              validate={{
-                                required: { value: true, errorMessage: translate('entity.validation.required') }
-                              }}
-                              style={{ 'minWidth': '5em' }}
-                            >
-                              {US_STATES.map(state => (
-                                <option value={state} key={state}>
-                                  {state}
-                                </option>
-                              ))}
-                            </AvField>
-                          </Col>
-                          <Col md={3} className="flex mb-3">
-                            <div className="required" />
-                            <AvInput
-                              type="text"
-                              name={'locations[' + i + '].zipcode'}
-                              onChange={this.onLocationChange(i, 'zipcode')}
-                              placeholder={translate('record.location.zipcode')}
-                              validate={{
-                                required: { value: true, errorMessage: translate('entity.validation.required') }
-                              }}
-                            />
-                          </Col>
-                        </Row>
-                        <div className="buttons">
-                          <Button onClick={this.removeLocation(i)}>
-                            <FontAwesomeIcon icon="trash" />
-                            &nbsp;
-                            <Translate contentKey="record.location.remove"/>
-                          </Button>
-                          <Button onClick={this.openLocation(-1)} className="pull-right">
-                            <Translate contentKey="record.navigation.done" />
-                          </Button>
+                              <div className="card-right">
+                                <div>
+                                  <div className="card-heading">
+                                    <FontAwesomeIcon icon={faCircle} className="edit" /> {location['city']}, {location['ca']}
+                                  </div>
+                                  <div>{location['address1']}</div>
+                                  <div>{location['address2']}</div>
+                                </div>
+                              </div>
+                            </CardBody>
+                          </Card>
                         </div>
-                      </div>
-                  </div>
-                  )}
+                        <div className={openLocation === i ? 'location-details' : 'd-none'}>
+                          {location['id'] ? <AvField name={'locations[' + i + '].id'} value={location['id']} className="d-none" /> : ''}
+                          <AvGroup>
+                            <div className="flex">
+                              <div className="required" />
+                              <Label>{translate('record.location.address1')}</Label>
+                            </div>
+                            <AvInput
+                              type="textarea"
+                              name={'locations[' + i + '].address1'}
+                              validate={{
+                                required: { value: true, errorMessage: translate('entity.validation.required') }
+                              }}
+                              onChange={this.onLocationChange(i, 'address1')}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label>{translate('record.location.address2')}</Label>
+                            <AvInput
+                              type="textarea"
+                              name={'locations[' + i + '].address2'}
+                              onChange={this.onLocationChange(i, 'address2')}
+                            />
+                          </AvGroup>
+                          <Row>
+                            <Col md={7} className="flex mb-3">
+                              <div className="required" />
+                              <AvInput
+                                type="text"
+                                name={'locations[' + i + '].city'}
+                                onChange={this.onLocationChange(i, 'city')}
+                                placeholder={translate('record.location.city')}
+                                validate={{
+                                  required: { value: true, errorMessage: translate('entity.validation.required') }
+                                }}
+                              />
+                            </Col>
+                            <Col md={2} className="flex mb-3">
+                              <div className="required" />
+                              <AvField
+                                type="select"
+                                name={'locations[' + i + '].ca'}
+                                onChange={this.onLocationChange(i, 'ca')}
+                                placeholder={translate('record.location.ca')}
+                                value={location['ca'] || locationModel['ca']}
+                                validate={{
+                                  required: { value: true, errorMessage: translate('entity.validation.required') }
+                                }}
+                                style={{ minWidth: '5em' }}
+                              >
+                                {US_STATES.map(state => (
+                                  <option value={state} key={state}>
+                                    {state}
+                                  </option>
+                                ))}
+                              </AvField>
+                            </Col>
+                            <Col md={3} className="flex mb-3">
+                              <div className="required" />
+                              <AvInput
+                                type="text"
+                                name={'locations[' + i + '].zipcode'}
+                                onChange={this.onLocationChange(i, 'zipcode')}
+                                placeholder={translate('record.location.zipcode')}
+                                validate={{
+                                  required: { value: true, errorMessage: translate('entity.validation.required') }
+                                }}
+                              />
+                            </Col>
+                          </Row>
+                          <div className="buttons">
+                            <Button onClick={this.removeLocation(i)}>
+                              <FontAwesomeIcon icon="trash" />
+                              &nbsp;
+                              <Translate contentKey="record.location.remove" />
+                            </Button>
+                            <Button onClick={this.openLocation(-1)} className="pull-right">
+                              <Translate contentKey="record.navigation.done" />
+                            </Button>
+                          </div>
+                        </div>
+                      </>
+                    ))}
                   <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
                     <Button onClick={this.addAnotherLocation} className="add-another">
                       + <Translate contentKey="record.location.add" />
@@ -523,135 +564,152 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <Card className="section expandable services">
             <CardTitle onClick={this.toggle(SERVICE)} className="clickable">
               <img src={ServiceLogo} height={25} alt="Service" />
-              <Translate contentKey="record.service.details"/>
-              <Badge color="light" pill>{services.length}</Badge>
-              <FontAwesomeIcon icon={openSections.includes(SERVICE) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg"/>
+              <Translate contentKey="record.service.details" />
+              <Badge color="light" pill>
+                {services.length}
+              </Badge>
+              <FontAwesomeIcon icon={openSections.includes(SERVICE) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg" />
             </CardTitle>
             <Collapse isOpen={openSections.includes(SERVICE)}>
-              <div>
+              <div className="border-top-0">
                 <div className={openService !== -1 ? 'd-flex top-bar' : 'd-none'}>
-                  <div onClick={this.openService(-1)} className="clickable">
-                    <FontAwesomeIcon icon="arrow-left" />&nbsp;
-                    <Translate contentKey="record.service.back"/>
+                  <div onClick={this.openService(-1)} className="clickable ml-md-4">
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <Translate contentKey="record.service.back" />
                   </div>
                   <div className="d-flex pull-right">
-                    <div onClick={this.openService((openService > 0) ? openService - 1 : services.length - 1)} className="clickable" >
+                    <div onClick={this.openService(openService > 0 ? openService - 1 : services.length - 1)} className="p-md-2 clickable">
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
                     </div>
-                    <div className="align-self-center ml-1">{openService + 1}</div>
+                    <div className="align-self-center ml-1 ml-md-0">{openService + 1}</div>
                     <div className="mx-2 align-self-center">
                       <Progress value={((openService + 1) / services.length) * 100} />
                     </div>
-                    <div className="align-self-center mr-1">{services.length}</div>
-                    <div onClick={this.openService((openService < services.length - 1) ? openService + 1 : 0)} className="clickable">
+                    <div className="align-self-center mr-1 mr-md-0">{services.length}</div>
+                    <div
+                      onClick={this.openService(openService < services.length - 1 ? openService + 1 : 0)}
+                      className="p-md-2 clickable mr-md-4"
+                    >
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
                     </div>
                   </div>
                 </div>
-                <CardBody>
-                  {services && services.map((service, i) =>
-                    <div key={'service-' + i} className={openService === -1 ? 'd-inline-block' : 'd-block'}>
-                      <Card className={openService === -1 ? invalidServices.includes(i) ? 'invalid clickable card-sm' : 'clickable card-sm' : 'd-none'}>
-                        <CardBody onClick={this.openService(i)} className={'service d-flex flex-row'}>
-                          <div className="card-left">
-                            <FontAwesomeIcon icon="pencil-alt" />
-                          </div>
-                          <div className="card-right">
-                            <div>
-                              <div className="card-heading">
-                                <FontAwesomeIcon icon={faCircle} className="edit" /> {service['name']}
+                <CardBody className="details">
+                  {services &&
+                    services.map((service, i) => (
+                      <>
+                        <div key={'service-' + i} className={`col-md-4 col-xs-12 p-0 ${openService === -1 ? 'd-inline-block' : 'd-block'}`}>
+                          <Card
+                            className={
+                              openService === -1
+                                ? invalidServices.includes(i)
+                                  ? 'invalid clickable card-sm record-card details-card'
+                                  : 'clickable card-sm record-card details-card'
+                                : 'd-none'
+                            }
+                          >
+                            <CardBody onClick={this.openService(i)} className={'service d-flex flex-row'}>
+                              <div className="card-left">
+                                <FontAwesomeIcon icon="pencil-alt" />
                               </div>
-                              {this.taxonomyPills(service)}
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                      <div className={openService === i ? 'service-details' : 'd-none'}>
-                        {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
-                        <AvGroup>
-                          <div className="flex">
-                            <div className="required" />
-                            <Label>{translate('record.service.name')}</Label>
-                          </div>
-                          <AvInput
-                            type="text"
-                            name={'services[' + i + '].name'}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            onChange={this.onServiceChange(i, 'name')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <div className="flex">
-                            <div className="required" />
-                            <Label>{translate('record.service.type')}</Label>
-                          </div>
-                          <AvSelect
-                            name={'services[' + i + '].taxonomyIds'}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            options={taxonomyOptions}
-                            onChange={this.onServiceChange(i, 'taxonomyIds')}
-                            // @ts-ignore
-                            isMulti
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <div className="flex">
-                            <div className="required" />
-                            <Label>{translate('record.service.description')}</Label>
-                          </div>
-                          <AvInput
-                            type="textarea"
-                            name={'services[' + i + '].description'}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            onChange={this.onServiceChange(i, 'description')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label>{translate('record.service.applicationProcess')}</Label>
-                          <AvInput
-                            type="textarea"
-                            name={'services[' + i + '].applicationProcess'}
-                            onChange={this.onServiceChange(i, 'applicationProcess')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label>{translate('record.service.eligibilityCriteria')}</Label>
-                          <AvInput
-                            type="textarea"
-                            name={'services[' + i + '].eligibilityCriteria'}
-                            onChange={this.onServiceChange(i, 'eligibilityCriteria')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label>{translate('record.service.locations')}</Label>
-                          <AvSelect
-                            name={'services[' + i + '].locationIndexes'}
-                            value={(services.length > i) ? services[i]['locationIndexes'] : []}
-                            onChange={this.onServiceChange(i, 'locationIndexes', [])}
-                            options={this.getLocations()}
-                            // @ts-ignore
-                            isMulti
-                          />
-                        </AvGroup>
-                        <div className="buttons">
-                          <Button onClick={this.removeService(i)}>
-                            <FontAwesomeIcon icon="trash" />
-                            &nbsp;
-                            <Translate contentKey="record.service.remove"/>
-                          </Button>
-                          <Button onClick={this.openService(-1)} className="pull-right">
-                            <Translate contentKey="record.navigation.done" />
-                          </Button>
+                              <div className="card-right">
+                                <div>
+                                  <div className="card-heading">
+                                    <FontAwesomeIcon icon={faCircle} className="edit" /> {service['name']}
+                                  </div>
+                                  {this.taxonomyPills(service)}
+                                </div>
+                              </div>
+                            </CardBody>
+                          </Card>
                         </div>
-                      </div>
-                    </div>
-                  )}
+                        <div className={openService === i ? 'service-details' : 'd-none'}>
+                          {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
+                          <AvGroup>
+                            <div className="flex">
+                              <div className="required" />
+                              <Label>{translate('record.service.name')}</Label>
+                            </div>
+                            <AvInput
+                              type="text"
+                              name={'services[' + i + '].name'}
+                              validate={{
+                                required: { value: true, errorMessage: translate('entity.validation.required') }
+                              }}
+                              onChange={this.onServiceChange(i, 'name')}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <div className="flex">
+                              <div className="required" />
+                              <Label>{translate('record.service.type')}</Label>
+                            </div>
+                            <AvSelect
+                              name={'services[' + i + '].taxonomyIds'}
+                              validate={{
+                                required: { value: true, errorMessage: translate('entity.validation.required') }
+                              }}
+                              options={taxonomyOptions}
+                              onChange={this.onServiceChange(i, 'taxonomyIds')}
+                              // @ts-ignore
+                              isMulti
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <div className="flex">
+                              <div className="required" />
+                              <Label>{translate('record.service.description')}</Label>
+                            </div>
+                            <AvInput
+                              type="textarea"
+                              name={'services[' + i + '].description'}
+                              validate={{
+                                required: { value: true, errorMessage: translate('entity.validation.required') }
+                              }}
+                              onChange={this.onServiceChange(i, 'description')}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label>{translate('record.service.applicationProcess')}</Label>
+                            <AvInput
+                              type="textarea"
+                              name={'services[' + i + '].applicationProcess'}
+                              onChange={this.onServiceChange(i, 'applicationProcess')}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label>{translate('record.service.eligibilityCriteria')}</Label>
+                            <AvInput
+                              type="textarea"
+                              name={'services[' + i + '].eligibilityCriteria'}
+                              onChange={this.onServiceChange(i, 'eligibilityCriteria')}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label>{translate('record.service.locations')}</Label>
+                            <AvSelect
+                              name={'services[' + i + '].locationIndexes'}
+                              value={services.length > i ? services[i]['locationIndexes'] : []}
+                              onChange={this.onServiceChange(i, 'locationIndexes', [])}
+                              options={this.getLocations()}
+                              // @ts-ignore
+                              isMulti
+                            />
+                          </AvGroup>
+                          <div className="buttons">
+                            <Button onClick={this.removeService(i)}>
+                              <FontAwesomeIcon icon="trash" />
+                              &nbsp;
+                              <Translate contentKey="record.service.remove" />
+                            </Button>
+                            <Button onClick={this.openService(-1)} className="pull-right">
+                              <Translate contentKey="record.navigation.done" />
+                            </Button>
+                          </div>
+                        </div>
+                      </>
+                    ))}
                   <div className={openService === -1 ? 'buttons list-buttons' : 'd-none'}>
                     <Button onClick={this.addAnotherService} className="add-another">
                       + <Translate contentKey="record.service.add" />
@@ -672,7 +730,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             <Button onClick={this.openDialog('deactivate')} className="deactivate">
               <Translate contentKey="record.navigation.deactivate" />
             </Button>
-            <div className="pull-right">
+            <div className="pull-right d-flex">
               {this.state.openDialogs.indexOf('discard') !== -1 && (
                 <ConfirmationDialog
                   question={translate('record.discardQuestion')}
@@ -680,7 +738,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   handleConfirm={this.handleConfirmDiscard}
                 />
               )}
-              <Button onClick={this.openDialog('discard')} className="go-back">
+              <Button onClick={this.openDialog('discard')}>
                 <Translate contentKey="record.navigation.discard" />
               </Button>
               <Button id="submit" type="submit" disabled={updating} color="primary">
@@ -692,7 +750,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           </div>
         </div>
       </AvForm>
-    ) : '';
+    ) : (
+      ''
+    );
   }
 }
 
@@ -701,8 +761,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   updating: storeState.organization.updating,
   updateSuccess: storeState.organization.updateSuccess,
   organization: storeState.organization.providersEntity,
-  taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(
-    taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
+  taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
 });
 
 const mapDispatchToProps = {
