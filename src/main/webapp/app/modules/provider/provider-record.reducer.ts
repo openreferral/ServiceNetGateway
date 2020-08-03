@@ -123,11 +123,12 @@ export const getAllProviderRecordsPublic = (silo, page, itemsPerPage, sort, filt
   };
 };
 
-export const getAllProviderRecordsForMap = (siloName = '') => {
-  const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}` : allRecordForMapApiUrl;
+export const getAllProviderRecordsForMap = (siloName = '', providerFilter, search) => {
+  const params = `search=${search ? search : ''}`;
+  const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}&params` : `${allRecordForMapApiUrl}?${params}`;
   return {
     type: ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP,
-    payload: axios.get(baseUrl)
+    payload: axios.post(baseUrl, clearFilter(providerFilter))
   };
 };
 
