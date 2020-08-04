@@ -4,7 +4,7 @@ services:
     image: johnhbenetech/servicenetgateway:${SN_VERSION_TAG:-dev}
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=dev,swagger
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev,swagger}
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500
@@ -21,7 +21,7 @@ services:
     image: johnhbenetech/servicenet:${SN_VERSION_TAG:-dev}
     environment:
       - _JAVA_OPTIONS=-Xmx2048m -Xms1024m
-      - SPRING_PROFILES_ACTIVE=dev,swagger
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev,swagger}
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500
@@ -41,7 +41,7 @@ services:
     image: johnhbenetech/servicenetauth:${SN_VERSION_TAG:-dev}
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=dev,swagger
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev,swagger}
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_CLOUD_CONSUL_HOST=consul
       - SPRING_CLOUD_CONSUL_PORT=8500
