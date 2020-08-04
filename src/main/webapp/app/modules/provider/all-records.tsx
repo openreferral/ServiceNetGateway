@@ -130,7 +130,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
+    if (
+      this.props.providerFilter !== prevProps.providerFilter ||
+      prevProps.search !== this.props.search ||
+      this.props.providerFilterForMap !== prevProps.providerFilterForMap
+    ) {
       if (this.state.isMapView) {
         this.getRecordsForMap();
       } else {
@@ -188,8 +192,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   getRecordsForMap = () => {
-    const { siloName, providerFilter, search } = this.props;
-    this.props.getAllProviderRecordsForMap(siloName, providerFilter, search);
+    const { siloName, providerFilterForMap, search } = this.props;
+    this.props.getAllProviderRecordsForMap(siloName, providerFilterForMap, search);
   };
 
   selectRecord = record => {
@@ -250,7 +254,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapWithFilter = allRecords => {
-    const { filterOpened } = this.state;
+    const { filterOpened, isMapView } = this.state;
     const { siloName } = this.props;
     const elementsBesideFilter = _.slice(allRecords, 0, 4);
     const elementsAfterFilter = _.slice(allRecords, 4);
@@ -269,6 +273,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                     dropdownOpen={filterOpened}
                     toggleFilter={this.toggleFilter}
                     getFirstPage={this.getFirstPage}
+                    isMapView={isMapView}
                   />
                 </div>
               </Col>
@@ -283,8 +288,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapView = () => {
-    const { allRecordsForMap, selectedRecord, urlBase, siloName } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng } = this.state;
+    const { allRecordsForMap, selectedRecord, urlBase, siloName, providerFilter } = this.props;
+    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, isMapView } = this.state;
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
@@ -293,7 +298,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       loadingElement: <div style={{ height: '100%' }} />,
       mapElement: <div style={{ height: '100%' }} />,
       onMarkerClick: this.selectRecord,
-      onMapLoad: this.onMapLoad
+      onMapLoad: this.onMapLoad,
+      providerFilter: providerFilter
     };
     return (
       <>
@@ -326,18 +332,19 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </Col>
             ) : null}
             {filterOpened &&
-              !isRecordHighlighted && (
-                <Col md={4}>
-                  <div className="filter-card mx-3 mb-4">
-                    <FilterCard
-                      siloName={siloName}
-                      dropdownOpen={filterOpened}
-                      toggleFilter={this.toggleFilter}
-                      getFirstPage={this.getFirstPage}
-                    />
-                  </div>
-                </Col>
-              )}
+            !isRecordHighlighted && (
+              <Col md={4}>
+                <div className="filter-card mx-3 mb-4">
+                  <FilterCard
+                    siloName={siloName}
+                    dropdownOpen={filterOpened}
+                    toggleFilter={this.toggleFilter}
+                    getFirstPage={this.getFirstPage}
+                    isMapView={isMapView}
+                  />
+                </div>
+              </Col>
+            )}
           </MediaQuery>
         </Row>
       </>
@@ -369,8 +376,25 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
+  progress = () => {
+    const { allRecords, allRecordsTotal } = this.props;
+    const { isMapView } = this.state;
+    if (isMapView) {
+      return null;
+    }
+    return (
+      <div className="d-flex">
+        <div className="align-self-center ml-4">{allRecords && allRecords.length}</div>
+        <div className="mx-2 align-self-center">
+          <Progress value={((allRecords && allRecords.length) / allRecordsTotal) * 100} />
+        </div>
+        <div className="align-self-center">{allRecordsTotal}</div>
+      </div>
+    );
+  };
+
   render() {
-    const { allRecords, allRecordsTotal, siloName } = this.props;
+    const { siloName } = this.props;
     const { sortingOpened, filterOpened, isMapView, recordViewType } = this.state;
     return (
       <div>
@@ -382,6 +406,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 dropdownOpen={filterOpened}
                 toggleFilter={this.toggleFilter}
                 getFirstPage={this.getFirstPage}
+                isMapView={isMapView}
               />
             </div>
           </Modal>
@@ -391,13 +416,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             <b className="align-self-center">
               <Translate contentKey="providerSite.allRecords" />
             </b>
-            <div className="d-flex">
-              <div className="align-self-center ml-4">{allRecords && allRecords.length}</div>
-              <div className="mx-2 align-self-center">
-                <Progress value={((allRecords && allRecords.length) / allRecordsTotal) * 100} />
-              </div>
-              <div className="align-self-center">{allRecordsTotal}</div>
-            </div>
+            <this.progress />
           </div>
           <div className="sort-container">
             <ButtonPill onClick={this.toggleMapView}>
@@ -440,6 +459,7 @@ const mapStateToProps = state => ({
   allRecordsTotal: state.providerRecord.allRecordsTotal,
   account: state.authentication.account,
   providerFilter: state.providerFilter.filter,
+  providerFilterForMap: state.providerFilter.mapFilter,
   search: state.search.text,
   allRecordsForMap: state.providerRecord.allRecordsForMap,
   selectedRecord: state.providerRecord.selectedRecord

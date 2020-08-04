@@ -21,6 +21,7 @@ export interface IFilterCardProps extends StateProps, DispatchProps {
   toggleFilter: Function;
   getFirstPage: Function;
   siloName?: string;
+  isMapView: boolean;
 }
 
 export interface IFilterCardState {
@@ -42,14 +43,18 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
   }
 
   componentDidMount() {
-    const { siloName } = this.props;
+    const { siloName, isMapView } = this.props;
     if (!this.props.isLoggingOut) {
       this.props.getPostalCodeList(siloName);
       this.props.getRegionList(siloName);
       this.props.getCityList(siloName);
       this.props.getPartnerList(siloName);
       this.props.getTaxonomyMap(siloName);
-      this.setState({ ...this.props.filter });
+      if (isMapView) {
+        this.setState({ ...this.props.providerFilterForMap });
+      } else {
+        this.setState({ ...this.props.filter });
+      }
     }
   }
 
@@ -58,15 +63,17 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
   };
 
   applyFilter = () => {
+    const { isMapView } = this.props;
     const filter = { ...this.state };
     this.props.getFirstPage();
-    this.props.updateFilter({ ...filter });
+    this.props.updateFilter({ ...filter }, isMapView);
     this.props.toggleFilter();
   };
 
   resetFilter = () => {
+    const { isMapView } = this.props;
     this.props.getFirstPage();
-    this.props.reset();
+    this.props.reset(isMapView);
     this.props.toggleFilter();
   };
 
@@ -189,7 +196,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   cityList: storeState.filterActivity.cityList.map(city => ({ label: city, value: city })),
   regionList: storeState.filterActivity.regionList.map(region => ({ label: region, value: region })),
   taxonomyOptions: getTaxonomyOptions(storeState.filterActivity.taxonomyMap),
-  filter: storeState.providerFilter.filter
+  filter: storeState.providerFilter.filter,
+  providerFilterForMap: storeState.providerFilter.mapFilter
 });
 
 const mapDispatchToProps = {
