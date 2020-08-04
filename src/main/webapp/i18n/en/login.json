@@ -14,6 +14,9 @@
     },
     "password": {
       "forgot": "Did you forget your password?"
+    },
+    "error": {
+      "unauthorized": "Full authentication is required to access this resource"
     }
   }
 }
