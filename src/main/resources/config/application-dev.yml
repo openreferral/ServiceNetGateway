@@ -153,7 +153,7 @@ oauth2:
     secret: ${SPRING_OAUTH2_CLIENT_SECRET:changeme}
     # Controls session expiration due to inactivity (ignored for remember-me).
     # Negative values disable session inactivity expiration.
-    session-timeout-in-seconds: 1800
+    session-timeout-in-seconds: ${SPRING_OAUTH2_SESSION_TIMEOUT:3600}
 
 # ===================================================================
 # Application specific properties
