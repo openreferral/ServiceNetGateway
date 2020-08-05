@@ -14,6 +14,8 @@ import FilterCard from './filter-card';
 import MediaQuery from 'react-responsive';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { GOOGLE_API_KEY } from 'app/config/constants';
+// tslint:disable-next-line:no-submodule-imports
+import { MAP } from 'react-google-maps/lib/constants';
 
 const MOBILE_WIDTH_BREAKPOINT = 768;
 const DESKTOP_WIDTH_BREAKPOINT = 769;
@@ -81,7 +83,7 @@ const Map = withScriptjs(
 
       return (
         <GoogleMap
-          ref={map => map && !props.lat && !props.lng && map.fitBounds(bounds)}
+          ref={map => map && !props.lat && !props.lng && props.onMapLoad(map, bounds)}
           defaultZoom={8}
           center={{ lat: props.lat || 38.5816, lng: props.lng || -121.4944 }}
           defaultOptions={{ mapTypeControl: false, streetViewControl: false, fullscreenControl: false }}
@@ -116,6 +118,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       ...providerSearchPreferences
     };
   }
+
+  onMapLoad = (mapRef, bounds) => {
+    mapRef.fitBounds(bounds);
+    const transitLayer = new window.google.maps.TransitLayer();
+    transitLayer.setMap(mapRef.context[MAP]);
+  };
 
   componentDidMount() {
     this.getRecords(true);
@@ -289,6 +297,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             containerElement={<div style={{ height: '400px' }} />}
             mapElement={<div style={{ height: '100%' }} />}
             onMarkerClick={this.selectRecord}
+            onMapLoad={this.onMapLoad}
           />
         </Col>
         {isRecordHighlighted && selectedRecord && !filterOpened ? (
