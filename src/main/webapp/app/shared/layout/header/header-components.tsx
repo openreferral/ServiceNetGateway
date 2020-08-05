@@ -50,16 +50,20 @@ export const FeedbackButton = props =>
     </NavLink>
   );
 
-export const Home = props => (
-  <NavItem>
-    <NavLink exact tag={Link} to="/" className="d-flex align-items-center">
-      <FontAwesomeIcon icon="home" />
-      <span className="navbar-label">
-        <Translate contentKey="global.menu.home" />
-      </span>
-    </NavLink>
-  </NavItem>
-);
+export const Home = props => {
+  const { prependRoutesWithMatch, match } = props;
+  const url = prependRoutesWithMatch ? match.url : `/`;
+  return (
+    <NavItem>
+      <NavLink exact tag={Link} to={url} className="d-flex align-items-center">
+        <FontAwesomeIcon icon="home"/>
+        <span className="navbar-label">
+          <Translate contentKey="global.menu.home"/>
+        </span>
+      </NavLink>
+    </NavItem>
+  );
+};
 
 export const DataStatus = props => (
   <NavItem>

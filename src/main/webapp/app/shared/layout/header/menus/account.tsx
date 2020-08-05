@@ -25,12 +25,12 @@ const accountMenuItemsAuthenticated = (isAdmin, isSacramento) => (
   </>
 );
 
-const accountMenuItems = match => {
+const accountMenuItems = (match, prependRoutesWithMatch = false) => {
   const siloName = _.get(match, 'params.siloName', '');
-
+  const loginUrl = (prependRoutesWithMatch ? match.url : ``) + '/login';
   return (
     <>
-      <DropdownItem id="login-item" tag={Link} to="/login">
+      <DropdownItem id="login-item" tag={Link} to={loginUrl}>
         <FontAwesomeIcon icon="sign-in-alt" /> <Translate contentKey="global.menu.account.login">Sign in</Translate>
       </DropdownItem>
       <DropdownItem tag={Link} to={`/register${!_.isEmpty(siloName) ? `/${siloName}` : ''}`}>
@@ -40,10 +40,12 @@ const accountMenuItems = match => {
   );
 };
 
-export const AccountMenu = ({ isAuthenticated = false, userLogin, isAdmin = false, isSacramento = false, match = {} }) => (
-  <NavDropdown icon="user" name={userLogin ? userLogin : translate('global.menu.account.main')} id="account-menu">
-    {isAuthenticated ? accountMenuItemsAuthenticated(isAdmin, isSacramento) : accountMenuItems(match)}
-  </NavDropdown>
-);
+export const AccountMenu = ({ isAuthenticated = false, userLogin, isAdmin = false, isSacramento = false, match = {},
+                              prependRoutesWithMatch = false }) =>
+  (
+    <NavDropdown icon="user" name={userLogin ? userLogin : translate('global.menu.account.main')} id="account-menu">
+      {isAuthenticated ? accountMenuItemsAuthenticated(isAdmin, isSacramento) : accountMenuItems(match, prependRoutesWithMatch)}
+    </NavDropdown>
+  );
 
 export default AccountMenu;
