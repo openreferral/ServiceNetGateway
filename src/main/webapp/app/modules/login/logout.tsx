@@ -12,8 +12,7 @@ export interface ILogoutProps extends StateProps, DispatchProps {}
 export class Logout extends React.Component<ILogoutProps> {
   componentDidMount() {
     this.props.reset();
-    this.props.resetProviderFilters(true);
-    this.props.resetProviderFilters(false);
+    this.props.resetProviderFilters();
     this.props.logout();
   }
 

@@ -1,6 +1,8 @@
 export const ACTION_TYPES = {
   UPDATE_FILTER: 'providerFilter/UPDATE_FILTER',
-  RESET_FILTER: 'providerFilter/RESET_FILTER'
+  RESET_FILTER: 'providerFilter/RESET_FILTER',
+  CHECK_FILTERS_CHANGED: 'providerFilter/SET_FILTERS_CHANGED',
+  UNCHECK_FILTERS_CHANGED: 'providerFilter/UNCHECK_FILTERS_CHANGED'
 };
 
 const FILTER_DEFAULT = {
@@ -14,10 +16,8 @@ const initialState = {
   filter: {
     ...FILTER_DEFAULT
   },
-  mapFilter: {
-    ...FILTER_DEFAULT
-  },
-  defaultFilter: FILTER_DEFAULT
+  defaultFilter: FILTER_DEFAULT,
+  filtersChanged: false
 };
 
 export type ProviderFilterState = Readonly<typeof initialState>;
@@ -25,57 +25,46 @@ export type ProviderFilterState = Readonly<typeof initialState>;
 export default (state: ProviderFilterState = initialState, action): ProviderFilterState => {
   switch (action.type) {
     case ACTION_TYPES.UPDATE_FILTER:
-      if (action.meta.isMapView) {
-        return {
-          ...state,
-          mapFilter: {
-            ...state.mapFilter,
-            ...action.payload
-          }
-        };
-      } else {
-        return {
-          ...state,
-          filter: {
-            ...state.filter,
-            ...action.payload
-          }
-        };
-      }
-
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          ...action.payload
+        }
+      };
     case ACTION_TYPES.RESET_FILTER:
-      if (action.meta.isMapView) {
-        return {
-          ...state,
-          mapFilter: {
-            ...FILTER_DEFAULT
-          }
-        };
-      } else {
-        return {
-          ...state,
-          filter: {
-            ...FILTER_DEFAULT
-          }
-        };
-      }
-      return initialState;
+      return {
+        ...state,
+        filter: { ...FILTER_DEFAULT }
+      };
+    case ACTION_TYPES.CHECK_FILTERS_CHANGED:
+      return {
+        ...state,
+        filtersChanged: true
+      };
+    case ACTION_TYPES.UNCHECK_FILTERS_CHANGED:
+      return {
+        ...state,
+        filtersChanged: false
+      };
     default:
       return state;
   }
 };
 
-export const updateFilter = (filter, isMapView) => ({
+export const updateFilter = filter => ({
   type: ACTION_TYPES.UPDATE_FILTER,
-  payload: filter,
-  meta: {
-    isMapView
-  }
+  payload: filter
 });
 
-export const reset = isMapView => ({
-  type: ACTION_TYPES.RESET_FILTER,
-  meta: {
-    isMapView
-  }
+export const reset = () => ({
+  type: ACTION_TYPES.RESET_FILTER
+});
+
+export const checkFiltersChanged = () => ({
+  type: ACTION_TYPES.CHECK_FILTERS_CHANGED
+});
+
+export const uncheckFiltersChanged = () => ({
+  type: ACTION_TYPES.UNCHECK_FILTERS_CHANGED
 });

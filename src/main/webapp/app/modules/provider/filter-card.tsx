@@ -14,7 +14,7 @@ import {
 } from 'app/modules/home/filter-activity.reducer';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
-import { updateFilter, reset } from './provider-filter.reducer';
+import { updateFilter, reset, checkFiltersChanged } from './provider-filter.reducer';
 
 export interface IFilterCardProps extends StateProps, DispatchProps {
   dropdownOpen: boolean;
@@ -29,6 +29,7 @@ export interface IFilterCardState {
   region: string;
   zip: string;
   serviceTypes: any[];
+  filtersChanged?: boolean;
 }
 
 export class FilterCard extends React.Component<IFilterCardProps, IFilterCardState> {
@@ -50,11 +51,7 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
       this.props.getCityList(siloName);
       this.props.getPartnerList(siloName);
       this.props.getTaxonomyMap(siloName);
-      if (isMapView) {
-        this.setState({ ...this.props.providerFilterForMap });
-      } else {
-        this.setState({ ...this.props.filter });
-      }
+      this.setState({ ...this.props.filter });
     }
   }
 
@@ -63,17 +60,23 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
   };
 
   applyFilter = () => {
-    const { isMapView } = this.props;
     const filter = { ...this.state };
+    const { isMapView } = this.props;
+    if (isMapView) {
+      this.props.checkFiltersChanged();
+    }
     this.props.getFirstPage();
-    this.props.updateFilter({ ...filter }, isMapView);
+    this.props.updateFilter({ ...filter });
     this.props.toggleFilter();
   };
 
   resetFilter = () => {
     const { isMapView } = this.props;
+    if (isMapView) {
+      this.props.checkFiltersChanged();
+    }
     this.props.getFirstPage();
-    this.props.reset(isMapView);
+    this.props.reset();
     this.props.toggleFilter();
   };
 
@@ -196,8 +199,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   cityList: storeState.filterActivity.cityList.map(city => ({ label: city, value: city })),
   regionList: storeState.filterActivity.regionList.map(region => ({ label: region, value: region })),
   taxonomyOptions: getTaxonomyOptions(storeState.filterActivity.taxonomyMap),
-  filter: storeState.providerFilter.filter,
-  providerFilterForMap: storeState.providerFilter.mapFilter
+  filter: storeState.providerFilter.filter
 });
 
 const mapDispatchToProps = {
@@ -207,7 +209,8 @@ const mapDispatchToProps = {
   getPartnerList,
   getTaxonomyMap,
   updateFilter,
-  reset
+  reset,
+  checkFiltersChanged
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

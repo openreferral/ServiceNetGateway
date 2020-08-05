@@ -16,6 +16,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-map
 import { GOOGLE_API_KEY } from 'app/config/constants';
 // tslint:disable-next-line:no-submodule-imports
 import { MAP } from 'react-google-maps/lib/constants';
+import { uncheckFiltersChanged } from './provider-filter.reducer';
 
 const MOBILE_WIDTH_BREAKPOINT = 768;
 const DESKTOP_WIDTH_BREAKPOINT = 769;
@@ -130,11 +131,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.providerFilter !== prevProps.providerFilter ||
-      prevProps.search !== this.props.search ||
-      this.props.providerFilterForMap !== prevProps.providerFilterForMap
-    ) {
+    if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
       if (this.state.isMapView) {
         this.getRecordsForMap();
       } else {
@@ -192,8 +189,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   getRecordsForMap = () => {
-    const { siloName, providerFilterForMap, search } = this.props;
-    this.props.getAllProviderRecordsForMap(siloName, providerFilterForMap, search);
+    const { siloName, providerFilter, search } = this.props;
+    this.props.getAllProviderRecordsForMap(siloName, providerFilter, search);
   };
 
   selectRecord = record => {
@@ -209,8 +206,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   toggleMapView = () => {
+    const { filtersChanged } = this.props;
     if (!this.state.isMapView) {
       this.getRecordsForMap();
+    } else {
+      if (filtersChanged) {
+        this.getRecords(true);
+        this.props.uncheckFiltersChanged();
+      }
     }
     this.setState({
       isMapView: !this.state.isMapView,
@@ -299,7 +302,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       mapElement: <div style={{ height: '100%' }} />,
       onMarkerClick: this.selectRecord,
       onMapLoad: this.onMapLoad,
-      providerFilter: providerFilter
+      providerFilter
     };
     return (
       <>
@@ -332,19 +335,19 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </Col>
             ) : null}
             {filterOpened &&
-            !isRecordHighlighted && (
-              <Col md={4}>
-                <div className="filter-card mx-3 mb-4">
-                  <FilterCard
-                    siloName={siloName}
-                    dropdownOpen={filterOpened}
-                    toggleFilter={this.toggleFilter}
-                    getFirstPage={this.getFirstPage}
-                    isMapView={isMapView}
-                  />
-                </div>
-              </Col>
-            )}
+              !isRecordHighlighted && (
+                <Col md={4}>
+                  <div className="filter-card mx-3 mb-4">
+                    <FilterCard
+                      siloName={siloName}
+                      dropdownOpen={filterOpened}
+                      toggleFilter={this.toggleFilter}
+                      getFirstPage={this.getFirstPage}
+                      isMapView={isMapView}
+                    />
+                  </div>
+                </Col>
+              )}
           </MediaQuery>
         </Row>
       </>
@@ -459,17 +462,18 @@ const mapStateToProps = state => ({
   allRecordsTotal: state.providerRecord.allRecordsTotal,
   account: state.authentication.account,
   providerFilter: state.providerFilter.filter,
-  providerFilterForMap: state.providerFilter.mapFilter,
   search: state.search.text,
   allRecordsForMap: state.providerRecord.allRecordsForMap,
-  selectedRecord: state.providerRecord.selectedRecord
+  selectedRecord: state.providerRecord.selectedRecord,
+  filtersChanged: state.providerFilter.filtersChanged
 });
 
 const mapDispatchToProps = {
   getAllProviderRecords,
   getAllProviderRecordsForMap,
   selectRecord,
-  getAllProviderRecordsPublic
+  getAllProviderRecordsPublic,
+  uncheckFiltersChanged
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
