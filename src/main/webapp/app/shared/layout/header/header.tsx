@@ -22,6 +22,7 @@ export interface IHeaderProps {
   isShelterOwner: boolean;
   isStaging: boolean;
   match?: any;
+  prependRoutesWithMatch?: boolean;
 }
 
 export interface IHeaderState {
@@ -59,7 +60,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       isAdmin,
       isSwaggerEnabled,
       isInProduction,
-      userLogin,
       isSacramento,
       isShelterOwner,
       match
@@ -84,7 +84,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <FeedbackButton isSacramento={isSacramento} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
-              {(!isAuthenticated || !isSacramento) && <Home />}
+              {(!isAuthenticated || !isSacramento) && <Home {...this.props} />}
               {isAuthenticated && !isSacramento && <DataStatus />}
               {isAuthenticated && isSacramento && <SacramentoMenu isShelterOwner={isShelterOwner} />}
               {isAuthenticated && isAdmin && <EntitiesMenu />}
@@ -92,11 +92,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
               {isAuthenticated && isAdmin && <AdminMenu showSwagger={isSwaggerEnabled} showDatabase={!isInProduction} />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
               <AccountMenu
-                isAuthenticated={isAuthenticated}
-                userLogin={userLogin}
-                isAdmin={isAdmin}
-                isSacramento={isSacramento}
-                match={match}
+                {...this.props}
               />
             </Nav>
           </Collapse>

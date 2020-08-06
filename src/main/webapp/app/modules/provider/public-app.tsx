@@ -57,6 +57,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
               isSacramento={this.props.isSacramento}
               isShelterOwner={this.props.isShelterOwner}
               match={match}
+              prependRoutesWithMatch
             />
           </ErrorBoundary>
           <div>

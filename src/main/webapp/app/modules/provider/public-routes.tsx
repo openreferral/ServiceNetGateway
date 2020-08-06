@@ -10,7 +10,7 @@ const Routes = ({ match, ...props }) => {
   const { siloName } = match.params;
   return (
     <div className="view-routes">
-      <ErrorBoundaryRoute path="/login" component={Login} />
+      <ErrorBoundaryRoute path={`${match.url}/login`} component={Login} />
       <Switch>
         <ErrorBoundaryRoute path={`${match.url}/single-record-view/:orgId`} component={SingleRecordView} />
         <Route path={`${match.url}`} render={() => <PublicHome urlBase={match.url} siloName={siloName} />} />

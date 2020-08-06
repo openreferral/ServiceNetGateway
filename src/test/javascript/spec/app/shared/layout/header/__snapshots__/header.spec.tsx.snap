@@ -78,7 +78,19 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
         tag="ul"
         vertical={false}
       >
-        <Component />
+        <Component
+          currentLocale="en"
+          isAdmin={true}
+          isAuthenticated={true}
+          isInProduction={false}
+          isSacramento={false}
+          isShelterOwner={false}
+          isStaging={false}
+          isSwaggerEnabled={true}
+          onLocaleChange={[Function]}
+          ribbonEnv="dev"
+          userLogin="user"
+        />
         <Component />
         <Component />
         <Component />
@@ -91,9 +103,16 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           onClick={[Function]}
         />
         <Component
+          currentLocale="en"
           isAdmin={true}
           isAuthenticated={true}
+          isInProduction={false}
           isSacramento={false}
+          isShelterOwner={false}
+          isStaging={false}
+          isSwaggerEnabled={true}
+          onLocaleChange={[Function]}
+          ribbonEnv="dev"
           userLogin="user"
         />
       </Nav>
@@ -168,7 +187,19 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
         tag="ul"
         vertical={false}
       >
-        <Component />
+        <Component
+          currentLocale="en"
+          isAdmin={true}
+          isAuthenticated={true}
+          isInProduction={true}
+          isSacramento={false}
+          isShelterOwner={false}
+          isStaging={false}
+          isSwaggerEnabled={false}
+          onLocaleChange={[Function]}
+          ribbonEnv="prod"
+          userLogin="user"
+        />
         <Component />
         <Component />
         <Component />
@@ -181,9 +212,16 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           onClick={[Function]}
         />
         <Component
+          currentLocale="en"
           isAdmin={true}
           isAuthenticated={true}
+          isInProduction={true}
           isSacramento={false}
+          isShelterOwner={false}
+          isStaging={false}
+          isSwaggerEnabled={false}
+          onLocaleChange={[Function]}
+          ribbonEnv="prod"
           userLogin="user"
         />
       </Nav>
