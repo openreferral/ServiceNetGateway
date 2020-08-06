@@ -105,6 +105,17 @@
     }
   }
 
+  .absolute-card-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
+  .absolute-card {
+    position: absolute;
+    bottom: 0;
+  }
+
   .sort-container {
     display: flex;
   }

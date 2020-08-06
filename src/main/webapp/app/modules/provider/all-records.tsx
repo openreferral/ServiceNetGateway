@@ -285,45 +285,62 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName } = this.props;
     const { filterOpened, isRecordHighlighted, selectedLat, selectedLng } = this.state;
+    const mapProps = {
+      googleMapURL: mapUrl,
+      records: allRecordsForMap,
+      lat: selectedLat,
+      lng: selectedLng,
+      loadingElement: <div style={{ height: '100%' }} />,
+      mapElement: <div style={{ height: '100%' }} />,
+      onMarkerClick: this.selectRecord,
+      onMapLoad: this.onMapLoad
+    };
     return (
-      <Row className="mb-4 mx-3">
-        <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view">
-          <Map
-            googleMapURL={mapUrl}
-            records={allRecordsForMap}
-            lat={selectedLat}
-            lng={selectedLng}
-            loadingElement={<div style={{ height: '100%' }} />}
-            containerElement={<div style={{ height: '400px' }} />}
-            mapElement={<div style={{ height: '100%' }} />}
-            onMarkerClick={this.selectRecord}
-            onMapLoad={this.onMapLoad}
-          />
-        </Col>
-        {isRecordHighlighted && selectedRecord && !filterOpened ? (
-          <Col md={4} className={`col-md-4 pr-0 selected-record`}>
-            <RecordCard
-              record={selectedRecord}
-              link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
-            />
-          </Col>
-        ) : null}
-        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-          {filterOpened &&
-            !isRecordHighlighted && (
-              <Col md={4}>
-                <div className="filter-card mx-3 mb-4">
-                  <FilterCard
-                    siloName={siloName}
-                    dropdownOpen={filterOpened}
-                    toggleFilter={this.toggleFilter}
-                    getFirstPage={this.getFirstPage}
+      <>
+        <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+          <Col md={12} className="pb-2 px-0 mx-0 absolute-card-container">
+            <Map {...mapProps} containerElement={<div style={{ height: 'calc(100vh - 60px)' }} />} />
+            {isRecordHighlighted && selectedRecord && !filterOpened ? (
+              <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
+                <div className="px-2">
+                  <RecordCard
+                    record={selectedRecord}
+                    link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
                   />
                 </div>
               </Col>
-            )}
+            ) : null}
+          </Col>
         </MediaQuery>
-      </Row>
+        <Row className="mb-4 mx-3">
+          <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view">
+              <Map {...mapProps} containerElement={<div style={{ height: '400px' }} />} />
+            </Col>
+            {isRecordHighlighted && selectedRecord && !filterOpened ? (
+              <Col md={4} className={`col-md-4 pr-0 selected-record`}>
+                <RecordCard
+                  record={selectedRecord}
+                  link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+                />
+              </Col>
+            ) : null}
+            {filterOpened &&
+              !isRecordHighlighted && (
+                <Col md={4}>
+                  <div className="filter-card mx-3 mb-4">
+                    <FilterCard
+                      siloName={siloName}
+                      dropdownOpen={filterOpened}
+                      toggleFilter={this.toggleFilter}
+                      getFirstPage={this.getFirstPage}
+                    />
+                  </div>
+                </Col>
+              )}
+          </MediaQuery>
+        </Row>
+      </>
     );
   };
 
