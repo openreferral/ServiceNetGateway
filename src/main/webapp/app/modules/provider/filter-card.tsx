@@ -14,13 +14,14 @@ import {
 } from 'app/modules/home/filter-activity.reducer';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
-import { updateFilter, reset } from './provider-filter.reducer';
+import { updateFilter, reset, checkFiltersChanged } from './provider-filter.reducer';
 
 export interface IFilterCardProps extends StateProps, DispatchProps {
   dropdownOpen: boolean;
   toggleFilter: Function;
   getFirstPage: Function;
   siloName?: string;
+  isMapView: boolean;
 }
 
 export interface IFilterCardState {
@@ -28,6 +29,7 @@ export interface IFilterCardState {
   region: string;
   zip: string;
   serviceTypes: any[];
+  filtersChanged?: boolean;
 }
 
 export class FilterCard extends React.Component<IFilterCardProps, IFilterCardState> {
@@ -42,7 +44,7 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
   }
 
   componentDidMount() {
-    const { siloName } = this.props;
+    const { siloName, isMapView } = this.props;
     if (!this.props.isLoggingOut) {
       this.props.getPostalCodeList(siloName);
       this.props.getRegionList(siloName);
@@ -59,12 +61,20 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
 
   applyFilter = () => {
     const filter = { ...this.state };
+    const { isMapView } = this.props;
+    if (isMapView) {
+      this.props.checkFiltersChanged();
+    }
     this.props.getFirstPage();
     this.props.updateFilter({ ...filter });
     this.props.toggleFilter();
   };
 
   resetFilter = () => {
+    const { isMapView } = this.props;
+    if (isMapView) {
+      this.props.checkFiltersChanged();
+    }
     this.props.getFirstPage();
     this.props.reset();
     this.props.toggleFilter();
@@ -199,7 +209,8 @@ const mapDispatchToProps = {
   getPartnerList,
   getTaxonomyMap,
   updateFilter,
-  reset
+  reset,
+  checkFiltersChanged
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

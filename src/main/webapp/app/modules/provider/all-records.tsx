@@ -16,6 +16,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-map
 import { GOOGLE_API_KEY } from 'app/config/constants';
 // tslint:disable-next-line:no-submodule-imports
 import { MAP } from 'react-google-maps/lib/constants';
+import { uncheckFiltersChanged } from './provider-filter.reducer';
 
 const MOBILE_WIDTH_BREAKPOINT = 768;
 const DESKTOP_WIDTH_BREAKPOINT = 769;
@@ -205,8 +206,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   toggleMapView = () => {
+    const { filtersChanged } = this.props;
     if (!this.state.isMapView) {
       this.getRecordsForMap();
+    } else {
+      if (filtersChanged) {
+        this.getRecords(true);
+        this.props.uncheckFiltersChanged();
+      }
     }
     this.setState({
       isMapView: !this.state.isMapView,
@@ -250,7 +257,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapWithFilter = allRecords => {
-    const { filterOpened } = this.state;
+    const { filterOpened, isMapView } = this.state;
     const { siloName } = this.props;
     const elementsBesideFilter = _.slice(allRecords, 0, 4);
     const elementsAfterFilter = _.slice(allRecords, 4);
@@ -269,6 +276,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                     dropdownOpen={filterOpened}
                     toggleFilter={this.toggleFilter}
                     getFirstPage={this.getFirstPage}
+                    isMapView={isMapView}
                   />
                 </div>
               </Col>
@@ -283,8 +291,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapView = () => {
-    const { allRecordsForMap, selectedRecord, urlBase, siloName } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng } = this.state;
+    const { allRecordsForMap, selectedRecord, urlBase, siloName, providerFilter } = this.props;
+    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, isMapView } = this.state;
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
@@ -293,7 +301,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       loadingElement: <div style={{ height: '100%' }} />,
       mapElement: <div style={{ height: '100%' }} />,
       onMarkerClick: this.selectRecord,
-      onMapLoad: this.onMapLoad
+      onMapLoad: this.onMapLoad,
+      providerFilter
     };
     return (
       <>
@@ -334,6 +343,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                       dropdownOpen={filterOpened}
                       toggleFilter={this.toggleFilter}
                       getFirstPage={this.getFirstPage}
+                      isMapView={isMapView}
                     />
                   </div>
                 </Col>
@@ -369,8 +379,25 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
+  progress = () => {
+    const { allRecords, allRecordsTotal } = this.props;
+    const { isMapView } = this.state;
+    if (isMapView) {
+      return null;
+    }
+    return (
+      <div className="d-flex">
+        <div className="align-self-center ml-4">{allRecords && allRecords.length}</div>
+        <div className="mx-2 align-self-center">
+          <Progress value={((allRecords && allRecords.length) / allRecordsTotal) * 100} />
+        </div>
+        <div className="align-self-center">{allRecordsTotal}</div>
+      </div>
+    );
+  };
+
   render() {
-    const { allRecords, allRecordsTotal, siloName } = this.props;
+    const { siloName } = this.props;
     const { sortingOpened, filterOpened, isMapView, recordViewType } = this.state;
     return (
       <div>
@@ -382,6 +409,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 dropdownOpen={filterOpened}
                 toggleFilter={this.toggleFilter}
                 getFirstPage={this.getFirstPage}
+                isMapView={isMapView}
               />
             </div>
           </Modal>
@@ -391,13 +419,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             <b className="align-self-center">
               <Translate contentKey="providerSite.allRecords" />
             </b>
-            <div className="d-flex">
-              <div className="align-self-center ml-4">{allRecords && allRecords.length}</div>
-              <div className="mx-2 align-self-center">
-                <Progress value={((allRecords && allRecords.length) / allRecordsTotal) * 100} />
-              </div>
-              <div className="align-self-center">{allRecordsTotal}</div>
-            </div>
+            <this.progress />
           </div>
           <div className="sort-container">
             <ButtonPill onClick={this.toggleMapView}>
@@ -442,14 +464,16 @@ const mapStateToProps = state => ({
   providerFilter: state.providerFilter.filter,
   search: state.search.text,
   allRecordsForMap: state.providerRecord.allRecordsForMap,
-  selectedRecord: state.providerRecord.selectedRecord
+  selectedRecord: state.providerRecord.selectedRecord,
+  filtersChanged: state.providerFilter.filtersChanged
 });
 
 const mapDispatchToProps = {
   getAllProviderRecords,
   getAllProviderRecordsForMap,
   selectRecord,
-  getAllProviderRecordsPublic
+  getAllProviderRecordsPublic,
+  uncheckFiltersChanged
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
