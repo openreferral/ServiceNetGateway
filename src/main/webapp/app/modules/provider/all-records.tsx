@@ -367,10 +367,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           </MediaQuery>
         </Row>
 
-        <div className="mb-4 text-center">
+        <div className="mb-4 text-center d-flex justify-content-center">
           <ButtonPill
             onClick={() => this.handleLoadMore(hasReachedMaxItems)}
-            additionalClass={`d-inline ${hasReachedMaxItems ? 'disabled' : ''}`}
+            className={`d-inline ${hasReachedMaxItems ? 'disabled' : ''}`}
           >
             <Translate contentKey="providerSite.loadMore" />
           </ButtonPill>

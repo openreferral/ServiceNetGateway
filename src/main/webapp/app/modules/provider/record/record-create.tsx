@@ -1,7 +1,7 @@
 import './record.scss';
 
 import React from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Button, Col, Row } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Col, Row } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
@@ -19,6 +19,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
 import _ from 'lodash';
+import ButtonPill from '../shared/button-pill';
 
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -289,12 +290,16 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 </AvGroup>
               </Col>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.props.history.goBack()} className="go-back">
-                  {'<'} <Translate contentKey="record.navigation.goBack" />
-                </Button>
-                <Button onClick={() => this.toggle(LOCATION_TAB)} className="pull-right">
-                  <Translate contentKey="record.navigation.addLocations" /> >
-                </Button>
+                <ButtonPill onClick={() => this.props.history.goBack()} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="angle-left" />
+                  &nbsp;
+                  <Translate contentKey="record.navigation.goBack" />
+                </ButtonPill>
+                <ButtonPill onClick={() => this.toggle(LOCATION_TAB)} className="pull-right button-pill-secondary">
+                  <Translate contentKey="record.navigation.addLocations" />
+                  &nbsp;
+                  <FontAwesomeIcon icon="angle-right" />
+                </ButtonPill>
               </div>
             </TabPane>
             <TabPane tabId={LOCATION_TAB}>
@@ -358,7 +363,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                             validate={{
                               required: { value: true, errorMessage: translate('entity.validation.required') }
                             }}
-                            style={{ 'min-width': '5em' }}
+                            style={{ minWidth: '5em' }}
                           >
                             {US_STATES.map(state => (
                               <option value={state} key={state}>
@@ -386,21 +391,27 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               </Col>
               <div className="buttons list-buttons">
                 {this.state.locationCount === 1 ? null : (
-                  <Button onClick={this.removeLocation}>
+                  <ButtonPill onClick={this.removeLocation} className="button-pill-secondary mr-1">
                     <Translate contentKey="record.remove" />
-                  </Button>
+                  </ButtonPill>
                 )}
-                <Button onClick={this.addAnotherLocation} className="add-another">
-                  + <Translate contentKey="record.addAnother" />
-                </Button>
+                <ButtonPill onClick={this.addAnotherLocation} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="plus" />
+                  &nbsp;
+                  <Translate contentKey="record.addAnother" />
+                </ButtonPill>
               </div>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.toggle(ORGANIZATION_TAB)} className="go-back">
-                  {'<'} <Translate contentKey="record.navigation.goBack" />
-                </Button>
-                <Button onClick={() => this.toggle(SERVICE_TAB)} className="pull-right">
-                  <Translate contentKey="record.navigation.addServices" /> >
-                </Button>
+                <ButtonPill onClick={() => this.toggle(ORGANIZATION_TAB)} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="angle-left" />
+                  &nbsp;
+                  <Translate contentKey="record.navigation.goBack" />
+                </ButtonPill>
+                <ButtonPill onClick={() => this.toggle(SERVICE_TAB)} className="pull-right button-pill-secondary">
+                  <Translate contentKey="record.navigation.addServices" />
+                  &nbsp;
+                  <FontAwesomeIcon icon="angle-right" />
+                </ButtonPill>
               </div>
             </TabPane>
             <TabPane tabId={SERVICE_TAB}>
@@ -491,23 +502,29 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               </Col>
               <div className="buttons list-buttons">
                 {this.state.serviceCount === 1 ? null : (
-                  <Button onClick={this.removeService} type="primary">
+                  <ButtonPill onClick={this.removeService} className="button-pill-secondary mr-1">
                     <Translate contentKey="record.remove" />
-                  </Button>
+                  </ButtonPill>
                 )}
-                <Button onClick={this.addAnotherService} className="add-another">
-                  + <Translate contentKey="record.addAnother" />
-                </Button>
+                <ButtonPill onClick={this.addAnotherService} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="plus" />
+                  &nbsp;
+                  <Translate contentKey="record.addAnother" />
+                </ButtonPill>
               </div>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.toggle(LOCATION_TAB)} className="go-back">
-                  {'<'} <Translate contentKey="record.navigation.goBack" />
-                </Button>
-                <Button id="submit" type="submit" disabled={updating} className="pull-right">
-                  <FontAwesomeIcon icon="save" />
+                <ButtonPill onClick={() => this.toggle(LOCATION_TAB)} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="angle-left" />
                   &nbsp;
-                  <Translate contentKey="record.navigation.submit" />
-                </Button>
+                  <Translate contentKey="record.navigation.goBack" />
+                </ButtonPill>
+                <ButtonPill className={`pull-right button-pill-primary outline-none ${updating ? 'disabled' : ''}`}>
+                  <button id="submit" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp;
+                    <Translate contentKey="record.navigation.submit" />
+                  </button>
+                </ButtonPill>
               </div>
             </TabPane>
           </TabContent>

@@ -1,7 +1,7 @@
 import './record.scss';
 
 import React from 'react';
-import { Badge, Button, Card, CardBody, CardTitle, Col, Collapse, Label, Row, Progress } from 'reactstrap';
+import { Badge, Card, CardBody, CardTitle, Col, Collapse, Label, Row, Progress } from 'reactstrap';
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { RouteComponentProps, Prompt } from 'react-router-dom';
@@ -24,6 +24,7 @@ import { APP_DATE_FORMAT } from 'app/config/constants';
 import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/measure-widths';
 import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
+import ButtonPill from '../shared/button-pill';
 
 export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -539,23 +540,25 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                               />
                             </Col>
                           </Row>
-                          <div className="buttons">
-                            <Button onClick={this.removeLocation(i)}>
+                          <div className="buttons d-flex justify-content-between">
+                            <ButtonPill className="button-pill-secondary" onClick={this.removeLocation(i)}>
                               <FontAwesomeIcon icon="trash" />
                               &nbsp;
                               <Translate contentKey="record.location.remove" />
-                            </Button>
-                            <Button onClick={this.openLocation(-1)} className="pull-right">
+                            </ButtonPill>
+                            <ButtonPill className="button-pill-secondary pull-right" onClick={this.openLocation(-1)}>
                               <Translate contentKey="record.navigation.done" />
-                            </Button>
+                            </ButtonPill>
                           </div>
                         </div>
                       </>
                     ))}
                   <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
-                    <Button onClick={this.addAnotherLocation} className="add-another">
-                      + <Translate contentKey="record.location.add" />
-                    </Button>
+                    <ButtonPill className="button-pill-secondary add-another" onClick={this.addAnotherLocation}>
+                      <FontAwesomeIcon icon="plus" />
+                      &nbsp;
+                      <Translate contentKey="record.location.add" />
+                    </ButtonPill>
                   </div>
                 </CardBody>
               </div>
@@ -697,23 +700,25 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                               isMulti
                             />
                           </AvGroup>
-                          <div className="buttons">
-                            <Button onClick={this.removeService(i)}>
+                          <div className="buttons d-flex justify-content-between">
+                            <ButtonPill className="button-pill-secondary" onClick={this.removeService(i)}>
                               <FontAwesomeIcon icon="trash" />
                               &nbsp;
                               <Translate contentKey="record.service.remove" />
-                            </Button>
-                            <Button onClick={this.openService(-1)} className="pull-right">
+                            </ButtonPill>
+                            <ButtonPill className="button-pill-secondary pull-right" onClick={this.openService(-1)}>
                               <Translate contentKey="record.navigation.done" />
-                            </Button>
+                            </ButtonPill>
                           </div>
                         </div>
                       </>
                     ))}
                   <div className={openService === -1 ? 'buttons list-buttons' : 'd-none'}>
-                    <Button onClick={this.addAnotherService} className="add-another">
-                      + <Translate contentKey="record.service.add" />
-                    </Button>
+                    <ButtonPill className="button-pill-secondary add-another" onClick={this.addAnotherService}>
+                      <FontAwesomeIcon icon="plus" />
+                      &nbsp;
+                      <Translate contentKey="record.service.add" />
+                    </ButtonPill>
                   </div>
                 </CardBody>
               </div>
@@ -727,9 +732,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 handleConfirm={this.handleConfirmDeactivate}
               />
             )}
-            <Button onClick={this.openDialog('deactivate')} className="deactivate">
+            <ButtonPill className="button-pill-secondary deactivate" onClick={this.openDialog('deactivate')}>
               <Translate contentKey="record.navigation.deactivate" />
-            </Button>
+            </ButtonPill>
             <div className="pull-right d-flex">
               {this.state.openDialogs.indexOf('discard') !== -1 && (
                 <ConfirmationDialog
@@ -738,14 +743,16 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   handleConfirm={this.handleConfirmDiscard}
                 />
               )}
-              <Button onClick={this.openDialog('discard')}>
+              <ButtonPill className="button-pill-secondary deactivate" onClick={this.openDialog('discard')}>
                 <Translate contentKey="record.navigation.discard" />
-              </Button>
-              <Button id="submit" type="submit" disabled={updating} color="primary">
-                <FontAwesomeIcon icon="save" />
-                &nbsp;
-                <Translate contentKey="record.navigation.submit" />
-              </Button>
+              </ButtonPill>
+              <ButtonPill className={`button-pill-primary outline-none ${updating ? 'disabled' : ''}`}>
+                <button id="submit" type="submit" disabled={updating}>
+                  <FontAwesomeIcon icon="save" />
+                  &nbsp;
+                  <Translate contentKey="record.navigation.submit" />
+                </button>
+              </ButtonPill>
             </div>
           </div>
         </div>
