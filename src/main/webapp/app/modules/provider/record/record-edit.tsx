@@ -540,13 +540,13 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                               />
                             </Col>
                           </Row>
-                          <div className="buttons d-flex justify-content-between">
-                            <ButtonPill className="button-pill-secondary" onClick={this.removeLocation(i)}>
+                          <div className="buttons d-flex justify-content-between flex-column flex-md-row">
+                            <ButtonPill className="button-pill-secondary mb-1 mb-md-0" onClick={this.removeLocation(i)}>
                               <FontAwesomeIcon icon="trash" />
                               &nbsp;
                               <Translate contentKey="record.location.remove" />
                             </ButtonPill>
-                            <ButtonPill className="button-pill-secondary pull-right" onClick={this.openLocation(-1)}>
+                            <ButtonPill className="button-pill-secondary float-md-right ml-md-auto" onClick={this.openLocation(-1)}>
                               <Translate contentKey="record.navigation.done" />
                             </ButtonPill>
                           </div>
@@ -554,7 +554,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                       </>
                     ))}
                   <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
-                    <ButtonPill className="button-pill-secondary add-another" onClick={this.addAnotherLocation}>
+                    <ButtonPill className="button-pill-secondary col-12 col-md-auto" onClick={this.addAnotherLocation}>
                       <FontAwesomeIcon icon="plus" />
                       &nbsp;
                       <Translate contentKey="record.location.add" />
@@ -700,13 +700,13 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                               isMulti
                             />
                           </AvGroup>
-                          <div className="buttons d-flex justify-content-between">
-                            <ButtonPill className="button-pill-secondary" onClick={this.removeService(i)}>
+                          <div className="buttons d-flex justify-content-between flex-column flex-md-row">
+                            <ButtonPill className="button-pill-secondary mb-1 mb-md-0" onClick={this.removeService(i)}>
                               <FontAwesomeIcon icon="trash" />
                               &nbsp;
                               <Translate contentKey="record.service.remove" />
                             </ButtonPill>
-                            <ButtonPill className="button-pill-secondary pull-right" onClick={this.openService(-1)}>
+                            <ButtonPill className="button-pill-secondary float-md-right ml-md-auto" onClick={this.openService(-1)}>
                               <Translate contentKey="record.navigation.done" />
                             </ButtonPill>
                           </div>
@@ -714,7 +714,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                       </>
                     ))}
                   <div className={openService === -1 ? 'buttons list-buttons' : 'd-none'}>
-                    <ButtonPill className="button-pill-secondary add-another" onClick={this.addAnotherService}>
+                    <ButtonPill className="button-pill-secondary col-12 col-md-auto" onClick={this.addAnotherService}>
                       <FontAwesomeIcon icon="plus" />
                       &nbsp;
                       <Translate contentKey="record.service.add" />
@@ -724,7 +724,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               </div>
             </Collapse>
           </Card>
-          <div className="buttons navigation-buttons">
+          <div className="buttons navigation-buttons flex-column flex-md-row">
             {this.state.openDialogs.indexOf('deactivate') !== -1 && (
               <ConfirmationDialog
                 question={translate('record.deactivateQuestion')}
@@ -732,10 +732,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 handleConfirm={this.handleConfirmDeactivate}
               />
             )}
-            <ButtonPill className="button-pill-secondary deactivate" onClick={this.openDialog('deactivate')}>
+            <ButtonPill className="button-pill-secondary deactivate mb-1 mb-md-0" onClick={this.openDialog('deactivate')}>
               <Translate contentKey="record.navigation.deactivate" />
             </ButtonPill>
-            <div className="pull-right d-flex">
+            <div className="d-flex flex-column flex-md-row float-md-right ml-md-auto">
               {this.state.openDialogs.indexOf('discard') !== -1 && (
                 <ConfirmationDialog
                   question={translate('record.discardQuestion')}
@@ -743,7 +743,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   handleConfirm={this.handleConfirmDiscard}
                 />
               )}
-              <ButtonPill className="button-pill-secondary deactivate" onClick={this.openDialog('discard')}>
+              <ButtonPill className="button-pill-secondary deactivate mb-1 mb-md-0 mr-0 mr-md-1" onClick={this.openDialog('discard')}>
                 <Translate contentKey="record.navigation.discard" />
               </ButtonPill>
               <ButtonPill className={`button-pill-primary outline-none ${updating ? 'disabled' : ''}`}>

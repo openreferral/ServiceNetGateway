@@ -422,7 +422,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             <this.progress />
           </div>
           <div className="sort-container">
-            <ButtonPill onClick={this.toggleMapView}>
+            <ButtonPill onClick={this.toggleMapView} className="mr-1">
               <span>
                 <FontAwesomeIcon icon={isMapView ? 'th' : 'map'} />
                 &nbsp;
@@ -432,7 +432,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </span>
             </ButtonPill>
             <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-              <ButtonPill onClick={this.toggleViewType}>
+              <ButtonPill onClick={this.toggleViewType} className="mr-1">
                 <span>
                   <FontAwesomeIcon color={recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
                   {' | '}

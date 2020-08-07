@@ -177,7 +177,7 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
           </div>
         </div>
         <div className="filter-footer">
-          <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" />
+          <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" className="mr-1" />
           <ButtonPill className="button-pill-orange" onClick={this.applyFilter} translate="providerSite.apply" />
         </div>
       </div>
