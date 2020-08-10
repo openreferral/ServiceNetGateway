@@ -1,7 +1,8 @@
 import './header-mobile.scss';
 import React from 'react';
 import { Translate } from 'react-jhipster';
-import { Navbar, Row, Col } from 'reactstrap';
+import { NavbarBrand, Navbar, Row, Col } from 'reactstrap';
+import { NavLink as Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LoadingBar from 'react-redux-loading-bar';
 import { Avatar } from 'app/modules/provider/avatar';
@@ -58,10 +59,10 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
                   </div>
                 </div>
               </Col>
-              <Col className="height-fluid">
-                <div className="brand-logo">
+              <Col className="height-fluid d-flex justify-content-center">
+                <NavbarBrand tag={Link} to={isSacramento ? '/shelters' : '/'} className="brand-logo d-flex align-items-center mr-1">
                   <BrandIcon />
-                </div>
+                </NavbarBrand>
               </Col>
               <Col xs="2">
                 <div style={{ float: 'right' }}>

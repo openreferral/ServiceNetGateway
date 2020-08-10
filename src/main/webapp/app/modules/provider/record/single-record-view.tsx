@@ -202,7 +202,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               <div className="d-flex w-100 justify-content-between">
                 <div className="w-100">
                   <h3>
-                    <b>{organization.name}</b>
+                    <b className="word-break-all">{organization.name}</b>
                   </h3>
                   <section className="services pt-2">
                     {servicesCount > 0 ? (
@@ -287,7 +287,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             </CardTitle>
             <CardBody className="p-2 border-top-0">
               {latestDailyUpdate && latestDailyUpdate.update ? (
-                <span className="p-0">{latestDailyUpdate.update}</span>
+                <span className="p-0 word-break-all">{latestDailyUpdate.update}</span>
               ) : (
                 <div className="w-100 text-center p-2">
                   <Translate contentKey="record.singleRecordView.noNewUpdates" />
@@ -298,7 +298,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
           <Card className="section">
             <CardTitle onClick={this.toggleOrganization} className="clickable">
-              <div className="d-flex justify-content-center align-items-center">
+              <div className="d-flex justify-content-center align-items-center details-section-title">
                 <img src={PeopleLogo} height={25} alt="Organization" />
                 &nbsp;
                 <Translate contentKey="record.singleRecordView.orgDetails" />
@@ -313,7 +313,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <Translate contentKey="record.singleRecordView.orgName" />
                     </b>
                   </h6>
-                  <span>{organization.name}</span>
+                  <span className="word-break-all">{organization.name}</span>
                 </section>
                 <section>
                   <h6>
@@ -321,7 +321,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <Translate contentKey="record.singleRecordView.orgDescr" />
                     </b>
                   </h6>
-                  <span>{organization.description}</span>
+                  <span className="word-break-all">{organization.description}</span>
                 </section>
                 <section>
                   <h6>
@@ -345,7 +345,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
           <Card className="section">
             <CardTitle onClick={this.toggleLocations} className="clickable">
-              <div className="d-flex justify-content-center align-items-center">
+              <div className="d-flex justify-content-center align-items-center details-section-title">
                 <img src={BuildingLogo} height={25} alt="Location" />
                 &nbsp;
                 <Translate contentKey="record.singleRecordView.locDetails" />
@@ -386,7 +386,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
           <Card className="section services mb-5">
             <CardTitle onClick={this.toggleServices} className="clickable">
-              <div className="d-flex justify-content-center align-items-center">
+              <div className="d-flex justify-content-center align-items-center details-section-title">
                 <img src={ServiceLogo} height={25} alt="Service" />
                 &nbsp;
                 <Translate contentKey="record.singleRecordView.srvDetails" />
@@ -492,7 +492,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.srvDescr" />
                         </b>
                       </h6>
-                      <span>{organization.services[currentServiceIdx].description}</span>
+                      <span className="word-break-all">{organization.services[currentServiceIdx].description}</span>
                     </section>
                     <section>
                       <h6>
@@ -500,7 +500,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.srvApplication" />
                         </b>
                       </h6>
-                      <span>{organization.services[currentServiceIdx].applicationProcess}</span>
+                      <span className="word-break-all">{organization.services[currentServiceIdx].applicationProcess}</span>
                     </section>
                     <section>
                       <h6>
@@ -508,7 +508,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.srvEligibility" />
                         </b>
                       </h6>
-                      <span>{organization.services[currentServiceIdx].eligibilityCriteria}</span>
+                      <span className="word-break-all">{organization.services[currentServiceIdx].eligibilityCriteria}</span>
                     </section>
                     <section>
                       <h6 className="d-flex align-items-center flex-wrap">

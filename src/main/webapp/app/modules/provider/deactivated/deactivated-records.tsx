@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table } from 'reactstrap';
+import { Table } from 'reactstrap';
 import { TextFormat, Translate } from 'react-jhipster';
 import { getDeactivatedProviderRecords, reactivateRecord } from './deactivated-records.reducer';
 import { APP_DATE_FORMAT } from 'app/config/constants';
+import ButtonPill from '../shared/button-pill';
 
 export interface IDeactivatedRecordsProps extends StateProps, DispatchProps {}
 
@@ -52,10 +53,10 @@ export class DeactivatedRecords extends React.Component<IDeactivatedRecordsProps
                       <TextFormat value={record.deactivatedAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                     </div>
                   </td>
-                  <td>
-                    <Button color="success" onClick={() => this.reactivateRecord(record.id)}>
+                  <td className="d-flex pull-right">
+                    <ButtonPill className="button-pill-success" onClick={() => this.reactivateRecord(record.id)}>
                       <Translate contentKey="providerSite.deactivatedRecords.activate" />
-                    </Button>
+                    </ButtonPill>
                   </td>
                 </tr>
               ))}

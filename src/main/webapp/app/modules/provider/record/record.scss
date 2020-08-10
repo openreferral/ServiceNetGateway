@@ -99,6 +99,8 @@ div.required {
   }
 
   &.list-buttons {
+    display: flex;
+    justify-content: center;
     text-align: center;
 
     button {
@@ -168,6 +170,7 @@ div.card.record-card {
       align-items: center;
       > * {
         padding-left: 0;
+        padding-right: 0;
       }
     }
   }
@@ -216,6 +219,7 @@ div.card.record-card {
     }
     > * {
       padding-left: 20px;
+      padding-right: 20px;
     }
     section {
       height: 50px;
@@ -495,6 +499,17 @@ div.card.record-card {
   .service-name {
     vertical-align: -webkit-baseline-middle;
   }
+}
+
+.details-section-title {
+  span {
+    white-space: nowrap;
+  }
+}
+
+.word-break-all {
+  word-break: break-all;
+  white-space: normal;
 }
 
 @media only screen and (max-width: 1000px) {
