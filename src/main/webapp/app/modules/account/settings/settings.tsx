@@ -12,6 +12,7 @@ import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
 import { saveAccountSettings, reset } from './settings.reducer';
 import { RouteComponentProps } from 'react-router-dom';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface IUserSettingsProps extends StateProps, DispatchProps, RouteComponentProps {}
 
@@ -180,9 +181,11 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
                   </option>
                 ))}
               </AvField>
-              <Button color="primary" type="submit">
-                <Translate contentKey="settings.form.button">Save</Translate>
-              </Button>
+              <ButtonPill className="button-pill-primary">
+                <button type="submit">
+                  <Translate contentKey="settings.form.button">Save</Translate>
+                </button>
+              </ButtonPill>
             </AvForm>
           </Col>
         </Row>

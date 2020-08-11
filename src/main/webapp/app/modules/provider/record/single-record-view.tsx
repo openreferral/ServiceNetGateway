@@ -202,7 +202,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               <div className="d-flex w-100 justify-content-between">
                 <div className="w-100">
                   <h3>
-                    <b className="word-break-all">{organization.name}</b>
+                    <b className="break-word">{organization.name}</b>
                   </h3>
                   <section className="services pt-2">
                     {servicesCount > 0 ? (
@@ -287,7 +287,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             </CardTitle>
             <CardBody className="p-2 border-top-0">
               {latestDailyUpdate && latestDailyUpdate.update ? (
-                <span className="p-0 word-break-all">{latestDailyUpdate.update}</span>
+                <span className="p-0 break">{latestDailyUpdate.update}</span>
               ) : (
                 <div className="w-100 text-center p-2">
                   <Translate contentKey="record.singleRecordView.noNewUpdates" />
@@ -313,7 +313,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <Translate contentKey="record.singleRecordView.orgName" />
                     </b>
                   </h6>
-                  <span className="word-break-all">{organization.name}</span>
+                  <span className="break">{organization.name}</span>
                 </section>
                 <section>
                   <h6>
@@ -321,7 +321,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <Translate contentKey="record.singleRecordView.orgDescr" />
                     </b>
                   </h6>
-                  <span className="word-break-all">{organization.description}</span>
+                  <span className="break">{organization.description}</span>
                 </section>
                 <section>
                   <h6>
@@ -359,10 +359,10 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 <section>
                   {locationsCount > 0 ? (
                     organization.locations.map(loc => (
-                      <div className="d-inline-block col-md-4 col-xs-12 p-0">
+                      <div className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
                         <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3 pt-3">
                           <CardTitle>
-                            <span>
+                            <span className="text-ellipsis font-weight-bold">
                               <FontAwesomeIcon icon="circle" className="blue" size="xs" />{' '}
                               <b>
                                 {loc.city}, {loc.ca}
@@ -370,7 +370,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                             </span>
                           </CardTitle>
                           <CardBody>
-                            <p className="m-0">{loc.address1}</p>
+                            <p className="m-0 text-ellipsis">{loc.address1}</p>
                             <p>{loc.zipcode}</p>
                           </CardBody>
                         </Card>
@@ -400,13 +400,13 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 <section className={detailsView ? 'd-none' : ''}>
                   {servicesCount > 0 ? (
                     organization.services.map((srv, idx) => (
-                      <div className="d-inline-block col-md-4 col-xs-12 p-0">
+                      <div className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
                         <Card
                           className="record-card clickable details-card ml-0 mb-3 mr-0 mr-md-3"
                           onClick={() => this.showServiceDetails(idx)}
                         >
                           <CardTitle>
-                            <span>
+                            <span className="text-ellipsis font-weight-bold">
                               <FontAwesomeIcon icon="circle" className="orange" size="xs" />{' '}
                               <b>{srv.name ? srv.name : translate('record.singleRecordView.noServiceName')}</b>
                             </span>
@@ -492,7 +492,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.srvDescr" />
                         </b>
                       </h6>
-                      <span className="word-break-all">{organization.services[currentServiceIdx].description}</span>
+                      <span className="break">{organization.services[currentServiceIdx].description}</span>
                     </section>
                     <section>
                       <h6>
@@ -500,7 +500,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.srvApplication" />
                         </b>
                       </h6>
-                      <span className="word-break-all">{organization.services[currentServiceIdx].applicationProcess}</span>
+                      <span className="break">{organization.services[currentServiceIdx].applicationProcess}</span>
                     </section>
                     <section>
                       <h6>
@@ -508,7 +508,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.srvEligibility" />
                         </b>
                       </h6>
-                      <span className="word-break-all">{organization.services[currentServiceIdx].eligibilityCriteria}</span>
+                      <span className="break">{organization.services[currentServiceIdx].eligibilityCriteria}</span>
                     </section>
                     <section>
                       <h6 className="d-flex align-items-center flex-wrap">

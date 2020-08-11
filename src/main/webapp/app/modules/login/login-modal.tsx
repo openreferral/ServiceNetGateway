@@ -3,6 +3,7 @@ import { Translate, translate } from 'react-jhipster';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Alert, Row, Col } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -77,12 +78,14 @@ class LoginModal extends React.Component<ILoginModalProps> {
             </Alert>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={handleClose} tabIndex="1">
+            <ButtonPill className="button-pill-secondary" onClick={handleClose}>
               <Translate contentKey="entity.action.cancel">Cancel</Translate>
-            </Button>{' '}
-            <Button color="primary" type="submit">
-              <Translate contentKey="login.form.button">Sign in</Translate>
-            </Button>
+            </ButtonPill>{' '}
+            <ButtonPill className="button-pill-primary">
+              <button type="submit">
+                <Translate contentKey="login.form.button">Sign in</Translate>
+              </button>
+            </ButtonPill>
           </ModalFooter>
         </AvForm>
       </Modal>

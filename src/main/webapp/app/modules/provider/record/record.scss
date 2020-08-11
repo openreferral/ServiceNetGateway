@@ -313,6 +313,7 @@ div.card.record-card {
 .record-edit,
 .single-record-view {
   padding-top: 10vh;
+  width: 100vw;
 
   .card-body {
     &.details {
@@ -392,9 +393,11 @@ div.card.record-card {
         padding-right: 0.5em;
         display: flex;
         align-items: center;
+        width: 25px;
       }
 
       .card-right {
+        width: calc(100% - 25px);
         svg {
           height: 0.5em;
           margin-bottom: 0.25em;
@@ -438,10 +441,6 @@ div.card.record-card {
 
       margin-bottom: 0;
       border-bottom: none !important;
-    }
-
-    .card-heading {
-      font-weight: bold;
     }
   }
 
@@ -505,11 +504,6 @@ div.card.record-card {
   span {
     white-space: nowrap;
   }
-}
-
-.word-break-all {
-  word-break: break-all;
-  white-space: normal;
 }
 
 @media only screen and (max-width: 1000px) {

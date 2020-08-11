@@ -461,6 +461,21 @@
   background-color: darken($color: #4bc64e, $amount: 10%) !important;
 }
 
+.button-pill-new-record {
+  height: 30px;
+  background-color: #67bba4 !important;
+  color: white;
+  border: 1px #67bba4 solid;
+  padding: 0;
+  span {
+    padding: 2px 2rem;
+  }
+}
+
+.button-pill-new-record:hover {
+  background-color: darken($color: #67bba4, $amount: 10%) !important;
+}
+
 .button-pill.disabled {
   background-color: #7b7b7b80 !important;
   color: white;

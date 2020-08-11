@@ -14,6 +14,7 @@ import { getProviderRecords } from './provider-record.reducer';
 import { Card, CardBody, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface IUserRecordsProps extends StateProps, DispatchProps {}
 
@@ -73,7 +74,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
           }
         },
         {
-          breakpoint: 768,
+          breakpoint: 767,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -87,15 +88,15 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
       <Slider ref={c => (this.slider = c)} {...settings}>
         <Card className="record-card new-record mx-3 mb-4">
           <CardBody>
-            <div>
+            <div className="d-flex flex-column align-items-center">
               <h1>
                 <Translate contentKey="record.newCard.title" />
               </h1>
-              <Link to={`/record-create`} className="alert-link">
-                <Button>
+              <ButtonPill className="button-pill-new-record d-flex align-items-center p-0">
+                <Link to={`/record-create`} className="alert-link w-100 h-100 d-flex align-items-center" style={{ color: 'white' }}>
                   <Translate contentKey="record.newCard.buttonLabel" />
-                </Button>
-              </Link>
+                </Link>
+              </ButtonPill>
             </div>
           </CardBody>
         </Card>

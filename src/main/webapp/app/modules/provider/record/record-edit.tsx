@@ -114,7 +114,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         latestDailyUpdate: this.props.organization.dailyUpdates.find(du => du.expiry === null) || {}
       });
     }
-    if (prevProps.taxonomyOptions !== this.props.taxonomyOptions) {
+    if (prevProps.taxonomyOptions !== this.props.taxonomyOptions || this.props.taxonomyOptions) {
       measureWidths([...this.props.taxonomyOptions.map(item => TaxonomyOptionPill(item))], measureId(this.props.match.params.id)).then(
         (taxonomyWidths: any[]) => {
           this.props.taxonomyOptions.forEach((to, i) => (to['width'] = taxonomyWidths[i] || 200));
@@ -443,7 +443,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                       <>
                         <div
                           key={'location-' + i}
-                          className={`col-md-4 col-xs-12 p-0 ${openLocation === -1 ? 'd-inline-block' : 'd-block'}`}
+                          className={`col-lg-4 col-md-6 col-xs-12 p-0 ${openLocation === -1 ? 'd-inline-block' : 'd-block'}`}
                         >
                           <Card
                             className={
@@ -454,17 +454,17 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                                 : 'd-none'
                             }
                           >
-                            <CardBody onClick={this.openLocation(i)} className={'locations d-flex flex-row'}>
+                            <CardBody onClick={this.openLocation(i)} className={'locations d-flex flex-row w-100 h-100'}>
                               <div className="card-left">
                                 <FontAwesomeIcon icon="pencil-alt" />
                               </div>
                               <div className="card-right">
                                 <div>
-                                  <div className="card-heading">
+                                  <div className="text-ellipsis font-weight-bold">
                                     <FontAwesomeIcon icon={faCircle} className="edit" /> {location['city']}, {location['ca']}
                                   </div>
-                                  <div>{location['address1']}</div>
-                                  <div>{location['address2']}</div>
+                                  <div className="text-ellipsis">{location['address1']}</div>
+                                  <div className="text-ellipsis">{location['address2']}</div>
                                 </div>
                               </div>
                             </CardBody>
@@ -602,7 +602,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   {services &&
                     services.map((service, i) => (
                       <>
-                        <div key={'service-' + i} className={`col-md-4 col-xs-12 p-0 ${openService === -1 ? 'd-inline-block' : 'd-block'}`}>
+                        <div
+                          key={'service-' + i}
+                          className={`col-lg-4 col-md-6 col-xs-12 p-0 ${openService === -1 ? 'd-inline-block' : 'd-block'}`}
+                        >
                           <Card
                             className={
                               openService === -1
@@ -612,13 +615,13 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                                 : 'd-none'
                             }
                           >
-                            <CardBody onClick={this.openService(i)} className={'service d-flex flex-row'}>
+                            <CardBody onClick={this.openService(i)} className={'service d-flex flex-row w-100 h-100'}>
                               <div className="card-left">
                                 <FontAwesomeIcon icon="pencil-alt" />
                               </div>
                               <div className="card-right">
                                 <div>
-                                  <div className="card-heading">
+                                  <div className="text-ellipsis font-weight-bold">
                                     <FontAwesomeIcon icon={faCircle} className="edit" /> {service['name']}
                                   </div>
                                   {this.taxonomyPills(service)}
