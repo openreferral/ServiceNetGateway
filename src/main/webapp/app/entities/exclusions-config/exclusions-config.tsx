@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, ICrudGetAllAction } from 'react-jhipster';
+import { Translate, ICrudGetAllAction, JhiPagination, getPaginationItemsNumber, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -11,16 +11,109 @@ import { getEntities } from './exclusions-config.reducer';
 import { IExclusionsConfig } from 'app/shared/model/exclusions-config.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import PageSizeSelector from 'app/entities/page-size-selector';
+import { FIRST_PAGE, ITEMS_PER_PAGE_ENTITY, MAX_BUTTONS } from 'app/shared/util/pagination.constants';
+import _ from 'lodash';
+import queryString from 'query-string';
 
 export interface IExclusionsConfigProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
-export class ExclusionsConfig extends React.Component<IExclusionsConfigProps> {
+export interface IExclusionsConfigState extends IPaginationBaseState {
+  dropdownOpenTop: boolean;
+  dropdownOpenBottom: boolean;
+  itemsPerPage: number;
+}
+
+export class ExclusionsConfig extends React.Component<IExclusionsConfigProps, IExclusionsConfigState> {
+  constructor(props) {
+    super(props);
+
+    this.toggleTop = this.toggleTop.bind(this);
+    this.toggleBottom = this.toggleBottom.bind(this);
+    this.select = this.select.bind(this);
+    this.state = {
+      dropdownOpenTop: false,
+      dropdownOpenBottom: false,
+      itemsPerPage: ITEMS_PER_PAGE_ENTITY,
+      ...getSortState(this.props.location, ITEMS_PER_PAGE_ENTITY)
+    };
+  }
+
   componentDidMount() {
-    this.props.getEntities();
+    if (!_.isEqual(this.props.location.search, '')) {
+      const fetchPageData = queryString.parse(this.props.location.search);
+      this.setCustomState(fetchPageData.page, fetchPageData.itemsPerPage, fetchPageData.sort);
+    } else {
+      this.getEntities();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!(this.props.location === prevProps.location) && !(this.props.location.search === '')) {
+      const fetchPageData = queryString.parse(this.props.location.search);
+      this.setCustomState(fetchPageData.page, fetchPageData.itemsPerPage, fetchPageData.sort);
+    }
+    if (!(this.props.location === prevProps.location) && this.props.location.search === '') {
+      this.setCustomState(FIRST_PAGE, ITEMS_PER_PAGE_ENTITY, this.state.sort);
+    }
+  }
+
+  setCustomState(page, items, sort) {
+    this.setState({
+      activePage: Number(page),
+      itemsPerPage: Number(items),
+      ...getSortState(this.props.location, items)
+    });
+    this.props.getEntities(Number(page) - 1, Number(items), `${sort}`);
+  }
+
+  sort = prop => () => {
+    this.setState(
+      {
+        order: this.state.order === 'asc' ? 'desc' : 'asc',
+        sort: prop
+      },
+      () => this.updatePage()
+    );
+  };
+
+  handlePagination = activePage => this.setState({ activePage }, () => this.updatePage());
+
+  getEntities = () => {
+    const { activePage, itemsPerPage, sort, order } = this.state;
+    this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+  };
+
+  toggleTop() {
+    this.setState({ dropdownOpenTop: !this.state.dropdownOpenTop });
+  }
+
+  toggleBottom() {
+    this.setState({ dropdownOpenBottom: !this.state.dropdownOpenBottom });
+  }
+
+  select = prop => () => {
+    this.setState(
+      {
+        itemsPerPage: prop,
+        activePage: FIRST_PAGE
+      },
+      () => this.updatePage()
+    );
+  };
+
+  updatePage() {
+    this.getEntities();
+    window.scrollTo(0, 0);
+    const { activePage, sort, order, itemsPerPage } = this.state;
+    this.props.history.push({
+      pathname: `${this.props.location.pathname}`,
+      search: `?page=${activePage}&sort=${sort},${order}&itemsPerPage=${itemsPerPage}`
+    });
   }
 
   render() {
-    const { exclusionsConfigList, match } = this.props;
+    const { exclusionsConfigList, match, totalItems } = this.props;
     return (
       <div>
         <h2 id="exclusions-config-heading">
@@ -31,6 +124,20 @@ export class ExclusionsConfig extends React.Component<IExclusionsConfigProps> {
             <Translate contentKey="serviceNetApp.exclusionsConfig.home.createLabel">Create new Exclusions Config</Translate>
           </Link>
         </h2>
+        <Row className="justify-content-center">
+          <PageSizeSelector
+            dropdownOpen={this.state.dropdownOpenTop}
+            toggleSelect={this.toggleTop}
+            itemsPerPage={this.state.itemsPerPage}
+            selectFunc={this.select}
+          />
+          <JhiPagination
+            items={getPaginationItemsNumber(totalItems, this.state.itemsPerPage)}
+            activePage={this.state.activePage}
+            onSelect={this.handlePagination}
+            maxButtons={MAX_BUTTONS}
+          />
+        </Row>
         <div className="table-responsive">
           <Table responsive>
             <thead>
@@ -86,13 +193,28 @@ export class ExclusionsConfig extends React.Component<IExclusionsConfigProps> {
             </tbody>
           </Table>
         </div>
+        <Row className="justify-content-center">
+          <PageSizeSelector
+            dropdownOpen={this.state.dropdownOpenBottom}
+            toggleSelect={this.toggleBottom}
+            itemsPerPage={this.state.itemsPerPage}
+            selectFunc={this.select}
+          />
+          <JhiPagination
+            items={getPaginationItemsNumber(totalItems, this.state.itemsPerPage)}
+            activePage={this.state.activePage}
+            onSelect={this.handlePagination}
+            maxButtons={MAX_BUTTONS}
+          />
+        </Row>
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ exclusionsConfig }: IRootState) => ({
-  exclusionsConfigList: exclusionsConfig.entities
+  exclusionsConfigList: exclusionsConfig.entities,
+  totalItems: exclusionsConfig.totalItems
 });
 
 const mapDispatchToProps = {

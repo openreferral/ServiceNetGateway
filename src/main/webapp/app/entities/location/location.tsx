@@ -153,35 +153,35 @@ export class Location extends React.Component<ILocationProps, ILocationState> {
             <Table responsive>
               <thead>
                 <tr>
-                  <th>
-                    <Translate contentKey="global.field.id">ID</Translate>
+                  <th className="hand" onClick={this.sort('id')}>
+                    <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.name">Name</Translate>
+                  <th className="hand" onClick={this.sort('name')}>
+                    <Translate contentKey="serviceNetApp.location.name">Name</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.alternateName">Alternate Name</Translate>
+                  <th className="hand" onClick={this.sort('alternateName')}>
+                    <Translate contentKey="serviceNetApp.location.alternateName">Alternate Name</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.description">Description</Translate>
+                  <th className="hand" onClick={this.sort('description')}>
+                    <Translate contentKey="serviceNetApp.location.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.organization">Organization</Translate>
+                  <th className="hand" onClick={this.sort('organization.name')}>
+                    <Translate contentKey="serviceNetApp.location.organization">Organization</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.transportation">Transportation</Translate>
+                  <th className="hand" onClick={this.sort('transportation')}>
+                    <Translate contentKey="serviceNetApp.location.transportation">Transportation</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.latitude">Latitude</Translate>
+                  <th className="hand" onClick={this.sort('latitude')}>
+                    <Translate contentKey="serviceNetApp.location.latitude">Latitude</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.longitude">Longitude</Translate>
+                  <th className="hand" onClick={this.sort('longitude')}>
+                    <Translate contentKey="serviceNetApp.location.longitude">Longitude</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.externalDbId">External Db Id</Translate>
+                  <th className="hand" onClick={this.sort('externalDbId')}>
+                    <Translate contentKey="serviceNetApp.location.externalDbId">External Db Id</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.location.providerName">Provider Name</Translate>
+                  <th className="hand" onClick={this.sort('providerName')}>
+                    <Translate contentKey="serviceNetApp.location.providerName">Provider Name</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
                     <Translate contentKey="serviceNetApp.location.geocodingResults">Geocoding Results</Translate>

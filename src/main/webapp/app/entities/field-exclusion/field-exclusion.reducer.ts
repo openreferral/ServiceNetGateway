@@ -25,6 +25,7 @@ const initialState = {
   entity: defaultValue,
   configs: [] as ReadonlyArray<IExclusionsConfig>,
   updating: false,
+  totalItems: 0,
   updateSuccess: false
 };
 
@@ -69,7 +70,8 @@ export default (state: FieldExclusionState = initialState, action): FieldExclusi
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(ACTION_TYPES.FETCH_FIELDEXCLUSION):
       return {
@@ -112,10 +114,13 @@ const configUrl = SERVICENET_API_URL + '/exclusions-configs';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IFieldExclusion> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_FIELDEXCLUSION_LIST,
-  payload: axios.get<IFieldExclusion>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
-});
+export const getEntities: ICrudGetAllAction<IFieldExclusion> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_FIELDEXCLUSION_LIST,
+    payload: axios.get<IFieldExclusion>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getConfigs: ICrudGetAllAction<IExclusionsConfig> = (page, size, sort) => ({
   type: ACTION_TYPES.FETCH_CONFIG_LIST,

@@ -157,11 +157,11 @@ export class OrganizationError extends React.Component<IOrganizationErrorProps, 
                   <th className="hand" onClick={this.sort('id')}>
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
+                  <th className="hand" onClick={this.sort('dataImportReport.startDate')}>
                     <Translate contentKey="serviceNetApp.organizationError.dataImportReport">Data Import Report</Translate>{' '}
                     <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
+                  <th className="hand" onClick={this.sort('organization.name')}>
                     <Translate contentKey="serviceNetApp.organizationError.organization">Organization</Translate>{' '}
                     <FontAwesomeIcon icon="sort" />
                   </th>

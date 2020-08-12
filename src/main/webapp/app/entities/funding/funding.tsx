@@ -152,17 +152,17 @@ export class Funding extends React.Component<IFundingProps, IFundingState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.funding.source">Source</Translate>
+                <th className="hand" onClick={this.sort('source')}>
+                  <Translate contentKey="serviceNetApp.funding.source">Source</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.funding.organization">Organization</Translate>
+                <th className="hand" onClick={this.sort('organization.name')}>
+                  <Translate contentKey="serviceNetApp.funding.organization">Organization</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.funding.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.funding.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

@@ -152,29 +152,29 @@ export class HolidaySchedule extends React.Component<IHolidayScheduleProps, IHol
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.holidaySchedule.closed">Closed</Translate>
+                <th className="hand" onClick={this.sort('closed')}>
+                  <Translate contentKey="serviceNetApp.holidaySchedule.closed">Closed</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.holidaySchedule.opensAt">Opens At</Translate>
+                <th className="hand" onClick={this.sort('opensAt')}>
+                  <Translate contentKey="serviceNetApp.holidaySchedule.opensAt">Opens At</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.holidaySchedule.closesAt">Closes At</Translate>
+                <th className="hand" onClick={this.sort('closesAt')}>
+                  <Translate contentKey="serviceNetApp.holidaySchedule.closesAt">Closes At</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.holidaySchedule.startDate">Start Date</Translate>
+                <th className="hand" onClick={this.sort('startDate')}>
+                  <Translate contentKey="serviceNetApp.holidaySchedule.startDate">Start Date</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.holidaySchedule.endDate">End Date</Translate>
+                <th className="hand" onClick={this.sort('endDate')}>
+                  <Translate contentKey="serviceNetApp.holidaySchedule.endDate">End Date</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.holidaySchedule.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.holidaySchedule.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.holidaySchedule.location">Location</Translate>
+                <th className="hand" onClick={this.sort('location.name')}>
+                  <Translate contentKey="serviceNetApp.holidaySchedule.location">Location</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

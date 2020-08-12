@@ -152,53 +152,56 @@ export class Organization extends React.Component<IOrganizationProps, IOrganizat
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.name">Name</Translate>
+                <th className="hand" onClick={this.sort('name')}>
+                  <Translate contentKey="serviceNetApp.organization.name">Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.alternateName">Alternate Name</Translate>
+                <th className="hand" onClick={this.sort('alternateName')}>
+                  <Translate contentKey="serviceNetApp.organization.alternateName">Alternate Name</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.description">Description</Translate>
+                <th className="hand" onClick={this.sort('description')}>
+                  <Translate contentKey="serviceNetApp.organization.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.email">Email</Translate>
+                <th className="hand" onClick={this.sort('email')}>
+                  <Translate contentKey="serviceNetApp.organization.email">Email</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.url">Url</Translate>
+                <th className="hand" onClick={this.sort('url')}>
+                  <Translate contentKey="serviceNetApp.organization.url">Url</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.taxStatus">Tax Status</Translate>
+                <th className="hand" onClick={this.sort('taxStatus')}>
+                  <Translate contentKey="serviceNetApp.organization.taxStatus">Tax Status</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.taxId">Tax Id</Translate>
+                <th className="hand" onClick={this.sort('taxId')}>
+                  <Translate contentKey="serviceNetApp.organization.taxId">Tax Id</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.yearIncorporated">Year Incorporated</Translate>
+                <th className="hand" onClick={this.sort('yearIncorporated')}>
+                  <Translate contentKey="serviceNetApp.organization.yearIncorporated">Year Incorporated</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.legalStatus">Legal Status</Translate>
+                <th className="hand" onClick={this.sort('legalStatus')}>
+                  <Translate contentKey="serviceNetApp.organization.legalStatus">Legal Status</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.active">Active</Translate>
+                <th className="hand" onClick={this.sort('active')}>
+                  <Translate contentKey="serviceNetApp.organization.active">Active</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.updatedAt">Updated At</Translate>
+                <th className="hand" onClick={this.sort('updatedAt')}>
+                  <Translate contentKey="serviceNetApp.organization.updatedAt">Updated At</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.replacedBy">Replaced By</Translate>
+                <th className="hand" onClick={this.sort('replacedBy.id')}>
+                  <Translate contentKey="serviceNetApp.organization.replacedBy">Replaced By</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.sourceDocument">Source Document</Translate>
+                <th className="hand" onClick={this.sort('sourceDocument.dateUploaded')}>
+                  <Translate contentKey="serviceNetApp.organization.sourceDocument">Source Document</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.account">Account</Translate>
+                <th className="hand" onClick={this.sort('account.name')}>
+                  <Translate contentKey="serviceNetApp.organization.account">Account</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organization.externalDbId" />
+                <th className="hand" onClick={this.sort('externalDbId')}>
+                  <Translate contentKey="serviceNetApp.organization.externalDbId" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

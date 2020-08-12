@@ -152,20 +152,21 @@ export class OpeningHours extends React.Component<IOpeningHoursProps, IOpeningHo
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.openingHours.weekday">Weekday</Translate>
+                <th className="hand" onClick={this.sort('weekday')}>
+                  <Translate contentKey="serviceNetApp.openingHours.weekday">Weekday</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.openingHours.opensAt">Opens At</Translate>
+                <th className="hand" onClick={this.sort('opensAt')}>
+                  <Translate contentKey="serviceNetApp.openingHours.opensAt">Opens At</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.openingHours.closesAt">Closes At</Translate>
+                <th className="hand" onClick={this.sort('closesAt')}>
+                  <Translate contentKey="serviceNetApp.openingHours.closesAt">Closes At</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.openingHours.regularSchedule">Regular Schedule</Translate>
+                <th className="hand" onClick={this.sort('regularSchedule.id')}>
+                  <Translate contentKey="serviceNetApp.openingHours.regularSchedule">Regular Schedule</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

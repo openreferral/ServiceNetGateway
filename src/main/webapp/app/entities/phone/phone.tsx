@@ -152,35 +152,35 @@ export class Phone extends React.Component<IPhoneProps, IPhoneState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.number">Number</Translate>
+                <th className="hand" onClick={this.sort('number')}>
+                  <Translate contentKey="serviceNetApp.phone.number">Number</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.extension">Extension</Translate>
+                <th className="hand" onClick={this.sort('extension')}>
+                  <Translate contentKey="serviceNetApp.phone.extension">Extension</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.type">Type</Translate>
+                <th className="hand" onClick={this.sort('type')}>
+                  <Translate contentKey="serviceNetApp.phone.type">Type</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.language">Language</Translate>
+                <th className="hand" onClick={this.sort('language')}>
+                  <Translate contentKey="serviceNetApp.phone.language">Language</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.description">Description</Translate>
+                <th className="hand" onClick={this.sort('description')}>
+                  <Translate contentKey="serviceNetApp.phone.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.location">Location</Translate>
+                <th className="hand" onClick={this.sort('location.name')}>
+                  <Translate contentKey="serviceNetApp.phone.location">Location</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.phone.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.organization">Organization</Translate>
+                <th className="hand" onClick={this.sort('organization.name')}>
+                  <Translate contentKey="serviceNetApp.phone.organization">Organization</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.phone.contact">Contact</Translate>
+                <th className="hand" onClick={this.sort('contact.name')}>
+                  <Translate contentKey="serviceNetApp.phone.contact">Contact</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

@@ -152,35 +152,40 @@ export class DataImportReport extends React.Component<IDataImportReportProps, ID
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.numberOfUpdatedServices">Number Of Updated Services</Translate>
+                <th className="hand" onClick={this.sort('numberOfUpdatedServices')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.numberOfUpdatedServices">Number Of Updated Services</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.numberOfCreatedServices">Number Of Created Services</Translate>
+                <th className="hand" onClick={this.sort('numberOfCreatedServices')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.numberOfCreatedServices">Number Of Created Services</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.numberOfUpdatedOrgs">Number Of Updated Orgs</Translate>
+                <th className="hand" onClick={this.sort('numberOfUpdatedOrgs')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.numberOfUpdatedOrgs">Number Of Updated Orgs</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.numberOfCreatedOrgs">Number Of Created Orgs</Translate>
+                <th className="hand" onClick={this.sort('numberOfCreatedOrgs')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.numberOfCreatedOrgs">Number Of Created Orgs</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.startDate">Start Date</Translate>
+                <th className="hand" onClick={this.sort('startDate')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.startDate">Start Date</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.endDate">End Date</Translate>
+                <th className="hand" onClick={this.sort('endDate')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.endDate">End Date</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.jobName">Job Name</Translate>
+                <th className="hand" onClick={this.sort('jobName')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.jobName">Job Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.errorMessage" />
+                <th className="hand" onClick={this.sort('errorMessage')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.errorMessage" /> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.dataImportReport.documentUpload">Document Upload</Translate>
+                <th className="hand" onClick={this.sort('documentUpload.id')}>
+                  <Translate contentKey="serviceNetApp.dataImportReport.documentUpload">Document Upload</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   <Translate contentKey="serviceNetApp.dataImportReport.organizationErrors">Organization Errors</Translate>

@@ -153,14 +153,14 @@ export class Option extends React.Component<IOptionProps, IOptionState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.option.type">Type</Translate>
+                <th className="hand" onClick={this.sort('type')}>
+                  <Translate contentKey="serviceNetApp.option.type">Type</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.option.value">Value</Translate>
+                <th className="hand" onClick={this.sort('value')}>
+                  <Translate contentKey="serviceNetApp.option.value">Value</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
