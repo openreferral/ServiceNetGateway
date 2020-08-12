@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IContactDetailsFieldsValue>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false
 };
 
@@ -64,7 +65,8 @@ export default (state: ContactDetailsFieldsValueState = initialState, action): C
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(ACTION_TYPES.FETCH_CONTACTDETAILSFIELDSVALUE):
       return {
@@ -100,10 +102,13 @@ const apiUrl = SERVICENET_API_URL + '/contact-details-fields-values';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IContactDetailsFieldsValue> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_CONTACTDETAILSFIELDSVALUE_LIST,
-  payload: axios.get<IContactDetailsFieldsValue>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
-});
+export const getEntities: ICrudGetAllAction<IContactDetailsFieldsValue> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_CONTACTDETAILSFIELDSVALUE_LIST,
+    payload: axios.get<IContactDetailsFieldsValue>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getEntity: ICrudGetAction<IContactDetailsFieldsValue> = id => {
   const requestUrl = `${apiUrl}/${id}`;

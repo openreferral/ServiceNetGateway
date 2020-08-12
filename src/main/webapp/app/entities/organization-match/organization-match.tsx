@@ -152,29 +152,34 @@ export class OrganizationMatch extends React.Component<IOrganizationMatchProps, 
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organizationMatch.timestamp">Timestamp</Translate>
+                <th className="hand" onClick={this.sort('timestamp')}>
+                  <Translate contentKey="serviceNetApp.organizationMatch.timestamp">Timestamp</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organizationMatch.dismissed">Dismissed</Translate>
+                <th className="hand" onClick={this.sort('dismissed')}>
+                  <Translate contentKey="serviceNetApp.organizationMatch.dismissed">Dismissed</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organizationMatch.dismissComment">Dismiss Comment</Translate>
+                <th className="hand" onClick={this.sort('dismissComment')}>
+                  <Translate contentKey="serviceNetApp.organizationMatch.dismissComment">Dismiss Comment</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organizationMatch.dismissDate">Dismiss Date</Translate>
+                <th className="hand" onClick={this.sort('dismissDate')}>
+                  <Translate contentKey="serviceNetApp.organizationMatch.dismissDate">Dismiss Date</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organizationMatch.dismissedBy">Dismissed By</Translate>
+                <th className="hand" onClick={this.sort('dismissedBy.login')}>
+                  <Translate contentKey="serviceNetApp.organizationMatch.dismissedBy">Dismissed By</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organizationMatch.organizationRecord">Organization Record</Translate>
+                <th className="hand" onClick={this.sort('organizationRecord.name')}>
+                  <Translate contentKey="serviceNetApp.organizationMatch.organizationRecord">Organization Record</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.organizationMatch.partnerVersion">Partner Version</Translate>
+                <th className="hand" onClick={this.sort('partnerVersion.name')}>
+                  <Translate contentKey="serviceNetApp.organizationMatch.partnerVersion">Partner Version</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

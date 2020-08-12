@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IPostalAddressFieldsValue>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false
 };
 
@@ -64,7 +65,8 @@ export default (state: PostalAddressFieldsValueState = initialState, action): Po
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(ACTION_TYPES.FETCH_POSTALADDRESSFIELDSVALUE):
       return {
@@ -100,10 +102,13 @@ const apiUrl = SERVICENET_API_URL + '/postal-address-fields-values';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IPostalAddressFieldsValue> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_POSTALADDRESSFIELDSVALUE_LIST,
-  payload: axios.get<IPostalAddressFieldsValue>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
-});
+export const getEntities: ICrudGetAllAction<IPostalAddressFieldsValue> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_POSTALADDRESSFIELDSVALUE_LIST,
+    payload: axios.get<IPostalAddressFieldsValue>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getEntity: ICrudGetAction<IPostalAddressFieldsValue> = id => {
   const requestUrl = `${apiUrl}/${id}`;

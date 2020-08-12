@@ -152,17 +152,17 @@ export class Language extends React.Component<ILanguageProps, ILanguageState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.language.language">Language</Translate>
+                <th className="hand" onClick={this.sort('language')}>
+                  <Translate contentKey="serviceNetApp.language.language">Language</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.language.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.language.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.language.location">Location</Translate>
+                <th className="hand" onClick={this.sort('location.name')}>
+                  <Translate contentKey="serviceNetApp.language.location">Location</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

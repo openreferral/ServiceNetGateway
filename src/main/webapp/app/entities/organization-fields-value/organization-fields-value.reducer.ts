@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IOrganizationFieldsValue>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false
 };
 
@@ -64,7 +65,8 @@ export default (state: OrganizationFieldsValueState = initialState, action): Org
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(ACTION_TYPES.FETCH_ORGANIZATIONFIELDSVALUE):
       return {
@@ -100,10 +102,13 @@ const apiUrl = SERVICENET_API_URL + '/organization-fields-values';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IOrganizationFieldsValue> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_ORGANIZATIONFIELDSVALUE_LIST,
-  payload: axios.get<IOrganizationFieldsValue>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
-});
+export const getEntities: ICrudGetAllAction<IOrganizationFieldsValue> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_ORGANIZATIONFIELDSVALUE_LIST,
+    payload: axios.get<IOrganizationFieldsValue>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getEntity: ICrudGetAction<IOrganizationFieldsValue> = id => {
   const requestUrl = `${apiUrl}/${id}`;

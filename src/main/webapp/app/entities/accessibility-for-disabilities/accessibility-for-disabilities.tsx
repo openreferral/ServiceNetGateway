@@ -154,17 +154,20 @@ export class AccessibilityForDisabilities extends React.Component<IAccessibility
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.accessibilityForDisabilities.accessibility">Accessibility</Translate>
+                <th className="hand" onClick={this.sort('accessibility')}>
+                  <Translate contentKey="serviceNetApp.accessibilityForDisabilities.accessibility">Accessibility</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.accessibilityForDisabilities.details">Details</Translate>
+                <th className="hand" onClick={this.sort('details')}>
+                  <Translate contentKey="serviceNetApp.accessibilityForDisabilities.details">Details</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.accessibilityForDisabilities.location">Location</Translate>
+                <th className="hand" onClick={this.sort('location.name')}>
+                  <Translate contentKey="serviceNetApp.accessibilityForDisabilities.location">Location</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

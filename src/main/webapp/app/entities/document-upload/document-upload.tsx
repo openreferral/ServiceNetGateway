@@ -152,20 +152,23 @@ export class DocumentUpload extends React.Component<IDocumentUploadProps, IDocum
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.documentUpload.dateUploaded">Date Uploaded</Translate>
+                <th className="hand" onClick={this.sort('dateUploaded')}>
+                  <Translate contentKey="serviceNetApp.documentUpload.dateUploaded">Date Uploaded</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.documentUpload.originalDocumentId">Original Document Id</Translate>
+                <th className="hand" onClick={this.sort('originalDocumentId')}>
+                  <Translate contentKey="serviceNetApp.documentUpload.originalDocumentId">Original Document Id</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.documentUpload.parsedDocumentId">Parsed Document Id</Translate>
+                <th className="hand" onClick={this.sort('parsedDocumentId')}>
+                  <Translate contentKey="serviceNetApp.documentUpload.parsedDocumentId">Parsed Document Id</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.documentUpload.uploader">Uploader</Translate>
+                <th className="hand" onClick={this.sort('uploader.login')}>
+                  <Translate contentKey="serviceNetApp.documentUpload.uploader">Uploader</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
