@@ -244,7 +244,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     const { recordViewType } = this.state;
     const { urlBase } = this.props;
     return _.map(records, record => (
-      <Col key={record.organization.id} md={recordViewType === LIST_VIEW && isInAllRecordSection ? 12 : colSize}>
+      <div
+        key={record.organization.id}
+        className={`${recordViewType === LIST_VIEW && isInAllRecordSection ? 'col-12' : 'col-lg-4 col-md-6 col-xs-12'}`}
+      >
         <div className="mb-4">
           <RecordCard
             fullWidth={recordViewType === LIST_VIEW && isInAllRecordSection}
@@ -252,7 +255,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${record.organization.id}`}
           />
         </div>
-      </Col>
+      </div>
     ));
   };
 

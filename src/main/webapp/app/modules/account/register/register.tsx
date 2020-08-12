@@ -11,6 +11,7 @@ import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { IRootState } from 'app/shared/reducers';
 import { handleRegister, handleRegisterWithinSilo, reset } from './register.reducer';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface IRegisterProps extends StateProps, DispatchProps, RouteComponentProps<{ siloName: any }> {}
 
@@ -187,9 +188,11 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                   match: { value: 'firstPassword', errorMessage: translate('global.messages.error.dontmatch') }
                 }}
               />
-              <Button id="register-submit" color="primary" type="submit">
-                <Translate contentKey="register.form.button">Register</Translate>
-              </Button>
+              <ButtonPill className="button-pill-primary">
+                <button id="register-submit" type="submit">
+                  <Translate contentKey="register.form.button">Register</Translate>
+                </button>
+              </ButtonPill>
             </AvForm>
             <p>&nbsp;</p>
             <Alert color="warning">

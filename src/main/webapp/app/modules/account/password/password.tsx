@@ -9,6 +9,7 @@ import { getSession } from 'app/shared/reducers/authentication';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { savePassword, reset } from './password.reducer';
 import { RouteComponentProps } from 'react-router-dom';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface IUserPasswordProps extends StateProps, DispatchProps, RouteComponentProps {}
 
@@ -98,9 +99,11 @@ export class PasswordPage extends React.Component<IUserPasswordProps, IUserPassw
                   }
                 }}
               />
-              <Button color="success" type="submit">
-                <Translate contentKey="password.form.button">Save</Translate>
-              </Button>
+              <ButtonPill className="button-pill-success">
+                <button type="submit">
+                  <Translate contentKey="password.form.button">Save</Translate>
+                </button>
+              </ButtonPill>
             </AvForm>
           </Col>
         </Row>
