@@ -12,7 +12,8 @@ import { FIRST_PAGE, MAX_BUTTONS } from 'app/shared/util/pagination.constants';
 export interface IDataStatusProp extends StateProps, DispatchProps {}
 
 export interface IDataStatusState extends IPaginationBaseState {
-  dropdownOpen: boolean;
+  dropdownOpenTop: boolean;
+  dropdownOpenBottom: boolean;
   itemsPerPage: number;
 }
 
@@ -22,7 +23,8 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpen: false,
+      dropdownOpenTop: false,
+      dropdownOpenBottom: false,
       itemsPerPage: ITEMS_PER_PAGE,
       ...getSortState(this.props.dataStatus, ITEMS_PER_PAGE)
     };
@@ -32,7 +34,9 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
     this.props.fetchDataStatus(0, this.state.itemsPerPage);
   }
 
-  toggleTop = () => this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  toggleTop = () => this.setState({ dropdownOpenTop: !this.state.dropdownOpenTop });
+
+  toggleBottom = () => this.setState({ dropdownOpenBottom: !this.state.dropdownOpenBottom });
 
   selectPage = itemsPerPage => () => {
     this.setState(
@@ -54,7 +58,7 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
 
   render() {
     const { dataStatus, totalItems } = this.props;
-    const { dropdownOpen, itemsPerPage, activePage } = this.state;
+    const { dropdownOpenTop, dropdownOpenBottom, itemsPerPage, activePage } = this.state;
     return (
       <Row className="justify-content-center">
         <Col md="6">
@@ -64,19 +68,21 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
 
           <Card>
             <CardBody className="centered-flex">
-              <PageSizeSelector
-                className="paging"
-                dropdownOpen={dropdownOpen}
-                toggleSelect={this.toggleTop}
-                itemsPerPage={itemsPerPage}
-                selectFunc={this.selectPage}
-              />
-              <JhiPagination
-                items={getPaginationItemsNumber(totalItems, itemsPerPage)}
-                activePage={activePage}
-                onSelect={this.handlePagination}
-                maxButtons={MAX_BUTTONS}
-              />
+              <Row className="justify-content-center">
+                <PageSizeSelector
+                  className="paging"
+                  dropdownOpen={dropdownOpenTop}
+                  toggleSelect={this.toggleTop}
+                  itemsPerPage={itemsPerPage}
+                  selectFunc={this.selectPage}
+                />
+                <JhiPagination
+                  items={getPaginationItemsNumber(totalItems, itemsPerPage)}
+                  activePage={activePage}
+                  onSelect={this.handlePagination}
+                  maxButtons={MAX_BUTTONS}
+                />
+              </Row>
               <div className="table-responsive">
                 <Table responsive>
                   <thead>
@@ -102,6 +108,21 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
                   </tbody>
                 </Table>
               </div>
+              <Row className="justify-content-center">
+                <PageSizeSelector
+                  className="paging"
+                  dropdownOpen={dropdownOpenBottom}
+                  toggleSelect={this.toggleBottom}
+                  itemsPerPage={itemsPerPage}
+                  selectFunc={this.selectPage}
+                />
+                <JhiPagination
+                  items={getPaginationItemsNumber(totalItems, itemsPerPage)}
+                  activePage={activePage}
+                  onSelect={this.handlePagination}
+                  maxButtons={MAX_BUTTONS}
+                />
+              </Row>
             </CardBody>
           </Card>
         </Col>

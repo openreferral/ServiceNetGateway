@@ -142,14 +142,14 @@ export class PaymentAccepted extends React.Component<IPaymentAcceptedProps, IPay
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.paymentAccepted.payment">Payment</Translate>
+                <th className="hand" onClick={this.sort('payment')}>
+                  <Translate contentKey="serviceNetApp.paymentAccepted.payment">Payment</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.paymentAccepted.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.paymentAccepted.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

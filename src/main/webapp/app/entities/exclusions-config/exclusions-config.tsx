@@ -142,11 +142,11 @@ export class ExclusionsConfig extends React.Component<IExclusionsConfigProps, IE
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.exclusionsConfig.account">Account</Translate>
+                <th className="hand" onClick={this.sort('account.name')}>
+                  <Translate contentKey="serviceNetApp.exclusionsConfig.account">Account</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

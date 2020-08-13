@@ -151,32 +151,33 @@ export class Metadata extends React.Component<IMetadataProps, IMetadataState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.metadata.resourceId">Resource Id</Translate>
+                <th className="hand" onClick={this.sort('resourceId')}>
+                  <Translate contentKey="serviceNetApp.metadata.resourceId">Resource Id</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.metadata.lastActionDate">Last Action Date</Translate>
+                <th className="hand" onClick={this.sort('lastActionDate')}>
+                  <Translate contentKey="serviceNetApp.metadata.lastActionDate">Last Action Date</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.metadata.lastActionType">Last Action Type</Translate>
+                <th className="hand" onClick={this.sort('lastActionType')}>
+                  <Translate contentKey="serviceNetApp.metadata.lastActionType">Last Action Type</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.metadata.fieldName">Field Name</Translate>
+                <th className="hand" onClick={this.sort('fieldName')}>
+                  <Translate contentKey="serviceNetApp.metadata.fieldName">Field Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.metadata.previousValue">Previous Value</Translate>
+                <th className="hand" onClick={this.sort('previousValue')}>
+                  <Translate contentKey="serviceNetApp.metadata.previousValue">Previous Value</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.metadata.replacementValue">Replacement Value</Translate>
+                <th className="hand" onClick={this.sort('replacementValue')}>
+                  <Translate contentKey="serviceNetApp.metadata.replacementValue">Replacement Value</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.metadata.resourceClass">Resource Class</Translate>
+                <th className="hand" onClick={this.sort('resourceClass')}>
+                  <Translate contentKey="serviceNetApp.metadata.resourceClass">Resource Class</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.metadata.user">User</Translate>
+                <th className="hand" onClick={this.sort('userProfile.login')}>
+                  <Translate contentKey="serviceNetApp.metadata.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

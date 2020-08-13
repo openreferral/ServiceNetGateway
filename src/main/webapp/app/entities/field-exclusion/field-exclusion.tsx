@@ -142,17 +142,17 @@ export class FieldExclusion extends React.Component<IFieldExclusionProps, IField
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.fieldExclusion.fields">Fields</Translate>
+                <th className="hand" onClick={this.sort('fields')}>
+                  <Translate contentKey="serviceNetApp.fieldExclusion.fields">Fields</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.fieldExclusion.entity">Entity</Translate>
+                <th className="hand" onClick={this.sort('entity')}>
+                  <Translate contentKey="serviceNetApp.fieldExclusion.entity">Entity</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.fieldExclusion.configId" />
+                <th className="hand" onClick={this.sort('config.id')}>
+                  <Translate contentKey="serviceNetApp.fieldExclusion.configId" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

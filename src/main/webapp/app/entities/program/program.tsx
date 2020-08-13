@@ -142,17 +142,17 @@ export class Program extends React.Component<IProgramProps, IProgramState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.program.name">Name</Translate>
+                <th className="hand" onClick={this.sort('name')}>
+                  <Translate contentKey="serviceNetApp.program.name">Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.program.alternateName">Alternate Name</Translate>
+                <th className="hand" onClick={this.sort('alternateName')}>
+                  <Translate contentKey="serviceNetApp.program.alternateName">Alternate Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.program.organization">Organization</Translate>
+                <th className="hand" onClick={this.sort('organization.name')}>
+                  <Translate contentKey="serviceNetApp.program.organization">Organization</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

@@ -150,14 +150,14 @@ export class ServiceArea extends React.Component<IServiceAreaProps, IServiceArea
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceArea.description">Description</Translate>
+                <th className="hand" onClick={this.sort('description')}>
+                  <Translate contentKey="serviceNetApp.serviceArea.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceArea.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.serviceArea.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
