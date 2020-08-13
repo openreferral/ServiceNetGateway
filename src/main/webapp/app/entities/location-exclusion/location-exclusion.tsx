@@ -142,17 +142,17 @@ export class LocationExclusion extends React.Component<ILocationExclusionProps, 
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.locationExclusion.region">Region</Translate>
+                <th className="hand" onClick={this.sort('region')}>
+                  <Translate contentKey="serviceNetApp.locationExclusion.region">Region</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.locationExclusion.city">City</Translate>
+                <th className="hand" onClick={this.sort('city')}>
+                  <Translate contentKey="serviceNetApp.locationExclusion.city">City</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.locationExclusion.config">Config</Translate>
+                <th className="hand" onClick={this.sort('config.id')}>
+                  <Translate contentKey="serviceNetApp.locationExclusion.config">Config</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
