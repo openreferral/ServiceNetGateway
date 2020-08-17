@@ -14,6 +14,7 @@ describe('ServiceNet demo e2e tests', function() {
     browser.driver.findElement(by.id('password')).sendKeys('fakePassword');
     browser.driver.findElement(by.id('submit-button')).click();
 
+    // TODO: Replace sleep with better waiting approach!
     browser.driver.sleep(1000); // <- waiting for the api response and the alert to render (could be lower)
     browser.driver.findElement(by.id('failed-login'));
   });
@@ -26,6 +27,7 @@ describe('ServiceNet demo e2e tests', function() {
     browser.driver.findElement(by.id('password')).sendKeys('password');
     browser.driver.findElement(by.id('submit-button')).click();
 
+    // TODO: Replace sleep with better waiting approach!
     browser.driver.sleep(1000); // <- waiting for the api response and the page to render (could be lower)
     browser.driver.findElement(by.id('main-page-title'));
   });
