@@ -45,6 +45,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   sortingOpened: boolean;
   filterOpened: boolean;
   isMapView: boolean;
+  isSticky: boolean;
   recordViewType: 'GRID' | 'LIST';
   isRecordHighlighted: boolean;
   selectedLat: number;
@@ -103,6 +104,9 @@ const Map = withScriptjs(
 );
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
+  sortContainerRef: any;
+  pageEndRef: any;
+
   constructor(props) {
     super(props);
     const { providerSearchPreferences } = this.props.account ? getSearchPreferences(this.props.account.login) : null;
@@ -112,12 +116,15 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       sortingOpened: false,
       filterOpened: false,
       isMapView: false,
+      isSticky: false,
       isRecordHighlighted: false,
       selectedLat: null,
       selectedLng: null,
       recordViewType: GRID_VIEW,
       ...providerSearchPreferences
     };
+    this.sortContainerRef = React.createRef();
+    this.pageEndRef = React.createRef();
   }
 
   onMapLoad = (mapRef, bounds) => {
@@ -128,9 +135,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   componentDidMount() {
     this.getRecords(true);
+    window.addEventListener('scroll', _.debounce(this.handleScroll, 50), true);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
       if (this.state.isMapView) {
         this.getRecordsForMap();
@@ -138,7 +146,21 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         this.getRecords(true);
       }
     }
+
+    if (!prevState.isMapView && this.state.isMapView) {
+      this.scrollToBottom();
+    }
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', () => this.handleScroll);
+  }
+
+  handleScroll = () => {
+    if (this.sortContainerRef.current) {
+      this.setState({ isSticky: this.sortContainerRef.current.getBoundingClientRect().top <= 80 });
+    }
+  };
 
   getRecords(isInitLoading = false) {
     const { itemsPerPage, activePage, sort, order } = this.state;
@@ -203,6 +225,19 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       selectedLat: lat,
       selectedLng: lng
     });
+  };
+
+  closeRecordCard = () => {
+    this.setState({ isRecordHighlighted: false });
+  };
+
+  scrollToBottom = () => {
+    if (this.pageEndRef.current) {
+      this.pageEndRef.current.scrollIntoView({
+        behavior: 'instant',
+        block: 'start'
+      });
+    }
   };
 
   toggleMapView = () => {
@@ -310,22 +345,25 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     return (
       <>
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-          <Col md={12} className="pb-2 px-0 mx-0 absolute-card-container">
-            <Map {...mapProps} containerElement={<div style={{ height: 'calc(100vh - 60px)' }} />} />
-            {isRecordHighlighted && selectedRecord && !filterOpened ? (
-              <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
-                <div className="px-2">
-                  <RecordCard
-                    record={selectedRecord}
-                    link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
-                  />
-                </div>
-              </Col>
-            ) : null}
+          <Col md={12} className="px-0 mx-0 absolute-card-container">
+            <div style={{ height: 'calc(100vh - 80px)' }}>
+              <Map {...mapProps} containerElement={<div style={{ height: 'calc(100vh - 80px)' }} />} />
+              {isRecordHighlighted && selectedRecord && !filterOpened ? (
+                <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
+                  <div className="px-2">
+                    <RecordCard
+                      record={selectedRecord}
+                      link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+                      closeCard={this.closeRecordCard}
+                    />
+                  </div>
+                </Col>
+              ) : null}
+            </div>
           </Col>
         </MediaQuery>
-        <Row className="mb-4 mx-3">
-          <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+          <Row className="mb-4 mx-3">
             <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view">
               <Map {...mapProps} containerElement={<div style={{ height: '400px' }} />} />
             </Col>
@@ -351,8 +389,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                   </div>
                 </Col>
               )}
-          </MediaQuery>
-        </Row>
+          </Row>
+        </MediaQuery>
       </>
     );
   };
@@ -401,7 +439,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   render() {
     const { siloName } = this.props;
-    const { sortingOpened, filterOpened, isMapView, recordViewType } = this.state;
+    const { sortingOpened, filterOpened, isMapView, isSticky, recordViewType } = this.state;
     return (
       <div>
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
@@ -424,37 +462,42 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </b>
             <this.progress />
           </div>
-          <div className="sort-container">
-            <ButtonPill onClick={this.toggleMapView} className="mr-1">
-              <span>
-                <FontAwesomeIcon icon={isMapView ? 'th' : 'map'} />
-                &nbsp;
-                <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-                  {translate(isMapView ? 'providerSite.gridView' : 'providerSite.mapView')}
-                </MediaQuery>
-              </span>
-            </ButtonPill>
-            <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-              <ButtonPill onClick={this.toggleViewType} className="mr-1">
+          <div ref={this.sortContainerRef}>
+            <div className={`sort-container${isMapView && isSticky ? ' sort-container-fixed' : ''}`}>
+              <ButtonPill onClick={this.toggleMapView} className="mr-1">
                 <span>
-                  <FontAwesomeIcon color={recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
-                  {' | '}
-                  <FontAwesomeIcon color={recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR} icon="bars" />
+                  <FontAwesomeIcon icon={isMapView ? 'th' : 'map'} />
+                  &nbsp;
+                  <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+                    {translate(isMapView ? 'providerSite.gridView' : 'providerSite.mapView')}
+                  </MediaQuery>
                 </span>
               </ButtonPill>
-            </MediaQuery>
-            <SortSection
-              dropdownOpen={sortingOpened}
-              toggleSort={() => this.toggleSorting()}
-              values={PROVIDER_SORT_ARRAY}
-              sort={this.state.sort}
-              order={this.state.order}
-              sortFunc={this.sort}
-            />
-            <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" />
+              <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+                <ButtonPill onClick={this.toggleViewType} className="mr-1">
+                  <span>
+                    <FontAwesomeIcon color={recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
+                    {' | '}
+                    <FontAwesomeIcon color={recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR} icon="bars" />
+                  </span>
+                </ButtonPill>
+              </MediaQuery>
+              <SortSection
+                dropdownOpen={sortingOpened}
+                toggleSort={() => this.toggleSorting()}
+                values={PROVIDER_SORT_ARRAY}
+                sort={this.state.sort}
+                order={this.state.order}
+                sortFunc={this.sort}
+              />
+              <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" />
+            </div>
           </div>
         </div>
         {isMapView ? <this.mapView /> : <this.gridView />}
+        <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+          <div ref={this.pageEndRef} />
+        </MediaQuery>
       </div>
     );
   }
