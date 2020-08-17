@@ -31,7 +31,7 @@ class LoginModal extends React.Component<ILoginModalProps> {
             <Row>
               <Col md="12">
                 {loginError ? (
-                  <Alert color="danger">
+                  <Alert color="danger" id="failed-login">
                     <Translate contentKey="login.messages.error.authentication">
                       <strong>Failed to sign in!</strong> Please check your credentials and try again.
                     </Translate>
@@ -82,7 +82,7 @@ class LoginModal extends React.Component<ILoginModalProps> {
               <Translate contentKey="entity.action.cancel">Cancel</Translate>
             </ButtonPill>{' '}
             <ButtonPill className="button-pill-primary">
-              <button type="submit">
+              <button type="submit" id="submit-button">
                 <Translate contentKey="login.form.button">Sign in</Translate>
               </button>
             </ButtonPill>

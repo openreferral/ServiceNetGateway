@@ -224,3 +224,38 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [protractor]: https://angular.github.io/protractor/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
+
+## End to End testing (optional)
+
+End to end testing is run with protractor (http://www.protractortest.org/#/tutorial)
+
+Required components:
+1. Protractor 7
+2. Chrome browser ver 84 (required by Protractor 7)
+
+### Installation
+To run tests first install protractor (might require to be installed globally):
+
+    npm install -g protractor@7.0.0
+    
+Update webdriver manager:
+
+    webdriver-manager update  
+
+### Tests config
+
+Required config is in the src/test/javascript/e2e/conf.js
+
+Ensure that the same port for webdriver-manager server is specified in config file (4444 by default)
+
+### Setup
+
+Before performing tests, all microservices (core, gateway and auth) should be up and running.
+
+Start webdriver manager in separate console:
+
+    webdriver-manager start
+    
+To run ServiceNet demo tests type in console:
+
+    protractor src/test/javascript/e2e/spec.js
