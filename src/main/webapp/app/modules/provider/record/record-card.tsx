@@ -26,6 +26,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   record: any;
   link: string;
   fullWidth?: boolean;
+  closeCard?: Function;
 }
 
 export interface IRecordCardState {
@@ -116,6 +117,11 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
             <OwnerInfo record={record} direction="top" />
           </div>
         </div>
+        {this.props.closeCard && (
+          <div className="mx-2" onClick={() => this.props.closeCard()}>
+            <FontAwesomeIcon icon="times" />
+          </div>
+        )}
       </CardTitle>
     );
   };
