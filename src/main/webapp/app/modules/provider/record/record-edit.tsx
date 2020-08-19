@@ -55,6 +55,7 @@ const locationModel = {
 };
 
 const serviceModel = {
+  docs: [],
   locationIndexes: []
 };
 
@@ -262,6 +263,19 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       value = defaultValue;
     }
     organization.services[i][fieldName] = value;
+    this.setState({
+      organization
+    });
+  };
+
+  onServiceDocsChange = i => event => {
+    const { organization } = this.state;
+    const value = event != null && event.target ? event.target.value : event;
+    if (organization.services[i].docs.length === 0) {
+      organization.services[i].docs.push({ document: value, id: null });
+    } else {
+      organization.services[i].docs[0] = { id: organization.services[i].docs[0].id, document: value };
+    }
     this.setState({
       organization
     });
@@ -691,6 +705,17 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                               name={'services[' + i + '].eligibilityCriteria'}
                               onChange={this.onServiceChange(i, 'eligibilityCriteria')}
                             />
+                          </AvGroup>
+                          <AvGroup>
+                            <AvField
+                              name={'services[' + i + '].docs[0].id'}
+                              value={service.docs.length ? service.docs[0].id : null}
+                              className="d-none"
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label>{translate('record.service.requiredDocuments')}</Label>
+                            <AvInput type="textarea" name={'services[' + i + '].docs[0].document'} onChange={this.onServiceDocsChange(i)} />
                           </AvGroup>
                           <AvGroup>
                             <Label>{translate('record.service.locations')}</Label>
