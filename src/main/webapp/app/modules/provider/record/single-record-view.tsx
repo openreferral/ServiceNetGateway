@@ -511,6 +511,18 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <span className="break">{organization.services[currentServiceIdx].eligibilityCriteria}</span>
                     </section>
                     <section>
+                      <h6>
+                        <b>
+                          <Translate contentKey="record.service.requiredDocuments" />
+                        </b>
+                      </h6>
+                      <span className="break">
+                        {organization.services[currentServiceIdx].docs.length > 0
+                          ? organization.services[currentServiceIdx].docs[0].document
+                          : ''}
+                      </span>
+                    </section>
+                    <section>
                       <h6 className="d-flex align-items-center flex-wrap">
                         <b className="mb-1">
                           <Translate contentKey="record.singleRecordView.srvLocations" />

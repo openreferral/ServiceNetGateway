@@ -28,7 +28,7 @@ export interface IRecordCreateViewState {
   activeTab: string;
   locationCount: number;
   locations: object[];
-  services: object[];
+  services: any[];
   serviceCount: number;
   invalidTabs: string[];
   leaving: boolean;
@@ -53,7 +53,8 @@ const serviceModel = {
   description: '',
   applicationProcess: '',
   eligibilityCriteria: '',
-  locationIndexes: []
+  locationIndexes: [],
+  docs: []
 };
 const initialServices = [{ ...serviceModel }];
 
@@ -198,6 +199,17 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     this.setState({
       services
     });
+  };
+
+  onServiceDocsChange = i => event => {
+    const { services } = this.state;
+    const value = event != null && event.target ? event.target.value : event;
+    if (services[i].docs.length === 0) {
+      services[i].docs.push({ document: value, id: null });
+    } else {
+      services[i].docs[0] = { ...services[i].docs[0], document: value };
+    }
+    this.setState({ services });
   };
 
   render() {
@@ -483,6 +495,14 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                           name={'services[' + i + '].eligibilityCriteria'}
                           placeholder={translate('record.service.eligibilityCriteria')}
                           onChange={this.onServiceChange(i, 'eligibilityCriteria')}
+                        />
+                      </AvGroup>
+                      <AvGroup>
+                        <AvInput
+                          type="textarea"
+                          name={'services[' + i + '].docs[0].document'}
+                          placeholder={translate('record.service.requiredDocuments')}
+                          onChange={this.onServiceDocsChange(i)}
                         />
                       </AvGroup>
                       <AvGroup>
