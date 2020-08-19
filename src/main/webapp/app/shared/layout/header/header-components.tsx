@@ -25,21 +25,32 @@ export const BrandIcon = props => (
   </div>
 );
 
-export const Brand = props => (
-  <div className="d-flex align-items-center">
-    <NavbarBrand tag={Link} to={props.isSacramento ? '/shelters' : '/'} className="brand-logo d-flex align-items-center mr-1">
-      <MediaQuery minDeviceWidth={769}>
-        <BrandIcon />
-      </MediaQuery>
-      <span className="navbar-version mt-1">{appConfig.VERSION}</span>
-    </NavbarBrand>
-    <NavLink exact tag={Link} to="/about-us" className="pl-0">
-      <span className="navbar-label text-dark about-us-link">
-        <Translate contentKey="global.menu.aboutUs" />
-      </span>
-    </NavLink>
-  </div>
-);
+export const Brand = props => {
+  const { isSacramento, prependRoutesWithMatch, match } = props;
+  let url = `/`;
+
+  if (isSacramento) {
+    url = '/shelters';
+  } else if (prependRoutesWithMatch) {
+    url = match.url;
+  }
+
+  return (
+    <div className="d-flex align-items-center">
+      <NavbarBrand tag={Link} to={url} className="brand-logo d-flex align-items-center mr-1">
+        <MediaQuery minDeviceWidth={769}>
+          <BrandIcon />
+        </MediaQuery>
+        <span className="navbar-version mt-1">{appConfig.VERSION}</span>
+      </NavbarBrand>
+      <NavLink exact tag={Link} to="/about-us" className="pl-0">
+        <span className="navbar-label text-dark about-us-link">
+          <Translate contentKey="global.menu.aboutUs" />
+        </span>
+      </NavLink>
+    </div>
+  );
+};
 
 export const FeedbackButton = props =>
   props.isSacramento && (
@@ -56,9 +67,9 @@ export const Home = props => {
   return (
     <NavItem>
       <NavLink exact tag={Link} to={url} className="d-flex align-items-center">
-        <FontAwesomeIcon icon="home"/>
+        <FontAwesomeIcon icon="home" />
         <span className="navbar-label">
-          <Translate contentKey="global.menu.home"/>
+          <Translate contentKey="global.menu.home" />
         </span>
       </NavLink>
     </NavItem>
