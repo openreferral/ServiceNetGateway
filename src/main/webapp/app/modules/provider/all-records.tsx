@@ -158,7 +158,9 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   handleScroll = () => {
     if (this.sortContainerRef.current) {
-      this.setState({ isSticky: this.sortContainerRef.current.getBoundingClientRect().top <= 80 });
+      this.setState({
+        isSticky: this.sortContainerRef.current.getBoundingClientRect().top <= (this.props.siloName ? 53 : 80)
+      });
     }
   };
 
@@ -346,8 +348,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       <>
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Col md={12} className="px-0 mx-0 absolute-card-container">
-            <div style={{ height: 'calc(100vh - 80px)' }}>
-              <Map {...mapProps} containerElement={<div style={{ height: 'calc(100vh - 80px)' }} />} />
+            <div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }}>
+              <Map {...mapProps} containerElement={<div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }} />} />
               {isRecordHighlighted && selectedRecord && !filterOpened ? (
                 <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
                   <div className="px-2">
