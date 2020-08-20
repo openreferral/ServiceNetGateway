@@ -34,7 +34,12 @@ module.exports = {
       tsConfig: './tsconfig.test.json',
       diagnostics: false
     }
-  }
+  },
+  collectCoverageFrom: [
+    "!**/*.d.ts",
+    "src/main/webapp/**/*.{js,jsx,ts,tsx}",
+    "!**/config/**",
+  ]
 };
 
 function mapTypescriptAliasToJestAlias(alias = {}) {

@@ -28,6 +28,7 @@ script:
   - ./mvnw clean --no-transfer-progress
   - npm test
   - ./mvnw test --no-transfer-progress
+  - npm run coveralls
 notifications:
   webhooks:
     on_success: change  # options: [always|never|change] default: always
