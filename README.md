@@ -229,7 +229,7 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 
 ## End to End testing (optional)
 
-End to end testing is run with protractor (http://www.protractortest.org/#/tutorial)
+End to end testing is run with protractor (https://www.protractortest.org/#/tutorial)
 
 Required components:
 1. Protractor 7

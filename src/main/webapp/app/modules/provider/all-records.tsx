@@ -61,12 +61,8 @@ const extractMarkerLocations = props => {
   if (props.records) {
     props.records.map(record => {
       const orgId = record.id;
-      if (record.locations) {
-        record.locations.map(geocodingResult => {
-          if (geocodingResult) {
-            markerLocations.push({ orgId, lat: geocodingResult.latitude, lng: geocodingResult.longitude });
-          }
-        });
+      if (record.location) {
+        markerLocations.push({ orgId, lat: record.location.latitude, lng: record.location.longitude });
       }
     });
   }
