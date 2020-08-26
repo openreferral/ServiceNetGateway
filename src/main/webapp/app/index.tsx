@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { AppContainer } from 'react-hot-loader';
 import ReactGA from 'react-ga';
+import * as Sentry from '@sentry/react';
+import _ from 'lodash';
 
 import DevTools from './config/devtools';
 import initStore from './config/store';
@@ -25,6 +27,12 @@ setupAxiosInterceptors(() => actions.clearAuthentication('login.error.unauthoriz
 loadIcons();
 
 ReactGA.initialize('UA-2390830-31');
+
+Sentry.init({
+  dsn: _.get(window, '_env_.PUBLIC_DSN', ''),
+  environment: _.get(window, '_env_.SENTRY_ENVIRONMENT', ''),
+  release: 'servicenet@' + process.env.npm_package_version
+});
 
 const rootEl = document.getElementById('root');
 
