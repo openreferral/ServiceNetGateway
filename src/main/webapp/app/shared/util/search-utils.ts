@@ -14,7 +14,7 @@ const SORT_DISTANCE = 'distance';
 export const SHELTER_SORT_ARRAY = [SORT_BEDS, SORT_DISTANCE];
 export const PROVIDER_SORT_ARRAY = [SORT_UPDATED_AT, SORT_NAME];
 
-const defaultSearchPreferences = {
+export const defaultSearchPreferences = {
   sort: SORT_SIMILARITY,
   order: DEFAULT_SORT_ORDER,
   searchPhrase: '',
