@@ -18,6 +18,8 @@ import { GOOGLE_API_KEY } from 'app/config/constants';
 import { MAP } from 'react-google-maps/lib/constants';
 import { uncheckFiltersChanged } from './provider-filter.reducer';
 
+const MEDIUM_WIDTH_BREAKPOINT = 991;
+const LARGE_WIDTH_BREAKPOINT = 992;
 const MOBILE_WIDTH_BREAKPOINT = 768;
 const DESKTOP_WIDTH_BREAKPOINT = 769;
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
@@ -273,13 +275,15 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     });
   };
 
-  mapRecords = ({ records, colSize = 4, isInAllRecordSection = false }) => {
+  mapRecords = ({ records, isBesideFilter = false, isInAllRecordSection = false }) => {
     const { recordViewType } = this.state;
     const { urlBase } = this.props;
     return _.map(records, record => (
       <div
         key={record.organization.id}
-        className={`${recordViewType === LIST_VIEW && isInAllRecordSection ? 'col-12' : 'col-lg-4 col-md-6 col-xs-12'}`}
+        className={`${
+          recordViewType === LIST_VIEW && isInAllRecordSection ? 'col-12' : isBesideFilter ? 'col-lg-6 col-md-12' : 'col-lg-4 col-md-6'
+        }`}
       >
         <div className="mb-4">
           <RecordCard
@@ -295,17 +299,28 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   mapWithFilter = allRecords => {
     const { filterOpened, isMapView } = this.state;
     const { siloName } = this.props;
-    const elementsBesideFilter = _.slice(allRecords, 0, 4);
+    const fourCardsBesideFilter = _.slice(allRecords, 0, 4);
+    const upperTwoCardsBesideFilter = _.slice(allRecords, 0, 2);
+    const lowerTwoCardsBesideFilter = _.slice(allRecords, 2, 4);
     const elementsAfterFilter = _.slice(allRecords, 4);
     return (
       <div className="m-0 p-0 w-100">
         <Row noGutters>
           <Col md={12}>
             <Row noGutters>
-              <Col md={8}>
-                <Row noGutters>{this.mapRecords({ isInAllRecordSection: false, records: elementsBesideFilter, colSize: 6 })}</Row>
-              </Col>
-              <Col md={4}>
+              <div className="col-lg-8 col-md-6">
+                <MediaQuery minDeviceWidth={LARGE_WIDTH_BREAKPOINT}>
+                  <Row noGutters>
+                    {this.mapRecords({ isInAllRecordSection: false, records: fourCardsBesideFilter, isBesideFilter: true })}
+                  </Row>
+                </MediaQuery>
+                <MediaQuery maxDeviceWidth={MEDIUM_WIDTH_BREAKPOINT}>
+                  <Row noGutters>
+                    {this.mapRecords({ isInAllRecordSection: false, records: upperTwoCardsBesideFilter, isBesideFilter: true })}
+                  </Row>
+                </MediaQuery>
+              </div>
+              <div className="col-lg-4 col-md-6">
                 <div className="filter-card mx-3 mb-4">
                   <FilterCard
                     siloName={siloName}
@@ -315,11 +330,16 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                     isMapView={isMapView}
                   />
                 </div>
-              </Col>
+              </div>
             </Row>
           </Col>
+          <MediaQuery maxDeviceWidth={MEDIUM_WIDTH_BREAKPOINT}>
+            <Col md={12}>
+              <Row noGutters>{this.mapRecords({ isInAllRecordSection: true, records: lowerTwoCardsBesideFilter })}</Row>
+            </Col>
+          </MediaQuery>
           <Col md={12}>
-            <Row noGutters>{this.mapRecords({ isInAllRecordSection: true, records: elementsAfterFilter, colSize: 4 })}</Row>
+            <Row noGutters>{this.mapRecords({ isInAllRecordSection: true, records: elementsAfterFilter })}</Row>
           </Col>
         </Row>
       </div>
