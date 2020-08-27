@@ -11,8 +11,10 @@ class PublicHome extends React.Component<IPublicHomeProps> {
   render() {
     const { urlBase, siloName } = this.props;
     return (
-      <div className="all-records-container-public">
-        <AllRecords urlBase={urlBase} siloName={siloName} />
+      <div className="background-public">
+        <div className="all-records-container-public">
+          <AllRecords urlBase={urlBase} siloName={siloName} />
+        </div>
       </div>
     );
   }

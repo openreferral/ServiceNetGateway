@@ -52,6 +52,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
       isAdmin={true}
       isAuthenticated={true}
       isInProduction={false}
+      isProvider={false}
       isSacramento={false}
       isShelterOwner={false}
       isStaging={false}
@@ -61,7 +62,18 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
       userLogin="user"
     />
     <Component
+      currentLocale="en"
+      isAdmin={true}
+      isAuthenticated={true}
+      isInProduction={false}
+      isProvider={false}
       isSacramento={false}
+      isShelterOwner={false}
+      isStaging={false}
+      isSwaggerEnabled={true}
+      onLocaleChange={[Function]}
+      ribbonEnv="dev"
+      userLogin="user"
     />
     <Collapse
       appear={false}
@@ -93,6 +105,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           isAdmin={true}
           isAuthenticated={true}
           isInProduction={false}
+          isProvider={false}
           isSacramento={false}
           isShelterOwner={false}
           isStaging={false}
@@ -117,6 +130,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           isAdmin={true}
           isAuthenticated={true}
           isInProduction={false}
+          isProvider={false}
           isSacramento={false}
           isShelterOwner={false}
           isStaging={false}
@@ -171,6 +185,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       isAdmin={true}
       isAuthenticated={true}
       isInProduction={true}
+      isProvider={false}
       isSacramento={false}
       isShelterOwner={false}
       isStaging={false}
@@ -180,7 +195,18 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       userLogin="user"
     />
     <Component
+      currentLocale="en"
+      isAdmin={true}
+      isAuthenticated={true}
+      isInProduction={true}
+      isProvider={false}
       isSacramento={false}
+      isShelterOwner={false}
+      isStaging={false}
+      isSwaggerEnabled={false}
+      onLocaleChange={[Function]}
+      ribbonEnv="prod"
+      userLogin="user"
     />
     <Collapse
       appear={false}
@@ -212,6 +238,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           isAdmin={true}
           isAuthenticated={true}
           isInProduction={true}
+          isProvider={false}
           isSacramento={false}
           isShelterOwner={false}
           isStaging={false}
@@ -236,6 +263,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           isAdmin={true}
           isAuthenticated={true}
           isInProduction={true}
+          isProvider={false}
           isSacramento={false}
           isShelterOwner={false}
           isStaging={false}

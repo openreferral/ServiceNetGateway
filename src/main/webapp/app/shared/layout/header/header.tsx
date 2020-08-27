@@ -21,6 +21,7 @@ export interface IHeaderProps {
   userLogin: string;
   isShelterOwner: boolean;
   isStaging: boolean;
+  isProvider: boolean;
   match?: any;
   prependRoutesWithMatch?: boolean;
 }
@@ -72,7 +73,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             </div>
           </MediaQuery>
           <Brand {...this.props} />
-          <FeedbackButton isSacramento={isSacramento} />
+          <FeedbackButton {...this.props} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
               {(!isAuthenticated || !isSacramento) && <Home {...this.props} />}

@@ -56,14 +56,13 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
               userLogin={this.props.userLogin}
               isSacramento={this.props.isSacramento}
               isShelterOwner={this.props.isShelterOwner}
+              isProvider
               match={match}
               prependRoutesWithMatch
             />
           </ErrorBoundary>
           <div>
-            <div className="background-public">
-              <Routes match={match} />
-            </div>
+            <Routes match={match} />
           </div>
         </div>
       </div>

@@ -24,7 +24,6 @@ import { containerStyle } from 'app/shared/util/measure-widths';
 import ProviderApp from 'app/modules/provider/provider-app';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import Logout from 'app/modules/login/logout';
-import Routes from './modules/provider/public-routes';
 import PublicApp from './modules/provider/public-app';
 
 export interface IAppProps extends StateProps, DispatchProps {}
@@ -65,6 +64,7 @@ export class App extends React.Component<IAppProps> {
               userLogin={this.props.userLogin}
               isSacramento={this.props.isSacramento}
               isShelterOwner={this.props.isShelterOwner}
+              isProvider={false}
             />
           </ErrorBoundary>
           <div className="container-fluid view-container" id="app-view-container">
