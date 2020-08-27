@@ -85,8 +85,10 @@ describe('Search utils', () => {
     it('should set shelter sort', () => {
       Storage.local.set(USERNAME_WITH_DEFAULT_PREFERENCES, defaultSearchPreferences);
       expect(getSearchPreferences(USERNAME_WITH_DEFAULT_PREFERENCES).shelterSearchPreferences.sort).not.toEqual(SORT);
-      setShelterSort(USERNAME_WITH_DEFAULT_PREFERENCES, SORT);
+      expect(getSearchPreferences(USERNAME_WITH_DEFAULT_PREFERENCES).shelterSearchPreferences.order).not.toEqual(ORDER);
+      setShelterSort(USERNAME_WITH_DEFAULT_PREFERENCES, SORT, ORDER);
       expect(getSearchPreferences(USERNAME_WITH_DEFAULT_PREFERENCES).shelterSearchPreferences.sort).toEqual(SORT);
+      expect(getSearchPreferences(USERNAME_WITH_DEFAULT_PREFERENCES).shelterSearchPreferences.order).toEqual(ORDER);
     });
   });
 
