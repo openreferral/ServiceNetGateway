@@ -535,6 +535,12 @@
   span {
     display: flex !important;
     padding: 2px 1rem;
+
+    div {
+      svg {
+        width: auto !important;
+      }
+    }
   }
   span:hover {
     cursor: pointer;
