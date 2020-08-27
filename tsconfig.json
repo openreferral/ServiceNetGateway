@@ -29,7 +29,8 @@
     },
     "importHelpers": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/main/webapp/app/typing.d.ts",

@@ -16,6 +16,8 @@ services:
       - SPRING_OAUTH2_CLIENT_SECRET=${SPRING_OAUTH2_CLIENT_SECRET:-changeme}
       - SPRING_OAUTH2_SESSION_TIMEOUT=${SPRING_OAUTH2_SESSION_TIMEOUT:-3600}
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SENTRY_DSN=${SENTRY_DSN}
+      - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
     ports:
       - 8080:8080
   servicenet-app:
@@ -38,6 +40,8 @@ services:
       - JHIPSTER_OAUTH2_CLIENT_SECRET=${JHIPSTER_OAUTH2_CLIENT_SECRET:-changeme}
       - SPRING_OAUTH2_CLIENT_SECRET=${SPRING_OAUTH2_CLIENT_SECRET:-changeme}
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SENTRY_DSN=${SENTRY_DSN}
+      - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
   servicenetauth-app:
     image: johnhbenetech/servicenetauth:${SN_VERSION_TAG:-dev}
     environment:
@@ -54,6 +58,8 @@ services:
       - SPRING_OAUTH2_ACCESS_TOKEN_VALIDITY=${SPRING_OAUTH2_SESSION_TIMEOUT:-3600}
       - SPRING_OAUTH2_REFRESH_TOKEN_VALIDITY=${SPRING_OAUTH2_SESSION_TIMEOUT:-604800}
       - JHIPSTER_SLEEP=10 # gives time for other services to boot before the application
+      - SENTRY_DSN=${SENTRY_DSN}
+      - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
 
   servicenet-mongo:
     image: mongo:4.0
