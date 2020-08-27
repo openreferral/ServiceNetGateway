@@ -114,12 +114,12 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
     }
   };
 
-  sort = prop => () => {
-    setShelterSort(this.props.account.login, prop);
+  sort = (sort, order) => {
+    setShelterSort(this.props.account.login, sort, order);
 
     ReactGA.event({ category: 'UserActions', action: 'Shelter - Sorting Records' });
 
-    this.setState({ sort: prop }, () => {
+    this.setState({ sort, order }, () => {
       this.reset();
     });
   };
@@ -201,6 +201,7 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
                     dropdownOpen={this.state.dropdownOpen}
                     toggleSort={this.toggleSort}
                     sort={this.state.sort}
+                    order={this.state.order}
                     sortFunc={this.sort}
                     values={SHELTER_SORT_ARRAY}
                   />

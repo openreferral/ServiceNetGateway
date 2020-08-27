@@ -55,9 +55,10 @@ export const setSearchPhrase = (username, searchPhrase) => {
   Storage.local.set(username, { ...searchPreferences, searchPhrase });
 };
 
-export const setShelterSort = (username, sort) => {
+export const setShelterSort = (username, sort, order) => {
   const searchPreferences = Storage.local.get(username, defaultSearchPreferences);
   searchPreferences.shelterSearchPreferences.sort = sort;
+  searchPreferences.shelterSearchPreferences.order = order;
   Storage.local.set(username, searchPreferences);
 };
 
