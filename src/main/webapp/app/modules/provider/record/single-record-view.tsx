@@ -75,9 +75,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   state: ISingleRecordViewState = {
     serviceWidths: [],
     locationWidths: [],
-    isOrganizationOpen: false,
-    isServicesOpen: false,
-    isLocationsOpen: false,
+    isOrganizationOpen: true,
+    isServicesOpen: true,
+    isLocationsOpen: true,
     currentServiceIdx: 0,
     detailsView: false,
     initialLoad: true
