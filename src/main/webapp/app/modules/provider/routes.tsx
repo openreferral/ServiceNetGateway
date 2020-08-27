@@ -10,6 +10,7 @@ import Settings from 'app/modules/account/settings/settings';
 import Password from 'app/modules/account/password/password';
 import DeactivatedRecords from 'app/modules/provider/deactivated/deactivated-records';
 import NotConfiguredAccount from 'app/modules/provider/not-configured-account';
+import Feedback from 'app/modules/feedback/feedback';
 
 const Routes = ({ isAdmin, match, location, account }) => {
   const hasUserSilo = account && account.siloId !== null;
@@ -18,6 +19,7 @@ const Routes = ({ isAdmin, match, location, account }) => {
   return (
     <div>
       <Switch>
+        <ErrorBoundaryRoute path={`${match.url}feedback`} component={Feedback} />
         <ErrorBoundaryRoute path={`${match.url}about-us`} component={AboutUs} />
         <ErrorBoundaryRoute path={`${match.url}account/settings`} component={Settings} />
         <ErrorBoundaryRoute path={`${match.url}account/password`} component={Password} />
