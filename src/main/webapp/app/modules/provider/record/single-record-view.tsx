@@ -19,6 +19,7 @@ import BuildingLogo from '../../../../static/images/building.svg';
 import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 const LocationPill = location => {
   if (!location) {
@@ -55,6 +56,8 @@ const RemainderCount = count => <span className="remainder blue pl-0">+ {count}<
 const measureId = idx => 'measure-svc-' + idx;
 const MAX_PILLS_WIDTH = 250;
 const REMAINDER_WIDTH = 25;
+
+const GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL = 'https://www.google.com/maps/dir//';
 
 export interface ISingleRecordViewProps extends StateProps, DispatchProps, RouteComponentProps<{ orgId: string }> {
   record: any;
@@ -359,7 +362,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 <section>
                   {locationsCount > 0 ? (
                     organization.locations.map(loc => (
-                      <div className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
+                      <div className="d-inline-block col-xl-4 col-md-6 col-xs-12 p-0">
                         <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3 pt-3">
                           <CardTitle>
                             <span className="text-ellipsis font-weight-bold">
@@ -370,8 +373,29 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                             </span>
                           </CardTitle>
                           <CardBody>
-                            <p className="m-0 text-ellipsis">{loc.address1}</p>
-                            <p>{loc.zipcode}</p>
+                            <div className="d-flex justify-content-between">
+                              <div>
+                                <p className="m-0 text-ellipsis">{loc.address1}</p>
+                                <p>{loc.zipcode}</p>
+                              </div>
+                              <div className="ml-1">
+                                <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
+                                  <a
+                                    href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${loc.address1},${loc.city},${loc.ca} ${
+                                      loc.zipcode ? loc.zipcode : ''
+                                    }`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="alert-link w-100 h-100 d-flex align-items-center px-2"
+                                    style={{ color: 'white' }}
+                                  >
+                                    <FontAwesomeIcon icon="directions" size="lg" />
+                                    &nbsp;
+                                    <Translate contentKey="providerSite.directions">Directions</Translate>
+                                  </a>
+                                </ButtonPill>
+                              </div>
+                            </div>
                           </CardBody>
                         </Card>
                       </div>

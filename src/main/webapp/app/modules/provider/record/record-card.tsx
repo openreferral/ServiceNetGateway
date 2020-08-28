@@ -12,9 +12,11 @@ import { faBookmark as faBookmarkSolid, faCircle } from '@fortawesome/free-solid
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { connect } from 'react-redux';
+import MediaQuery from 'react-responsive';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
 import OwnerInfo from 'app/shared/layout/owner-info';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 const REMAINDER_WIDTH = 25;
 const ONE_HOUR = 1000 * 60 * 60;
@@ -22,11 +24,17 @@ const LESS_THAN_24_HOURS = '#6AB9A4';
 const LESS_THAN_48_HOURS = '#FAB28C';
 const MORE_THAN_48_HOURS = '#808080';
 
+const GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL = 'https://www.google.com/maps/dir//';
+
+const MOBILE_WIDTH_BREAKPOINT = 768;
+const EXTRA_LARGE_WIDTH_BREAKPOINT = 1200;
+
 export interface IRecordCardProps extends StateProps, DispatchProps {
   record: any;
   link: string;
   fullWidth?: boolean;
   closeCard?: Function;
+  coordinates?: string;
 }
 
 export interface IRecordCardState {
@@ -117,6 +125,27 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
             <OwnerInfo record={record} direction="top" />
           </div>
         </div>
+        {this.props.coordinates && (
+          <ButtonPill className="button-pill-primary d-flex align-items-center p-0">
+            <a
+              href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${this.props.coordinates}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="alert-link w-100 h-100 d-flex align-items-center px-2"
+              style={{ color: 'white' }}
+            >
+              <FontAwesomeIcon icon="directions" size="lg" />
+              <MediaQuery minDeviceWidth={EXTRA_LARGE_WIDTH_BREAKPOINT}>
+                &nbsp;
+                <Translate contentKey="providerSite.directions">Directions</Translate>
+              </MediaQuery>
+              <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+                &nbsp;
+                <Translate contentKey="providerSite.directions">Directions</Translate>
+              </MediaQuery>
+            </a>
+          </ButtonPill>
+        )}
         {this.props.closeCard && (
           <div className="mx-2" onClick={() => this.props.closeCard()}>
             <FontAwesomeIcon icon="times" />
