@@ -1,7 +1,7 @@
 import React, { ComponentClass, FunctionComponent } from 'react';
 import { getAllProviderRecords, getAllProviderRecordsForMap, selectRecord, getAllProviderRecordsPublic } from './provider-record.reducer';
 import { connect } from 'react-redux';
-import { Col, Row, Progress, Modal } from 'reactstrap';
+import { Col, Row, Progress, Modal, Button } from 'reactstrap';
 import _ from 'lodash';
 import RecordCard from 'app/modules/provider/record/record-card';
 import { IPaginationBaseState, Translate, translate } from 'react-jhipster';
@@ -26,6 +26,10 @@ const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geomet
 const GRID_VIEW = 'GRID';
 const LIST_VIEW = 'LIST';
 const INACTIVE_COLOR = '#9aaabb';
+const MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE = '60px';
+const MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE = '24px';
+const MY_LOCATION_BUTTON_POSITION_RIGHT = '65px';
+const MY_LOCATION_BUTTON_POSITION_BOTTOM = '32px';
 
 declare global {
   // tslint:disable-next-line:interface-name
@@ -275,6 +279,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     });
   };
 
+  centerMapOnMyLocation = () => {
+    navigator.geolocation.getCurrentPosition(position => {
+      this.setState({ selectedLat: position.coords.latitude, selectedLng: position.coords.longitude });
+    });
+  };
+
   mapRecords = ({ records, isBesideFilter = false, isInAllRecordSection = false }) => {
     const { recordViewType } = this.state;
     const { urlBase } = this.props;
@@ -366,6 +376,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           <Col md={12} className="px-0 mx-0 absolute-card-container">
             <div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }}>
               <Map {...mapProps} containerElement={<div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }} />} />
+              <div
+                className="position-absolute"
+                style={{ right: MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE, bottom: MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE }}
+              >
+                <Button color="light" onClick={this.centerMapOnMyLocation}>
+                  <FontAwesomeIcon icon="map-marker" size="lg" />
+                </Button>
+              </div>
               {isRecordHighlighted && selectedRecord && !filterOpened ? (
                 <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
                   <div className="px-2">
@@ -383,8 +401,16 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         </MediaQuery>
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
           <Row className="mb-4 mx-3">
-            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view">
+            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative">
               <Map {...mapProps} containerElement={<div style={{ height: '400px' }} />} />
+              <div
+                className="position-absolute"
+                style={{ right: MY_LOCATION_BUTTON_POSITION_RIGHT, bottom: MY_LOCATION_BUTTON_POSITION_BOTTOM }}
+              >
+                <Button color="light" onClick={this.centerMapOnMyLocation}>
+                  <FontAwesomeIcon icon="map-marker" size="lg" />
+                </Button>
+              </div>
             </Col>
             {isRecordHighlighted && selectedRecord && !filterOpened ? (
               <Col md={4} className={`col-md-4 pr-0 selected-record`}>
