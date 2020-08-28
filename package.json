@@ -30,7 +30,7 @@
     "lodash": "4.17.19",
     "moment": "2.22.2",
     "query-string": "6.8.2",
-    "react": "16.13.1",
+    "react": "16.4.2",
     "react-addons-css-transition-group": "16.0.0-alpha.3",
     "react-addons-transition-group": "16.0.0-alpha.3",
     "react-burger-menu": "2.6.13",
@@ -44,7 +44,7 @@
     "react-loadable": "5.5.0",
     "react-magic-slider-dots": "1.2.0",
     "react-phone-number-input": "3.0.24",
-    "react-redux": "7.1.3",
+    "react-redux": "^6.0.1",
     "react-redux-loading-bar": "4.6.0",
     "react-responsive": "8.0.3",
     "react-router-dom": "5.1.2",
@@ -151,7 +151,8 @@
     "xml2js": "0.4.19"
   },
   "resolutions": {
-    "@types/react": "16.4.12"
+    "@types/react": "16.4.12",
+    "react-test-renderer": "16.4.2"
   },
   "engines": {
     "node": ">=8.9.0"
@@ -169,7 +170,7 @@
     "cleanup": "rimraf target/www",
     "start": "npm run webpack:dev",
     "start-tls": "npm run webpack:dev -- --env.tls",
-    "test": "npm run lint && jest --coverage --logHeapUsage -w=2 --config src/test/javascript/jest.conf.js",
+    "test": "TZ=UTC npm run lint && TZ=UTC jest --coverage --logHeapUsage -w=2 --config src/test/javascript/jest.conf.js",
     "coveralls": "jest --coverage --logHeapUsage -w=2 --config src/test/javascript/jest.conf.js && cat target/test-results/lcov.info | coveralls",
     "test:watch": "npm test -- --watch",
     "webpack:dev": "npm run webpack-dev-server -- --config webpack/webpack.dev.js --inline --port=9060 --env.stats=minimal",
@@ -178,7 +179,7 @@
     "webpack:build": "npm run cleanup && npm run webpack:build:main",
     "webpack:prod:main": "npm run webpack -- --config webpack/webpack.prod.js --profile",
     "webpack:prod": "npm run cleanup && npm run webpack:prod:main",
-    "webpack:test": "npm run test",
+    "webpack:test": "TZ=UTC npm run test",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
   },

@@ -1,0 +1,34 @@
+[ {
+  "id" : "f4870109-09b2-48ab-9c7e-87ac9df4f354",
+  "timestamp" : "2020-04-02T09:18:22.767091Z",
+  "dismissed" : true,
+  "dismissComment" : "",
+  "dismissedById" : "30000000-0000-0000-0000-000000000000",
+  "dismissedByName" : "admin",
+  "dismissDate" : "2020-08-28T11:32:11.213646Z",
+  "hidden" : false,
+  "hiddenById" : null,
+  "hiddenByName" : null,
+  "hiddenDate" : null,
+  "organizationRecordId" : "3cd806f9-0118-444b-9873-497fbdcef732",
+  "organizationRecordName" : "Community Housing Partnership (CHP)",
+  "partnerVersionId" : "da079c16-633a-40f4-800a-069d8b790319",
+  "partnerVersionName" : "HOMEBRIDGE",
+  "locationMatches" : {
+    "f7c81e93-515f-499e-bc89-5c624911511d" : [ {
+      "id" : "01492256-ecbc-49ed-9a65-6e0b1603a6ac",
+      "location" : "f7c81e93-515f-499e-bc89-5c624911511d",
+      "matchingLocation" : "7e1c8941-c4c4-4295-bf5b-89a8fc588685",
+      "orgId" : "da079c16-633a-40f4-800a-069d8b790319",
+      "organizationName" : "HOMEBRIDGE",
+      "locationName" : "1111 Example Street - San Francisco (CA)",
+      "similarity" : 1.0
+    } ]
+  },
+  "serviceMatches" : { },
+  "numberOfLocations" : 1,
+  "providerName" : "UWBA",
+  "similarity" : 0.52,
+  "freshness" : 786,
+  "owner" : null
+} ]

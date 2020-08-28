@@ -1,5 +1,6 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
+import renderer from 'react-test-renderer';
 
 import ErrorBoundary from 'app/shared/error/error-boundary';
 
@@ -20,7 +21,7 @@ describe('error component', () => {
 
   it('Should call Error Boundary componentDidCatch method', () => {
     const spy = jest.spyOn(ErrorBoundary.prototype, 'componentDidCatch');
-    mount(
+    renderer.create(
       <ErrorBoundary>
         <ErrorComp />
       </ErrorBoundary>

@@ -47,6 +47,8 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     clipboardTooltipOpen: false,
     clipboardText: translate('multiRecordView.copyToClipboard')
   };
+  private iconRef = React.createRef() as React.LegacyRef<HTMLDivElement>;
+  private clipboardRef = React.createRef() as React.LegacyRef<HTMLDivElement>;
 
   getSuggestedValues(fieldName) {
     if (this.state.isConflicting) {
@@ -138,13 +140,13 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     let icon = null;
     if (this.state.isConflicting) {
       icon = (
-        <div id={`${identifier}-icon`}>
+        <div id={`${identifier}-icon`} ref={this.iconRef}>
           <FontAwesomeIcon className={`icon-conflicting icon-${type}`} size="lg" icon={['fab', 'medapps']} />
         </div>
       );
     } else if (this.state.isExcluded) {
       icon = (
-        <div id={`${identifier}-icon`}>
+        <div id={`${identifier}-icon`} ref={this.iconRef}>
           <FontAwesomeIcon className={`icon-excluded icon-${type}`} size="lg" icon="times-circle" />
         </div>
       );
@@ -166,7 +168,7 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
           innerClassName="tooltip-inner"
           autohide={false}
           isOpen={this.state.tooltipOpen}
-          target={`${identifier}-icon`}
+          target={this.iconRef}
           toggle={this.toggleTooltip}
         >
           {partnersNumber}
@@ -203,7 +205,7 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
           innerClassName="tooltip-inner"
           autohide={false}
           isOpen={this.state.tooltipOpen}
-          target={`${identifier}-icon`}
+          target={this.iconRef}
           toggle={this.toggleTooltip}
         >
           <Translate contentKey="singleRecordView.details.excludedCopy" />
@@ -215,7 +217,7 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     let clipboardTooltip = null;
     if (showClipboard && defaultValue) {
       clipboardButton = (
-        <div className="copy-to-clipboard-icon" id={`${identifier}-clipboard`} onClick={this.copyToClipboard(defaultValue)}>
+        <div className="copy-to-clipboard-icon" id={`${identifier}-clipboard`} onClick={this.copyToClipboard(defaultValue)} ref={this.clipboardRef}>
           <FontAwesomeIcon size="lg" icon="clipboard" />
         </div>
       );
@@ -226,7 +228,7 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
           innerClassName="tooltip-clip-inner"
           className="tooltip-clip"
           isOpen={this.state.clipboardTooltipOpen}
-          target={`${identifier}-clipboard`}
+          target={this.clipboardRef}
           toggle={this.toggleClipboardTooltip}
           autohide
         >
