@@ -1,0 +1,2361 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Single record view renders correctly 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col"
+  >
+    <h2>
+      Community Housing Partnership (CHP)
+    </h2>
+    <h5>
+      <span />
+    </h5>
+    <h5>
+      <span />
+      <span>
+        01/17/19 21:13
+      </span>
+    </h5>
+    <h5>
+      <span />
+      <span>
+        08/24/20 12:41
+      </span>
+    </h5>
+    <div>
+      <ul
+        className="nav nav-tabs"
+      >
+        <li
+          className="nav-item"
+        >
+          <a
+            className="active nav-link"
+            onClick={[Function]}
+          >
+            <span />
+          </a>
+        </li>
+      </ul>
+      <div
+        className="tab-content"
+      >
+        <div
+          className="tab-pane active"
+        >
+          <div>
+            <div
+              className="row"
+            >
+              <div
+                className="col-sm-6"
+              >
+                <div>
+                  <h4
+                    className="title"
+                  >
+                    <div
+                      className=""
+                      onClick={null}
+                    >
+                      <span />
+                    </div>
+                  </h4>
+                  <div
+                    className="collapse show"
+                    style={Object {}}
+                  >
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className=""
+                        htmlFor="organizationName"
+                      >
+                        <span />
+                      </label>
+                      <div
+                        className="input-field-container row"
+                      >
+                        <div
+                          className="col"
+                        >
+                          <input
+                            className="blueBorder form-control"
+                            disabled={true}
+                            id="organizationName"
+                            name="organizationName"
+                            type="text"
+                            value="Community Housing Partnership (CHP)"
+                          />
+                        </div>
+                        <div
+                          id="organizationName-icon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-medapps fa-w-10 fa-lg icon-conflicting icon-text"
+                            data-icon="medapps"
+                            data-prefix="fab"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 320 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M118.3 238.4c3.5-12.5 6.9-33.6 13.2-33.6 8.3 1.8 9.6 23.4 18.6 36.6 4.6-23.5 5.3-85.1 14.1-86.7 9-.7 19.7 66.5 22 77.5 9.9 4.1 48.9 6.6 48.9 6.6 1.9 7.3-24 7.6-40 7.8-4.6 14.8-5.4 27.7-11.4 28-4.7.2-8.2-28.8-17.5-49.6l-9.4 65.5c-4.4 13-15.5-22.5-21.9-39.3-3.3-.1-62.4-1.6-47.6-7.8l31-5zM228 448c21.2 0 21.2-32 0-32H92c-21.2 0-21.2 32 0 32h136zm-24 64c21.2 0 21.2-32 0-32h-88c-21.2 0-21.2 32 0 32h88zm34.2-141.5c3.2-18.9 5.2-36.4 11.9-48.8 7.9-14.7 16.1-28.1 24-41 24.6-40.4 45.9-75.2 45.9-125.5C320 69.6 248.2 0 160 0S0 69.6 0 155.2c0 50.2 21.3 85.1 45.9 125.5 7.9 12.9 16 26.3 24 41 6.7 12.5 8.7 29.8 11.9 48.9 3.5 21 36.1 15.7 32.6-5.1-3.6-21.7-5.6-40.7-15.3-58.6C66.5 246.5 33 211.3 33 155.2 33 87.3 90 32 160 32s127 55.3 127 123.2c0 56.1-33.5 91.3-66.1 151.6-9.7 18-11.7 37.4-15.3 58.6-3.4 20.6 29 26.4 32.6 5.1z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className=""
+                        htmlFor="organizationAlternateName"
+                      >
+                        <span />
+                      </label>
+                      <div
+                        className="input-field-container row"
+                      >
+                        <div
+                          className="col"
+                        >
+                          <input
+                            className="form-control"
+                            disabled={true}
+                            id="organizationAlternateName"
+                            name="organizationAlternateName"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className=""
+                        htmlFor="organizationDescription"
+                      >
+                        <span />
+                      </label>
+                      <div
+                        className="input-field-container row"
+                      >
+                        <div
+                          className="col"
+                        >
+                          <textarea
+                            className="blueBorder form-control"
+                            disabled={true}
+                            id="organizationDescription"
+                            name="organizationDescription"
+                            value="Community Housing Partnership is an outcomes-focused nonprofit that fulfills its mission by developing and managing high-quality supportive housing and providing services to homeless individuals, seniors, and families.
+
+Community Housing Partnership does not maintain an open waitlist. All vacancies are filled through referrals. Information about referral-based housing can be found at: http://example.org/services/continuum-of-care-adult-coordinated-entry/
+
+ If you have any questions, please call 111-111-1111 x123 or x116, or email CHP staff at housingopportunities@example.org
+
+"
+                          />
+                        </div>
+                        <div
+                          id="organizationDescription-icon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-medapps fa-w-10 fa-lg icon-conflicting icon-textarea"
+                            data-icon="medapps"
+                            data-prefix="fab"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 320 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M118.3 238.4c3.5-12.5 6.9-33.6 13.2-33.6 8.3 1.8 9.6 23.4 18.6 36.6 4.6-23.5 5.3-85.1 14.1-86.7 9-.7 19.7 66.5 22 77.5 9.9 4.1 48.9 6.6 48.9 6.6 1.9 7.3-24 7.6-40 7.8-4.6 14.8-5.4 27.7-11.4 28-4.7.2-8.2-28.8-17.5-49.6l-9.4 65.5c-4.4 13-15.5-22.5-21.9-39.3-3.3-.1-62.4-1.6-47.6-7.8l31-5zM228 448c21.2 0 21.2-32 0-32H92c-21.2 0-21.2 32 0 32h136zm-24 64c21.2 0 21.2-32 0-32h-88c-21.2 0-21.2 32 0 32h88zm34.2-141.5c3.2-18.9 5.2-36.4 11.9-48.8 7.9-14.7 16.1-28.1 24-41 24.6-40.4 45.9-75.2 45.9-125.5C320 69.6 248.2 0 160 0S0 69.6 0 155.2c0 50.2 21.3 85.1 45.9 125.5 7.9 12.9 16 26.3 24 41 6.7 12.5 8.7 29.8 11.9 48.9 3.5 21 36.1 15.7 32.6-5.1-3.6-21.7-5.6-40.7-15.3-58.6C66.5 246.5 33 211.3 33 155.2 33 87.3 90 32 160 32s127 55.3 127 123.2c0 56.1-33.5 91.3-66.1 151.6-9.7 18-11.7 37.4-15.3 58.6-3.4 20.6 29 26.4 32.6 5.1z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className=""
+                        htmlFor="organizationEmail"
+                      >
+                        <span />
+                      </label>
+                      <div
+                        className="input-field-container row"
+                      >
+                        <div
+                          className="col"
+                        >
+                          <input
+                            className="form-control"
+                            disabled={true}
+                            id="organizationEmail"
+                            name="organizationEmail"
+                            type="text"
+                            value="info@example.org"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className=""
+                        htmlFor="organizationUrl"
+                      >
+                        <span />
+                      </label>
+                      <div
+                        className="input-field-container row"
+                      >
+                        <div
+                          className="col"
+                        >
+                          <input
+                            className="blueBorder form-control"
+                            disabled={true}
+                            id="organizationUrl"
+                            name="organizationUrl"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                        <a
+                          className="url-link"
+                          href="https://www.example.org"
+                          style={
+                            Object {
+                              "color": "rgba(0, 0, 0, 0.7)",
+                            }
+                          }
+                          target="_blank"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-external-link-alt fa-w-16 url-icon"
+                            data-icon="external-link-alt"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                          https://www.example.org
+                        </a>
+                        <div
+                          id="organizationUrl-icon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-medapps fa-w-10 fa-lg icon-conflicting icon-text"
+                            data-icon="medapps"
+                            data-prefix="fab"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 320 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M118.3 238.4c3.5-12.5 6.9-33.6 13.2-33.6 8.3 1.8 9.6 23.4 18.6 36.6 4.6-23.5 5.3-85.1 14.1-86.7 9-.7 19.7 66.5 22 77.5 9.9 4.1 48.9 6.6 48.9 6.6 1.9 7.3-24 7.6-40 7.8-4.6 14.8-5.4 27.7-11.4 28-4.7.2-8.2-28.8-17.5-49.6l-9.4 65.5c-4.4 13-15.5-22.5-21.9-39.3-3.3-.1-62.4-1.6-47.6-7.8l31-5zM228 448c21.2 0 21.2-32 0-32H92c-21.2 0-21.2 32 0 32h136zm-24 64c21.2 0 21.2-32 0-32h-88c-21.2 0-21.2 32 0 32h88zm34.2-141.5c3.2-18.9 5.2-36.4 11.9-48.8 7.9-14.7 16.1-28.1 24-41 24.6-40.4 45.9-75.2 45.9-125.5C320 69.6 248.2 0 160 0S0 69.6 0 155.2c0 50.2 21.3 85.1 45.9 125.5 7.9 12.9 16 26.3 24 41 6.7 12.5 8.7 29.8 11.9 48.9 3.5 21 36.1 15.7 32.6-5.1-3.6-21.7-5.6-40.7-15.3-58.6C66.5 246.5 33 211.3 33 155.2 33 87.3 90 32 160 32s127 55.3 127 123.2c0 56.1-33.5 91.3-66.1 151.6-9.7 18-11.7 37.4-15.3 58.6-3.4 20.6 29 26.4 32.6 5.1z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="form-group"
+                    >
+                      <label
+                        className=""
+                        htmlFor="organizationTaxStatus"
+                      >
+                        <span />
+                      </label>
+                      <div
+                        className="input-field-container row"
+                      >
+                        <div
+                          className="col"
+                        >
+                          <input
+                            className="form-control"
+                            disabled={true}
+                            id="organizationTaxStatus"
+                            name="organizationTaxStatus"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="form-check"
+                    >
+                      <input
+                        className="form-check-input"
+                        disabled={true}
+                        id="organizationActive"
+                        name="organizationActive"
+                        type="checkbox"
+                        value={true}
+                      />
+                      <label
+                        className=""
+                        htmlFor="organizationActive"
+                      >
+                        <span />
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    className="back-to-top"
+                  >
+                    <div
+                      onClick={[Function]}
+                      style={
+                        Object {
+                          "bottom": 50,
+                          "cursor": "pointer",
+                          "opacity": 0,
+                          "position": "fixed",
+                          "right": 30,
+                          "transitionDelay": "0s",
+                          "transitionDuration": "0.2s",
+                          "transitionProperty": "opacity, visibility",
+                          "transitionTimingFunction": "linear",
+                          "visibility": "hidden",
+                        }
+                      }
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="svg-inline--fa fa-angle-up fa-w-10 fa-3x "
+                        color="lightblue"
+                        data-icon="angle-up"
+                        data-prefix="fas"
+                        focusable="false"
+                        role="img"
+                        style={Object {}}
+                        viewBox="0 0 320 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                          fill="currentColor"
+                          style={Object {}}
+                        />
+                      </svg>
+                      <div>
+                        <span />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-sm-3"
+              >
+                <div
+                  className="jumbotron jumbotron"
+                >
+                  <div
+                    className="jumbotron-header"
+                  >
+                    <h4
+                      className="jumbotron-header-title"
+                    >
+                      <span />
+                    </h4>
+                    <p
+                      className="jumbotron-header-text"
+                    >
+                      2
+                      <span />
+                    </p>
+                  </div>
+                  <div
+                    className="jumbotron-content"
+                  >
+                    <a
+                      className="match "
+                      href="#/multi-record-view/3cd806f9-0118-444b-9873-497fbdcef732/e2bcea3d-f608-4dc2-8068-949339929592"
+                      onClick={[Function]}
+                    >
+                      <h5>
+                        COMMUNITY HOUSING PARTNERSHIP
+                      </h5>
+                      <div
+                        className="match-details"
+                      >
+                        <div>
+                          UWBA
+                        </div>
+                        <div
+                          className="text-right"
+                        >
+                          1
+                           
+                          <span />
+                           
+                           / 
+                          1
+                           
+                          <span />
+                        </div>
+                      </div>
+                      <div
+                        className="text-right"
+                        title={null}
+                      >
+                        213
+                         
+                        <span />
+                      </div>
+                    </a>
+                    <a
+                      className="match "
+                      href="#/multi-record-view/3cd806f9-0118-444b-9873-497fbdcef732/618ed2af-37ca-4aab-8256-91db9ded8295"
+                      onClick={[Function]}
+                    >
+                      <h5>
+                        Homebridge
+                      </h5>
+                      <div
+                        className="match-details"
+                      >
+                        <div>
+                          healthleads
+                        </div>
+                        <div
+                          className="text-right"
+                        >
+                          1
+                           
+                          <span />
+                           
+                           / 
+                          0
+                           
+                          <span />
+                        </div>
+                      </div>
+                      <div
+                        className="text-right"
+                        title={null}
+                      >
+                        277
+                         
+                        <span />
+                      </div>
+                    </a>
+                    <a
+                      className="match"
+                      href="#/all-records-view/3cd806f9-0118-444b-9873-497fbdcef732"
+                      onClick={[Function]}
+                    >
+                      <h5>
+                        Show all matches
+                      </h5>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h5
+              className="expandBtn"
+            >
+              <div
+                className="collapseBtn"
+                onClick={[Function]}
+              >
+                <div
+                  className="collapseIcon"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="svg-inline--fa fa-angle-down fa-w-10 fa-xs "
+                    data-icon="angle-down"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    style={Object {}}
+                    viewBox="0 0 320 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"
+                      fill="currentColor"
+                      style={Object {}}
+                    />
+                  </svg>
+                </div>
+                <span />
+              </div>
+            </h5>
+            <div>
+              <div
+                className="row"
+              >
+                <div
+                  className="col-sm-6"
+                >
+                  <hr />
+                  <div>
+                    <div
+                      className="title d-flex justify-content-between align-items-center mb-1"
+                    >
+                      <div
+                        className="col collapseBtn d-flex justify-content-start align-items-center pr-1 h4 mb-0 pl-0 flex-grow-0"
+                        onClick={[Function]}
+                      >
+                        <div
+                          className="collapseIcon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-angle-down fa-w-10 fa-xs "
+                            data-icon="angle-down"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 320 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </div>
+                        <span />
+                         
+                        <span
+                          className="text-blue ml-1"
+                        >
+                          (1/1) 
+                        </span>
+                      </div>
+                      <div
+                        className="col-1 d-flex justify-content-center align-items-center"
+                      >
+                        <input
+                          id="location_3cd806f9-0118-444b-9873-497fbdcef732_0"
+                          title={null}
+                          type="checkbox"
+                        />
+                        <label
+                          className="chainIcon"
+                          htmlFor="location_3cd806f9-0118-444b-9873-497fbdcef732_0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-link fa-w-16 fa-sm "
+                            data-icon="link"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      className="collapse"
+                      style={Object {}}
+                    >
+                      <div>
+                        <h5>
+                          
+                        </h5>
+                        <h5>
+                          <span />
+                          <span />
+                        </h5>
+                        <h5>
+                          <span />
+                          <span>
+                            07/03/20 15:11
+                          </span>
+                        </h5>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="locationName"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="locationName"
+                              name="locationName"
+                              type="text"
+                              value="121 Example Street, Suite 121 - San Francisco (CA)"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="locationAlternateName"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="locationAlternateName"
+                              name="locationAlternateName"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="locationDescription"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="locationDescription"
+                              name="locationDescription"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="locationTransportation"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="locationTransportation"
+                              name="locationTransportation"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="locationLatitude"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="locationLatitude"
+                              name="locationLatitude"
+                              type="text"
+                              value={36.1877721}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="locationLongitude"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="locationLongitude"
+                              name="locationLongitude"
+                              type="text"
+                              value={-121.677726}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="locationRegularScheduleNotes"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="locationRegularScheduleNotes"
+                              name="locationRegularScheduleNotes"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <h4
+                          className="title"
+                        >
+                          <div
+                            className="collapseBtn"
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="collapseIcon"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                className="svg-inline--fa fa-angle-up fa-w-10 fa-xs "
+                                data-icon="angle-up"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                style={Object {}}
+                                viewBox="0 0 320 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                  fill="currentColor"
+                                  style={Object {}}
+                                />
+                              </svg>
+                            </div>
+                            <span />
+                          </div>
+                        </h4>
+                        <div
+                          className="collapse show"
+                          style={Object {}}
+                        >
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="physicalAddressAttention"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="physicalAddressAttention"
+                                  name="physicalAddressAttention"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="physicalAddressAddress1"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="physicalAddressAddress1"
+                                  name="physicalAddressAddress1"
+                                  type="text"
+                                  value="121 Example Street, Suite 121"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="physicalAddressCity"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="physicalAddressCity"
+                                  name="physicalAddressCity"
+                                  type="text"
+                                  value="San Francisco"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="physicalAddressRegion"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="physicalAddressRegion"
+                                  name="physicalAddressRegion"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="physicalAddressStateProvince"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="physicalAddressStateProvince"
+                                  name="physicalAddressStateProvince"
+                                  type="text"
+                                  value="CA"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="physicalAddressPostalCode"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="physicalAddressPostalCode"
+                                  name="physicalAddressPostalCode"
+                                  type="text"
+                                  value="94101"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="physicalAddressCountry"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="physicalAddressCountry"
+                                  name="physicalAddressCountry"
+                                  type="text"
+                                  value="USA"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="back-to-top"
+                        >
+                          <div
+                            onClick={[Function]}
+                            style={
+                              Object {
+                                "bottom": 50,
+                                "cursor": "pointer",
+                                "opacity": 0,
+                                "position": "fixed",
+                                "right": 30,
+                                "transitionDelay": "0s",
+                                "transitionDuration": "0.2s",
+                                "transitionProperty": "opacity, visibility",
+                                "transitionTimingFunction": "linear",
+                                "visibility": "hidden",
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="svg-inline--fa fa-angle-up fa-w-10 fa-3x "
+                              color="lightblue"
+                              data-icon="angle-up"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              style={Object {}}
+                              viewBox="0 0 320 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                fill="currentColor"
+                                style={Object {}}
+                              />
+                            </svg>
+                            <div>
+                              <span />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <h4
+                          className="title"
+                        >
+                          <div
+                            className="collapseBtn"
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="collapseIcon"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                className="svg-inline--fa fa-angle-up fa-w-10 fa-xs "
+                                data-icon="angle-up"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                style={Object {}}
+                                viewBox="0 0 320 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                  fill="currentColor"
+                                  style={Object {}}
+                                />
+                              </svg>
+                            </div>
+                            <span />
+                          </div>
+                        </h4>
+                        <div
+                          className="collapse show"
+                          style={Object {}}
+                        >
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="postalAddressAttention"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="postalAddressAttention"
+                                  name="postalAddressAttention"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="postalAddressAddress1"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="postalAddressAddress1"
+                                  name="postalAddressAddress1"
+                                  type="text"
+                                  value="121 Example Street, Suite 121"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="postalAddressCity"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="postalAddressCity"
+                                  name="postalAddressCity"
+                                  type="text"
+                                  value="San Francisco"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="postalAddressRegion"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="postalAddressRegion"
+                                  name="postalAddressRegion"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="postalAddressStateProvince"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="postalAddressStateProvince"
+                                  name="postalAddressStateProvince"
+                                  type="text"
+                                  value="CA"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="postalAddressPostalCode"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="postalAddressPostalCode"
+                                  name="postalAddressPostalCode"
+                                  type="text"
+                                  value="94101"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="postalAddressCountry"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="postalAddressCountry"
+                                  name="postalAddressCountry"
+                                  type="text"
+                                  value="USA"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="back-to-top"
+                        >
+                          <div
+                            onClick={[Function]}
+                            style={
+                              Object {
+                                "bottom": 50,
+                                "cursor": "pointer",
+                                "opacity": 0,
+                                "position": "fixed",
+                                "right": 30,
+                                "transitionDelay": "0s",
+                                "transitionDuration": "0.2s",
+                                "transitionProperty": "opacity, visibility",
+                                "transitionTimingFunction": "linear",
+                                "visibility": "hidden",
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="svg-inline--fa fa-angle-up fa-w-10 fa-3x "
+                              color="lightblue"
+                              data-icon="angle-up"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              style={Object {}}
+                              viewBox="0 0 320 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                fill="currentColor"
+                                style={Object {}}
+                              />
+                            </svg>
+                            <div>
+                              <span />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <h4
+                          className="title"
+                        >
+                          <div
+                            className="collapseBtn"
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="collapseIcon"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                className="svg-inline--fa fa-angle-up fa-w-10 fa-xs "
+                                data-icon="angle-up"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                style={Object {}}
+                                viewBox="0 0 320 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                  fill="currentColor"
+                                  style={Object {}}
+                                />
+                              </svg>
+                            </div>
+                            <span />
+                          </div>
+                        </h4>
+                        <div
+                          className="collapse show"
+                          style={Object {}}
+                        >
+                          <div>
+                            <a
+                              href="#/multi-record-view/3cd806f9-0118-444b-9873-497fbdcef732/e2bcea3d-f608-4dc2-8068-949339929592"
+                              onClick={[Function]}
+                            >
+                              COMMUNITY HOUSING PARTNERSHIP - 11 Example Street - San Francisco (CA)
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="back-to-top"
+                    >
+                      <div
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "bottom": 50,
+                            "cursor": "pointer",
+                            "opacity": 0,
+                            "position": "fixed",
+                            "right": 30,
+                            "transitionDelay": "0s",
+                            "transitionDuration": "0.2s",
+                            "transitionProperty": "opacity, visibility",
+                            "transitionTimingFunction": "linear",
+                            "visibility": "hidden",
+                          }
+                        }
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="svg-inline--fa fa-angle-up fa-w-10 fa-3x "
+                          color="lightblue"
+                          data-icon="angle-up"
+                          data-prefix="fas"
+                          focusable="false"
+                          role="img"
+                          style={Object {}}
+                          viewBox="0 0 320 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                            fill="currentColor"
+                            style={Object {}}
+                          />
+                        </svg>
+                        <div>
+                          <span />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="row"
+              >
+                <div
+                  className="col-sm-6"
+                >
+                  <hr />
+                  <div>
+                    <div
+                      className="title d-flex justify-content-start align-items-center mb-1"
+                    >
+                      <div
+                        className="col collapseBtn d-flex justify-content-start align-items-center pr-3 h4 mb-0 pl-0 flex-grow-0"
+                        onClick={[Function]}
+                      >
+                        <div
+                          className="collapseIcon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-angle-down fa-w-10 fa-xs "
+                            data-icon="angle-down"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 320 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </div>
+                        <span />
+                         
+                        <span
+                          className="text-blue ml-1"
+                        >
+                          (1/3) 
+                        </span>
+                      </div>
+                      <div
+                        className="flex-grow-1"
+                      >
+                        <div
+                          className=" css-2b097c-container"
+                          onKeyDown={[Function]}
+                        >
+                          <div
+                            className=" css-yk16xz-control"
+                            onMouseDown={[Function]}
+                            onTouchEnd={[Function]}
+                          >
+                            <div
+                              className=" css-1hwfws3"
+                            >
+                              <div
+                                className=" css-1uccc91-singleValue"
+                              >
+                                DeskReady Employment Training Program
+                              </div>
+                              <div
+                                className="css-b8ldur-Input"
+                              >
+                                <div
+                                  className=""
+                                  style={
+                                    Object {
+                                      "display": "inline-block",
+                                    }
+                                  }
+                                >
+                                  <input
+                                    aria-autocomplete="list"
+                                    autoCapitalize="none"
+                                    autoComplete="off"
+                                    autoCorrect="off"
+                                    disabled={false}
+                                    id="react-select-2-input"
+                                    onBlur={[Function]}
+                                    onChange={[Function]}
+                                    onFocus={[Function]}
+                                    spellCheck="false"
+                                    style={
+                                      Object {
+                                        "background": 0,
+                                        "border": 0,
+                                        "boxSizing": "content-box",
+                                        "color": "inherit",
+                                        "fontSize": "inherit",
+                                        "label": "input",
+                                        "opacity": 1,
+                                        "outline": 0,
+                                        "padding": 0,
+                                        "width": "1px",
+                                      }
+                                    }
+                                    tabIndex="0"
+                                    type="text"
+                                    value=""
+                                  />
+                                  <div
+                                    style={
+                                      Object {
+                                        "height": 0,
+                                        "left": 0,
+                                        "overflow": "scroll",
+                                        "position": "absolute",
+                                        "top": 0,
+                                        "visibility": "hidden",
+                                        "whiteSpace": "pre",
+                                      }
+                                    }
+                                  >
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              className=" css-1hb7zxy-IndicatorsContainer"
+                            >
+                              <span
+                                className=" css-1okebmr-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                className=" css-tlfecz-indicatorContainer"
+                                onMouseDown={[Function]}
+                                onTouchEnd={[Function]}
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  className="css-6q0nyr-Svg"
+                                  focusable="false"
+                                  height={20}
+                                  viewBox="0 0 20 20"
+                                  width={20}
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="collapse"
+                      style={Object {}}
+                    >
+                      <div>
+                        <h5>
+                          
+                        </h5>
+                        <h5>
+                          <span />
+                          <span />
+                        </h5>
+                        <h5>
+                          <span />
+                          <span>
+                            08/24/20 12:41
+                          </span>
+                        </h5>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceName"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="serviceName"
+                              name="serviceName"
+                              type="text"
+                              value="DeskReady Employment Training Program"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceAlternateName"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="serviceAlternateName"
+                              name="serviceAlternateName"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceDescription"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="serviceDescription"
+                              name="serviceDescription"
+                              value="The DeskReady program is the first step of preparing individuals for job readiness and employment. The program is designed specifically to meet the unique needs of those who have been left out of the workforce by providing on–going support and targeted skill development to help prepare for lifelong employability.
+
+**PROGRAM FEATURES:**
+1. Focused on learning and practicing the soft and hard skills needed for readiness to interview for an entry-level Desk Clerk position as the first step on possible career pathways in hospitality or property management.
+2. Trainees gain knowledge and practice skills needed to be successful in the desk clerk position. Training also includes skill development in the areas of dependability, reliability, professionalism, initiative, problem solving, and decision making.
+3. Trainees receive one to one employment readiness support services throughout the entire process to assist with removing barriers and preparation for transitions into external employment.
+4. With a flexible, continuous enrollment schedule, new trainees enter the program weekly, while others graduate and move up the employment ladder into an on-call desk clerk position with Solutions SF."
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceUrl"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="serviceUrl"
+                              name="serviceUrl"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                          <a
+                            className="url-link"
+                            href="https://www.example.org"
+                            style={
+                              Object {
+                                "color": "rgba(0, 0, 0, 0.7)",
+                              }
+                            }
+                            target="_blank"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="svg-inline--fa fa-external-link-alt fa-w-16 url-icon"
+                              data-icon="external-link-alt"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              style={Object {}}
+                              viewBox="0 0 512 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"
+                                fill="currentColor"
+                                style={Object {}}
+                              />
+                            </svg>
+                            https://www.example.org
+                          </a>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceEmail"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="serviceEmail"
+                              name="serviceEmail"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceStatus"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="serviceStatus"
+                              name="serviceStatus"
+                              type="text"
+                              value="Non-certified"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceInterpretationServices"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="serviceInterpretationServices"
+                              name="serviceInterpretationServices"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceApplicationProcess"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="serviceApplicationProcess"
+                              name="serviceApplicationProcess"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceWaitTime"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="serviceWaitTime"
+                              name="serviceWaitTime"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceFees"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="serviceFees"
+                              name="serviceFees"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceAccreditations"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="serviceAccreditations"
+                              name="serviceAccreditations"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceLicenses"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <textarea
+                              className="form-control"
+                              disabled={true}
+                              id="serviceLicenses"
+                              name="serviceLicenses"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="form-group"
+                      >
+                        <label
+                          className=""
+                          htmlFor="serviceType"
+                        >
+                          <span />
+                        </label>
+                        <div
+                          className="input-field-container row"
+                        >
+                          <div
+                            className="col"
+                          >
+                            <input
+                              className="form-control"
+                              disabled={true}
+                              id="serviceType"
+                              name="serviceType"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <h4
+                          className="title"
+                        >
+                          <div
+                            className="collapseBtn"
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="collapseIcon"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                className="svg-inline--fa fa-angle-up fa-w-10 fa-xs "
+                                data-icon="angle-up"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                style={Object {}}
+                                viewBox="0 0 320 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                  fill="currentColor"
+                                  style={Object {}}
+                                />
+                              </svg>
+                            </div>
+                            <span />
+                          </div>
+                        </h4>
+                        <div
+                          className="collapse show"
+                          style={Object {}}
+                        >
+                          <div
+                            className="taxonomy-pills"
+                          >
+                            <span
+                              className="badge badge-pill badge-info"
+                              title={null}
+                            >
+                              Job Assistance
+                            </span>
+                            <span
+                              className="badge badge-pill badge-info"
+                              title={null}
+                            >
+                              Covid-finance
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          className="back-to-top"
+                        >
+                          <div
+                            onClick={[Function]}
+                            style={
+                              Object {
+                                "bottom": 50,
+                                "cursor": "pointer",
+                                "opacity": 0,
+                                "position": "fixed",
+                                "right": 30,
+                                "transitionDelay": "0s",
+                                "transitionDuration": "0.2s",
+                                "transitionProperty": "opacity, visibility",
+                                "transitionTimingFunction": "linear",
+                                "visibility": "hidden",
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="svg-inline--fa fa-angle-up fa-w-10 fa-3x "
+                              color="lightblue"
+                              data-icon="angle-up"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              style={Object {}}
+                              viewBox="0 0 320 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                fill="currentColor"
+                                style={Object {}}
+                              />
+                            </svg>
+                            <div>
+                              <span />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <h4
+                          className="title"
+                        >
+                          <div
+                            className="collapseBtn"
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="collapseIcon"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                className="svg-inline--fa fa-angle-up fa-w-10 fa-xs "
+                                data-icon="angle-up"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                style={Object {}}
+                                viewBox="0 0 320 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                  fill="currentColor"
+                                  style={Object {}}
+                                />
+                              </svg>
+                            </div>
+                            <span />
+                          </div>
+                        </h4>
+                        <div
+                          className="collapse show"
+                          style={Object {}}
+                        >
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="eligibilityEligibility"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <textarea
+                                  className="form-control"
+                                  disabled={true}
+                                  id="eligibilityEligibility"
+                                  name="eligibilityEligibility"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="back-to-top"
+                        >
+                          <div
+                            onClick={[Function]}
+                            style={
+                              Object {
+                                "bottom": 50,
+                                "cursor": "pointer",
+                                "opacity": 0,
+                                "position": "fixed",
+                                "right": 30,
+                                "transitionDelay": "0s",
+                                "transitionDuration": "0.2s",
+                                "transitionProperty": "opacity, visibility",
+                                "transitionTimingFunction": "linear",
+                                "visibility": "hidden",
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="svg-inline--fa fa-angle-up fa-w-10 fa-3x "
+                              color="lightblue"
+                              data-icon="angle-up"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              style={Object {}}
+                              viewBox="0 0 320 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                fill="currentColor"
+                                style={Object {}}
+                              />
+                            </svg>
+                            <div>
+                              <span />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <h4
+                          className="title"
+                        >
+                          <div
+                            className="collapseBtn"
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="collapseIcon"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                className="svg-inline--fa fa-angle-up fa-w-10 fa-xs "
+                                data-icon="angle-up"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                style={Object {}}
+                                viewBox="0 0 320 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                  fill="currentColor"
+                                  style={Object {}}
+                                />
+                              </svg>
+                            </div>
+                            <span />
+                          </div>
+                        </h4>
+                        <div
+                          className="collapse show"
+                          style={Object {}}
+                        >
+                          <div
+                            className="form-group"
+                          >
+                            <label
+                              className=""
+                              htmlFor="fundingSource"
+                            >
+                              <span />
+                            </label>
+                            <div
+                              className="input-field-container row"
+                            >
+                              <div
+                                className="col"
+                              >
+                                <input
+                                  className="form-control"
+                                  disabled={true}
+                                  id="fundingSource"
+                                  name="fundingSource"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="back-to-top"
+                        >
+                          <div
+                            onClick={[Function]}
+                            style={
+                              Object {
+                                "bottom": 50,
+                                "cursor": "pointer",
+                                "opacity": 0,
+                                "position": "fixed",
+                                "right": 30,
+                                "transitionDelay": "0s",
+                                "transitionDuration": "0.2s",
+                                "transitionProperty": "opacity, visibility",
+                                "transitionTimingFunction": "linear",
+                                "visibility": "hidden",
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="svg-inline--fa fa-angle-up fa-w-10 fa-3x "
+                              color="lightblue"
+                              data-icon="angle-up"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              style={Object {}}
+                              viewBox="0 0 320 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                fill="currentColor"
+                                style={Object {}}
+                              />
+                            </svg>
+                            <div>
+                              <span />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <h4
+                          className="title"
+                        >
+                          <div
+                            className="collapseBtn"
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="collapseIcon"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                className="svg-inline--fa fa-angle-up fa-w-10 fa-xs "
+                                data-icon="angle-up"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                style={Object {}}
+                                viewBox="0 0 320 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                                  fill="currentColor"
+                                  style={Object {}}
+                                />
+                              </svg>
+                            </div>
+                            <span />
+                          </div>
+                        </h4>
+                        <div
+                          className="collapse show"
+                          style={Object {}}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="back-to-top"
+                    >
+                      <div
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "bottom": 50,
+                            "cursor": "pointer",
+                            "opacity": 0,
+                            "position": "fixed",
+                            "right": 30,
+                            "transitionDelay": "0s",
+                            "transitionDuration": "0.2s",
+                            "transitionProperty": "opacity, visibility",
+                            "transitionTimingFunction": "linear",
+                            "visibility": "hidden",
+                          }
+                        }
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="svg-inline--fa fa-angle-up fa-w-10 fa-3x "
+                          color="lightblue"
+                          data-icon="angle-up"
+                          data-prefix="fas"
+                          focusable="false"
+                          role="img"
+                          style={Object {}}
+                          viewBox="0 0 320 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
+                            fill="currentColor"
+                            style={Object {}}
+                          />
+                        </svg>
+                        <div>
+                          <span />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

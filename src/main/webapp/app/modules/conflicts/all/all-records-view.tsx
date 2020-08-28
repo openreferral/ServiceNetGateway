@@ -61,6 +61,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
     tooltipOpen: false,
     selectedSettings: {}
   };
+  private settingsBtnRef = React.createRef() as React.LegacyRef<HTMLDivElement>;
 
   componentDidMount() {
     this.props.getBaseRecord(this.props.orgId);
@@ -372,6 +373,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
           className={this.state.fieldSettingsExpanded ? 'fields-display-settings-btn-return' : 'fields-display-settings-btn'}
           onClick={this.toggleFieldSettings}
           id="fields-display-settings-btn"
+          ref={this.settingsBtnRef}
         >
           {this.state.fieldSettingsExpanded ? (
             <FontAwesomeIcon icon="undo-alt" size="lg" />
@@ -393,7 +395,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
           innerClassName="tooltip-clip-inner"
           className="tooltip-clip"
           isOpen={this.state.tooltipOpen}
-          target="fields-display-settings-btn"
+          target={this.settingsBtnRef}
           toggle={this.toggleTooltip}
           autohide
         >

@@ -52,9 +52,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
   myRef: any;
   state: ISingleLocationDetailsState = {
     isAreaOpen: this.props.isAreaOpen,
-    id: `location_${Math.random()
-      .toString()
-      .replace(/0\./, '')}`
+    id: `location_${this.props.orgId}_${this.props.locationNumber}`
   };
 
   static getSelectOption = (record, locationNumber) => ({
