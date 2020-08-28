@@ -353,6 +353,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                       record={selectedRecord}
                       link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
                       closeCard={this.closeRecordCard}
+                      coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
                     />
                   </div>
                 </Col>
@@ -370,6 +371,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 <RecordCard
                   record={selectedRecord}
                   link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+                  coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
                 />
               </Col>
             ) : null}
