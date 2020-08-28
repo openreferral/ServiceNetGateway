@@ -219,17 +219,20 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
       <div className="record-create">
         <Nav tabs>
           <NavItem className={`${invalidTabs.includes(ORGANIZATION_TAB) ? 'invalid' : ''}`}>
-            <NavLink className={`${activeTab === ORGANIZATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(ORGANIZATION_TAB)}>
+            <NavLink
+              className={`text-nowrap ${activeTab === ORGANIZATION_TAB ? 'active' : ''}`}
+              onClick={() => this.toggle(ORGANIZATION_TAB)}
+            >
               1. <Translate contentKey="record.tabs.organization" />
             </NavLink>
           </NavItem>
           <NavItem className={`${invalidTabs.includes(LOCATION_TAB) ? 'invalid' : ''}`}>
-            <NavLink className={`${activeTab === LOCATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(LOCATION_TAB)}>
+            <NavLink className={`text-nowrap ${activeTab === LOCATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(LOCATION_TAB)}>
               2. <Translate contentKey="record.tabs.locations" />
             </NavLink>
           </NavItem>
           <NavItem className={`${invalidTabs.includes(SERVICE_TAB) ? 'invalid' : ''}`}>
-            <NavLink className={`${activeTab === SERVICE_TAB ? 'active' : ''}`} onClick={() => this.toggle(SERVICE_TAB)}>
+            <NavLink className={`text-nowrap ${activeTab === SERVICE_TAB ? 'active' : ''}`} onClick={() => this.toggle(SERVICE_TAB)}>
               3. <Translate contentKey="record.tabs.services" />
             </NavLink>
           </NavItem>
