@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Button, Row, Col, Form, Label, Input, FormGroup } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { toast } from 'react-toastify';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface IFeedbackProp extends StateProps, DispatchProps {}
 
@@ -44,47 +45,51 @@ export class Feedback extends React.Component<IFeedbackProp, IFeedbackState> {
 
   render() {
     return (
-      <Row className="justify-content-center">
-        <Col md="6">
-          <h3>
-            <Translate contentKey="serviceNetApp.feedback.feedback" />
-          </h3>
-          <hr
-            style={{
-              color: 'black',
-              backgroundColor: 'black',
-              height: 1
-            }}
-          />
-          <Form onSubmit={this.handleSubmit}>
-            <FormGroup>
-              <Input
-                type="textarea"
-                name="text"
-                id="message"
-                rows={10}
-                placeholder={translate('serviceNetApp.feedback.sendUsSuggestion')}
-                onChange={this.handleMessageChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleEmail">
-                <Translate contentKey="serviceNetApp.feedback.pleaseProvideEmail" />
-              </Label>
-              <Input
-                type="email"
-                name="email"
-                id="email"
-                placeholder={translate('serviceNetApp.feedback.emailAddress')}
-                onChange={this.handleEmailChange}
-              />
-            </FormGroup>
-            <Button type="Submit" color="info" size="lg">
-              <Translate contentKey="serviceNetApp.feedback.sendFeedback" />
-            </Button>
-          </Form>
-        </Col>
-      </Row>
+      <div className="m-3">
+        <Row className="justify-content-center">
+          <Col md="8">
+            <h2>
+              <Translate contentKey="serviceNetApp.feedback.feedback" />
+            </h2>
+            <hr
+              style={{
+                color: 'black',
+                backgroundColor: 'black',
+                height: 1
+              }}
+            />
+            <Form onSubmit={this.handleSubmit}>
+              <FormGroup>
+                <Input
+                  type="textarea"
+                  name="text"
+                  id="message"
+                  rows={10}
+                  placeholder={translate('serviceNetApp.feedback.sendUsSuggestion')}
+                  onChange={this.handleMessageChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleEmail">
+                  <Translate contentKey="serviceNetApp.feedback.pleaseProvideEmail" />
+                </Label>
+                <Input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder={translate('serviceNetApp.feedback.emailAddress')}
+                  onChange={this.handleEmailChange}
+                />
+              </FormGroup>
+              <ButtonPill className="button-pill-primary">
+                <button type="submit">
+                  <Translate contentKey="serviceNetApp.feedback.sendFeedback" />
+                </button>
+              </ButtonPill>
+            </Form>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }
