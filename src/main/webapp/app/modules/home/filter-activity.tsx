@@ -47,6 +47,7 @@ const INITIAL_STATE = {
   lat: null,
   lng: null
 };
+const DATE_RANGE = 'DATE_RANGE';
 
 const withLatLong = (
   wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
@@ -100,7 +101,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
   getDateFilterList = () => [
     { value: 'LAST_7_DAYS', label: translate('serviceNetApp.activity.home.filter.date.last7Days') },
     { value: 'LAST_30_DAYS', label: translate('serviceNetApp.activity.home.filter.date.last30Days') },
-    { value: 'DATE_RANGE', label: translate('serviceNetApp.activity.home.filter.date.dateRange') }
+    { value: DATE_RANGE, label: translate('serviceNetApp.activity.home.filter.date.dateRange') }
   ];
 
   getDateFilterValue = value => {
@@ -146,7 +147,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
   };
 
   validateFilters = () => {
-    if (this.props.dateFilter === 'DATE_RANGE') {
+    if (this.props.dateFilter === DATE_RANGE) {
       const { fromDate, toDate } = this.props.activityFilter;
       let fromDateValid = true;
       let toDateValid = true;
@@ -406,7 +407,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
     const searchFieldList = getSearchFieldOptions(this.props.searchOn);
     const radiusOptions = [1, 2, 3, 4, 5, 10, 20].map(number => ({ label: `${number} mile${number > 1 ? 's' : ''}`, value: number }));
     return (
-      <div>
+      <div key="filter-activity">
         <Collapse isOpen={filterCollapseExpanded} style={{ marginBottom: '1rem' }}>
           <Card>
             <CardBody>
@@ -534,7 +535,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                             onChange={this.handleOnlyShowMatchingChange}
                             checked={this.props.onlyShowMatching}
                           />
-                          <label className="form-check-label" htmlFor="onlyShowMatchingCheckbox">
+                          <label key="onlyShowMatchingCheckboxLabel" className="form-check-label" htmlFor="onlyShowMatchingCheckbox">
                             <Translate contentKey="serviceNetApp.activity.home.filter.onlyShowMatching" />
                           </label>
                         </div>
@@ -545,6 +546,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                         <Translate contentKey="serviceNetApp.activity.home.filter.taxonomy" />
                         {this.props.onlyShowMatching ? (
                           <Select
+                            key="taxonomy-select-only-show-matching"
                             value={this.props.selectedTaxonomy}
                             onChange={this.handleTaxonomyChange}
                             options={this.mergeTaxonomyOptions(taxonomyOptions, this.getPartnerListValues())}
@@ -552,6 +554,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                           />
                         ) : (
                           <Select
+                            key="taxonomy-select"
                             value={this.props.selectedTaxonomy}
                             onChange={this.handleTaxonomyChange}
                             options={taxonomyOptions['all']}
@@ -569,7 +572,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                           options={this.getDateFilterList()}
                         />
                       </Col>
-                      {this.props.dateFilter !== 'DATE_RANGE'
+                      {this.props.dateFilter !== DATE_RANGE
                         ? null
                         : [
                             <Col key="fromDate" md="3">
@@ -606,7 +609,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                       </Col>
                       <Col md={{ size: 2, offset: 10 }}>
                         <div className="pt-3">
-                          <Button color="primary" onClick={this.resetFilter} block>
+                          <Button key="resetButton" color="primary" onClick={this.resetFilter} block>
                             <Translate contentKey="serviceNetApp.activity.home.filter.resetFilter" />
                           </Button>
                         </div>
@@ -616,7 +619,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                   <TabPane tabId="mapTab">
                     <Row className="my-2">
                       <Col>
-                        <Button className="btn btn-primary" onClick={this.getMyCurrentLocation}>
+                        <Button key="location-button" className="btn btn-primary" onClick={this.getMyCurrentLocation}>
                           <Translate contentKey="serviceNetApp.activity.home.filter.setMyCurrentLocation" />
                         </Button>
                       </Col>
