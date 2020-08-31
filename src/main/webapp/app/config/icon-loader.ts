@@ -1,3 +1,5 @@
+import { library } from '@fortawesome/fontawesome-svg-core';
+
 import { faSort } from '@fortawesome/free-solid-svg-icons/faSort';
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye';
 import { faSync } from '@fortawesome/free-solid-svg-icons/faSync';
@@ -57,8 +59,7 @@ import { faUserFriends } from '@fortawesome/free-solid-svg-icons/faUserFriends';
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons/faClipboardList';
 import { faMap } from '@fortawesome/free-solid-svg-icons/faMap';
 import { faDirections } from '@fortawesome/free-solid-svg-icons/faDirections';
-
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { faMapMarker } from '@fortawesome/free-solid-svg-icons/faMapMarker';
 
 export const loadIcons = () => {
   library.add(
@@ -120,6 +121,7 @@ export const loadIcons = () => {
     faUserFriends,
     faClipboardList,
     faMap,
-    faDirections
+    faDirections,
+    faMapMarker
   );
 };
