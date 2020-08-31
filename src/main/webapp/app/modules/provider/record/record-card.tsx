@@ -126,25 +126,27 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           </div>
         </div>
         {this.props.coordinates && (
-          <ButtonPill className="button-pill-primary d-flex align-items-center p-0">
-            <a
-              href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${this.props.coordinates}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="alert-link w-100 h-100 d-flex align-items-center px-2"
-              style={{ color: 'white' }}
-            >
-              <FontAwesomeIcon icon="directions" size="lg" />
-              <MediaQuery minDeviceWidth={EXTRA_LARGE_WIDTH_BREAKPOINT}>
-                &nbsp;
-                <Translate contentKey="providerSite.directions">Directions</Translate>
-              </MediaQuery>
-              <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-                &nbsp;
-                <Translate contentKey="providerSite.directions">Directions</Translate>
-              </MediaQuery>
-            </a>
-          </ButtonPill>
+          <div>
+            <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
+              <a
+                href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${this.props.coordinates}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="alert-link w-100 h-100 d-flex align-items-center px-2"
+                style={{ color: 'white' }}
+              >
+                <FontAwesomeIcon icon="directions" size="lg" />
+                <MediaQuery minDeviceWidth={EXTRA_LARGE_WIDTH_BREAKPOINT}>
+                  &nbsp;
+                  <Translate contentKey="providerSite.directions">Directions</Translate>
+                </MediaQuery>
+                <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+                  &nbsp;
+                  <Translate contentKey="providerSite.directions">Directions</Translate>
+                </MediaQuery>
+              </a>
+            </ButtonPill>
+          </div>
         )}
         {this.props.closeCard && (
           <div className="mx-2" onClick={() => this.props.closeCard()}>
