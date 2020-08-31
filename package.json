@@ -30,7 +30,7 @@
     "lodash": "4.17.19",
     "moment": "2.22.2",
     "query-string": "6.8.2",
-    "react": "16.4.2",
+    "react": "16.8.6",
     "react-addons-css-transition-group": "16.0.0-alpha.3",
     "react-addons-transition-group": "16.0.0-alpha.3",
     "react-burger-menu": "2.6.13",
@@ -151,8 +151,8 @@
     "xml2js": "0.4.19"
   },
   "resolutions": {
-    "@types/react": "16.4.12",
-    "react-test-renderer": "16.4.2"
+    "@types/react": "16.8.6",
+    "react-test-renderer": "16.8.6"
   },
   "engines": {
     "node": ">=8.9.0"
