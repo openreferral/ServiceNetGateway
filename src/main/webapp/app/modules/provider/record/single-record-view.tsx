@@ -363,7 +363,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   {locationsCount > 0 ? (
                     organization.locations.map(loc => (
                       <div className="d-inline-block col-xl-4 col-md-6 col-xs-12 p-0">
-                        <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3 pt-3">
+                        <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3">
                           <CardTitle>
                             <span className="text-ellipsis font-weight-bold">
                               <FontAwesomeIcon icon="circle" className="blue" size="xs" />{' '}
@@ -373,28 +373,26 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                             </span>
                           </CardTitle>
                           <CardBody>
-                            <div className="d-flex justify-content-between">
-                              <div>
-                                <p className="m-0 text-ellipsis">{loc.address1}</p>
-                                <p>{loc.zipcode}</p>
-                              </div>
-                              <div className="ml-1">
-                                <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
-                                  <a
-                                    href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${loc.address1},${loc.city},${loc.ca} ${
-                                      loc.zipcode ? loc.zipcode : ''
-                                    }`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="alert-link w-100 h-100 d-flex align-items-center px-2"
-                                    style={{ color: 'white' }}
-                                  >
-                                    <FontAwesomeIcon icon="directions" size="lg" />
-                                    &nbsp;
-                                    <Translate contentKey="providerSite.directions">Directions</Translate>
-                                  </a>
-                                </ButtonPill>
-                              </div>
+                            <div>
+                              <p className="m-0 text-ellipsis">{loc.address1}</p>
+                              <p className="m-0">{loc.zipcode}</p>
+                            </div>
+                            <div className="d-flex justify-content-end my-1">
+                              <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
+                                <a
+                                  href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${loc.address1},${loc.city},${loc.ca} ${
+                                    loc.zipcode ? loc.zipcode : ''
+                                  }`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="alert-link w-100 h-100 d-flex align-items-center px-2"
+                                  style={{ color: 'white' }}
+                                >
+                                  <FontAwesomeIcon icon="directions" size="lg" />
+                                  &nbsp;
+                                  <Translate contentKey="providerSite.directions">Directions</Translate>
+                                </a>
+                              </ButtonPill>
                             </div>
                           </CardBody>
                         </Card>
