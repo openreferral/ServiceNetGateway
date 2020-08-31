@@ -39,6 +39,7 @@ export class PasswordResetFinishPage extends React.Component<IPasswordResetFinis
       <AvForm onValidSubmit={this.handleValidSubmit}>
         <AvField
           name="newPassword"
+          autoComplete="new-password"
           label={translate('global.form.newpassword')}
           placeholder={translate('global.form.newpassword.placeholder')}
           type="password"
@@ -52,6 +53,7 @@ export class PasswordResetFinishPage extends React.Component<IPasswordResetFinis
         <PasswordStrengthBar password={this.state.password} />
         <AvField
           name="confirmPassword"
+          autoComplete="new-password"
           label={translate('global.form.confirmpassword')}
           placeholder={translate('global.form.confirmpassword.placeholder')}
           type="password"

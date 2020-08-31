@@ -87,6 +87,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
             <AvForm id="register-form" onValidSubmit={this.handleValidSubmit}>
               <AvField
                 name="username"
+                autoComplete="username"
                 label={translate('global.form.username')}
                 placeholder={translate('global.form.username.placeholder')}
                 validate={{
@@ -165,6 +166,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
               </AvGroup>
               <AvField
                 name="firstPassword"
+                autoComplete="new-password"
                 label={translate('global.form.newpassword')}
                 placeholder={translate('global.form.newpassword.placeholder')}
                 type="password"
@@ -178,6 +180,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
               <PasswordStrengthBar password={this.state.password} />
               <AvField
                 name="secondPassword"
+                autoComplete="new-password"
                 label={translate('global.form.confirmpassword')}
                 placeholder={translate('global.form.confirmpassword.placeholder')}
                 type="password"
