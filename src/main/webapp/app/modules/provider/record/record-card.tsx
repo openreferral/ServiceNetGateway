@@ -28,6 +28,7 @@ const GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL = 'https://www.google.com/maps/
 
 const MOBILE_WIDTH_BREAKPOINT = 768;
 const EXTRA_LARGE_WIDTH_BREAKPOINT = 1200;
+const DIRECTIONS_BUTTON_MOBILE_WIDTH_BREAKPOINT = 400;
 
 export interface IRecordCardProps extends StateProps, DispatchProps {
   record: any;
@@ -140,7 +141,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
                   &nbsp;
                   <Translate contentKey="providerSite.directions">Directions</Translate>
                 </MediaQuery>
-                <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+                <MediaQuery minDeviceWidth={DIRECTIONS_BUTTON_MOBILE_WIDTH_BREAKPOINT} maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
                   &nbsp;
                   <Translate contentKey="providerSite.directions">Directions</Translate>
                 </MediaQuery>
