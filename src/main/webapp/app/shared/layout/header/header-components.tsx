@@ -43,7 +43,7 @@ export const Brand = props => {
         </MediaQuery>
         <span className="navbar-version mt-1">{appConfig.VERSION}</span>
       </NavbarBrand>
-      <NavLink exact tag={Link} to={`${prependRoutesWithMatch ? match.url : ''}/about-us`} className="pl-0">
+      <NavLink exact tag={Link} to={`${prependRoutesWithMatch ? match.url : ''}/about-us`} className="px-0">
         <span className="navbar-label text-dark about-us-link">
           <Translate contentKey="global.menu.aboutUs" />
         </span>
@@ -54,7 +54,7 @@ export const Brand = props => {
 
 export const FeedbackButton = props =>
   (props.isSacramento || props.isProvider) && (
-    <NavLink exact tag={Link} to={`${props.prependRoutesWithMatch ? props.match.url : ''}/feedback`} className="pl-0">
+    <NavLink exact tag={Link} to={`${props.prependRoutesWithMatch ? props.match.url : ''}/feedback`} className="px-0">
       <span className="navbar-label text-dark about-us-link">
         <Translate contentKey="global.menu.feedback" />
       </span>
