@@ -16,7 +16,7 @@ export const ACTION_TYPES = {
   RESET_ACTIVITY_FILTER: 'filterActivity/RESET_ACTIVITY_FILTER'
 };
 
-const initialState = {
+export const initialState = {
   loading: false,
   errorMessage: null,
   currentProvider: null,
