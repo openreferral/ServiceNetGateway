@@ -41,6 +41,7 @@ class LoginModal extends React.Component<ILoginModalProps> {
               <Col md="12">
                 <AvField
                   name="username"
+                  autoComplete="username"
                   label={translate('global.form.username')}
                   placeholder={translate('global.form.username.placeholder')}
                   required
@@ -50,6 +51,7 @@ class LoginModal extends React.Component<ILoginModalProps> {
                 <AvField
                   name="password"
                   type="password"
+                  autoComplete="current-password"
                   label={translate('login.form.password')}
                   placeholder={translate('login.form.password.placeholder')}
                   required

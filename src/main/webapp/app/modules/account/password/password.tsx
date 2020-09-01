@@ -55,6 +55,7 @@ export class PasswordPage extends React.Component<IUserPasswordProps, IUserPassw
             <AvForm id="password-form" onValidSubmit={this.handleValidSubmit}>
               <AvField
                 name="currentPassword"
+                autoComplete="current-password"
                 label={translate('global.form.currentpassword')}
                 placeholder={translate('global.form.currentpassword.placeholder')}
                 type="password"
@@ -64,6 +65,7 @@ export class PasswordPage extends React.Component<IUserPasswordProps, IUserPassw
               />
               <AvField
                 name="newPassword"
+                autoComplete="new-password"
                 label={translate('global.form.newpassword')}
                 placeholder={translate('global.form.newpassword.placeholder')}
                 type="password"
@@ -77,6 +79,7 @@ export class PasswordPage extends React.Component<IUserPasswordProps, IUserPassw
               <PasswordStrengthBar password={this.state.password} />
               <AvField
                 name="confirmPassword"
+                autoComplete="new-password"
                 label={translate('global.form.confirmpassword')}
                 placeholder={translate('global.form.confirmpassword.placeholder')}
                 type="password"
