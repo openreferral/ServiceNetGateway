@@ -4,6 +4,9 @@ import { UncontrolledDropdown, DropdownToggle, DropdownMenu, NavItem, NavLink, N
 import { NavLink as Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MediaQuery from 'react-responsive';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 import appConfig from 'app/config/constants';
 
@@ -21,7 +24,7 @@ export const NavDropdown = props => (
 
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img src="content/images/benetech-logo.png" alt="Logo" />
+    <img data-src="content/images/benetech-logo.png" className="lazyload" alt="Logo" />
   </div>
 );
 

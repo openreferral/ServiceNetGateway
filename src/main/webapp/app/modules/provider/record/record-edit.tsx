@@ -12,6 +12,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { US_STATES } from 'app/shared/util/us-states';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import _ from 'lodash';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 import AvSelect from '@availity/reactstrap-validation-select';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
@@ -380,7 +383,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           </Card>
           <Card className="section expandable">
             <CardTitle onClick={this.toggle(ORGANIZATION)} className="clickable">
-              <img src={PeopleLogo} height={25} alt="Organization" />
+              <img data-src={PeopleLogo} height={25} className="lazyload" alt="Organization" />
               <Translate contentKey="record.edit.updateOrganizationDetails" />
               <FontAwesomeIcon icon={openSections.includes(ORGANIZATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg" />
             </CardTitle>
@@ -416,7 +419,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           </Card>
           <Card className="section expandable locations">
             <CardTitle onClick={this.toggle(LOCATION)} className="clickable">
-              <img src={BuildingLogo} height={25} alt="Location" />
+              <img data-src={BuildingLogo} height={25} className="lazyload" alt="Location" />
               <Translate contentKey="record.location.details" />
               <Badge color="light" pill>
                 {locations.length}
@@ -580,7 +583,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           </Card>
           <Card className="section expandable services">
             <CardTitle onClick={this.toggle(SERVICE)} className="clickable">
-              <img src={ServiceLogo} height={25} alt="Service" />
+              <img data-src={ServiceLogo} height={25} className="lazyload" alt="Service" />
               <Translate contentKey="record.service.details" />
               <Badge color="light" pill>
                 {services.length}

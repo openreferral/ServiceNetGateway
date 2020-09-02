@@ -13,6 +13,9 @@ import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
 // @ts-ignore
@@ -236,7 +239,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                     ) : null}
                   </section>
                 </div>
-                <img src={PeopleLogo} height={100} alt="Organization" className="d-none d-sm-block mx-5" />
+                <img data-src={PeopleLogo} height={100} alt="Organization" className="lazyload d-none d-sm-block mx-5" />
               </div>
             </CardTitle>
             <CardBody className="p-0 border-top-0">
@@ -302,7 +305,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           <Card className="section">
             <CardTitle onClick={this.toggleOrganization} className="clickable">
               <div className="d-flex justify-content-center align-items-center details-section-title">
-                <img src={PeopleLogo} height={25} alt="Organization" />
+                <img data-src={PeopleLogo} height={25} className="lazyload" alt="Organization" />
                 &nbsp;
                 <Translate contentKey="record.singleRecordView.orgDetails" />
               </div>
@@ -349,7 +352,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           <Card className="section">
             <CardTitle onClick={this.toggleLocations} className="clickable">
               <div className="d-flex justify-content-center align-items-center details-section-title">
-                <img src={BuildingLogo} height={25} alt="Location" />
+                <img data-src={BuildingLogo} height={25} className="lazyload" alt="Location" />
                 &nbsp;
                 <Translate contentKey="record.singleRecordView.locDetails" />
                 &nbsp;
@@ -409,7 +412,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           <Card className="section services mb-5">
             <CardTitle onClick={this.toggleServices} className="clickable">
               <div className="d-flex justify-content-center align-items-center details-section-title">
-                <img src={ServiceLogo} height={25} alt="Service" />
+                <img data-src={ServiceLogo} height={25} className="lazyload" alt="Service" />
                 &nbsp;
                 <Translate contentKey="record.singleRecordView.srvDetails" />
                 &nbsp;
