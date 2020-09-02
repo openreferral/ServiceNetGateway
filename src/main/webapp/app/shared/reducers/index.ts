@@ -217,6 +217,7 @@ import dataStatus, { DataStatusState } from 'app/modules/data-status/data-status
 import providerRecord, { ProviderRecordsState } from 'app/modules/provider/provider-record.reducer';
 import providerFilter, { ProviderFilterState } from 'app/modules/provider/provider-filter.reducer';
 import deactivatedRecords, { DeactivatedRecordsState } from 'app/modules/provider/deactivated/deactivated-records.reducer';
+import usersOrganizations, { UsersOrganizationsState } from 'app/modules/administration/users-organizations/users-organizations.reducer';
 
 // prettier-ignore
 import dailyUpdate, {
@@ -312,6 +313,7 @@ export interface IRootState {
   readonly providerFilter: ProviderFilterState;
   readonly search: SearchState;
   readonly deactivatedRecords: DeactivatedRecordsState;
+  readonly usersOrganizations: UsersOrganizationsState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -389,7 +391,8 @@ const rootReducer = combineReducers<IRootState>({
   providerRecord,
   providerFilter,
   search,
-  deactivatedRecords
+  deactivatedRecords,
+  usersOrganizations
 });
 
 export default rootReducer;

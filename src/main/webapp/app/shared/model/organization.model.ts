@@ -22,6 +22,7 @@ export interface IOrganization {
   sourceDocumentId?: number;
   accountName?: string;
   accountId?: number;
+  userProfiles?: any[];
 }
 
 export const defaultValue: Readonly<IOrganization> = {
