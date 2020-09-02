@@ -30,6 +30,7 @@ const MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE = '60px';
 const MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE = '24px';
 const MY_LOCATION_BUTTON_POSITION_RIGHT = '65px';
 const MY_LOCATION_BUTTON_POSITION_BOTTOM = '32px';
+const ICON_MARKER_SVG_PATH = 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z';
 
 declare global {
   // tslint:disable-next-line:interface-name
@@ -56,6 +57,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   isRecordHighlighted: boolean;
   selectedLat: number;
   selectedLng: number;
+  showMyLocation: boolean;
 }
 
 const withLatLong = (
@@ -99,6 +101,17 @@ const Map = withScriptjs(
               onClick={() => props.onMarkerClick(marker)}
             />
           ))}
+          {props.showMyLocation && (
+            <Marker
+              position={{ lat: props.lat, lng: props.lng }}
+              icon={{
+                path: ICON_MARKER_SVG_PATH,
+                strokeColor: 'white',
+                fillColor: 'blue',
+                fillOpacity: 1
+              }}
+            />
+          )}
         </GoogleMap>
       );
     })
@@ -122,6 +135,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       isRecordHighlighted: false,
       selectedLat: null,
       selectedLng: null,
+      showMyLocation: false,
       recordViewType: GRID_VIEW,
       ...providerSearchPreferences
     };
@@ -227,7 +241,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       isRecordHighlighted: true,
       filterOpened: false,
       selectedLat: lat,
-      selectedLng: lng
+      selectedLng: lng,
+      showMyLocation: false
     });
   };
 
@@ -259,7 +274,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       filterOpened: false,
       isRecordHighlighted: false,
       selectedLat: null,
-      selectedLng: null
+      selectedLng: null,
+      showMyLocation: false
     });
   };
 
@@ -281,7 +297,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   centerMapOnMyLocation = () => {
     navigator.geolocation.getCurrentPosition(position => {
-      this.setState({ selectedLat: position.coords.latitude, selectedLng: position.coords.longitude });
+      this.setState({
+        selectedLat: position.coords.latitude,
+        selectedLng: position.coords.longitude,
+        showMyLocation: true
+      });
     });
   };
 
@@ -358,7 +378,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName, providerFilter } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, isMapView } = this.state;
+    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, isMapView } = this.state;
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
@@ -368,7 +388,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       mapElement: <div style={{ height: '100%' }} />,
       onMarkerClick: this.selectRecord,
       onMapLoad: this.onMapLoad,
-      providerFilter
+      providerFilter,
+      showMyLocation
     };
     return (
       <>
