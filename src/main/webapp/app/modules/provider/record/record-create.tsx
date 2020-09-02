@@ -12,6 +12,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { US_STATES } from 'app/shared/util/us-states';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import AvSelect from '@availity/reactstrap-validation-select';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
 // @ts-ignore
@@ -252,7 +255,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
             <TabPane tabId={ORGANIZATION_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
-                  <img src={PeopleLogo} height={100} alt="Organization" />
+                  <img data-src={PeopleLogo} className="lazyload" height={100} alt="Organization" />
                   <h2>
                     <Translate contentKey="record.heading.organization" />
                   </h2>
@@ -320,7 +323,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
             <TabPane tabId={LOCATION_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
-                  <img src={BuildingLogo} height={100} alt="Location" />
+                  <img data-src={BuildingLogo} height={100} className="lazyload" alt="Location" />
                   <h2>
                     <Translate contentKey="record.heading.locations" />
                   </h2>
@@ -432,7 +435,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
             <TabPane tabId={SERVICE_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
-                  <img src={ServiceLogo} height={100} alt="Service" />
+                  <img data-src={ServiceLogo} height={100} className="lazyload" alt="Service" />
                   <h2>
                     <Translate contentKey="record.heading.services" />
                   </h2>

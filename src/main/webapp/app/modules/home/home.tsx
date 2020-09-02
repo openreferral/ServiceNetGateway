@@ -6,7 +6,9 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Translate, translate, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { connect } from 'react-redux';
 import ReactGA from 'react-ga';
-import axios from 'axios';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Row, Col, Container, Progress, Spinner, Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
@@ -259,12 +261,11 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
                 <iframe src="https://www.youtube.com/embed/bfoh5CXzWNk" className="video" />
               </ModalBody>
             </Modal>
-
             <div className="homepage-top-container d-flex">
-              <img src="content/images/background-blue.png" className="homepage-top-bg-img" />
+              <img data-src="content/images/background-blue.jpg" className="lazyload homepage-top-bg-img" />
               <div className="col-lg-4 col-md-6 video-button d-flex flex-column justify-content-around align-items-center">
                 <div>
-                  <img src="content/images/homepage-network.svg" className="video-network-img" />
+                  <img data-src="content/images/homepage-network.svg" className="lazyload video-network-img" />
                 </div>
                 <h3 className="text-center">Connecting Communities to Weave a Stronger Social Safety Net</h3>
                 <Button className="btn-black" onClick={this.toggle}>
@@ -274,7 +275,7 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
               </div>
             </div>
             <div className="homepage-bottom-container d-flex">
-              <img src="content/images/background-white.jpg" className="homepage-bottom-bg-img" />
+              <img data-src="content/images/background-white.jpg" className="lazyload homepage-bottom-bg-img" />
               <div className="col-md-12 welcome-container d-flex flex-column justify-content-around align-items-start">
                 <h4 className="bold">Welcome to Benetech Service Net!</h4>
                 <p>

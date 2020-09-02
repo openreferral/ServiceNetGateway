@@ -5,6 +5,9 @@ import { Translate } from 'react-jhipster';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, NavLink, NavbarBrand } from 'reactstrap';
 import { NavLink as Link } from 'react-router-dom';
 import { Avatar } from '../avatar';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 export const NavDropdown = props => (
   <UncontrolledDropdown nav inNavbar id={props.id}>
@@ -22,7 +25,7 @@ export const NavDropdown = props => (
 
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img src="content/images/benetech-logo.png" alt="Logo" />
+    <img data-src="content/images/benetech-logo.png" className="lazyload" alt="Logo" />
   </div>
 );
 
