@@ -16,6 +16,9 @@ export const SideMenu = props => (
       <a href={'mailto:servicenet@benetech.org'} onClick={() => props.toggleMenu()}>
         <Translate contentKey="global.menu.contact" />
       </a>
+      <Link to="/feedback" onClick={() => props.toggleMenu()}>
+        <Translate contentKey="global.menu.feedback" />
+      </Link>
       <Link to={'/deactivated-records'} onClick={() => props.toggleMenu()}>
         <Translate contentKey="providerSite.menu.deactivatedRecords">Deactivated Records</Translate>
       </Link>
