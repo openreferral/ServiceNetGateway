@@ -103,7 +103,7 @@ export class ShelterUpdate extends React.Component<IShelterUpdateProps, IShelter
       } else {
         const beds = shelterEntity.beds;
         if (!beds || (beds.availableBeds || '') !== availableBeds || (beds.waitlist || '') !== waitlist) {
-          entity.beds = { availableBeds, waitlist };
+          entity.beds = { availableBeds, waitlist, id: beds.id ? beds.id : null };
         }
         this.props.updateEntity(entity);
       }
