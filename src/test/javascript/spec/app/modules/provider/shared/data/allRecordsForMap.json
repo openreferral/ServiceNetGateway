@@ -1,0 +1,92 @@
+[
+  {
+    "id": "147048a5-c3fd-4c58-a566-de3aa5a8981e",
+    "location": {
+      "id": "1955e9ef-03d7-4246-b37b-a238bd722226",
+      "address": "washington, washington, 8080, CA",
+      "latitude": 36.778261,
+      "longitude": -119.4179324
+    }
+  },
+  {
+    "id": "da57e6fd-8d23-4208-99f5-9bb29f13a5d0",
+    "location": {
+      "id": "1955e9ef-03d7-4246-b37b-a238bd722226",
+      "address": "washington, washington, 8080, CA",
+      "latitude": 36.778261,
+      "longitude": -119.4179324
+    }
+  },
+  {
+    "id": "debddaab-488a-4f1c-a149-261a10628ee0",
+    "location": {
+      "id": "2764c78e-069a-431f-8408-09c5d611184c",
+      "address": "Marynarki Polskiej, Gdańsk, Gdańsk, 80-865, FL",
+      "latitude": 54.389757,
+      "longitude": 18.653444
+    }
+  },
+  {
+    "id": "01096ecb-6a6e-422e-ad8e-9ecc6d4f5099",
+    "location": {
+      "id": "38f3cd36-da35-4bc6-b894-6378004346a9",
+      "address": "Main, Main, 8080, CA",
+      "latitude": 36.778261,
+      "longitude": -119.4179324
+    }
+  },
+  {
+    "id": "c3732aad-fed9-4404-a146-14975a7b6f6d",
+    "location": {
+      "id": "3c34a1d8-656d-4953-bce4-5201b28c5b0b",
+      "address": "Wrocław, Wrocław, 83-000, WY",
+      "latitude": 51.1078852,
+      "longitude": 17.0385376
+    }
+  },
+  {
+    "id": "ba15c000-2662-4792-bf95-3f45839865d5",
+    "location": {
+      "id": "6820ed3b-3eb5-499f-902b-0265a08ccde8",
+      "address": "chicago, chicago, 8080, CO",
+      "latitude": 41.8781136,
+      "longitude": -87.6297982
+    }
+  },
+  {
+    "id": "dc6ba7b6-4535-42b9-aafa-ba14464c0862",
+    "location": {
+      "id": "91139bda-610f-4288-a939-9f4472e4f11b",
+      "address": "Dmowskiego, Gdańsk, Gdańsk, 8080, CA",
+      "latitude": 54.381324,
+      "longitude": 18.605686
+    }
+  },
+  {
+    "id": "16187cc2-3979-4962-9995-36fdca55f8aa",
+    "location": {
+      "id": "9a408c50-c28d-46aa-83fa-600261d53f47",
+      "address": "Washington, Washington, 8080, CA",
+      "latitude": 36.778261,
+      "longitude": -119.4179324
+    }
+  },
+  {
+    "id": "44440db3-13ec-471b-bd43-92a6ec00455f",
+    "location": {
+      "id": "cbc1f7da-9f0e-4662-bea5-b9eb347d41a4",
+      "address": "Chicago, Chicago, 8080, CA",
+      "latitude": 41.8781136,
+      "longitude": -87.6297982
+    }
+  },
+  {
+    "id": "621d05d5-6d55-43f5-9eb6-5b18f70486b7",
+    "location": {
+      "id": "d447877c-26f6-424a-9ad9-0d1a727f3176",
+      "address": "Panama city, Panama city, 8080, CA",
+      "latitude": 8.9823792,
+      "longitude": -79.51986959999999
+    }
+  }
+]

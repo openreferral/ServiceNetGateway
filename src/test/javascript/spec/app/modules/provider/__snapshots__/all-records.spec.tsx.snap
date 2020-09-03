@@ -1,0 +1,1614 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`All records renders correctly 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(AllRecords)>
+    <AllRecords
+      account={
+        Object {
+          "activated": true,
+          "authorities": Array [
+            "ROLE_USER",
+            "ROLE_ADMIN",
+          ],
+          "createdBy": "system",
+          "createdDate": null,
+          "email": "admin@localhost.com",
+          "firstName": "Administrator",
+          "id": "30000000-0000-0000-0000-000000000000",
+          "imageUrl": null,
+          "langKey": "en",
+          "lastModifiedBy": "admin",
+          "lastModifiedDate": "2020-03-20T17:37:36.301205Z",
+          "lastName": "Administrator",
+          "login": "admin",
+          "organizationName": "Chicago test1",
+          "organizationUrl": "www.wp.pl",
+          "organizations": null,
+          "phoneNumber": "+13456753456",
+          "shelters": Array [],
+          "siloId": null,
+          "systemAccountId": "ab7018c5-b3cc-4a5d-97fb-50e7ba8262c1",
+          "systemAccountName": "ShelterTech",
+          "userGroups": Array [],
+        }
+      }
+      allRecords={
+        Array [
+          Object {
+            "dailyUpdates": Array [],
+            "lastUpdated": "2020-08-25T11:01:36.164726+02:00",
+            "locations": Array [
+              Object {
+                "accessibilities": Array [],
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "location": Object {
+                  "alternateName": null,
+                  "description": null,
+                  "externalDbId": null,
+                  "geocodingResults": Array [
+                    Object {
+                      "address": "Wrocław, Wrocław, 83-000, WY",
+                      "id": "3c34a1d8-656d-4953-bce4-5201b28c5b0b",
+                      "latitude": 51.1078852,
+                      "longitude": 17.0385376,
+                    },
+                  ],
+                  "id": "bcd39edc-bca7-4e15-993c-51e285f2d738",
+                  "lastVerifiedOn": null,
+                  "latitude": null,
+                  "longitude": null,
+                  "name": null,
+                  "organizationId": "c3732aad-fed9-4404-a146-14975a7b6f6d",
+                  "organizationName": "Bug org34",
+                  "providerName": "ServiceProvider",
+                  "transportation": null,
+                  "updatedAt": "2020-08-25T11:01:36.166256+02:00",
+                },
+                "physicalAddress": Object {
+                  "address1": "Wrocław",
+                  "address2": "",
+                  "attention": null,
+                  "city": "Wrocław",
+                  "country": null,
+                  "id": "3b004b72-1a00-4eac-a0d7-5bbf1dfa40ae",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "83-000",
+                  "region": null,
+                  "stateProvince": "WY",
+                },
+                "postalAddress": Object {
+                  "address1": "Wrocław",
+                  "address2": "",
+                  "attention": null,
+                  "city": "Wrocław",
+                  "country": null,
+                  "id": "fb273f05-7667-4643-9567-7a817c8155f2",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "83-000",
+                  "region": null,
+                  "stateProvince": "WY",
+                },
+                "regularScheduleNotes": null,
+                "regularScheduleOpeningHours": null,
+              },
+            ],
+            "organization": Object {
+              "accountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "accountName": "ServiceProvider",
+              "active": true,
+              "alternateName": null,
+              "description": "",
+              "email": "",
+              "externalDbId": null,
+              "id": "c3732aad-fed9-4404-a146-14975a7b6f6d",
+              "lastVerifiedOn": null,
+              "legalStatus": null,
+              "name": "Bug org34",
+              "replacedById": null,
+              "sourceDocumentDateUploaded": null,
+              "sourceDocumentId": null,
+              "taxId": null,
+              "taxStatus": null,
+              "updatedAt": "2020-08-25T11:01:36.164726+02:00",
+              "url": "",
+              "userProfiles": Array [
+                Object {
+                  "id": "bd7d2a9a-1f87-44a7-b880-4c7e53a5ec6d",
+                  "login": "nuser",
+                  "organizationName": "nOrg1",
+                  "organizationUrl": "",
+                  "phoneNumber": null,
+                  "silo": Object {
+                    "id": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+                    "name": "Silo1",
+                    "public": true,
+                    "userProfiles": null,
+                  },
+                  "systemAccount": Object {
+                    "id": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+                    "name": "ServiceProvider",
+                  },
+                  "userId": "60000000-0000-0000-0000-000000000000",
+                },
+              ],
+              "yearIncorporated": null,
+            },
+            "owner": Object {
+              "activated": true,
+              "authorities": Array [
+                "ROLE_USER",
+              ],
+              "createdBy": "system",
+              "createdDate": null,
+              "email": "aa@gmail.com",
+              "firstName": "nuser",
+              "id": "60000000-0000-0000-0000-000000000000",
+              "imageUrl": null,
+              "langKey": "en",
+              "lastModifiedBy": "internal",
+              "lastModifiedDate": "2020-05-14T07:43:06.773177Z",
+              "lastName": "n@gmail.com",
+              "login": "nuser",
+              "organizationName": "nOrg1",
+              "organizationUrl": "",
+              "organizations": null,
+              "phoneNumber": null,
+              "shelters": Array [],
+              "siloId": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+              "systemAccountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "systemAccountName": "ServiceProvider",
+              "userGroups": Array [],
+            },
+            "services": Array [
+              Object {
+                "contacts": Array [],
+                "docs": Array [
+                  Object {
+                    "document": "",
+                    "externalDbId": null,
+                    "id": "ef51007a-aa48-4970-ad64-d133fef85f2c",
+                    "providerName": "ServiceProvider",
+                    "srvcId": null,
+                    "srvcName": null,
+                  },
+                ],
+                "eligibility": null,
+                "funding": null,
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "paymentsAccepteds": Array [],
+                "phones": Array [],
+                "regularScheduleOpeningHours": null,
+                "service": Object {
+                  "accreditations": null,
+                  "alternateName": null,
+                  "applicationProcess": "",
+                  "description": "asda",
+                  "email": null,
+                  "externalDbId": null,
+                  "fees": null,
+                  "id": "fa025f03-874b-4bf4-a806-36b95da2a0d3",
+                  "interpretationServices": null,
+                  "lastVerifiedOn": null,
+                  "licenses": null,
+                  "name": "qwqw",
+                  "organizationId": "c3732aad-fed9-4404-a146-14975a7b6f6d",
+                  "organizationName": "Bug org34",
+                  "programId": null,
+                  "programName": null,
+                  "providerName": "ServiceProvider",
+                  "status": null,
+                  "type": null,
+                  "updatedAt": "2020-08-25T11:01:36.166448+02:00",
+                  "url": null,
+                  "waitTime": null,
+                },
+                "taxonomies": Array [
+                  Object {
+                    "externalDbId": null,
+                    "id": "aecbd3d8-aa2f-4d89-9dd4-15bd3574a13d",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "fa025f03-874b-4bf4-a806-36b95da2a0d3",
+                    "srvcName": "qwqw",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "9f66c352-afe9-4b07-8829-e8f5d9e8ef79",
+                    "taxonomyName": "One-on-One Support",
+                  },
+                ],
+              },
+            ],
+          },
+          Object {
+            "dailyUpdates": Array [],
+            "lastUpdated": "2020-08-05T16:21:13.601964+02:00",
+            "locations": Array [
+              Object {
+                "accessibilities": Array [],
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "location": Object {
+                  "alternateName": null,
+                  "description": null,
+                  "externalDbId": null,
+                  "geocodingResults": Array [
+                    Object {
+                      "address": "washington, washington, 8080, CA",
+                      "id": "1955e9ef-03d7-4246-b37b-a238bd722226",
+                      "latitude": 36.778261,
+                      "longitude": -119.4179324,
+                    },
+                  ],
+                  "id": "bc30fdaa-77f4-4d0f-a3c3-54b7b2feb206",
+                  "lastVerifiedOn": null,
+                  "latitude": null,
+                  "longitude": null,
+                  "name": null,
+                  "organizationId": "da57e6fd-8d23-4208-99f5-9bb29f13a5d0",
+                  "organizationName": "Taxoorg1",
+                  "providerName": "ServiceProvider",
+                  "transportation": null,
+                  "updatedAt": "2020-08-05T16:21:13.602456+02:00",
+                },
+                "physicalAddress": Object {
+                  "address1": "washington",
+                  "address2": "",
+                  "attention": null,
+                  "city": "washington",
+                  "country": null,
+                  "id": "e33dd46b-5574-4d2a-9fe6-884d82ed5cb0",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "8080",
+                  "region": null,
+                  "stateProvince": "CA",
+                },
+                "postalAddress": Object {
+                  "address1": "washington",
+                  "address2": "",
+                  "attention": null,
+                  "city": "washington",
+                  "country": null,
+                  "id": "d1d09a01-ea9a-4e05-b5ed-f6b7457b68b5",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "8080",
+                  "region": null,
+                  "stateProvince": "CA",
+                },
+                "regularScheduleNotes": null,
+                "regularScheduleOpeningHours": null,
+              },
+            ],
+            "organization": Object {
+              "accountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "accountName": "ServiceProvider",
+              "active": true,
+              "alternateName": null,
+              "description": "",
+              "email": "",
+              "externalDbId": null,
+              "id": "da57e6fd-8d23-4208-99f5-9bb29f13a5d0",
+              "lastVerifiedOn": null,
+              "legalStatus": null,
+              "name": "Taxoorg1",
+              "replacedById": null,
+              "sourceDocumentDateUploaded": null,
+              "sourceDocumentId": null,
+              "taxId": null,
+              "taxStatus": null,
+              "updatedAt": "2020-08-05T16:21:13.601964+02:00",
+              "url": "",
+              "userProfiles": Array [
+                Object {
+                  "id": "bd7d2a9a-1f87-44a7-b880-4c7e53a5ec6d",
+                  "login": "nuser",
+                  "organizationName": "nOrg1",
+                  "organizationUrl": "",
+                  "phoneNumber": null,
+                  "silo": Object {
+                    "id": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+                    "name": "Silo1",
+                    "public": true,
+                    "userProfiles": null,
+                  },
+                  "systemAccount": Object {
+                    "id": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+                    "name": "ServiceProvider",
+                  },
+                  "userId": "60000000-0000-0000-0000-000000000000",
+                },
+              ],
+              "yearIncorporated": null,
+            },
+            "owner": Object {
+              "activated": true,
+              "authorities": Array [
+                "ROLE_USER",
+              ],
+              "createdBy": "system",
+              "createdDate": null,
+              "email": "aa@gmail.com",
+              "firstName": "nuser",
+              "id": "60000000-0000-0000-0000-000000000000",
+              "imageUrl": null,
+              "langKey": "en",
+              "lastModifiedBy": "internal",
+              "lastModifiedDate": "2020-05-14T07:43:06.773177Z",
+              "lastName": "n@gmail.com",
+              "login": "nuser",
+              "organizationName": "nOrg1",
+              "organizationUrl": "",
+              "organizations": null,
+              "phoneNumber": null,
+              "shelters": Array [],
+              "siloId": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+              "systemAccountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "systemAccountName": "ServiceProvider",
+              "userGroups": Array [],
+            },
+            "services": Array [
+              Object {
+                "contacts": Array [],
+                "docs": Array [],
+                "eligibility": null,
+                "funding": null,
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "paymentsAccepteds": Array [],
+                "phones": Array [],
+                "regularScheduleOpeningHours": null,
+                "service": Object {
+                  "accreditations": null,
+                  "alternateName": null,
+                  "applicationProcess": "",
+                  "description": "dec",
+                  "email": null,
+                  "externalDbId": null,
+                  "fees": null,
+                  "id": "2f013421-6ea0-4fce-92b8-e286d6ff7053",
+                  "interpretationServices": null,
+                  "lastVerifiedOn": null,
+                  "licenses": null,
+                  "name": "Taxo1s",
+                  "organizationId": "da57e6fd-8d23-4208-99f5-9bb29f13a5d0",
+                  "organizationName": "Taxoorg1",
+                  "programId": null,
+                  "programName": null,
+                  "providerName": "ServiceProvider",
+                  "status": null,
+                  "type": null,
+                  "updatedAt": "2020-08-05T16:21:13.602604+02:00",
+                  "url": null,
+                  "waitTime": null,
+                },
+                "taxonomies": Array [
+                  Object {
+                    "externalDbId": null,
+                    "id": "4849fe82-8653-4624-9c6e-b8a9c4ae0533",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "2f013421-6ea0-4fce-92b8-e286d6ff7053",
+                    "srvcName": "Taxo1s",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "9f66c352-afe9-4b07-8829-e8f5d9e8ef79",
+                    "taxonomyName": "One-on-One Support",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "709cb6c7-0b38-4691-8f3b-17a184bfde49",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "2f013421-6ea0-4fce-92b8-e286d6ff7053",
+                    "srvcName": "Taxo1s",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "0e74baa1-749f-4597-805d-2852c62e178b",
+                    "taxonomyName": "TestTaxo2",
+                  },
+                ],
+              },
+            ],
+          },
+          Object {
+            "dailyUpdates": Array [],
+            "lastUpdated": "2020-07-14T14:45:54.755812+02:00",
+            "locations": Array [
+              Object {
+                "accessibilities": Array [],
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "location": Object {
+                  "alternateName": null,
+                  "description": null,
+                  "externalDbId": null,
+                  "geocodingResults": Array [],
+                  "id": "491082d6-a14a-44af-b8f2-4e190524e078",
+                  "lastVerifiedOn": null,
+                  "latitude": null,
+                  "longitude": null,
+                  "name": null,
+                  "organizationId": "eae88578-d5b1-41f4-97dc-8b9842f905dc",
+                  "organizationName": "puserIrg1",
+                  "providerName": "ServiceProvider",
+                  "transportation": null,
+                  "updatedAt": "2020-07-14T14:45:54.756239+02:00",
+                },
+                "physicalAddress": Object {
+                  "address1": "asda",
+                  "address2": "",
+                  "attention": null,
+                  "city": "asda",
+                  "country": null,
+                  "id": "9d78608f-5a8c-4b53-8f2a-02194efefb8f",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "8080",
+                  "region": null,
+                  "stateProvince": "CA",
+                },
+                "postalAddress": Object {
+                  "address1": "asda",
+                  "address2": "",
+                  "attention": null,
+                  "city": "asda",
+                  "country": null,
+                  "id": "1f4a8eb3-dc16-46cc-9371-b48017e12f5a",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "8080",
+                  "region": null,
+                  "stateProvince": "CA",
+                },
+                "regularScheduleNotes": null,
+                "regularScheduleOpeningHours": null,
+              },
+            ],
+            "organization": Object {
+              "accountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "accountName": "ServiceProvider",
+              "active": true,
+              "alternateName": null,
+              "description": "",
+              "email": "",
+              "externalDbId": null,
+              "id": "eae88578-d5b1-41f4-97dc-8b9842f905dc",
+              "lastVerifiedOn": null,
+              "legalStatus": null,
+              "name": "puserIrg1",
+              "replacedById": null,
+              "sourceDocumentDateUploaded": null,
+              "sourceDocumentId": null,
+              "taxId": null,
+              "taxStatus": null,
+              "updatedAt": "2020-07-14T14:45:54.755812+02:00",
+              "url": "",
+              "userProfiles": Array [
+                Object {
+                  "id": "a9c30dbf-d51e-4bb7-bf51-358a38b00960",
+                  "login": "puser",
+                  "organizationName": "puserirg",
+                  "organizationUrl": "puserorg.com",
+                  "phoneNumber": "+12345678955",
+                  "silo": Object {
+                    "id": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+                    "name": "Silo1",
+                    "public": true,
+                    "userProfiles": null,
+                  },
+                  "systemAccount": Object {
+                    "id": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+                    "name": "ServiceProvider",
+                  },
+                  "userId": "7cdcfd3f-a500-476e-85f8-0f4dc924913a",
+                },
+              ],
+              "yearIncorporated": null,
+            },
+            "owner": Object {
+              "activated": true,
+              "authorities": Array [
+                "ROLE_USER",
+              ],
+              "createdBy": "internal",
+              "createdDate": "2020-07-14T10:12:47.736307Z",
+              "email": "puser@gmail.com",
+              "firstName": "puser",
+              "id": "7cdcfd3f-a500-476e-85f8-0f4dc924913a",
+              "imageUrl": null,
+              "langKey": "en",
+              "lastModifiedBy": "internal",
+              "lastModifiedDate": "2020-07-14T10:15:51.241464Z",
+              "lastName": "puser",
+              "login": "puser",
+              "organizationName": "puserirg",
+              "organizationUrl": "puserorg.com",
+              "organizations": null,
+              "phoneNumber": "+12345678955",
+              "shelters": Array [],
+              "siloId": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+              "systemAccountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "systemAccountName": "ServiceProvider",
+              "userGroups": Array [],
+            },
+            "services": Array [
+              Object {
+                "contacts": Array [],
+                "docs": Array [],
+                "eligibility": null,
+                "funding": null,
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "paymentsAccepteds": Array [],
+                "phones": Array [],
+                "regularScheduleOpeningHours": null,
+                "service": Object {
+                  "accreditations": null,
+                  "alternateName": null,
+                  "applicationProcess": "",
+                  "description": "ewefwe",
+                  "email": null,
+                  "externalDbId": null,
+                  "fees": null,
+                  "id": "29e6b9d5-80e5-4930-9bd6-47591d7ff0c3",
+                  "interpretationServices": null,
+                  "lastVerifiedOn": null,
+                  "licenses": null,
+                  "name": "sdw",
+                  "organizationId": "eae88578-d5b1-41f4-97dc-8b9842f905dc",
+                  "organizationName": "puserIrg1",
+                  "programId": null,
+                  "programName": null,
+                  "providerName": "ServiceProvider",
+                  "status": null,
+                  "type": null,
+                  "updatedAt": "2020-07-14T14:45:54.756365+02:00",
+                  "url": null,
+                  "waitTime": null,
+                },
+                "taxonomies": Array [
+                  Object {
+                    "externalDbId": null,
+                    "id": "eb7ee568-7026-4f55-83e0-6f4d691f15f8",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "29e6b9d5-80e5-4930-9bd6-47591d7ff0c3",
+                    "srvcName": "sdw",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "9f66c352-afe9-4b07-8829-e8f5d9e8ef79",
+                    "taxonomyName": "One-on-One Support",
+                  },
+                ],
+              },
+            ],
+          },
+          Object {
+            "dailyUpdates": Array [],
+            "lastUpdated": "2020-07-13T09:41:16.139844+02:00",
+            "locations": Array [
+              Object {
+                "accessibilities": Array [],
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "location": Object {
+                  "alternateName": null,
+                  "description": null,
+                  "externalDbId": null,
+                  "geocodingResults": Array [
+                    Object {
+                      "address": "Chicago, Chicago, 8080, CA",
+                      "id": "cbc1f7da-9f0e-4662-bea5-b9eb347d41a4",
+                      "latitude": 41.8781136,
+                      "longitude": -87.6297982,
+                    },
+                  ],
+                  "id": "613e3678-d8f1-4400-8a9c-e119497a9701",
+                  "lastVerifiedOn": null,
+                  "latitude": null,
+                  "longitude": null,
+                  "name": null,
+                  "organizationId": "44440db3-13ec-471b-bd43-92a6ec00455f",
+                  "organizationName": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEE",
+                  "providerName": "ServiceProvider",
+                  "transportation": null,
+                  "updatedAt": "2020-07-13T09:41:16.140826+02:00",
+                },
+                "physicalAddress": Object {
+                  "address1": "Chicago",
+                  "address2": "",
+                  "attention": null,
+                  "city": "Chicago",
+                  "country": null,
+                  "id": "be7e508e-650d-4380-af56-6b76ec380edf",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "8080",
+                  "region": null,
+                  "stateProvince": "CA",
+                },
+                "postalAddress": Object {
+                  "address1": "Chicago",
+                  "address2": "",
+                  "attention": null,
+                  "city": "Chicago",
+                  "country": null,
+                  "id": "5bf74ebf-681d-4a25-acf0-c7f5d436d291",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "8080",
+                  "region": null,
+                  "stateProvince": "CA",
+                },
+                "regularScheduleNotes": null,
+                "regularScheduleOpeningHours": null,
+              },
+            ],
+            "organization": Object {
+              "accountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "accountName": "ServiceProvider",
+              "active": true,
+              "alternateName": null,
+              "description": "",
+              "email": "",
+              "externalDbId": null,
+              "id": "44440db3-13ec-471b-bd43-92a6ec00455f",
+              "lastVerifiedOn": null,
+              "legalStatus": null,
+              "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEE",
+              "replacedById": null,
+              "sourceDocumentDateUploaded": null,
+              "sourceDocumentId": null,
+              "taxId": null,
+              "taxStatus": null,
+              "updatedAt": "2020-07-13T09:41:16.139844+02:00",
+              "url": "",
+              "userProfiles": Array [
+                Object {
+                  "id": "bd7d2a9a-1f87-44a7-b880-4c7e53a5ec6d",
+                  "login": "nuser",
+                  "organizationName": "nOrg1",
+                  "organizationUrl": "",
+                  "phoneNumber": null,
+                  "silo": Object {
+                    "id": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+                    "name": "Silo1",
+                    "public": true,
+                    "userProfiles": null,
+                  },
+                  "systemAccount": Object {
+                    "id": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+                    "name": "ServiceProvider",
+                  },
+                  "userId": "60000000-0000-0000-0000-000000000000",
+                },
+              ],
+              "yearIncorporated": null,
+            },
+            "owner": Object {
+              "activated": true,
+              "authorities": Array [
+                "ROLE_USER",
+              ],
+              "createdBy": "system",
+              "createdDate": null,
+              "email": "aa@gmail.com",
+              "firstName": "nuser",
+              "id": "60000000-0000-0000-0000-000000000000",
+              "imageUrl": null,
+              "langKey": "en",
+              "lastModifiedBy": "internal",
+              "lastModifiedDate": "2020-05-14T07:43:06.773177Z",
+              "lastName": "n@gmail.com",
+              "login": "nuser",
+              "organizationName": "nOrg1",
+              "organizationUrl": "",
+              "organizations": null,
+              "phoneNumber": null,
+              "shelters": Array [],
+              "siloId": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+              "systemAccountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "systemAccountName": "ServiceProvider",
+              "userGroups": Array [],
+            },
+            "services": Array [
+              Object {
+                "contacts": Array [],
+                "docs": Array [],
+                "eligibility": null,
+                "funding": null,
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "paymentsAccepteds": Array [],
+                "phones": Array [],
+                "regularScheduleOpeningHours": null,
+                "service": Object {
+                  "accreditations": null,
+                  "alternateName": null,
+                  "applicationProcess": "",
+                  "description": "bjhkj",
+                  "email": null,
+                  "externalDbId": null,
+                  "fees": null,
+                  "id": "88da5fd5-5188-4dc4-aae3-686885a5beae",
+                  "interpretationServices": null,
+                  "lastVerifiedOn": null,
+                  "licenses": null,
+                  "name": "kjbkj",
+                  "organizationId": "44440db3-13ec-471b-bd43-92a6ec00455f",
+                  "organizationName": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEE",
+                  "programId": null,
+                  "programName": null,
+                  "providerName": "ServiceProvider",
+                  "status": null,
+                  "type": null,
+                  "updatedAt": "2020-07-13T09:41:16.141417+02:00",
+                  "url": null,
+                  "waitTime": null,
+                },
+                "taxonomies": Array [
+                  Object {
+                    "externalDbId": null,
+                    "id": "ab225510-ebca-4d09-b146-af090f567ab8",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "88da5fd5-5188-4dc4-aae3-686885a5beae",
+                    "srvcName": "kjbkj",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "c7d9884f-e8c3-4fa0-8c75-afd46fe509f8",
+                    "taxonomyName": "Domestic Violence",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "ad3daffc-015e-4fb6-867b-d47e829169ee",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "88da5fd5-5188-4dc4-aae3-686885a5beae",
+                    "srvcName": "kjbkj",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "500c3893-a535-42a6-bc01-2ddf7d1671f4",
+                    "taxonomyName": "Legal Services",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "65cca810-f78a-405e-9d97-77406a045c4f",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "88da5fd5-5188-4dc4-aae3-686885a5beae",
+                    "srvcName": "kjbkj",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "367af88a-ce42-4ffc-a7dd-78ad385e40b7",
+                    "taxonomyName": "Re-entry Services",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "6ec115e4-a79f-4486-ae41-2cd82215c238",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "88da5fd5-5188-4dc4-aae3-686885a5beae",
+                    "srvcName": "kjbkj",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "9f66c352-afe9-4b07-8829-e8f5d9e8ef79",
+                    "taxonomyName": "One-on-One Support",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "00fedb6a-6cc4-4a53-ba3c-55588a407c2c",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "88da5fd5-5188-4dc4-aae3-686885a5beae",
+                    "srvcName": "kjbkj",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "04d4ce77-eb79-4512-bf0e-3b1b6de92e7d",
+                    "taxonomyName": "Prison/Jail Related Services",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "b0b7cd2a-5007-4055-9255-0f44885355b2",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "88da5fd5-5188-4dc4-aae3-686885a5beae",
+                    "srvcName": "kjbkj",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "1d7a521d-ab2f-4525-9621-4e39b8a8a70d",
+                    "taxonomyName": "Mentoring",
+                  },
+                ],
+              },
+              Object {
+                "contacts": Array [],
+                "docs": Array [],
+                "eligibility": null,
+                "funding": null,
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "paymentsAccepteds": Array [],
+                "phones": Array [],
+                "regularScheduleOpeningHours": null,
+                "service": Object {
+                  "accreditations": null,
+                  "alternateName": null,
+                  "applicationProcess": "",
+                  "description": "asdasda",
+                  "email": null,
+                  "externalDbId": null,
+                  "fees": null,
+                  "id": "105b122f-493c-4c17-9e69-02296e16d485",
+                  "interpretationServices": null,
+                  "lastVerifiedOn": null,
+                  "licenses": null,
+                  "name": "wqqqqqqqqqqqwqq",
+                  "organizationId": "44440db3-13ec-471b-bd43-92a6ec00455f",
+                  "organizationName": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEE",
+                  "programId": null,
+                  "programName": null,
+                  "providerName": "ServiceProvider",
+                  "status": null,
+                  "type": null,
+                  "updatedAt": "2020-07-13T09:41:16.142334+02:00",
+                  "url": null,
+                  "waitTime": null,
+                },
+                "taxonomies": Array [
+                  Object {
+                    "externalDbId": null,
+                    "id": "818bd571-534b-441b-8c52-e6bc5159a2e2",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "105b122f-493c-4c17-9e69-02296e16d485",
+                    "srvcName": "wqqqqqqqqqqqwqq",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "7b9e979e-0adc-4559-a1b1-e9784509c974",
+                    "taxonomyName": "Education",
+                  },
+                ],
+              },
+              Object {
+                "contacts": Array [],
+                "docs": Array [],
+                "eligibility": null,
+                "funding": null,
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "paymentsAccepteds": Array [],
+                "phones": Array [],
+                "regularScheduleOpeningHours": null,
+                "service": Object {
+                  "accreditations": null,
+                  "alternateName": null,
+                  "applicationProcess": "",
+                  "description": "asdawd",
+                  "email": null,
+                  "externalDbId": null,
+                  "fees": null,
+                  "id": "8d2ee849-5c52-4067-b354-b3cc55cdfc10",
+                  "interpretationServices": null,
+                  "lastVerifiedOn": null,
+                  "licenses": null,
+                  "name": "yyyyyyyyyyyyyyyyy",
+                  "organizationId": "44440db3-13ec-471b-bd43-92a6ec00455f",
+                  "organizationName": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEE",
+                  "programId": null,
+                  "programName": null,
+                  "providerName": "ServiceProvider",
+                  "status": null,
+                  "type": null,
+                  "updatedAt": "2020-07-13T09:41:16.141935+02:00",
+                  "url": null,
+                  "waitTime": null,
+                },
+                "taxonomies": Array [
+                  Object {
+                    "externalDbId": null,
+                    "id": "762a3b41-1df7-4f17-8d27-f9213348e971",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "8d2ee849-5c52-4067-b354-b3cc55cdfc10",
+                    "srvcName": "yyyyyyyyyyyyyyyyy",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "ccd33b40-1602-4309-b2ac-a9b574ed174d",
+                    "taxonomyName": "Food",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "cf30f22f-feb2-4862-9eb5-3fd3fd5119ed",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "8d2ee849-5c52-4067-b354-b3cc55cdfc10",
+                    "srvcName": "yyyyyyyyyyyyyyyyy",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "7b9e979e-0adc-4559-a1b1-e9784509c974",
+                    "taxonomyName": "Education",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "b7f625c3-66ea-4786-a72d-074cd2b1c900",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "8d2ee849-5c52-4067-b354-b3cc55cdfc10",
+                    "srvcName": "yyyyyyyyyyyyyyyyy",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "500c3893-a535-42a6-bc01-2ddf7d1671f4",
+                    "taxonomyName": "Legal Services",
+                  },
+                  Object {
+                    "externalDbId": null,
+                    "id": "6c913267-413d-4fe4-957c-a0aea44618b5",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "8d2ee849-5c52-4067-b354-b3cc55cdfc10",
+                    "srvcName": "yyyyyyyyyyyyyyyyy",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "9f66c352-afe9-4b07-8829-e8f5d9e8ef79",
+                    "taxonomyName": "One-on-One Support",
+                  },
+                ],
+              },
+            ],
+          },
+          Object {
+            "dailyUpdates": Array [],
+            "lastUpdated": "2020-07-10T16:44:24.813844+02:00",
+            "locations": Array [
+              Object {
+                "accessibilities": Array [],
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "location": Object {
+                  "alternateName": null,
+                  "description": null,
+                  "externalDbId": null,
+                  "geocodingResults": Array [
+                    Object {
+                      "address": "Dmowskiego, Gdańsk, Gdańsk, 8080, CA",
+                      "id": "91139bda-610f-4288-a939-9f4472e4f11b",
+                      "latitude": 54.381324,
+                      "longitude": 18.605686,
+                    },
+                  ],
+                  "id": "6d770e46-5ea3-4949-8532-407b3272d299",
+                  "lastVerifiedOn": null,
+                  "latitude": null,
+                  "longitude": null,
+                  "name": null,
+                  "organizationId": "dc6ba7b6-4535-42b9-aafa-ba14464c0862",
+                  "organizationName": "Dmowskiego, Gdańsk",
+                  "providerName": "ServiceProvider",
+                  "transportation": null,
+                  "updatedAt": "2020-07-10T16:44:24.814017+02:00",
+                },
+                "physicalAddress": Object {
+                  "address1": "Dmowskiego, Gdańsk",
+                  "address2": "",
+                  "attention": null,
+                  "city": "Gdańsk",
+                  "country": null,
+                  "id": "0f919476-41e1-4fa3-ba87-bee0c22bc3f7",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "8080",
+                  "region": null,
+                  "stateProvince": "CA",
+                },
+                "postalAddress": Object {
+                  "address1": "Dmowskiego, Gdańsk",
+                  "address2": "",
+                  "attention": null,
+                  "city": "Gdańsk",
+                  "country": null,
+                  "id": "3a81c72e-a508-459d-bd7d-83e3145cade8",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "8080",
+                  "region": null,
+                  "stateProvince": "CA",
+                },
+                "regularScheduleNotes": null,
+                "regularScheduleOpeningHours": null,
+              },
+            ],
+            "organization": Object {
+              "accountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "accountName": "ServiceProvider",
+              "active": true,
+              "alternateName": null,
+              "description": "",
+              "email": "",
+              "externalDbId": null,
+              "id": "dc6ba7b6-4535-42b9-aafa-ba14464c0862",
+              "lastVerifiedOn": null,
+              "legalStatus": null,
+              "name": "Dmowskiego, Gdańsk",
+              "replacedById": null,
+              "sourceDocumentDateUploaded": null,
+              "sourceDocumentId": null,
+              "taxId": null,
+              "taxStatus": null,
+              "updatedAt": "2020-07-10T16:44:24.813844+02:00",
+              "url": "",
+              "userProfiles": Array [
+                Object {
+                  "id": "bd7d2a9a-1f87-44a7-b880-4c7e53a5ec6d",
+                  "login": "nuser",
+                  "organizationName": "nOrg1",
+                  "organizationUrl": "",
+                  "phoneNumber": null,
+                  "silo": Object {
+                    "id": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+                    "name": "Silo1",
+                    "public": true,
+                    "userProfiles": null,
+                  },
+                  "systemAccount": Object {
+                    "id": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+                    "name": "ServiceProvider",
+                  },
+                  "userId": "60000000-0000-0000-0000-000000000000",
+                },
+              ],
+              "yearIncorporated": null,
+            },
+            "owner": Object {
+              "activated": true,
+              "authorities": Array [
+                "ROLE_USER",
+              ],
+              "createdBy": "system",
+              "createdDate": null,
+              "email": "aa@gmail.com",
+              "firstName": "nuser",
+              "id": "60000000-0000-0000-0000-000000000000",
+              "imageUrl": null,
+              "langKey": "en",
+              "lastModifiedBy": "internal",
+              "lastModifiedDate": "2020-05-14T07:43:06.773177Z",
+              "lastName": "n@gmail.com",
+              "login": "nuser",
+              "organizationName": "nOrg1",
+              "organizationUrl": "",
+              "organizations": null,
+              "phoneNumber": null,
+              "shelters": Array [],
+              "siloId": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+              "systemAccountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "systemAccountName": "ServiceProvider",
+              "userGroups": Array [],
+            },
+            "services": Array [
+              Object {
+                "contacts": Array [],
+                "docs": Array [],
+                "eligibility": null,
+                "funding": null,
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "paymentsAccepteds": Array [],
+                "phones": Array [],
+                "regularScheduleOpeningHours": null,
+                "service": Object {
+                  "accreditations": null,
+                  "alternateName": null,
+                  "applicationProcess": "",
+                  "description": "asda",
+                  "email": null,
+                  "externalDbId": null,
+                  "fees": null,
+                  "id": "db890e35-d6b9-4047-ad93-d4890e8d8d02",
+                  "interpretationServices": null,
+                  "lastVerifiedOn": null,
+                  "licenses": null,
+                  "name": "asd",
+                  "organizationId": "dc6ba7b6-4535-42b9-aafa-ba14464c0862",
+                  "organizationName": "Dmowskiego, Gdańsk",
+                  "programId": null,
+                  "programName": null,
+                  "providerName": "ServiceProvider",
+                  "status": null,
+                  "type": null,
+                  "updatedAt": "2020-07-10T16:44:24.814132+02:00",
+                  "url": null,
+                  "waitTime": null,
+                },
+                "taxonomies": Array [
+                  Object {
+                    "externalDbId": null,
+                    "id": "45acb0eb-3aed-454e-bff2-752b683fbd17",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "db890e35-d6b9-4047-ad93-d4890e8d8d02",
+                    "srvcName": "asd",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "9f66c352-afe9-4b07-8829-e8f5d9e8ef79",
+                    "taxonomyName": "One-on-One Support",
+                  },
+                ],
+              },
+            ],
+          },
+          Object {
+            "dailyUpdates": Array [],
+            "lastUpdated": "2020-07-10T16:43:44.722578+02:00",
+            "locations": Array [
+              Object {
+                "accessibilities": Array [],
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "location": Object {
+                  "alternateName": null,
+                  "description": null,
+                  "externalDbId": null,
+                  "geocodingResults": Array [
+                    Object {
+                      "address": "Marynarki Polskiej, Gdańsk, Gdańsk, 80-865, FL",
+                      "id": "2764c78e-069a-431f-8408-09c5d611184c",
+                      "latitude": 54.389757,
+                      "longitude": 18.653444,
+                    },
+                  ],
+                  "id": "4594841b-fc26-4805-852a-ef6336f25c4d",
+                  "lastVerifiedOn": null,
+                  "latitude": null,
+                  "longitude": null,
+                  "name": null,
+                  "organizationId": "debddaab-488a-4f1c-a149-261a10628ee0",
+                  "organizationName": "Bugorg4",
+                  "providerName": "ServiceProvider",
+                  "transportation": null,
+                  "updatedAt": "2020-07-10T16:43:44.723191+02:00",
+                },
+                "physicalAddress": Object {
+                  "address1": "Marynarki Polskiej, Gdańsk",
+                  "address2": "",
+                  "attention": null,
+                  "city": "Gdańsk",
+                  "country": null,
+                  "id": "ee5a188d-b51a-4f3c-b767-1d00b36c3dd7",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "80-865",
+                  "region": null,
+                  "stateProvince": "FL",
+                },
+                "postalAddress": Object {
+                  "address1": "Marynarki Polskiej, Gdańsk",
+                  "address2": "",
+                  "attention": null,
+                  "city": "Gdańsk",
+                  "country": null,
+                  "id": "316127ea-0df9-4e04-ac2a-0594bff7cc54",
+                  "locationId": null,
+                  "locationName": null,
+                  "postalCode": "80-865",
+                  "region": null,
+                  "stateProvince": "FL",
+                },
+                "regularScheduleNotes": null,
+                "regularScheduleOpeningHours": null,
+              },
+            ],
+            "organization": Object {
+              "accountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "accountName": "ServiceProvider",
+              "active": true,
+              "alternateName": null,
+              "description": "",
+              "email": "",
+              "externalDbId": null,
+              "id": "debddaab-488a-4f1c-a149-261a10628ee0",
+              "lastVerifiedOn": null,
+              "legalStatus": null,
+              "name": "Bugorg4",
+              "replacedById": null,
+              "sourceDocumentDateUploaded": null,
+              "sourceDocumentId": null,
+              "taxId": null,
+              "taxStatus": null,
+              "updatedAt": "2020-07-10T16:43:44.722578+02:00",
+              "url": "",
+              "userProfiles": Array [
+                Object {
+                  "id": "bd7d2a9a-1f87-44a7-b880-4c7e53a5ec6d",
+                  "login": "nuser",
+                  "organizationName": "nOrg1",
+                  "organizationUrl": "",
+                  "phoneNumber": null,
+                  "silo": Object {
+                    "id": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+                    "name": "Silo1",
+                    "public": true,
+                    "userProfiles": null,
+                  },
+                  "systemAccount": Object {
+                    "id": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+                    "name": "ServiceProvider",
+                  },
+                  "userId": "60000000-0000-0000-0000-000000000000",
+                },
+              ],
+              "yearIncorporated": null,
+            },
+            "owner": Object {
+              "activated": true,
+              "authorities": Array [
+                "ROLE_USER",
+              ],
+              "createdBy": "system",
+              "createdDate": null,
+              "email": "aa@gmail.com",
+              "firstName": "nuser",
+              "id": "60000000-0000-0000-0000-000000000000",
+              "imageUrl": null,
+              "langKey": "en",
+              "lastModifiedBy": "internal",
+              "lastModifiedDate": "2020-05-14T07:43:06.773177Z",
+              "lastName": "n@gmail.com",
+              "login": "nuser",
+              "organizationName": "nOrg1",
+              "organizationUrl": "",
+              "organizations": null,
+              "phoneNumber": null,
+              "shelters": Array [],
+              "siloId": "c0599a83-5b6e-4ce3-bc14-24561ef4cb7e",
+              "systemAccountId": "0d1df768-5d78-48c1-9389-f3dde478ff72",
+              "systemAccountName": "ServiceProvider",
+              "userGroups": Array [],
+            },
+            "services": Array [
+              Object {
+                "contacts": Array [],
+                "docs": Array [],
+                "eligibility": null,
+                "funding": null,
+                "holidaySchedules": Array [],
+                "langs": Array [],
+                "paymentsAccepteds": Array [],
+                "phones": Array [],
+                "regularScheduleOpeningHours": null,
+                "service": Object {
+                  "accreditations": null,
+                  "alternateName": null,
+                  "applicationProcess": "",
+                  "description": "ads",
+                  "email": null,
+                  "externalDbId": null,
+                  "fees": null,
+                  "id": "2f4784a6-05ae-4cbc-ab5d-c436b76c9c93",
+                  "interpretationServices": null,
+                  "lastVerifiedOn": null,
+                  "licenses": null,
+                  "name": "adsa",
+                  "organizationId": "debddaab-488a-4f1c-a149-261a10628ee0",
+                  "organizationName": "Bugorg4",
+                  "programId": null,
+                  "programName": null,
+                  "providerName": "ServiceProvider",
+                  "status": null,
+                  "type": null,
+                  "updatedAt": "2020-07-10T16:43:44.723563+02:00",
+                  "url": null,
+                  "waitTime": null,
+                },
+                "taxonomies": Array [
+                  Object {
+                    "externalDbId": null,
+                    "id": "509af1ae-b8a7-4d23-a455-8cd99da8138f",
+                    "providerName": "ServiceProvider",
+                    "srvcId": "2f4784a6-05ae-4cbc-ab5d-c436b76c9c93",
+                    "srvcName": "adsa",
+                    "taxonomyDetails": null,
+                    "taxonomyId": "9f66c352-afe9-4b07-8829-e8f5d9e8ef79",
+                    "taxonomyName": "One-on-One Support",
+                  },
+                ],
+              },
+            ],
+          },
+        ]
+      }
+      allRecordsForMap={
+        Array [
+          Object {
+            "id": "147048a5-c3fd-4c58-a566-de3aa5a8981e",
+            "location": Object {
+              "address": "washington, washington, 8080, CA",
+              "id": "1955e9ef-03d7-4246-b37b-a238bd722226",
+              "latitude": 36.778261,
+              "longitude": -119.4179324,
+            },
+          },
+          Object {
+            "id": "da57e6fd-8d23-4208-99f5-9bb29f13a5d0",
+            "location": Object {
+              "address": "washington, washington, 8080, CA",
+              "id": "1955e9ef-03d7-4246-b37b-a238bd722226",
+              "latitude": 36.778261,
+              "longitude": -119.4179324,
+            },
+          },
+          Object {
+            "id": "debddaab-488a-4f1c-a149-261a10628ee0",
+            "location": Object {
+              "address": "Marynarki Polskiej, Gdańsk, Gdańsk, 80-865, FL",
+              "id": "2764c78e-069a-431f-8408-09c5d611184c",
+              "latitude": 54.389757,
+              "longitude": 18.653444,
+            },
+          },
+          Object {
+            "id": "01096ecb-6a6e-422e-ad8e-9ecc6d4f5099",
+            "location": Object {
+              "address": "Main, Main, 8080, CA",
+              "id": "38f3cd36-da35-4bc6-b894-6378004346a9",
+              "latitude": 36.778261,
+              "longitude": -119.4179324,
+            },
+          },
+          Object {
+            "id": "c3732aad-fed9-4404-a146-14975a7b6f6d",
+            "location": Object {
+              "address": "Wrocław, Wrocław, 83-000, WY",
+              "id": "3c34a1d8-656d-4953-bce4-5201b28c5b0b",
+              "latitude": 51.1078852,
+              "longitude": 17.0385376,
+            },
+          },
+          Object {
+            "id": "ba15c000-2662-4792-bf95-3f45839865d5",
+            "location": Object {
+              "address": "chicago, chicago, 8080, CO",
+              "id": "6820ed3b-3eb5-499f-902b-0265a08ccde8",
+              "latitude": 41.8781136,
+              "longitude": -87.6297982,
+            },
+          },
+          Object {
+            "id": "dc6ba7b6-4535-42b9-aafa-ba14464c0862",
+            "location": Object {
+              "address": "Dmowskiego, Gdańsk, Gdańsk, 8080, CA",
+              "id": "91139bda-610f-4288-a939-9f4472e4f11b",
+              "latitude": 54.381324,
+              "longitude": 18.605686,
+            },
+          },
+          Object {
+            "id": "16187cc2-3979-4962-9995-36fdca55f8aa",
+            "location": Object {
+              "address": "Washington, Washington, 8080, CA",
+              "id": "9a408c50-c28d-46aa-83fa-600261d53f47",
+              "latitude": 36.778261,
+              "longitude": -119.4179324,
+            },
+          },
+          Object {
+            "id": "44440db3-13ec-471b-bd43-92a6ec00455f",
+            "location": Object {
+              "address": "Chicago, Chicago, 8080, CA",
+              "id": "cbc1f7da-9f0e-4662-bea5-b9eb347d41a4",
+              "latitude": 41.8781136,
+              "longitude": -87.6297982,
+            },
+          },
+          Object {
+            "id": "621d05d5-6d55-43f5-9eb6-5b18f70486b7",
+            "location": Object {
+              "address": "Panama city, Panama city, 8080, CA",
+              "id": "d447877c-26f6-424a-9ad9-0d1a727f3176",
+              "latitude": 8.9823792,
+              "longitude": -79.51986959999999,
+            },
+          },
+        ]
+      }
+      allRecordsTotal={12}
+      filtersChanged={false}
+      getAllProviderRecords={[Function]}
+      getAllProviderRecordsForMap={[Function]}
+      getAllProviderRecordsPublic={[Function]}
+      providerFilter={
+        Object {
+          "city": "",
+          "region": "",
+          "serviceTypes": Array [],
+          "zip": "",
+        }
+      }
+      search=""
+      selectRecord={[Function]}
+      selectedRecord={null}
+      uncheckFiltersChanged={[Function]}
+    >
+      <div>
+        <MediaQuery
+          maxDeviceWidth={768}
+        />
+        <div
+          className="control-line-container"
+        >
+          <div
+            className="d-flex justify-content-between"
+          >
+            <b
+              className="align-self-center"
+            >
+              <Translate
+                component="span"
+                contentKey="providerSite.allRecords"
+              >
+                <span />
+              </Translate>
+            </b>
+            <Component>
+              <div
+                className="d-flex"
+              >
+                <div
+                  className="align-self-center ml-4"
+                >
+                  6
+                </div>
+                <div
+                  className="mx-2 align-self-center"
+                >
+                  <Progress
+                    max={100}
+                    tag="div"
+                    value={50}
+                  >
+                    <div
+                      className="progress"
+                    >
+                      <div
+                        aria-valuemax={100}
+                        aria-valuemin="0"
+                        aria-valuenow={50}
+                        className="progress-bar"
+                        role="progressbar"
+                        style={
+                          Object {
+                            "width": "50%",
+                          }
+                        }
+                      />
+                    </div>
+                  </Progress>
+                </div>
+                <div
+                  className="align-self-center"
+                >
+                  12
+                </div>
+              </div>
+            </Component>
+          </div>
+          <div>
+            <div
+              className="sort-container"
+            >
+              <ButtonPill
+                className="mr-1"
+                onClick={[Function]}
+              >
+                <div
+                  className="button-pill mr-1"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  <span>
+                    <FontAwesomeIcon
+                      border={false}
+                      className=""
+                      fixedWidth={false}
+                      flip={null}
+                      icon="map"
+                      inverse={false}
+                      listItem={false}
+                      mask={null}
+                      pull={null}
+                      pulse={false}
+                      rotation={null}
+                      size={null}
+                      spin={false}
+                      swapOpacity={false}
+                      symbol={false}
+                      title=""
+                      transform={null}
+                    />
+                     
+                    <MediaQuery
+                      minDeviceWidth={769}
+                    />
+                  </span>
+                </div>
+              </ButtonPill>
+              <MediaQuery
+                minDeviceWidth={769}
+              />
+              <SortActivity
+                dropdownOpen={false}
+                order="desc"
+                sort="updatedAt"
+                sortFunc={[Function]}
+                toggleSort={[Function]}
+                values={
+                  Array [
+                    "updatedAt",
+                    "name",
+                  ]
+                }
+              >
+                <div>
+                  <MediaQuery
+                    maxDeviceWidth={768}
+                  />
+                  <MediaQuery
+                    minDeviceWidth={769}
+                  />
+                </div>
+              </SortActivity>
+              <ButtonPill
+                onClick={[Function]}
+                translate="providerSite.filter"
+              >
+                <div
+                  className="button-pill "
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  <b>
+                    <Translate
+                      component="span"
+                      contentKey="providerSite.filter"
+                    >
+                      <span />
+                    </Translate>
+                  </b>
+                </div>
+              </ButtonPill>
+            </div>
+          </div>
+        </div>
+        <Component>
+          <div>
+            <Row
+              noGutters={true}
+              tag="div"
+            >
+              <div
+                className="no-gutters row"
+              >
+                <MediaQuery
+                  maxDeviceWidth={768}
+                />
+                <MediaQuery
+                  minDeviceWidth={769}
+                />
+              </div>
+            </Row>
+            <div
+              className="mb-4 text-center d-flex justify-content-center"
+            >
+              <ButtonPill
+                className="d-inline "
+                onClick={[Function]}
+              >
+                <div
+                  className="button-pill d-inline "
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  <Translate
+                    component="span"
+                    contentKey="providerSite.loadMore"
+                  >
+                    <span />
+                  </Translate>
+                </div>
+              </ButtonPill>
+            </div>
+          </div>
+        </Component>
+        <MediaQuery
+          maxDeviceWidth={768}
+        />
+      </div>
+    </AllRecords>
+  </Connect(AllRecords)>
+</Provider>
+`;
