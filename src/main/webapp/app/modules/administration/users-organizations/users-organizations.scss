@@ -1,0 +1,16 @@
+.users-organizations {
+  td {
+    max-width: 500px;
+  }
+
+  .searchIcon {
+    margin-top: 0.5em;
+    z-index: 1;
+  }
+
+  .clearSearchIcon {
+    cursor: pointer;
+    margin-top: 0.5em;
+    z-index: 1;
+  }
+}
