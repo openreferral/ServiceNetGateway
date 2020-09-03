@@ -12,7 +12,7 @@ const FILTER_DEFAULT = {
   serviceTypes: [] as any[]
 };
 
-const initialState = {
+export const initialState = {
   filter: {
     ...FILTER_DEFAULT
   },

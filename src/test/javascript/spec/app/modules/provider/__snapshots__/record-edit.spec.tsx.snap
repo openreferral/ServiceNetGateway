@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Record edit renders correctly 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <HashRouter>
+    <Router
+      history={
+        Object {
+          "action": "POP",
+          "block": [Function],
+          "createHref": [Function],
+          "go": [Function],
+          "goBack": [Function],
+          "goForward": [Function],
+          "length": 1,
+          "listen": [Function],
+          "location": Object {
+            "hash": "",
+            "pathname": "/",
+            "search": "",
+            "state": undefined,
+          },
+          "push": [Function],
+          "replace": [Function],
+        }
+      }
+    >
+      // @ts-ignore
+      <Connect(RecordEdit)
+        match={
+          Object {
+            "params": Object {
+              "id": 123,
+            },
+          }
+        }
+      >
+        <RecordEdit
+          deactivateEntity={[Function]}
+          getProviderEntity={[Function]}
+          getProviderTaxonomies={[Function]}
+          locations={Array []}
+          match={
+            Object {
+              "params": Object {
+                "id": 123,
+              },
+            }
+          }
+          organization={
+            Object {
+              "dailyUpdates": Array [],
+              "description": "fakeDesc",
+              "email": "fakeEmail",
+              "id": "123",
+              "locations": Array [],
+              "name": "fakeName",
+              "services": Array [],
+              "updatedAt": "fakeDate",
+              "url": "fakeUrl",
+            }
+          }
+          taxonomyOptions={Array []}
+          updateSuccess={true}
+          updateUserOwnedEntity={[Function]}
+          updating={true}
+        />
+      </Connect(RecordEdit)>
+    </Router>
+  </HashRouter>
+</Provider>
+`;
