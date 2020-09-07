@@ -32,7 +32,8 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
     case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
       return {
         ...state,
-        selectedRecord: null
+        selectedRecord: null,
+        loading: true
       };
     case REQUEST(ACTION_TYPES.SELECT_RECORD):
       return {
@@ -57,7 +58,8 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         updating: false,
         updateSuccess: true,
-        records: action.payload.data
+        records: action.payload.data,
+        loading: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_ALL_RECORDS):
       const { isInitLoading } = action.meta;
@@ -67,14 +69,16 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         updating: false,
         updateSuccess: true,
         allRecords: payload,
-        allRecordsTotal: action.payload.headers['x-total-count']
+        allRecordsTotal: action.payload.headers['x-total-count'],
+        loading: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        allRecordsForMap: action.payload.data
+        allRecordsForMap: action.payload.data,
+        loading: false
       };
     case SUCCESS(ACTION_TYPES.SELECT_RECORD):
       return {
@@ -123,9 +127,9 @@ export const getAllProviderRecordsPublic = (silo, page, itemsPerPage, sort, filt
   };
 };
 
-export const getAllProviderRecordsForMap = (siloName = '', providerFilter, search) => {
-  const params = `search=${search ? search : ''}`;
-  const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}&params` : `${allRecordForMapApiUrl}?${params}`;
+export const getProviderRecordsForMap = (siloName = '', providerFilter, search, boundaries, itemsPerPage) => {
+  const params = `size=${itemsPerPage}&search=${search ? search : ''}&boundaries=${boundaries ? boundaries.toUrlValue() : ''}`;
+  const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}&${params}` : `${allRecordForMapApiUrl}?${params}`;
   return {
     type: ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP,
     payload: axios.post(baseUrl, clearFilter(providerFilter))
