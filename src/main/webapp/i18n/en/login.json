@@ -7,6 +7,11 @@
       "rememberme": "Remember me",
       "button": "Sign in"
     },
+    "images": {
+      "backgroundBlue": "Woman and her child sitting in doctor's room",
+      "homepageNetwork": "Icon with three people",
+      "backgroundWhite": "People talking to a teacher"
+    },
     "messages": {
       "error": {
         "authentication": "<strong>Failed to sign in!</strong> Please check your credentials and try again."

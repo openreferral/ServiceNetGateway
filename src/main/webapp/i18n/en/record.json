@@ -12,6 +12,7 @@
     },
     "name": "Organization Name",
     "description": "Organization Description",
+    "update": "Update",
     "url": "Organization Website",
     "email": "Main Email Address",
     "tabs": {

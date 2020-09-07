@@ -11,7 +11,7 @@ import 'lazysizes';
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Row, Col, Container, Progress, Spinner, Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Row, Col, Container, Progress, Spinner, Button, Modal, ModalBody, ModalHeader, Label } from 'reactstrap';
 
 import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
@@ -28,6 +28,7 @@ import Select from 'react-select';
 import { getDefaultSearchFieldOptions, ORGANIZATION, SERVICES } from 'app/modules/home/filter.constants';
 
 const SEARCH_TIMEOUT = 1000;
+const PLACEHOLDER_TEXT_COLOR = '#555';
 
 export interface IHomeProp extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -262,10 +263,18 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
               </ModalBody>
             </Modal>
             <div className="homepage-top-container d-flex">
-              <img data-src="content/images/background-blue.jpg" className="lazyload homepage-top-bg-img" />
+              <img
+                data-src="content/images/background-blue.jpg"
+                className="lazyload homepage-top-bg-img"
+                alt={translate('login.images.backgroundBlue')}
+              />
               <div className="col-lg-4 col-md-6 video-button d-flex flex-column justify-content-around align-items-center">
                 <div>
-                  <img data-src="content/images/homepage-network.svg" className="lazyload video-network-img" />
+                  <img
+                    data-src="content/images/homepage-network.svg"
+                    className="lazyload video-network-img"
+                    alt={translate('login.images.homepageNetwork')}
+                  />
                 </div>
                 <h3 className="text-center">Connecting Communities to Weave a Stronger Social Safety Net</h3>
                 <Button className="btn-black" onClick={this.toggle}>
@@ -275,7 +284,11 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
               </div>
             </div>
             <div className="homepage-bottom-container d-flex">
-              <img data-src="content/images/background-white.jpg" className="lazyload homepage-bottom-bg-img" />
+              <img
+                data-src="content/images/background-white.jpg"
+                className="lazyload homepage-bottom-bg-img"
+                alt={translate('login.images.backgroundWhite')}
+              />
               <div className="col-md-12 welcome-container d-flex flex-column justify-content-around align-items-start">
                 <h4 className="bold">Welcome to Benetech Service Net!</h4>
                 <p>
@@ -317,6 +330,9 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
                 <Row>
                   <Col sm="12" className="searchBar">
                     <FontAwesomeIcon icon="search" size="lg" className="searchIcon" />
+                    <Label className="sr-only" for="searchBar">
+                      {translate('serviceNetApp.activity.home.search.placeholder-' + this.props.activityFilter.searchOn)}
+                    </Label>
                     <Select
                       ref={this.selectRef}
                       key={`autosuggest__${this.state.clearedAt}`}
@@ -331,6 +347,7 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
                       onChange={this.onOptionSelect}
                       styles={autosuggestStyles}
                       onKeyDown={this.onInputKeyDown}
+                      inputId="searchBar"
                     />
                   </Col>
                   <div className="searchClearIconContainer" onClick={this.clearSearchBar}>
@@ -451,6 +468,7 @@ export default connect(
 
 const autosuggestStyles = {
   control: styles => ({ ...styles, backgroundColor: 'white' }),
+  placeholder: style => ({ ...style, color: '#555' }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => ({
     ...styles,
     color: 'black',

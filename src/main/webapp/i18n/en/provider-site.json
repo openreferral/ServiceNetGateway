@@ -18,6 +18,7 @@
     "zipCode": "ZIP code",
     "searchThisArea": "Search this area",
     "recordLimit": "Showing first {{count}} records",
+    "centerMapOnMyLocation": "Center map on my location",
     "menu": {
       "deactivatedRecords": "Deactivated Records"
     },

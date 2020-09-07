@@ -1,5 +1,6 @@
 /* ==================== COMMON ===================== */
 @import '../../../bootstrap-variables';
+$link-blue: #157ba5;
 
 html {
   font-family: 'Mulish', sans-serif;
@@ -198,7 +199,7 @@ div.card.record-card {
     }
     padding: 10px;
     border-bottom: 1px solid #f0f0f0;
-    color: $gray-600;
+    color: $gray-700;
   }
 
   div.card-body {
@@ -210,6 +211,10 @@ div.card.record-card {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+
+      a {
+        color: $link-blue;
+      }
 
       &-full-width {
         @extend .organization-name;

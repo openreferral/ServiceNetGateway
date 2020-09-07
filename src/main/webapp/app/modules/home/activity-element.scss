@@ -1,5 +1,6 @@
 @import '../../app-variables';
 @import '../../bootstrap-variables';
+$darker-blue: #117699;
 
 .activity-card-body {
   display: flex;
@@ -29,7 +30,7 @@
 }
 
 .activity-left-card-title {
-  color: $blue-card-text;
+  color: $blue;
   font-size: 18px;
   margin-bottom: 0;
 }
@@ -50,4 +51,8 @@
 
 .activity-right-card-info {
   color: $gray-card-accent;
+}
+
+.multi-record-view-link {
+  color: $darker-blue;
 }

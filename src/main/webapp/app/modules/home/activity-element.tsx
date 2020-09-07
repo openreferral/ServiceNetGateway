@@ -65,7 +65,11 @@ const ActivityElement = props => {
                 </CardTitle>
               ))}
               <div className="info-container">
-                {areAllDisplayed ? <div /> : `and ${props.activity.conflicts.length - maxConflicts} more...`}
+                {areAllDisplayed ? (
+                  <div />
+                ) : (
+                  <div className="multi-record-view-link">{`and ${props.activity.conflicts.length - maxConflicts} more...`}</div>
+                )}
                 {conflictsToDisplay.length > 0 && (
                   <CardText className="activity-right-card-info">
                     <Translate contentKey="serviceNetApp.activity.lastPartnerUpdate" />

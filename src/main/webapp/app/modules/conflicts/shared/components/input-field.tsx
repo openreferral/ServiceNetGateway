@@ -217,7 +217,7 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     let clipboardTooltip = null;
     if (showClipboard && defaultValue) {
       clipboardButton = (
-        <div className="copy-to-clipboard-icon" id={`${identifier}-clipboard`} onClick={this.copyToClipboard(defaultValue)} ref={this.clipboardRef}>
+        <div className="copy-to-clipboard-icon" onClick={this.copyToClipboard(defaultValue)} ref={this.clipboardRef}>
           <FontAwesomeIcon size="lg" icon="clipboard" />
         </div>
       );

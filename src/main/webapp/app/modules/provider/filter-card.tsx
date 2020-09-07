@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
+import { Col, Row, Label } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonPill from './shared/button-pill';
@@ -15,6 +15,8 @@ import {
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
 import { updateFilter, reset, checkFiltersChanged } from './provider-filter.reducer';
+
+const PLACEHOLDER_TEXT_COLOR = '#555';
 
 export interface IFilterCardProps extends StateProps, DispatchProps {
   dropdownOpen: boolean;
@@ -92,6 +94,10 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
     this.setState({ city: v.value });
   };
 
+  selectStyle = () => ({
+    placeholder: style => ({ ...style, color: PLACEHOLDER_TEXT_COLOR })
+  });
+
   render() {
     const { taxonomyOptions, cityList, regionList, postalCodeList } = this.props;
     const { city, region, zip, serviceTypes } = this.state;
@@ -122,13 +128,18 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
                   <Translate contentKey="providerSite.serviceType" />
                 </b>
               </div>
+              <Label className="sr-only" for="serviceType">
+                <Translate contentKey="providerSite.serviceType" />
+              </Label>
               <Select
+                inputId="serviceType"
                 components={{ MultiValueContainer }}
                 isMulti
                 options={taxonomyOptions && taxonomyOptions['ServiceProvider']}
                 value={serviceTypes}
                 onChange={this.handleServiceTypeChanged}
                 styles={{
+                  ...this.selectStyle(),
                   control: base => ({
                     ...base,
                     minHeight: '6em'
@@ -147,30 +158,45 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
               </div>
               <Row>
                 <Col>
+                  <Label className="sr-only" for="filter-city">
+                    <Translate contentKey="providerSite.city" />
+                  </Label>
                   <Select
                     onChange={this.handleCityChanged}
                     options={cityList}
                     placeholder={translate('providerSite.city')}
                     value={_.find(cityList, c => c.value === city)}
+                    inputId="filter-city"
+                    styles={this.selectStyle()}
                   />
                 </Col>
                 <Col>
+                  <Label className="sr-only" for="filter-county">
+                    <Translate contentKey="providerSite.county" />
+                  </Label>
                   <Select
+                    inputId="filter-county"
                     onChange={this.handleRegionChanged}
                     options={regionList}
                     placeholder={translate('providerSite.county')}
                     value={_.find(regionList, r => r.value === region)}
+                    styles={this.selectStyle()}
                   />
                 </Col>
               </Row>
             </div>
             <Row>
               <Col xs="6">
+                <Label className="sr-only" for="filter-zipCode">
+                  <Translate contentKey="providerSite.zipCode" />
+                </Label>
                 <Select
+                  inputId="filter-zipCode"
                   onChange={this.handleZipChanged}
                   options={postalCodeList}
                   placeholder={translate('providerSite.zipCode')}
                   value={_.find(postalCodeList, c => c.value === zip)}
+                  styles={this.selectStyle()}
                 />
               </Col>
             </Row>

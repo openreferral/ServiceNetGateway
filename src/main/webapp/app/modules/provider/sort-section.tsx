@@ -25,7 +25,7 @@ const SortActivity = props => {
   const menuContent = (
     <div>
       {values.map((value, i) => (
-        <div className="p-2 sort-menu-item" onClick={sortFunc(value)} key={`sortItem${i}`}>
+        <div role="menuitem" className="p-2 sort-menu-item" onClick={sortFunc(value)} key={`sortItem${i}`}>
           <Translate contentKey={`providerSite.sortProperties.${value}`} />{' '}
           {sort === value ? <FontAwesomeIcon icon={order === ORDER_ASC ? 'angle-up' : 'angle-down'} /> : null}
         </div>

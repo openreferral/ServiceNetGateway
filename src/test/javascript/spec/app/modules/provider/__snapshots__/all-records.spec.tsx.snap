@@ -1414,7 +1414,7 @@ exports[`All records renders correctly 1`] = `
       selectedRecord={null}
       uncheckFiltersChanged={[Function]}
     >
-      <div
+      <main
         className="all-records"
       >
         <MediaQuery
@@ -1609,7 +1609,7 @@ exports[`All records renders correctly 1`] = `
         <MediaQuery
           maxDeviceWidth={768}
         />
-      </div>
+      </main>
     </AllRecords>
   </Connect(AllRecords)>
 </Provider>

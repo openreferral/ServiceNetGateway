@@ -2,7 +2,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import _ from 'lodash';
 import React, { ComponentClass, FunctionComponent } from 'react';
-import { Button, Col, Container, Row, Collapse, Card, CardBody, TabPane, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
+import { Button, Col, Container, Row, Collapse, Card, CardBody, TabPane, TabContent, Nav, NavItem, NavLink, Label } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import Select from 'react-select';
 import axios from 'axios';
@@ -48,6 +48,7 @@ const INITIAL_STATE = {
   lng: null
 };
 const DATE_RANGE = 'DATE_RANGE';
+const PLACEHOLDER_TEXT_COLOR = '#555';
 
 const withLatLong = (
   wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
@@ -97,6 +98,10 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
   getTaxonomyMap = () => {
     this.props.getTaxonomyMap();
   };
+
+  selectStyle = () => ({
+    placeholder: style => ({ ...style, color: PLACEHOLDER_TEXT_COLOR })
+  });
 
   getDateFilterList = () => [
     { value: 'LAST_7_DAYS', label: translate('serviceNetApp.activity.home.filter.date.last7Days') },
@@ -492,25 +497,62 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                         </div>
                         <div>
                           <Translate contentKey="serviceNetApp.activity.home.filter.searchFields" />
+                          <Label className="sr-only" for="searchFields">
+                            {translate('serviceNetApp.activity.home.filter.searchFields')}
+                          </Label>
                           <Select
+                            styles={this.selectStyle()}
                             value={this.props.selectedSearchFields}
                             onChange={this.handleSearchFieldsChange}
                             options={searchFieldList}
                             isMulti
+                            inputId="searchFields"
                           />
                         </div>
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.city" />
-                        <Select value={this.props.selectedCity} onChange={this.handleCityChange} options={cityList} isMulti />
+                        <label className="sr-only" htmlFor="cityInput">
+                          <Translate contentKey="serviceNetApp.activity.home.filter.city" />
+                        </label>
+                        <Select
+                          styles={this.selectStyle()}
+                          name="cityInput"
+                          id="cityInput"
+                          value={this.props.selectedCity}
+                          onChange={this.handleCityChange}
+                          options={cityList}
+                          isMulti
+                          inputId="cityInput"
+                        />
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.county" />
-                        <Select value={this.props.selectedCounty} onChange={this.handleCountyChange} options={regionList} isMulti />
+                        <Label className="sr-only" for="county">
+                          {translate('serviceNetApp.activity.home.filter.county')}
+                        </Label>
+                        <Select
+                          styles={this.selectStyle()}
+                          value={this.props.selectedCounty}
+                          onChange={this.handleCountyChange}
+                          options={regionList}
+                          isMulti
+                          inputId="county"
+                        />
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.zip" />
-                        <Select value={this.props.selectedZip} onChange={this.handleZipChange} options={postalCodeList} isMulti />
+                        <Label className="sr-only" for="zip">
+                          {translate('serviceNetApp.activity.home.filter.zip')}
+                        </Label>
+                        <Select
+                          styles={this.selectStyle()}
+                          value={this.props.selectedZip}
+                          onChange={this.handleZipChange}
+                          options={postalCodeList}
+                          isMulti
+                          inputId="zip"
+                        />
                         <div className="form-check form-check-inline">
                           <input
                             type="checkbox"
@@ -526,7 +568,17 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.partner" />
-                        <Select value={this.getPartnerListValues()} onChange={this.handlePartnerChange} options={partnerList} isMulti />
+                        <Label className="sr-only" for="partner">
+                          {translate('serviceNetApp.activity.home.filter.partner')}
+                        </Label>
+                        <Select
+                          styles={this.selectStyle()}
+                          value={this.getPartnerListValues()}
+                          onChange={this.handlePartnerChange}
+                          options={partnerList}
+                          isMulti
+                          inputId="partner"
+                        />
                         <div className="form-check form-check-inline">
                           <input
                             type="checkbox"
@@ -544,21 +596,28 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                     <Row>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.taxonomy" />
+                        <Label className="sr-only" for="taxonomy">
+                          {translate('serviceNetApp.activity.home.filter.taxonomy')}
+                        </Label>
                         {this.props.onlyShowMatching ? (
                           <Select
+                            styles={this.selectStyle()}
                             key="taxonomy-select-only-show-matching"
                             value={this.props.selectedTaxonomy}
                             onChange={this.handleTaxonomyChange}
                             options={this.mergeTaxonomyOptions(taxonomyOptions, this.getPartnerListValues())}
                             isMulti
+                            inputId="taxonomy"
                           />
                         ) : (
                           <Select
+                            styles={this.selectStyle()}
                             key="taxonomy-select"
                             value={this.props.selectedTaxonomy}
                             onChange={this.handleTaxonomyChange}
                             options={taxonomyOptions['all']}
                             isMulti
+                            inputId="taxonomy"
                           />
                         )}
                       </Col>
@@ -566,10 +625,15 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                     <Row>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.dateFilter" />
+                        <Label className="sr-only" for="date">
+                          {translate('serviceNetApp.activity.home.filter.dateFilter')}
+                        </Label>
                         <Select
+                          styles={this.selectStyle()}
                           value={this.getDateFilterValue(this.props.dateFilter)}
                           onChange={this.handleDateFilterChange}
                           options={this.getDateFilterList()}
+                          inputId="date"
                         />
                       </Col>
                       {this.props.dateFilter !== DATE_RANGE
@@ -625,11 +689,16 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                       </Col>
                       <Col md="4" className="d-flex align-items-center">
                         <Translate contentKey="serviceNetApp.activity.home.filter.radius" />
+                        <Label className="sr-only" for="radius">
+                          {translate('serviceNetApp.activity.home.filter.radius')}
+                        </Label>
                         <Select
+                          styles={this.selectStyle()}
                           value={this.getRadiusValue(this.props.radius)}
                           onChange={this.handleRadiusChange}
                           options={radiusOptions}
                           className="flex-fill ml-2"
+                          inputId="radius"
                         />
                       </Col>
                     </Row>

@@ -372,7 +372,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 className="position-absolute"
                 style={{ right: MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE, bottom: MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE }}
               >
-                <Button color="light" onClick={this.centerMapOnMyLocation}>
+                <Button aria-label={translate('providerSite.centerMapOnMyLocation')} color="light" onClick={this.centerMapOnMyLocation}>
                   <FontAwesomeIcon icon="map-marker" size="lg" />
                 </Button>
               </div>
@@ -400,7 +400,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 className="position-absolute"
                 style={{ right: MY_LOCATION_BUTTON_POSITION_RIGHT, bottom: MY_LOCATION_BUTTON_POSITION_BOTTOM }}
               >
-                <Button color="light" onClick={this.centerMapOnMyLocation}>
+                <Button aria-label={translate('providerSite.centerMapOnMyLocation')} color="light" onClick={this.centerMapOnMyLocation}>
                   <FontAwesomeIcon icon="map-marker" size="lg" />
                 </Button>
               </div>
@@ -415,19 +415,19 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </Col>
             ) : null}
             {filterOpened &&
-              !isRecordHighlighted && (
-                <Col md={4}>
-                  <div className="filter-card mx-3 mb-4">
-                    <FilterCard
-                      siloName={siloName}
-                      dropdownOpen={filterOpened}
-                      toggleFilter={this.toggleFilter}
-                      getFirstPage={this.getFirstPage}
-                      isMapView={isMapView}
-                    />
-                  </div>
-                </Col>
-              )}
+            !isRecordHighlighted && (
+              <Col md={4}>
+                <div className="filter-card mb-4">
+                  <FilterCard
+                    siloName={siloName}
+                    dropdownOpen={filterOpened}
+                    toggleFilter={this.toggleFilter}
+                    getFirstPage={this.getFirstPage}
+                    isMapView={isMapView}
+                  />
+                </div>
+              </Col>
+            )}
           </Row>
         </MediaQuery>
       </>
@@ -480,7 +480,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     const { siloName } = this.props;
     const { sortingOpened, filterOpened, isMapView, isSticky, recordViewType } = this.state;
     return (
-      <div className="all-records">
+      <main className="all-records">
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
             <div className="filter-card mx-3 mb-4">
@@ -537,7 +537,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <div ref={this.pageEndRef} />
         </MediaQuery>
-      </div>
+      </main>
     );
   }
 }
