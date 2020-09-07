@@ -16,6 +16,8 @@
     "city": "City",
     "county": "County",
     "zipCode": "ZIP code",
+    "searchThisArea": "Search this area",
+    "recordLimit": "Showing first {{count}} records",
     "menu": {
       "deactivatedRecords": "Deactivated Records"
     },

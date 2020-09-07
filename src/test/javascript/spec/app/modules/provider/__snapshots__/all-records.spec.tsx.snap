@@ -1399,8 +1399,8 @@ exports[`All records renders correctly 1`] = `
       allRecordsTotal={12}
       filtersChanged={false}
       getAllProviderRecords={[Function]}
-      getAllProviderRecordsForMap={[Function]}
       getAllProviderRecordsPublic={[Function]}
+      getProviderRecordsForMap={[Function]}
       providerFilter={
         Object {
           "city": "",
@@ -1414,7 +1414,9 @@ exports[`All records renders correctly 1`] = `
       selectedRecord={null}
       uncheckFiltersChanged={[Function]}
     >
-      <div>
+      <div
+        className="all-records"
+      >
         <MediaQuery
           maxDeviceWidth={768}
         />

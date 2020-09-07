@@ -1,5 +1,5 @@
-import React, { ComponentClass, FunctionComponent } from 'react';
-import { getAllProviderRecords, getAllProviderRecordsForMap, selectRecord, getAllProviderRecordsPublic } from './provider-record.reducer';
+import React from 'react';
+import { getAllProviderRecords, getProviderRecordsForMap, selectRecord, getAllProviderRecordsPublic } from './provider-record.reducer';
 import { connect } from 'react-redux';
 import { Col, Row, Progress, Modal, Button } from 'reactstrap';
 import _ from 'lodash';
@@ -12,11 +12,11 @@ import ReactGA from 'react-ga';
 import ButtonPill from './shared/button-pill';
 import FilterCard from './filter-card';
 import MediaQuery from 'react-responsive';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { GOOGLE_API_KEY } from 'app/config/constants';
 // tslint:disable-next-line:no-submodule-imports
-import { MAP } from 'react-google-maps/lib/constants';
 import { uncheckFiltersChanged } from './provider-filter.reducer';
+import PersistentMap from 'app/modules/provider/map';
+import './all-records.scss';
 
 const MEDIUM_WIDTH_BREAKPOINT = 991;
 const LARGE_WIDTH_BREAKPOINT = 992;
@@ -30,7 +30,7 @@ const MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE = '60px';
 const MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE = '24px';
 const MY_LOCATION_BUTTON_POSITION_RIGHT = '65px';
 const MY_LOCATION_BUTTON_POSITION_BOTTOM = '32px';
-const ICON_MARKER_SVG_PATH = 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z';
+export const MAX_PINS_ON_MAP = 50;
 
 declare global {
   // tslint:disable-next-line:interface-name
@@ -58,65 +58,10 @@ export interface IAllRecordsState extends IPaginationBaseState {
   selectedLat: number;
   selectedLng: number;
   showMyLocation: boolean;
+  boundaryTimeout: number;
+  boundaries: any;
+  requestedBoundaries: any;
 }
-
-const withLatLong = (
-  wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
-): string | React.ComponentClass<any> | React.FunctionComponent<any> => wrappedComponent;
-
-const extractMarkerLocations = props => {
-  const markerLocations = [];
-  if (props.records) {
-    props.records.map(record => {
-      const orgId = record.id;
-      if (record.location) {
-        markerLocations.push({ orgId, lat: record.location.latitude, lng: record.location.longitude });
-      }
-    });
-  }
-  return markerLocations;
-};
-
-const Map = withScriptjs(
-  withGoogleMap(
-    withLatLong(props => {
-      const markerLocations = extractMarkerLocations(props);
-      const bounds = new window.google.maps.LatLngBounds();
-      markerLocations.map(coords => {
-        const latLng = new window.google.maps.LatLng(coords.lat, coords.lng);
-        bounds.extend(latLng);
-      });
-
-      return (
-        <GoogleMap
-          ref={map => map && !props.lat && !props.lng && props.onMapLoad(map, bounds)}
-          defaultZoom={8}
-          center={{ lat: props.lat || 38.5816, lng: props.lng || -121.4944 }}
-          defaultOptions={{ mapTypeControl: false, streetViewControl: false, fullscreenControl: false }}
-        >
-          {markerLocations.map((marker, idx) => (
-            <Marker
-              key={`${marker.lat}-${marker.lng}-${idx}`}
-              position={{ lat: marker.lat, lng: marker.lng }}
-              onClick={() => props.onMarkerClick(marker)}
-            />
-          ))}
-          {props.showMyLocation && (
-            <Marker
-              position={{ lat: props.lat, lng: props.lng }}
-              icon={{
-                path: ICON_MARKER_SVG_PATH,
-                strokeColor: 'white',
-                fillColor: 'blue',
-                fillOpacity: 1
-              }}
-            />
-          )}
-        </GoogleMap>
-      );
-    })
-  )
-);
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
   sortContainerRef: any;
@@ -137,17 +82,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       selectedLng: null,
       showMyLocation: false,
       recordViewType: GRID_VIEW,
+      boundaryTimeout: 0,
+      boundaries: null,
       ...providerSearchPreferences
     };
     this.sortContainerRef = React.createRef();
     this.pageEndRef = React.createRef();
   }
-
-  onMapLoad = (mapRef, bounds) => {
-    mapRef.fitBounds(bounds);
-    const transitLayer = new window.google.maps.TransitLayer();
-    transitLayer.setMap(mapRef.context[MAP]);
-  };
 
   componentDidMount() {
     this.getRecords(true);
@@ -157,8 +98,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   componentDidUpdate(prevProps, prevState) {
     if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
       if (this.state.isMapView) {
-        this.getRecordsForMap();
-      } else {
         this.getRecords(true);
       }
     }
@@ -230,7 +169,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   getRecordsForMap = () => {
     const { siloName, providerFilter, search } = this.props;
-    this.props.getAllProviderRecordsForMap(siloName, providerFilter, search);
+    this.setState({
+      requestedBoundaries: this.state.boundaries
+    });
+    this.props.getProviderRecordsForMap(siloName, providerFilter, search, this.state.boundaries, MAX_PINS_ON_MAP);
   };
 
   selectRecord = record => {
@@ -261,13 +203,9 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   toggleMapView = () => {
     const { filtersChanged } = this.props;
-    if (!this.state.isMapView) {
-      this.getRecordsForMap();
-    } else {
-      if (filtersChanged) {
-        this.getRecords(true);
-        this.props.uncheckFiltersChanged();
-      }
+    if (this.state.isMapView && filtersChanged) {
+      this.getRecords(true);
+      this.props.uncheckFiltersChanged();
     }
     this.setState({
       isMapView: !this.state.isMapView,
@@ -326,6 +264,25 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     ));
   };
 
+  onMapBoundariesChanged = boundaries => {
+    const initialBoundaries = _.isEmpty(this.state.boundaries);
+    this.setState({
+      boundaries
+    }, () => {
+      if (initialBoundaries) {
+        this.getRecordsForMap();
+      }
+    });
+  }
+
+  canRedoSearch = () => !this.props.loading && !_.isEqual(this.state.requestedBoundaries, this.state.boundaries);
+
+  onSearchClick = () => {
+    if (this.canRedoSearch()) {
+      this.getRecordsForMap();
+    }
+  }
+
   mapWithFilter = allRecords => {
     const { filterOpened, isMapView } = this.state;
     const { siloName } = this.props;
@@ -376,8 +333,22 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
+  mapOverlay = () => this.state.boundaries && <div className="d-flex flex-column align-items-center">
+    <div className="map-overlay-top d-flex flex-column align-items-center">
+      <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`} >
+        <FontAwesomeIcon icon="search" size="lg" />
+        <Translate contentKey="providerSite.searchThisArea" />
+      </ButtonPill>
+      {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP
+      && <span className="small"><Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} /></span>}
+      {this.props.loading && <div className="spinner-border mt-1" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>}
+    </div>
+  </div>;
+
   mapView = () => {
-    const { allRecordsForMap, selectedRecord, urlBase, siloName, providerFilter } = this.props;
+    const { allRecordsForMap, selectedRecord, urlBase, siloName } = this.props;
     const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, isMapView } = this.state;
     const mapProps = {
       googleMapURL: mapUrl,
@@ -387,16 +358,16 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       loadingElement: <div style={{ height: '100%' }} />,
       mapElement: <div style={{ height: '100%' }} />,
       onMarkerClick: this.selectRecord,
-      onMapLoad: this.onMapLoad,
-      providerFilter,
-      showMyLocation
+      showMyLocation,
+      onBoundariesChanged: this.onMapBoundariesChanged
     };
     return (
       <>
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Col md={12} className="px-0 mx-0 absolute-card-container">
             <div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }}>
-              <Map {...mapProps} containerElement={<div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }} />} />
+              {this.mapOverlay()}
+              <PersistentMap {...mapProps} containerElement={<div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }} />} />
               <div
                 className="position-absolute"
                 style={{ right: MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE, bottom: MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE }}
@@ -423,7 +394,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
           <Row className="mb-4 mx-3">
             <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative">
-              <Map {...mapProps} containerElement={<div style={{ height: '400px' }} />} />
+              {this.mapOverlay()}
+              <PersistentMap {...mapProps} containerElement={<div style={{ height: '400px' }} />} />
               <div
                 className="position-absolute"
                 style={{ right: MY_LOCATION_BUTTON_POSITION_RIGHT, bottom: MY_LOCATION_BUTTON_POSITION_BOTTOM }}
@@ -508,7 +480,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     const { siloName } = this.props;
     const { sortingOpened, filterOpened, isMapView, isSticky, recordViewType } = this.state;
     return (
-      <div>
+      <div className="all-records">
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
             <div className="filter-card mx-3 mb-4">
@@ -578,12 +550,13 @@ const mapStateToProps = state => ({
   search: state.search.text,
   allRecordsForMap: state.providerRecord.allRecordsForMap,
   selectedRecord: state.providerRecord.selectedRecord,
-  filtersChanged: state.providerFilter.filtersChanged
+  filtersChanged: state.providerFilter.filtersChanged,
+  loading: state.providerRecord.loading
 });
 
 const mapDispatchToProps = {
   getAllProviderRecords,
-  getAllProviderRecordsForMap,
+  getProviderRecordsForMap,
   selectRecord,
   getAllProviderRecordsPublic,
   uncheckFiltersChanged
