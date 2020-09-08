@@ -84,6 +84,10 @@ Array [
               <div
                 className="required"
               />
+              <label
+                className="sr-only"
+                htmlFor="organization-name"
+              />
               <div
                 className="form-group"
               >
@@ -106,6 +110,10 @@ Array [
             <div
               className="form-group"
             >
+              <label
+                className="sr-only"
+                htmlFor="organization-description"
+              />
               <textarea
                 className="is-untouched is-pristine av-valid form-control"
                 id="organization-description"
@@ -122,6 +130,10 @@ Array [
             <div
               className="form-group"
             >
+              <label
+                className="sr-only"
+                htmlFor="organization-url"
+              />
               <div
                 className="form-group"
               >
@@ -143,6 +155,10 @@ Array [
             <div
               className="form-group"
             >
+              <label
+                className="sr-only"
+                htmlFor="organization-email"
+              />
               <div
                 className="form-group"
               >
@@ -262,9 +278,13 @@ Array [
                   <div
                     className="required"
                   />
+                  <label
+                    className="sr-only"
+                    htmlFor="location-id[0].address1"
+                  />
                   <textarea
                     className="is-untouched is-pristine av-valid form-control"
-                    id="locations[0].address1"
+                    id="location-id[0].address1"
                     name="locations[0].address1"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -279,9 +299,13 @@ Array [
                 <div
                   className="form-group"
                 >
+                  <label
+                    className="sr-only"
+                    htmlFor="location-id[0].address2"
+                  />
                   <textarea
                     className="is-untouched is-pristine av-valid form-control"
-                    id="locations[0].address2"
+                    id="location-id[0].address2"
                     name="locations[0].address2"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -301,9 +325,13 @@ Array [
                     <div
                       className="required"
                     />
+                    <label
+                      className="sr-only"
+                      htmlFor="location-id[0].city"
+                    />
                     <input
                       className="is-untouched is-pristine av-valid form-control"
-                      id="locations[0].city"
+                      id="location-id[0].city"
                       name="locations[0].city"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -322,12 +350,16 @@ Array [
                     <div
                       className="required"
                     />
+                    <label
+                      className="sr-only"
+                      htmlFor="location-id[0].ca"
+                    />
                     <div
                       className="form-group"
                     >
                       <select
                         className="is-untouched is-pristine av-valid form-control"
-                        id="locations[0].ca"
+                        id="location-id[0].ca"
                         name="locations[0].ca"
                         onBlur={[Function]}
                         onChange={[Function]}
@@ -647,9 +679,13 @@ Array [
                     <div
                       className="required"
                     />
+                    <label
+                      className="sr-only"
+                      htmlFor="location-id[0].zipcode"
+                    />
                     <input
                       className="is-untouched is-pristine av-valid form-control"
-                      id="locations[0].zipcode"
+                      id="location-id[0].zipcode"
                       name="locations[0].zipcode"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -794,9 +830,13 @@ Array [
                   <div
                     className="required"
                   />
+                  <label
+                    className="sr-only"
+                    htmlFor="service-id[0].name"
+                  />
                   <input
                     className="is-untouched is-pristine av-valid form-control"
-                    id="services[0].name"
+                    id="service-id[0].name"
                     name="services[0].name"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -814,6 +854,10 @@ Array [
                 >
                   <div
                     className="required"
+                  />
+                  <label
+                    className="sr-only"
+                    htmlFor="services[0].taxonomyIds"
                   />
                   <div
                     className="av-select is-untouched is-pristine av-valid css-2b097c-container"
@@ -934,9 +978,13 @@ Array [
                   <div
                     className="required"
                   />
+                  <label
+                    className="sr-only"
+                    htmlFor="service-id[0].description"
+                  />
                   <textarea
                     className="is-untouched is-pristine av-valid form-control"
-                    id="services[0].description"
+                    id="service-id[0].description"
                     name="services[0].description"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -951,9 +999,13 @@ Array [
                 <div
                   className="form-group"
                 >
+                  <label
+                    className="sr-only"
+                    htmlFor="service-id[0].applicationProcess"
+                  />
                   <textarea
                     className="is-untouched is-pristine av-valid form-control"
-                    id="services[0].applicationProcess"
+                    id="service-id[0].applicationProcess"
                     name="services[0].applicationProcess"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -967,9 +1019,13 @@ Array [
                 <div
                   className="form-group"
                 >
+                  <label
+                    className="sr-only"
+                    htmlFor="service-id[0].eligibilityCriteria"
+                  />
                   <textarea
                     className="is-untouched is-pristine av-valid form-control"
-                    id="services[0].eligibilityCriteria"
+                    id="service-id[0].eligibilityCriteria"
                     name="services[0].eligibilityCriteria"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -983,9 +1039,13 @@ Array [
                 <div
                   className="form-group"
                 >
+                  <label
+                    className="sr-only"
+                    htmlFor="service-id[0].docs[0].document"
+                  />
                   <textarea
                     className="is-untouched is-pristine av-valid form-control"
-                    id="services[0].docs[0].document"
+                    id="service-id[0].docs[0].document"
                     name="services[0].docs[0].document"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -999,6 +1059,10 @@ Array [
                 <div
                   className="form-group"
                 >
+                  <label
+                    className="sr-only"
+                    htmlFor="services[0].locationIndexes"
+                  />
                   <div
                     className="av-select is-untouched is-pristine av-valid css-2b097c-container"
                     onKeyDown={[Function]}

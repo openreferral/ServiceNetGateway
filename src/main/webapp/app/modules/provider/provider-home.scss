@@ -1,4 +1,6 @@
 @import 'app-variables';
+$new-record-color: #3b7b65;
+$apply-button-color: #e78859;
 
 .provider,
 .provider-public {
@@ -429,13 +431,13 @@
 }
 
 .button-pill-orange {
-  background-color: #e78859 !important;
-  color: white;
-  border: 1px #e78859 solid;
+  background-color: $apply-button-color !important;
+  color: black;
+  border: 1px $apply-button-color solid;
 }
 
 .button-pill-orange:hover {
-  background-color: darken($color: #e78859, $amount: 10%) !important;
+  background-color: darken($color: $apply-button-color, $amount: 10%) !important;
 }
 
 .button-pill-secondary {
@@ -480,9 +482,9 @@
 
 .button-pill-new-record {
   height: 30px;
-  background-color: #67bba4 !important;
+  background-color: $new-record-color !important;
   color: white;
-  border: 1px #67bba4 solid;
+  border: 1px $new-record-color solid;
   padding: 0;
   span {
     padding: 2px 2rem;

@@ -29,6 +29,12 @@ exports[`Multiple record view renders correctly 1`] = `
       </svg>
     </span>
   </div>
+  <label
+    className="sr-only"
+    htmlFor="settings"
+  >
+    <span />
+  </label>
   <div
     className="fields-display-settings-selector css-2b097c-container"
     onKeyDown={[Function]}
@@ -61,7 +67,7 @@ exports[`Multiple record view renders correctly 1`] = `
               autoComplete="off"
               autoCorrect="off"
               disabled={false}
-              id="react-select-2-input"
+              id="settings"
               onBlur={[Function]}
               onChange={[Function]}
               onFocus={[Function]}
@@ -1471,6 +1477,10 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                   <div
                     className="flex-grow-1"
                   >
+                    <label
+                      className="sr-only"
+                      htmlFor="services"
+                    />
                     <div
                       className=" css-2b097c-container"
                       onKeyDown={[Function]}
@@ -1505,7 +1515,7 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                                 autoComplete="off"
                                 autoCorrect="off"
                                 disabled={false}
-                                id="react-select-3-input"
+                                id="services"
                                 onBlur={[Function]}
                                 onChange={[Function]}
                                 onFocus={[Function]}
@@ -2516,7 +2526,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                     </div>
                     <div
                       className="copy-to-clipboard-icon"
-                      id="organizationName-clipboard"
                       onClick={[Function]}
                     >
                       <svg
@@ -2590,7 +2599,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                     </div>
                     <div
                       className="copy-to-clipboard-icon"
-                      id="organizationDescription-clipboard"
                       onClick={[Function]}
                     >
                       <svg
@@ -2639,7 +2647,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                     </div>
                     <div
                       className="copy-to-clipboard-icon"
-                      id="organizationEmail-clipboard"
                       onClick={[Function]}
                     >
                       <svg
@@ -2717,7 +2724,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                     </a>
                     <div
                       className="copy-to-clipboard-icon"
-                      id="organizationUrl-clipboard"
                       onClick={[Function]}
                     >
                       <svg
@@ -2985,7 +2991,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="locationName-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -3111,7 +3116,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="locationLatitude-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -3160,7 +3164,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="locationLongitude-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -3296,7 +3299,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="physicalAddressAddress1-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3345,7 +3347,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="physicalAddressCity-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3394,7 +3395,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="physicalAddressRegion-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3443,7 +3443,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="physicalAddressStateProvince-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3492,7 +3491,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="physicalAddressPostalCode-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3541,7 +3539,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="physicalAddressCountry-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3697,7 +3694,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="postalAddressAddress1-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3746,7 +3742,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="postalAddressCity-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3795,7 +3790,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="postalAddressRegion-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3844,7 +3838,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="postalAddressStateProvince-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3893,7 +3886,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="postalAddressPostalCode-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -3942,7 +3934,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="postalAddressCountry-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -4180,7 +4171,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="serviceName-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -4254,7 +4244,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="serviceDescription-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -4332,7 +4321,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </a>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="serviceUrl-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -4381,7 +4369,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="serviceEmail-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -4430,7 +4417,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="serviceStatus-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -4503,7 +4489,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="serviceApplicationProcess-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -4576,7 +4561,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       </div>
                       <div
                         className="copy-to-clipboard-icon"
-                        id="serviceFees-clipboard"
                         onClick={[Function]}
                       >
                         <svg
@@ -4833,7 +4817,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="eligibilityEligibility-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -5179,7 +5162,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                           </div>
                           <div
                             className="copy-to-clipboard-icon"
-                            id="languageLanguage-clipboard"
                             onClick={[Function]}
                           >
                             <svg
@@ -5322,7 +5304,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                               </div>
                               <div
                                 className="copy-to-clipboard-icon"
-                                id="phoneNumber-clipboard"
                                 onClick={[Function]}
                               >
                                 <svg
@@ -5397,7 +5378,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                               </div>
                               <div
                                 className="copy-to-clipboard-icon"
-                                id="phoneType-clipboard"
                                 onClick={[Function]}
                               >
                                 <svg
@@ -5471,7 +5451,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                               </div>
                               <div
                                 className="copy-to-clipboard-icon"
-                                id="phoneDescription-clipboard"
                                 onClick={[Function]}
                               >
                                 <svg

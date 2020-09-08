@@ -1,3 +1,4 @@
+@import '../../../bootstrap-variables';
 $header-color: #fff;
 $header-color-secondary: #bbb;
 $header-color-hover: darken($header-color, 20%);
@@ -77,11 +78,13 @@ Navbar styles
 }
 .navbar-version {
   font-size: 10px;
-  color: $header-color-secondary;
+  color: $gray-700;
   padding: 0 0 0 10px;
 }
+
 .navbar-label {
   margin-left: 4px;
+  color: $gray-700;
 }
 
 .brand-logo {

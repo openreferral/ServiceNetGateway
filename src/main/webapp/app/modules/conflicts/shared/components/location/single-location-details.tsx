@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Button } from 'reactstrap';
+import { Col, Row, Button, Label } from 'reactstrap';
 import '../../shared-record-view.scss';
 import { TextFormat, translate, Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
@@ -167,10 +167,14 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
         </div>
         {isOnlyOne ? null : (
           <div className={isBaseRecord ? 'col-8 changeRecordSelect flex-grow-1' : 'w-100'}>
+            <Label className="sr-only" for="changeRecord">
+              <Translate contentKey="singleRecordView.details.titleLocations" />
+            </Label>
             <Select
               onChange={this.changeRecord}
               options={selectOptions}
               value={SingleLocationDetails.getSelectOption(record, locationNumber)}
+              inputId="changeRecord"
             />
           </div>
         )}

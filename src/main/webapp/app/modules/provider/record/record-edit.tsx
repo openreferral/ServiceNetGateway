@@ -335,13 +335,16 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           message={location => `You have unsaved data, are you sure you want to leave?`}
         />
         <div id={measureId(this.props.match.params.id)} style={containerStyle} />
-        <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <main className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
           <AvField name="id" value={organization.id} className="d-none" />
           <Card className="section">
             <CardTitle>
               <Translate contentKey="record.edit.title" />
             </CardTitle>
             <CardBody>
+              <Label className="sr-only" for="organization-name">
+                {translate('record.name')}
+              </Label>
               <AvField
                 id="organization-name"
                 type="text"
@@ -372,6 +375,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               </div>
             </CardTitle>
             <CardBody>
+              <Label className="sr-only" for="daily-update">
+                {translate('record.update')}
+              </Label>
               <AvInput
                 id="daily-update"
                 type="textarea"
@@ -390,7 +396,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             <Collapse isOpen={openSections.includes(ORGANIZATION)}>
               <CardBody className="details">
                 <AvGroup>
-                  <Label>{translate('record.description')}</Label>
+                  <Label for="description">{translate('record.description')}</Label>
                   <AvInput
                     id="organization-description"
                     type="textarea"
@@ -403,7 +409,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   <AvField id="organization-url" type="text" name="url" onChange={this.onOrganizationChange('url')} />
                 </AvGroup>
                 <AvGroup>
-                  <Label>{translate('record.email')}</Label>
+                  <Label for="email">{translate('record.email')}</Label>
                   <AvField
                     id="organization-email"
                     type="text"
@@ -786,7 +792,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               </ButtonPill>
             </div>
           </div>
-        </div>
+        </main>
       </AvForm>
     ) : (
       ''

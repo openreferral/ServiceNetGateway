@@ -3,7 +3,7 @@ import './multiple-record-view.scss';
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Jumbotron, Button, Tooltip } from 'reactstrap';
+import { Row, Col, Jumbotron, Button, Tooltip, Label } from 'reactstrap';
 import Details from '../shared/components/details';
 import { getBaseRecord, getPartnerRecord, getNotHiddenMatchesByOrg } from '../shared/shared-record-view.reducer';
 import {
@@ -429,12 +429,16 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
             </span>
           )}
         </div>
+        <Label className="sr-only" for="settings">
+          <Translate contentKey="multiRecordView.showLessFields" />
+        </Label>
         <Select
           options={this.props.fieldsDisplaySettingsOptions}
           onChange={this.handleSettingsChange}
           value={this.props.selectedSettings}
           className="fields-display-settings-selector"
           isDisabled={this.state.fieldSettingsExpanded}
+          inputId="settings"
         />
         <Tooltip
           placement="bottom"

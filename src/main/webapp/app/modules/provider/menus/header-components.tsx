@@ -10,7 +10,7 @@ import 'lazysizes';
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 export const NavDropdown = props => (
-  <UncontrolledDropdown nav inNavbar id={props.id}>
+  <UncontrolledDropdown inNavbar id={props.id}>
     <DropdownToggle nav caret className="d-flex align-items-center">
       <div className="self-align-center">
         <Avatar size="small" name={`${props.name.charAt(0).toUpperCase()}`} />

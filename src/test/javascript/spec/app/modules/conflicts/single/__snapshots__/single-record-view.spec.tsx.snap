@@ -1467,6 +1467,10 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       <div
                         className="flex-grow-1"
                       >
+                        <label
+                          className="sr-only"
+                          htmlFor="services"
+                        />
                         <div
                           className=" css-2b097c-container"
                           onKeyDown={[Function]}
@@ -1501,7 +1505,7 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                                     autoComplete="off"
                                     autoCorrect="off"
                                     disabled={false}
-                                    id="react-select-2-input"
+                                    id="services"
                                     onBlur={[Function]}
                                     onChange={[Function]}
                                     onFocus={[Function]}

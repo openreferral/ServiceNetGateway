@@ -1,7 +1,7 @@
 import './record.scss';
 
 import React from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Col, Row } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Col, Row, Label } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
@@ -265,6 +265,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 </div>
                 <AvGroup className="flex">
                   <div className="required" />
+                  <Label className="sr-only" for="organization-name">
+                    {translate('record.name')}
+                  </Label>
                   <AvField
                     id="organization-name"
                     type="text"
@@ -277,6 +280,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-description">
+                    {translate('record.description')}
+                  </Label>
                   <AvInput
                     id="organization-description"
                     type="textarea"
@@ -286,6 +292,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-url">
+                    {translate('record.description')}
+                  </Label>
                   <AvField
                     id="organization-url"
                     type="text"
@@ -295,6 +304,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-email">
+                    {translate('record.email')}
+                  </Label>
                   <AvField
                     id="organization-email"
                     type="text"
@@ -339,7 +351,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                     <Col md={11}>
                       <AvGroup className="flex">
                         <div className="required" />
+                        <Label className="sr-only" for={'location-id[' + i + '].address1'}>
+                          {translate('record.location.address1')}
+                        </Label>
                         <AvInput
+                          id={'location-id[' + i + '].address1'}
                           type="textarea"
                           name={'locations[' + i + '].address1'}
                           onChange={this.onLocationChange(i, 'address1')}
@@ -350,7 +366,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'location-id[' + i + '].address2'}>
+                          {translate('record.location.address2')}
+                        </Label>
                         <AvInput
+                          id={'location-id[' + i + '].address2'}
                           type="textarea"
                           name={'locations[' + i + '].address2'}
                           onChange={this.onLocationChange(i, 'address2')}
@@ -360,7 +380,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       <Row>
                         <Col md={7} className="flex mb-3">
                           <div className="required" />
+                          <Label className="sr-only" for={'location-id[' + i + '].city'}>
+                            {translate('record.location.city')}
+                          </Label>
                           <AvInput
+                            id={'location-id[' + i + '].city'}
                             type="text"
                             name={'locations[' + i + '].city'}
                             onChange={this.onLocationChange(i, 'city')}
@@ -372,7 +396,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         </Col>
                         <Col md={2} className="flex mb-3">
                           <div className="required" />
+                          <Label className="sr-only" for={'location-id[' + i + '].ca'}>
+                            {translate('entity.validation.required')}
+                          </Label>
                           <AvField
+                            id={'location-id[' + i + '].ca'}
                             type="select"
                             name={'locations[' + i + '].ca'}
                             onChange={this.onLocationChange(i, 'ca')}
@@ -392,7 +420,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         </Col>
                         <Col md={3} className="flex mb-3">
                           <div className="required" />
+                          <Label className="sr-only" for={'location-id[' + i + '].zipcode'}>
+                            {translate('record.location.zipcode')}
+                          </Label>
                           <AvInput
+                            id={'location-id[' + i + '].zipcode'}
                             type="text"
                             name={'locations[' + i + '].zipcode'}
                             onChange={this.onLocationChange(i, 'zipcode')}
@@ -451,7 +483,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                     <Col md={11}>
                       <AvGroup className="flex">
                         <div className="required" />
+                        <Label className="sr-only" for={'service-id[' + i + '].name'}>
+                          {translate('entity.validation.required')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].name'}
                           type="text"
                           name={'services[' + i + '].name'}
                           placeholder={translate('record.service.name')}
@@ -463,6 +499,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       </AvGroup>
                       <AvGroup className="flex">
                         <div className="required" />
+                        <Label className="sr-only" for={'services[' + i + '].taxonomyIds'}>
+                          {translate('record.service.type')}
+                        </Label>
                         <AvSelect
                           name={'services[' + i + '].taxonomyIds'}
                           validate={{
@@ -477,7 +516,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       </AvGroup>
                       <AvGroup className="flex">
                         <div className="required" />
+                        <Label className="sr-only" for={'service-id[' + i + '].description'}>
+                          {translate('record.service.description')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].description'}
                           type="textarea"
                           name={'services[' + i + '].description'}
                           placeholder={translate('record.service.description')}
@@ -488,7 +531,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'service-id[' + i + '].applicationProcess'}>
+                          {translate('record.service.applicationProcess')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].applicationProcess'}
                           type="textarea"
                           name={'services[' + i + '].applicationProcess'}
                           placeholder={translate('record.service.applicationProcess')}
@@ -496,7 +543,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'service-id[' + i + '].eligibilityCriteria'}>
+                          {translate('record.service.eligibilityCriteria')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].eligibilityCriteria'}
                           type="textarea"
                           name={'services[' + i + '].eligibilityCriteria'}
                           placeholder={translate('record.service.eligibilityCriteria')}
@@ -504,7 +555,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'service-id[' + i + '].docs[0].document'}>
+                          {translate('record.service.requiredDocuments')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].docs[0].document'}
                           type="textarea"
                           name={'services[' + i + '].docs[0].document'}
                           placeholder={translate('record.service.requiredDocuments')}
@@ -512,6 +567,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'services[' + i + '].locationIndexes'}>
+                          {translate('record.service.locations')}
+                        </Label>
                         <AvSelect
                           name={'services[' + i + '].locationIndexes'}
                           value={this.state.services[i]['locationIndexes']}
