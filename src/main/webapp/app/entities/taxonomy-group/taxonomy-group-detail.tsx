@@ -42,14 +42,14 @@ export class TaxonomyGroupDetail extends React.Component<ITaxonomyGroupDetailPro
                 : null}
             </dd>
           </dl>
-          <Button tag={Link} to="/entity/taxonomy-group" replace color="info">
+          <Button tag={Link} to="/entity/taxonomy-group" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/taxonomy-group/${taxonomyGroupEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/taxonomy-group/${taxonomyGroupEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

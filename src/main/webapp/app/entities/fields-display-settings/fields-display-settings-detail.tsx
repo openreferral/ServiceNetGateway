@@ -84,14 +84,14 @@ export class FieldsDisplaySettingsDetail extends React.Component<IFieldsDisplayS
             </dt>
             <dd>{fieldsDisplaySettingsEntity.userLogin ? fieldsDisplaySettingsEntity.userLogin : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/fields-display-settings" replace color="info">
+          <Button tag={Link} to="/entity/fields-display-settings" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/fields-display-settings/${fieldsDisplaySettingsEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/fields-display-settings/${fieldsDisplaySettingsEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

@@ -133,7 +133,7 @@ export class ServiceAreaUpdate extends React.Component<IServiceAreaUpdateProps, 
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/service-area" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/service-area" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

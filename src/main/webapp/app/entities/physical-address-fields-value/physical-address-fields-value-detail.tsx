@@ -36,19 +36,14 @@ export class PhysicalAddressFieldsValueDetail extends React.Component<IPhysicalA
             </dt>
             <dd>{physicalAddressFieldsValueEntity.physicalAddressField}</dd>
           </dl>
-          <Button tag={Link} to="/entity/physical-address-fields-value" replace color="info">
+          <Button tag={Link} to="/entity/physical-address-fields-value" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button
-            tag={Link}
-            to={`/entity/physical-address-fields-value/${physicalAddressFieldsValueEntity.id}/edit`}
-            replace
-            color="primary"
-          >
+          <Button tag={Link} to={`/entity/physical-address-fields-value/${physicalAddressFieldsValueEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

@@ -169,7 +169,7 @@ export class FieldsDisplaySettingsUpdate extends React.Component<IFieldsDisplayS
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/fields-display-settings" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/fields-display-settings" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

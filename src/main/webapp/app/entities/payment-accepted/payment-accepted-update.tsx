@@ -116,7 +116,7 @@ export class PaymentAcceptedUpdate extends React.Component<IPaymentAcceptedUpdat
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/payment-accepted" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/payment-accepted" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

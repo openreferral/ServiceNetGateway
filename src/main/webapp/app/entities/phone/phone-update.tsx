@@ -217,7 +217,7 @@ export class PhoneUpdate extends React.Component<IPhoneUpdateProps, IPhoneUpdate
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/phone" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/phone" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

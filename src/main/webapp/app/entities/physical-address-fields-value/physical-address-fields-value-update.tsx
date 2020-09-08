@@ -114,7 +114,7 @@ export class PhysicalAddressFieldsValueUpdate extends React.Component<
                     <option value="COUNTRY">{translate('serviceNetApp.PhysicalAddressFields.COUNTRY')}</option>
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/physical-address-fields-value" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/physical-address-fields-value" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

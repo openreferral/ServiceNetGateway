@@ -36,14 +36,14 @@ export class OrganizationFieldsValueDetail extends React.Component<IOrganization
             </dt>
             <dd>{organizationFieldsValueEntity.organizationField}</dd>
           </dl>
-          <Button tag={Link} to="/entity/organization-fields-value" replace color="info">
+          <Button tag={Link} to="/entity/organization-fields-value" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/organization-fields-value/${organizationFieldsValueEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/organization-fields-value/${organizationFieldsValueEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

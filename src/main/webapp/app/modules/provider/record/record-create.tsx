@@ -345,7 +345,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   </div>
                 </div>
                 {Array.apply(null, { length: locationCount }).map((e, i) => (
-                  <Row className="item location">
+                  <Row key={`location-${i}`} className="item location">
                     <Col md={1}>
                       <h4>{i + 1}.</h4>
                     </Col>
@@ -477,7 +477,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   </div>
                 </div>
                 {Array.apply(null, { length: serviceCount }).map((e, i) => (
-                  <Row className="item service">
+                  <Row key={`service-${i}`} className="item service">
                     <Col md={1}>
                       <h4>{i + 1}.</h4>
                     </Col>

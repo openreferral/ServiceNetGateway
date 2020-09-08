@@ -70,7 +70,7 @@ export class OrganizationMatchDetail extends React.Component<IOrganizationMatchD
             </dt>
             <dd>{organizationMatchEntity.partnerVersionName ? organizationMatchEntity.partnerVersionName : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/organization-match" replace color="info">
+          <Button tag={Link} to="/entity/organization-match" color="info">
             <FontAwesomeIcon icon="arrow-left" />
             &nbsp;
             <span className="d-none d-md-inline">
@@ -78,7 +78,7 @@ export class OrganizationMatchDetail extends React.Component<IOrganizationMatchD
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/organization-match/${organizationMatchEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/organization-match/${organizationMatchEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />
             &nbsp;
             <span className="d-none d-md-inline">

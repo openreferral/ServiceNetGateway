@@ -25,13 +25,19 @@ export default () => next => action => {
   if (process.env.NODE_ENV === 'development') {
     // Dispatch initial pending promise, but catch any errors
     return next(action).catch(error => {
+      const status = error.status || (error.response ? error.response.status : 0);
+
+      if (status === 403 || status === 401) {
+        return error;
+      }
+
       console.error(`${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`);
       if (error && error.response && error.response.data) {
         const message = getErrorMessage(error.response.data);
         console.error(`Actual cause: ${message}`);
       }
 
-      return Promise.reject(error);
+      return error;
     });
   }
   return next(action);

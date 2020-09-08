@@ -463,11 +463,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 <CardBody className="details">
                   {locations &&
                     locations.map((location, i) => (
-                      <>
-                        <div
-                          key={'location-' + i}
-                          className={`col-lg-4 col-md-6 col-xs-12 p-0 ${openLocation === -1 ? 'd-inline-block' : 'd-block'}`}
-                        >
+                      <div key={`location-${i}`}>
+                        <div className={`col-lg-4 col-md-6 col-xs-12 p-0 ${openLocation === -1 ? 'd-inline-block' : 'd-block'}`}>
                           <Card
                             className={
                               openLocation === -1
@@ -574,7 +571,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                             </ButtonPill>
                           </div>
                         </div>
-                      </>
+                      </div>
                     ))}
                   <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
                     <ButtonPill className="button-pill-secondary col-12 col-md-auto" onClick={this.addAnotherLocation}>
@@ -624,11 +621,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 <CardBody className="details">
                   {services &&
                     services.map((service, i) => (
-                      <>
-                        <div
-                          key={'service-' + i}
-                          className={`col-lg-4 col-md-6 col-xs-12 p-0 ${openService === -1 ? 'd-inline-block' : 'd-block'}`}
-                        >
+                      <div key={`service-${i}`}>
+                        <div className={`col-lg-4 col-md-6 col-xs-12 p-0 ${openService === -1 ? 'd-inline-block' : 'd-block'}`}>
                           <Card
                             className={
                               openService === -1
@@ -748,7 +742,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                             </ButtonPill>
                           </div>
                         </div>
-                      </>
+                      </div>
                     ))}
                   <div className={openService === -1 ? 'buttons list-buttons' : 'd-none'}>
                     <ButtonPill className="button-pill-secondary col-12 col-md-auto" onClick={this.addAnotherService}>

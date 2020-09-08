@@ -145,7 +145,7 @@ export class TaxonomyUpdate extends React.Component<ITaxonomyUpdateProps, ITaxon
                   </Label>
                   <AvInput id="taxonomy-providerName" type="textarea" name="providerName" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/taxonomy" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/taxonomy" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

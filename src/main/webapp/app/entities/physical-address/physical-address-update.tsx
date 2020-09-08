@@ -179,7 +179,7 @@ export class PhysicalAddressUpdate extends React.Component<IPhysicalAddressUpdat
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/physical-address" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/physical-address" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

@@ -47,14 +47,14 @@ export class GeocodingResultDetail extends React.Component<IGeocodingResultDetai
             </dt>
             <dd>{geocodingResultEntity.longitude}</dd>
           </dl>
-          <Button tag={Link} to="/entity/geocoding-result" replace color="info">
+          <Button tag={Link} to="/entity/geocoding-result" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back" />
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/geocoding-result/${geocodingResultEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/geocoding-result/${geocodingResultEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit" />

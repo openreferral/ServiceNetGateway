@@ -135,7 +135,7 @@ export class RequiredDocumentUpdate extends React.Component<IRequiredDocumentUpd
                   </Label>
                   <AvInput id="requiredDocument-providerName" type="textarea" name="providerName" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/required-document" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/required-document" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

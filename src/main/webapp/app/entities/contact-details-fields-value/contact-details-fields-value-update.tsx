@@ -111,7 +111,7 @@ export class ContactDetailsFieldsValueUpdate extends React.Component<
                     <option value="EMAIL">{translate('serviceNetApp.ContactDetailsFields.EMAIL')}</option>
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/contact-details-fields-value" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/contact-details-fields-value" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

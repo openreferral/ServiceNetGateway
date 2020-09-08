@@ -151,7 +151,7 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
                     value={client.tokenValiditySeconds}
                   />
                 </AvGroup>
-                <Button tag={Link} to="/admin/client-management" replace color="info">
+                <Button tag={Link} to="/admin/client-management" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

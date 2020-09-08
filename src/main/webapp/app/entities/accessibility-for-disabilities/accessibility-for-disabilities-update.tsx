@@ -134,7 +134,7 @@ export class AccessibilityForDisabilitiesUpdate extends React.Component<
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/accessibility-for-disabilities" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/accessibility-for-disabilities" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

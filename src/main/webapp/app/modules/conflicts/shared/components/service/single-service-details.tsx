@@ -166,7 +166,7 @@ export class SingleServiceDetails extends React.Component<ISingleServiceDetailsP
     );
 
     const matchButton = (
-      <Button onClick={this.matchService} replace color="info">
+      <Button onClick={this.matchService} color="info">
         <FontAwesomeIcon icon="arrow-left" />{' '}
         <span className="d-none d-md-inline">
           <Translate contentKey="multiRecordView.matchesMyServiceRecord" />
@@ -175,7 +175,7 @@ export class SingleServiceDetails extends React.Component<ISingleServiceDetailsP
     );
 
     const unmatchButton = (
-      <Button onClick={this.unmatchService} replace color="danger">
+      <Button onClick={this.unmatchService} color="danger">
         <FontAwesomeIcon icon="arrow-left" />{' '}
         <span className="d-none d-md-inline">
           <Translate contentKey="multiRecordView.unmatchThisRecord" />
