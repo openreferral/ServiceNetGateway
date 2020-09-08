@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Multiple record view renders correctly 1`] = `
-<div>
+<div
+  className="all-records-view shared-record-view"
+>
   <div
     className="fields-display-settings-btn"
     id="fields-display-settings-btn"
@@ -167,7 +169,9 @@ exports[`Multiple record view renders correctly 1`] = `
                 }
               }
             >
-              <div>
+              <div
+                className="hide-record-button"
+              >
                 <div
                   className="close-icon"
                   id="hide-e2bcea3d-f608-4dc2-8068-949339929592"
@@ -3314,7 +3318,9 @@ exports[`Multiple record view renders correctly 1`] = `
                 }
               }
             >
-              <div>
+              <div
+                className="hide-record-button"
+              >
                 <div
                   className="close-icon"
                   id="hide-618ed2af-37ca-4aab-8256-91db9ded8295"

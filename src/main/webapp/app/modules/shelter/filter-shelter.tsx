@@ -199,7 +199,7 @@ export class FilterShelter extends React.Component<IFilterShelterProps, IFilterS
     const radiusOptions = [1, 2, 3, 4, 5, 10, 20].map(number => ({ label: `${number} mile${number > 1 ? 's' : ''}`, value: number }));
 
     return (
-      <div>
+      <div className="filter-shelter">
         <Collapse isOpen={filterCollapseExpanded} style={{ marginBottom: '1rem' }}>
           <Card>
             <CardBody>

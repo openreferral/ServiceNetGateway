@@ -1,5 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
-import './provider-home.scss';
+import './provider-shared.scss';
 import '../../bootstrap.scss';
 
 import React from 'react';
@@ -36,7 +36,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
   render() {
     const { match } = this.props;
     return (
-      <div className="provider-public" id="provider-home-view-container">
+      <div className="provider-shared public-app" id="provider-home-view-container">
         <div className="app-container-public">
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}

@@ -166,19 +166,19 @@ export class UsersOrganizations extends React.Component<IOrganizationProps, IOrg
           <Translate contentKey="global.menu.admin.organizationOwners">Organization owners</Translate>
         </h2>
         <Row className="mt-4">
-          <Col sm="12" className="searchBar">
-            <FontAwesomeIcon icon="search" size="lg" className="searchIcon" />
+          <Col sm="12" className="search-bar">
+            <FontAwesomeIcon icon="search" size="lg" className="search-icon" />
             <input
               name="search"
               id="searchBar"
-              className="searchInput form-control"
+              className="search-input form-control"
               value={this.state.name || ''}
               placeholder={translate('serviceNetApp.organization.searchPlaceholder')}
               onChange={this.onInputChange}
             />
           </Col>
-          <div className="clearSearchIcon" onClick={this.clearSearchBar}>
-            <FontAwesomeIcon icon="times-circle" size="lg" className="searchClearIcon" />
+          <div className="clear-search-icon-container" onClick={this.clearSearchBar}>
+            <FontAwesomeIcon icon="times-circle" size="lg" className="clear-search-icon" />
           </div>
         </Row>
         <div className="table-responsive">

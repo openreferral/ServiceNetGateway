@@ -42,138 +42,136 @@ Developement Ribbon
 /* ==========================================================================
 Navbar styles
 ========================================================================== */
-.provider {
-  .jh-navbar {
-    background-color: #353d47;
-    padding: 0.2em 1em;
-    .profile-image {
-      margin: -10px 0px;
-      height: 40px;
-      width: 40px;
-      border-radius: 50%;
-    }
-    .dropdown-item.active,
-    .dropdown-item.active:focus,
-    .dropdown-item.active:hover {
-      background-color: #353d47;
-    }
-    .dropdown-toggle::after {
-      margin-left: 0.15em;
-    }
-    ul.navbar-nav {
-      padding: 0.5em;
-      .nav-item {
-        margin-left: 1.5rem;
-      }
-    }
-    a.nav-link {
-      font-weight: 400;
-      > span {
-        margin-left: 5px;
-      }
-    }
-    .jh-navbar-toggler {
-      color: #ccc;
-      font-size: 1.5em;
-      padding: 10px;
-      &:hover {
-        color: #fff;
-      }
-    }
-  }
-  .navbar-version {
-    font-size: 10px;
-    color: $header-color-secondary;
-    padding: 0 0 0 10px;
-  }
-  .navbar-label {
-    margin-left: 4px;
-    color: $gray-700;
-  }
-
-  .brand-logo {
-    &:hover {
-      text-decoration: none;
-    }
-    .brand-icon {
-      height: 35px;
-      width: auto;
-      display: inline-block;
-      img {
-        height: 45px;
-        margin-top: -5px;
-      }
-      margin-right: 5px;
-    }
-  }
-
-  .brand-title {
-    font-size: 24px;
-    color: $header-color;
-    &:hover {
-      color: $header-color-hover;
-      text-decoration: none;
-    }
-  }
-
-  #account-menu {
-    list-style-type: none;
-  }
-
-  .loading-bar {
-    height: 3px;
-    background-color: #009cd8;
-    position: absolute;
-    top: 0px;
-    z-index: 1031;
-  }
-
-  .about-us-link {
-    text-decoration: underline;
-    font-size: 0.875rem;
-  }
-
-  .avatar-size {
-    align-self: center;
-    width: $avatar-width !important;
-    height: $avatar-height !important;
-  }
-
-  .self-aligned {
-    align-self: center;
-  }
-
-  .header-link {
-    font-weight: bold;
-  }
-
-  .search-bar {
-    padding-right: 20px;
-  }
-
-  .header-bar {
-    height: $paddingTop;
-  }
-
-  .bell-bagde {
-    position: relative;
-    top: -11px;
-    right: -32px;
+.jh-navbar {
+  background-color: #353d47;
+  padding: 0.2em 1em;
+  .profile-image {
+    margin: -10px 0px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
-    padding: 4px;
-    border: 2px solid;
-    background-color: orange;
   }
+  .dropdown-item.active,
+  .dropdown-item.active:focus,
+  .dropdown-item.active:hover {
+    background-color: #353d47;
+  }
+  .dropdown-toggle::after {
+    margin-left: 0.15em;
+  }
+  ul.navbar-nav {
+    padding: 0.5em;
+    .nav-item {
+      margin-left: 1.5rem;
+    }
+  }
+  a.nav-link {
+    font-weight: 400;
+    > span {
+      margin-left: 5px;
+    }
+  }
+  .jh-navbar-toggler {
+    color: #ccc;
+    font-size: 1.5em;
+    padding: 10px;
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+.navbar-version {
+  font-size: 10px;
+  color: $header-color-secondary;
+  padding: 0 0 0 10px;
+}
+.navbar-label {
+  margin-left: 4px;
+  color: $gray-700;
+}
 
-  @media only screen and (max-width: 768px) {
-    .navbar-version {
-      display: none;
+.brand-logo {
+  &:hover {
+    text-decoration: none;
+  }
+  .brand-icon {
+    height: 35px;
+    width: auto;
+    display: inline-block;
+    img {
+      height: 45px;
+      margin-top: -5px;
     }
-    .brand-menu {
-      display: none !important;
-    }
-    .right-menu {
-      display: flex;
-    }
+    margin-right: 5px;
+  }
+}
+
+.brand-title {
+  font-size: 24px;
+  color: $header-color;
+  &:hover {
+    color: $header-color-hover;
+    text-decoration: none;
+  }
+}
+
+#account-menu {
+  list-style-type: none;
+}
+
+.loading-bar {
+  height: 3px;
+  background-color: #009cd8;
+  position: absolute;
+  top: 0px;
+  z-index: 1031;
+}
+
+.about-us-link {
+  text-decoration: underline;
+  font-size: 0.875rem;
+}
+
+.avatar-size {
+  align-self: center;
+  width: $avatar-width !important;
+  height: $avatar-height !important;
+}
+
+.self-aligned {
+  align-self: center;
+}
+
+.header-link {
+  font-weight: bold;
+}
+
+.search-bar {
+  padding-right: 20px;
+}
+
+.header-bar {
+  height: $paddingTop;
+}
+
+.bell-bagde {
+  position: relative;
+  top: -11px;
+  right: -32px;
+  border-radius: 50%;
+  padding: 4px;
+  border: 2px solid;
+  background-color: orange;
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar-version {
+    display: none;
+  }
+  .brand-menu {
+    display: none !important;
+  }
+  .right-menu {
+    display: flex;
   }
 }

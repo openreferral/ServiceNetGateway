@@ -43,7 +43,7 @@ export class App extends React.Component<IAppProps> {
   render() {
     const padding = '10px';
     const app = (
-      <div>
+      <div className="app">
         <div className="app-container">
           <GoBackButton />
           <ToastContainer

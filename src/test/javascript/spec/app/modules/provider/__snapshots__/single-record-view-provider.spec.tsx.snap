@@ -4,7 +4,7 @@ exports[`Single record view on service provider page renders correctly 1`] = `
 Array [
   "// @ts-ignore",
   <div
-    className="single-record-view background"
+    className="record-shared single-record-view background"
   >
     <div
       id="measure-svc-123"

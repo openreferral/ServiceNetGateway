@@ -253,7 +253,7 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
   render() {
     const { account, activityList, autosuggestOptions } = this.props;
     return (
-      <div>
+      <div className="home">
         {account && account.login ? null : (
           <div className="not-authorised-container">
             <Modal isOpen={this.state.isOpen} toggle={this.toggle} className="video-modal">

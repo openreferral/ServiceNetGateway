@@ -1,4 +1,4 @@
-import './record.scss';
+import './record-shared.scss';
 
 import React from 'react';
 import { Collapse, Button, CardBody, Card, CardTitle, Progress } from 'reactstrap';
@@ -194,7 +194,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     const latestDailyUpdate = organization && organization.services ? organization.dailyUpdates.find(du => du.expiry === null) || {} : null;
     const siloName = this.getSiloName();
     return (
-      <div className="single-record-view background">
+      <div className="record-shared single-record-view background">
         <div id={measureId(this.props.match.params.orgId)} style={containerStyle} />
         <Button tag={Link} to={siloName ? `/public/${siloName}` : '/'} color="" className="d-none d-sm-block position-fixed go-back">
           <FontAwesomeIcon icon="angle-left" />

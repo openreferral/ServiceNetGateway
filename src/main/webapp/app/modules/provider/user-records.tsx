@@ -1,4 +1,4 @@
-import './provider-home.scss';
+import './provider-shared.scss';
 import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';

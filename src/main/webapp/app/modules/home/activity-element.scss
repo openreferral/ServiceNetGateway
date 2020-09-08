@@ -2,57 +2,58 @@
 @import '../../bootstrap-variables';
 $darker-blue: #117699;
 
-.activity-card-body {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-
-  &.without-icon {
-    padding-left: 2rem !important;
-  }
-}
-
-.activity-row {
+.activity-element {
   margin-bottom: 15px;
-}
 
-.alert-link {
-  &:hover {
-    text-decoration: none !important;
-    .activity-left-card-title {
-      color: $blue-card-darker;
+  .activity-card-body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    &.without-icon {
+      padding-left: 2rem !important;
     }
   }
-}
 
-.activity-left-card {
-  margin-bottom: 0px;
-}
+  .alert-link {
+    &:hover {
+      text-decoration: none !important;
 
-.activity-left-card-title {
-  color: $blue;
-  font-size: 18px;
-  margin-bottom: 0;
-}
+      .activity-left-card-title {
+        color: $blue-card-darker;
+      }
+    }
+  }
 
-.info-container {
-  display: flex;
-  justify-content: space-between;
-}
+  .activity-left-card {
+    margin-bottom: 0px;
+  }
 
-.activity-right-card {
-  background-color: $gray-card-bg;
-}
+  .activity-left-card-title {
+    color: $blue;
+    font-size: 18px;
+    margin-bottom: 0;
+  }
 
-.activity-right-card-title {
-  color: $gray-card-accent;
-  font-size: 14px;
-}
+  .info-container {
+    display: flex;
+    justify-content: space-between;
+  }
 
-.activity-right-card-info {
-  color: $gray-card-accent;
-}
+  .activity-right-card {
+    background-color: $gray-card-bg;
+  }
 
-.multi-record-view-link {
-  color: $darker-blue;
+  .activity-right-card-title {
+    color: $gray-card-accent;
+    font-size: 14px;
+  }
+
+  .activity-right-card-info {
+    color: $gray-card-accent;
+  }
+
+  .multi-record-view-link {
+    color: $darker-blue;
+  }
 }

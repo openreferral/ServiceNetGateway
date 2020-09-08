@@ -1,0 +1,45 @@
+.record-create {
+  .btn {
+    &:not(.disabled):hover {
+      margin-top: -1px;
+      border-bottom-width: 1px;
+    }
+  }
+
+  .nav-item {
+    background-color: #f4f5f6;
+
+    &.invalid {
+      .nav-link {
+        &:not(.active) {
+          background-color: #fbcbc8;
+        }
+
+        border: 1px solid red;
+      }
+    }
+
+    flex: 1;
+    font-weight: bold;
+    text-align: center;
+
+    .nav-link {
+      border-radius: 8px;
+    }
+
+    > .active {
+      background-color: #333e51;
+      color: white;
+    }
+  }
+
+  .tab-content {
+    padding-top: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  .item:not(:first-of-type) {
+    margin-top: 2em;
+  }
+}

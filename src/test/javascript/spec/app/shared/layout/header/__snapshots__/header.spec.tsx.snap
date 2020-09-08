@@ -2,6 +2,7 @@
 
 exports[`Header Renders a Header component in dev profile with LoadingBar, Navbar, Nav and dev ribbon. 1`] = `
 <div
+  className="header"
   id="app-header"
 >
   <div
@@ -148,6 +149,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
 
 exports[`Header Renders a Header component in prod profile with LoadingBar, Navbar, Nav. 1`] = `
 <div
+  className="header"
   id="app-header"
 >
   <Connect(LoadingBar)

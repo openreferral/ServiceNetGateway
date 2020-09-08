@@ -60,7 +60,7 @@ export class DataStatus extends React.Component<IDataStatusProp, IDataStatusStat
     const { dataStatus, totalItems } = this.props;
     const { dropdownOpenTop, dropdownOpenBottom, itemsPerPage, activePage } = this.state;
     return (
-      <Row className="justify-content-center">
+      <Row className="data-status justify-content-center">
         <Col md="6">
           <h3>
             <Translate contentKey="global.menu.dataStatus" />

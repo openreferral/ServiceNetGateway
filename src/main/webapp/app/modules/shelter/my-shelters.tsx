@@ -56,7 +56,7 @@ export class MyShelters extends React.Component<IMySheltersProp, IMySheltersStat
   render() {
     const { shelterList } = this.props;
     return (
-      <div>
+      <div className="my-shelters">
         <Container>
           <InfiniteScroll
             pageStart={this.state.activePage}

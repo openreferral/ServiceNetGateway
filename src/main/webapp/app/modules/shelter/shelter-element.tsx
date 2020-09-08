@@ -28,7 +28,7 @@ export class ShelterElement extends React.Component<IShelterElementProps, IShelt
   render() {
     const { shelter, editable } = this.props;
     return (
-      <Row className="shelter-row">
+      <Row className="shelter-element">
         <Col>
           <a className="alert-link" onClick={this.toggle}>
             <Card className="shelter-card">

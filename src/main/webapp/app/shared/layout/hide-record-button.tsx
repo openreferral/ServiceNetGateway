@@ -32,7 +32,7 @@ class HideRecordButton extends React.Component<IHideRecordButtonProps, IHideReco
 
   render() {
     return (
-      <div>
+      <div className="hide-record-button">
         <div onClick={this.handleClick} className="close-icon" id={this.props.id} ref={this.ref}>
           <FontAwesomeIcon icon="times" />
         </div>
