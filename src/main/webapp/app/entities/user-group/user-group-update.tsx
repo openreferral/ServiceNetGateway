@@ -98,7 +98,7 @@ export const UserGroupUpdate = (props: IUserGroupUpdateProps) => {
                     : null}
                 </AvInput>
               </AvGroup>
-              <Button tag={Link} id="cancel-save" to="/user-group" replace color="info">
+              <Button tag={Link} id="cancel-save" to="/user-group" color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">Back</span>

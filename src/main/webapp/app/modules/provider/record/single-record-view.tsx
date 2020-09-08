@@ -26,10 +26,10 @@ import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 const LocationPill = location => {
   if (!location) {
-    return <div />;
+    return null;
   }
   return (
-    <div className="location">
+    <div key={location.id} className="location">
       <span>
         <FontAwesomeIcon icon="circle" className="blue" /> {location.city}, {location.ca}
       </span>
@@ -39,10 +39,10 @@ const LocationPill = location => {
 
 const ServicePill = service => {
   if (!service) {
-    return <div />;
+    return null;
   }
   return (
-    <div className="pill d-inline-flex">
+    <div key={service.id} className="pill d-inline-flex">
       <span>{service.name}</span>
     </div>
   );
@@ -365,7 +365,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 <section>
                   {locationsCount > 0 ? (
                     organization.locations.map(loc => (
-                      <div className="d-inline-block col-xl-4 col-md-6 col-xs-12 p-0">
+                      <div key={`loc-${loc.id}`} className="d-inline-block col-xl-4 col-md-6 col-xs-12 p-0">
                         <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3">
                           <CardTitle>
                             <span className="text-ellipsis font-weight-bold">
@@ -425,7 +425,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 <section className={detailsView ? 'd-none' : ''}>
                   {servicesCount > 0 ? (
                     organization.services.map((srv, idx) => (
-                      <div className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
+                      <div key={`srv-${srv.id}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
                         <Card
                           className="record-card clickable details-card ml-0 mb-3 mr-0 mr-md-3"
                           onClick={() => this.showServiceDetails(idx)}
@@ -496,7 +496,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         </b>
                         {organization.services[currentServiceIdx].taxonomyIds.length > 0 ? (
                           organization.services[currentServiceIdx].taxonomyIds.map(srvTaxonomy => (
-                            <div className="pill mb-1">
+                            <div key={`tax-${srvTaxonomy}`} className="pill mb-1">
                               <span className="ml-1">
                                 {taxonomyOptions && taxonomyOptions.length > 0
                                   ? taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy).label
@@ -553,7 +553,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.srvLocations" />
                         </b>
                         {organization.services[currentServiceIdx].locationIndexes.map(locIdx => (
-                          <div className="pill mb-1">
+                          <div key={`srvLoc-${organization.locations[locIdx].id}`} className="pill mb-1">
                             <span className="ml-1">
                               <FontAwesomeIcon icon="circle" className="blue" size="xs" />
                               &nbsp;

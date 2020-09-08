@@ -2924,7 +2924,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                         aria-label={null}
                         className="btn btn-info"
                         onClick={[Function]}
-                        replace={true}
                         type="button"
                       >
                         <svg
@@ -4104,7 +4103,6 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                         aria-label={null}
                         className="btn btn-info"
                         onClick={[Function]}
-                        replace={true}
                         type="button"
                       >
                         <svg

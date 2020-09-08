@@ -196,7 +196,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
     );
 
     const matchButton = (
-      <Button onClick={this.matchLocation} replace color="info">
+      <Button onClick={this.matchLocation} color="info">
         <FontAwesomeIcon icon="arrow-left" />{' '}
         <span className="d-none d-md-inline">
           <Translate contentKey="multiRecordView.matchesMyLocationRecord" />
@@ -205,7 +205,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
     );
 
     const unmatchButton = (
-      <Button onClick={this.unmatchLocation} replace color="danger">
+      <Button onClick={this.unmatchLocation} color="danger">
         <FontAwesomeIcon icon="arrow-left" />{' '}
         <span className="d-none d-md-inline">
           <Translate contentKey="multiRecordView.unmatchThisRecord" />

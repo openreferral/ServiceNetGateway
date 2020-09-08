@@ -36,7 +36,11 @@ export class ServiceTaxonomiesDetails extends React.Component<IServiceTaxonomies
     const taxonomyPills = (
       <div className="taxonomy-pills">
         {taxonomies.map(taxonomy => (
-          <span className="badge badge-pill badge-info" title={taxonomy.taxonomyDetails}>
+          <span
+            key={`tax-${taxonomy.externalDbId}-${taxonomy.taxonomyName}`}
+            className="badge badge-pill badge-info"
+            title={taxonomy.taxonomyDetails}
+          >
             {taxonomy.taxonomyName || taxonomy.externalDbId}
           </span>
         ))}

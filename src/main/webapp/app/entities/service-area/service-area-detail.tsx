@@ -39,14 +39,14 @@ export class ServiceAreaDetail extends React.Component<IServiceAreaDetailProps> 
             </dt>
             <dd>{serviceAreaEntity.srvcName ? serviceAreaEntity.srvcName : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/service-area" replace color="info">
+          <Button tag={Link} to="/entity/service-area" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/service-area/${serviceAreaEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/service-area/${serviceAreaEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

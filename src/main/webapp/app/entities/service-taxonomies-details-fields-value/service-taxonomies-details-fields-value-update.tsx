@@ -121,7 +121,7 @@ export class ServiceTaxonomiesDetailsFieldsValueUpdate extends React.Component<
                     <option value="TAXONOMY_DETAILS">{translate('serviceNetApp.ServiceTaxonomiesDetailsFields.TAXONOMY_DETAILS')}</option>
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/service-taxonomies-details-fields-value" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/service-taxonomies-details-fields-value" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

@@ -215,7 +215,7 @@ export class DataImportReportUpdate extends React.Component<IDataImportReportUpd
                   </Label>
                   <AvInput id="data-import-report-errorMessage" type="textarea" name="errorMessage" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/data-import-report" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/data-import-report" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

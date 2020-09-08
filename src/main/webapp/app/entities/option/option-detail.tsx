@@ -41,14 +41,14 @@ export class OptionDetail extends React.Component<IOptionDetailProps> {
             </dt>
             <dd>{optionEntity.value}</dd>
           </dl>
-          <Button tag={Link} to="/entity/option" replace color="info">
+          <Button tag={Link} to="/entity/option" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/option/${optionEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/option/${optionEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

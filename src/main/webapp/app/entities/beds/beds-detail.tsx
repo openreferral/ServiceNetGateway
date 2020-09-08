@@ -53,14 +53,14 @@ export class BedsDetail extends React.Component<IBedsDetailProps> {
             </dt>
             <dd>{bedsEntity.shelter ? bedsEntity.shelter.id : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/beds" replace color="info">
+          <Button tag={Link} to="/entity/beds" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/beds/${bedsEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/beds/${bedsEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

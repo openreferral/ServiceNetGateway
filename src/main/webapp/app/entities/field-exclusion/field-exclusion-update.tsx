@@ -117,7 +117,7 @@ export class FieldExclusionUpdate extends React.Component<IFieldExclusionUpdateP
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/field-exclusion" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/field-exclusion" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

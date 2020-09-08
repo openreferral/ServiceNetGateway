@@ -209,7 +209,7 @@ export class MetadataUpdate extends React.Component<IMetadataUpdateProps, IMetad
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/metadata" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/metadata" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

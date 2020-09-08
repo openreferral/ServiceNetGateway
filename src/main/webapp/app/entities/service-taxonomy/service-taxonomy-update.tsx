@@ -158,7 +158,7 @@ export class ServiceTaxonomyUpdate extends React.Component<IServiceTaxonomyUpdat
                   </Label>
                   <AvInput id="serviceTaxonomy-providerName" type="textarea" name="providerName" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/service-taxonomy" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/service-taxonomy" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

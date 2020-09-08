@@ -137,7 +137,7 @@ export class RequestLoggerUpdate extends React.Component<IRequestLoggerUpdatePro
                   </Label>
                   <AvInput id="request-logger-responseBody" type="textarea" name="responseBody" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/request-logger" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/request-logger" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">Back</span>

@@ -179,10 +179,11 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
           />
           {suggestedValues.map((value, i) => (
             <Link
+              key={`suggested-${identifier}-${i}`}
               onClick={() => this.handleConflictDescriptionClick(value)}
               to={`/multi-record-view/${value.resourceId}/${value.partnerResourceId}`}
             >
-              <div className="suggested" key={`suggested-${identifier}-${i}`}>
+              <div className="suggested">
                 <hr className="half-rule" />
                 {value.offeredValue}
                 <br />

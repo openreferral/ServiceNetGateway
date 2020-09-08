@@ -39,14 +39,14 @@ export class EligibilityDetail extends React.Component<IEligibilityDetailProps> 
             </dt>
             <dd>{eligibilityEntity.srvcName ? eligibilityEntity.srvcName : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/eligibility" replace color="info">
+          <Button tag={Link} to="/entity/eligibility" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/eligibility/${eligibilityEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/eligibility/${eligibilityEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

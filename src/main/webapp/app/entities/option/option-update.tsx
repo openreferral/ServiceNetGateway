@@ -117,7 +117,7 @@ export class OptionUpdate extends React.Component<IOptionUpdateProps, IOptionUpd
                   </Label>
                   <AvField id="option-value" type="string" className="form-control" name="value" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/option" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/option" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

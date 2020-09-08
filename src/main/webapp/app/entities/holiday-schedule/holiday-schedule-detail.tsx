@@ -72,14 +72,14 @@ export class HolidayScheduleDetail extends React.Component<IHolidayScheduleDetai
             </dt>
             <dd>{holidayScheduleEntity.locationName ? holidayScheduleEntity.locationName : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/holiday-schedule" replace color="info">
+          <Button tag={Link} to="/entity/holiday-schedule" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/holiday-schedule/${holidayScheduleEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/holiday-schedule/${holidayScheduleEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

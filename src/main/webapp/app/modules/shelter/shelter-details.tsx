@@ -184,7 +184,7 @@ export class ShelterDetails extends React.Component<IShelterDetailsProps> {
               </div>
             </CardBody>
           </Card>
-          <Button onClick={this.goBack} replace color="info">
+          <Button onClick={this.goBack} color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>

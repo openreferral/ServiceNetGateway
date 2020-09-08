@@ -34,14 +34,14 @@ export class ExclusionsConfigDetail extends React.Component<IExclusionsConfigDet
             </dt>
             <dd>{exclusionsConfigEntity.accountName ? exclusionsConfigEntity.accountName : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/exclusions-config" replace color="info">
+          <Button tag={Link} to="/entity/exclusions-config" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/exclusions-config/${exclusionsConfigEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/exclusions-config/${exclusionsConfigEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

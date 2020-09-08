@@ -45,14 +45,14 @@ export interface IRecordCardState {
 
 const ServiceColumn = service =>
   service && service.service ? (
-    <div className="pill">
+    <div key={service.service.id} className="pill">
       <span>{service.service.name}</span>
     </div>
   ) : null;
 
 const LocationColumn = location =>
   location && location.physicalAddress ? (
-    <div className="location">
+    <div key={location.physicalAddress.id} className="location">
       <span>
         <FontAwesomeIcon icon={faCircle} className="blue" /> {location.physicalAddress.city}, {location.physicalAddress.stateProvince}
       </span>

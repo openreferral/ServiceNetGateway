@@ -43,14 +43,14 @@ export class LanguageDetail extends React.Component<ILanguageDetailProps> {
             </dt>
             <dd>{languageEntity.locationName ? languageEntity.locationName : ''}</dd>
           </dl>
-          <Button tag={Link} to="/entity/language" replace color="info">
+          <Button tag={Link} to="/entity/language" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/language/${languageEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/language/${languageEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

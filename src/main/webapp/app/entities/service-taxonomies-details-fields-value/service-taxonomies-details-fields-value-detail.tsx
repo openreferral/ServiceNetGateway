@@ -40,7 +40,7 @@ export class ServiceTaxonomiesDetailsFieldsValueDetail extends React.Component<I
             </dt>
             <dd>{serviceTaxonomiesDetailsFieldsValueEntity.serviceTaxonomiesDetailsField}</dd>
           </dl>
-          <Button tag={Link} to="/entity/service-taxonomies-details-fields-value" replace color="info">
+          <Button tag={Link} to="/entity/service-taxonomies-details-fields-value" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
@@ -50,7 +50,6 @@ export class ServiceTaxonomiesDetailsFieldsValueDetail extends React.Component<I
           <Button
             tag={Link}
             to={`/entity/service-taxonomies-details-fields-value/${serviceTaxonomiesDetailsFieldsValueEntity.id}/edit`}
-            replace
             color="primary"
           >
             <FontAwesomeIcon icon="pencil-alt" />{' '}

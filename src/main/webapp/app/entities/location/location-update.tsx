@@ -245,7 +245,7 @@ export class LocationUpdate extends React.Component<ILocationUpdateProps, ILocat
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/location" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/location" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

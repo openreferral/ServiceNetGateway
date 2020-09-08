@@ -326,7 +326,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     </AvInput>
                   </AvGroup>
                 ) : null}
-                <Button tag={Link} to="/admin/user-management" replace color="info">
+                <Button tag={Link} to="/admin/user-management" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

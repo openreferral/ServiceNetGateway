@@ -137,7 +137,7 @@ export class OpeningHoursUpdate extends React.Component<IOpeningHoursUpdateProps
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/opening-hours" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/opening-hours" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

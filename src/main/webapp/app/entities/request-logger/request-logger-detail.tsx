@@ -57,11 +57,11 @@ export class RequestLoggerDetail extends React.Component<IRequestLoggerDetailPro
             </dt>
             <dd>{requestLoggerEntity.responseBody}</dd>
           </dl>
-          <Button tag={Link} to="/entity/request-logger" replace color="info">
+          <Button tag={Link} to="/entity/request-logger" color="info">
             <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/request-logger/${requestLoggerEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/request-logger/${requestLoggerEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
           </Button>
         </Col>
