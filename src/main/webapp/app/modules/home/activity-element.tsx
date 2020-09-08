@@ -33,7 +33,7 @@ const ActivityElement = props => {
   const isSystemProviderRecord = props.activity.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER;
 
   return (
-    <Row className="activity-row" id={props.activity.organizationId}>
+    <Row className="activity-element" id={props.activity.organizationId}>
       <Col>
         <CardGroup>
           <Card className="activity-card">

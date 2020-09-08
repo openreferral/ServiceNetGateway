@@ -1,4 +1,5 @@
-import './record.scss';
+import './record-shared.scss';
+import './record-card.scss';
 
 import React from 'react';
 import { TextFormat, Translate } from 'react-jhipster';
@@ -214,7 +215,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     const { record, fullWidth } = this.props;
     const latestDailyUpdate = record.dailyUpdates.find(du => du.expiry === null);
     return (
-      <Card className={`record-card${fullWidth ? '-full-width' : ''} mx-3 mb-4`}>
+      <Card className={`record-shared record-card${fullWidth ? '-full-width' : ''} mx-3 mb-4`}>
         <this.cardTitle />
         <CardBody>
           <div id={measureId(record.organization.id)} style={containerStyle} />

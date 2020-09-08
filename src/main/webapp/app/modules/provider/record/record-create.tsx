@@ -1,4 +1,5 @@
-import './record.scss';
+import './record-shared.scss';
+import './record-create.scss';
 
 import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Col, Row, Label } from 'reactstrap';
@@ -219,7 +220,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     const { organization, locations, services, activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
     const { updating, taxonomyOptions } = this.props;
     return (
-      <div className="record-create">
+      <div className="record-shared record-create">
         <Nav tabs>
           <NavItem className={`${invalidTabs.includes(ORGANIZATION_TAB) ? 'invalid' : ''}`}>
             <NavLink

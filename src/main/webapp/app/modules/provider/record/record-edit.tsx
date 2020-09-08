@@ -1,4 +1,4 @@
-import './record.scss';
+import './record-shared.scss';
 
 import React from 'react';
 import { Badge, Card, CardBody, CardTitle, Col, Collapse, Label, Row, Progress } from 'reactstrap';
@@ -329,7 +329,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     const { updating, taxonomyOptions } = this.props;
     const { locations, services } = organization;
     return organization.id && organization.id === this.props.match.params.id ? (
-      <AvForm onSubmit={this.saveRecord} className="record-edit background" model={organization}>
+      <AvForm onSubmit={this.saveRecord} className="record-shared record-edit background" model={organization}>
         <Prompt
           when={!leaving && !_.isEqual(organization, this.props.organization)}
           message={location => `You have unsaved data, are you sure you want to leave?`}

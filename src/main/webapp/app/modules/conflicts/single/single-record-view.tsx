@@ -36,7 +36,7 @@ export class SingleRecordView extends React.Component<ISingleRecordViewProp, ISi
     const { activityRecord, user } = this.props;
     const isServiceProviderRecord = activityRecord && activityRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER;
     const content = activityRecord ? (
-      <Row>
+      <Row className="single-record-view shared-record-view">
         <Col>
           <IconSpan iconSize="1.5rem" visible={isServiceProviderRecord}>
             <h2>{activityRecord.organization.name}</h2>
@@ -75,7 +75,7 @@ export class SingleRecordView extends React.Component<ISingleRecordViewProp, ISi
         </Col>
       </Row>
     ) : (
-      <Row>
+      <Row className="single-record-view shared-record-view">
         <Col>
           <h2>Loading...</h2>
         </Col>

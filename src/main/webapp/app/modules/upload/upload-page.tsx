@@ -159,7 +159,7 @@ export class UploadPage extends React.Component<IUploadPageProp, IUploadState> {
       PROVIDER: this.state.provider
     };
     return (
-      <Row>
+      <Row className="upload-page">
         <Col>
           <h2>
             <Translate contentKey="upload.title" />
@@ -168,7 +168,7 @@ export class UploadPage extends React.Component<IUploadPageProp, IUploadState> {
             <Translate contentKey="upload.subtitle" />
           </p>
           <FilePond
-            className="dropArea"
+            className="drop-area"
             ref={ref => (this.state.pond = ref)}
             allowMultiple
             allowRevert={false}

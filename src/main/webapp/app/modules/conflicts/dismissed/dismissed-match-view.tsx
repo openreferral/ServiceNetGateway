@@ -1,4 +1,4 @@
-import './dismissed-matches.scss';
+import './dismissed-match-view.scss';
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -30,7 +30,7 @@ export class DismissedMatchView extends React.Component<IDismissedMatchViewProp>
     );
 
     return (
-      <div>
+      <div className="dismissed-match-view">
         <Link to={`/dismissed-matches/${orgId}`}>
           <FontAwesomeIcon icon="arrow-left" />
           &nbsp;

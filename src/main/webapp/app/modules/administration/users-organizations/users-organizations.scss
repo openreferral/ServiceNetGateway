@@ -1,14 +1,32 @@
+@import '../../../app-variables';
+
 .users-organizations {
   td {
     max-width: 500px;
   }
 
-  .searchIcon {
+  .search-bar {
+    margin-bottom: 15px;
+    margin-right: -80px;
+  }
+
+  .search-input {
+    padding-left: 35px;
+  }
+
+  .search-icon {
+    position: absolute;
     margin-top: 0.5em;
+    margin-left: 10px;
+    color: $gray-card-accent;
     z-index: 1;
   }
 
-  .clearSearchIcon {
+  .clear-search-icon {
+    color: $gray-card-accent;
+  }
+
+  .clear-search-icon-container {
     cursor: pointer;
     margin-top: 0.5em;
     z-index: 1;

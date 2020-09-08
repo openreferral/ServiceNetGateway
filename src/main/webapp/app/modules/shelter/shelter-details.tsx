@@ -42,8 +42,8 @@ export class ShelterDetails extends React.Component<IShelterDetailsProps> {
     const geocodingResult = !Array.isArray(results) || !results.length ? null : results[0];
 
     return (
-      <Row>
-        <Col md="6" className="shelter-details">
+      <Row className="shelter-details">
+        <Col md="6">
           <h2>
             {shelterEntity.agencyName}
             {shelterEntity.programName ? <span>: {shelterEntity.programName}</span> : null}

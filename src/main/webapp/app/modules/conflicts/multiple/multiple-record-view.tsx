@@ -407,7 +407,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     }
 
     return (
-      <div>
+      <div className="multiple-record-view shared-record-view">
         <SuccessModal showModal={this.state.showSuccessModal} handleClose={this.handleSuccessModalClose} />
         <DismissModal
           showModal={this.state.showDismissModal}

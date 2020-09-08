@@ -63,7 +63,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
     return (
-      <div id="app-header">
+      <div id="app-header" className="header">
         {this.renderDevRibbon()}
         <LoadingBar className="loading-bar" />
         <Navbar expand="sm" fixed="top" className="navbar-light bg-white">

@@ -2,7 +2,7 @@
 
 exports[`Single record view renders correctly 1`] = `
 <div
-  className="row"
+  className="single-record-view shared-record-view row"
 >
   <div
     className="col"

@@ -361,7 +361,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
     }
 
     return (
-      <div>
+      <div className="all-records-view shared-record-view">
         <SuccessModal showModal={this.state.showSuccessModal} handleClose={this.handleSuccessModalClose} />
         <DismissModal
           showModal={this.state.showDismissModal}

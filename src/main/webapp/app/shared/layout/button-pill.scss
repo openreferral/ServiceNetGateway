@@ -1,0 +1,98 @@
+@import '../../bootstrap-variables';
+$apply-button-color: #e78859;
+$new-record-color: #3b7b65;
+
+.button-pill {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  text-decoration: none;
+  border: 1px black solid;
+  padding: 2px 2rem;
+  border-radius: 16px;
+  transition: 0.5s;
+}
+
+.button-pill:hover {
+  background-color: #333b52;
+  color: white;
+  cursor: pointer;
+}
+
+.button-pill-orange {
+  background-color: $apply-button-color !important;
+  color: black;
+  border: 1px $apply-button-color solid;
+}
+
+.button-pill-orange:hover {
+  background-color: darken($color: $apply-button-color, $amount: 10%) !important;
+}
+
+.button-pill-secondary {
+  background-color: #e3e3e3 !important;
+  border: 1px #e3e3e3 solid;
+}
+
+.button-pill-secondary:hover {
+  background-color: darken($color: #e3e3e3, $amount: 10%) !important;
+  color: inherit;
+}
+
+.button-pill-primary {
+  background-color: #127ba3 !important;
+  color: white;
+  border: 1px #127ba3 solid;
+}
+
+.button-pill-primary:hover {
+  background-color: darken($color: #127ba3, $amount: 10%) !important;
+}
+
+.button-pill-danger {
+  background-color: #ff291d !important;
+  color: white;
+  border: 1px #ff291d solid;
+}
+
+.button-pill-danger:hover {
+  background-color: darken($color: #ff291d, $amount: 15%) !important;
+}
+
+.button-pill-success {
+  background-color: #4bc64e !important;
+  color: white;
+  border: 1px #4bc64e solid;
+}
+
+.button-pill-success:hover {
+  background-color: darken($color: #4bc64e, $amount: 10%) !important;
+}
+
+.button-pill-new-record {
+  height: 30px;
+  background-color: $new-record-color !important;
+  color: white;
+  border: 1px $new-record-color solid;
+  padding: 0;
+  span {
+    padding: 2px 2rem;
+  }
+}
+
+.button-pill-new-record:hover {
+  background-color: darken($color: #67bba4, $amount: 10%) !important;
+}
+
+.button-pill.disabled {
+  background-color: #7b7b7b80 !important;
+  color: white;
+  border: 1px #7b7b7b80 solid;
+}
+
+.button-pill.disabled:hover {
+  cursor: auto !important;
+}
