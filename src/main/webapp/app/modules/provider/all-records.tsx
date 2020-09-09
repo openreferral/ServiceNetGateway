@@ -61,6 +61,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   boundaryTimeout: number;
   boundaries: any;
   requestedBoundaries: any;
+  searchArea: boolean;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
@@ -84,6 +85,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       recordViewType: GRID_VIEW,
       boundaryTimeout: 0,
       boundaries: null,
+      searchArea: false,
       ...providerSearchPreferences
     };
     this.sortContainerRef = React.createRef();
@@ -172,7 +174,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   getRecordsForMap = () => {
     const { siloName, providerFilter, search } = this.props;
     this.setState({
-      requestedBoundaries: this.state.boundaries
+      requestedBoundaries: this.state.boundaries,
+      searchArea: false
     });
     this.props.getProviderRecordsForMap(siloName, providerFilter, search, this.state.boundaries, MAX_PINS_ON_MAP);
   };
@@ -241,7 +244,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       this.setState({
         selectedLat: position.coords.latitude,
         selectedLng: position.coords.longitude,
-        showMyLocation: true
+        showMyLocation: true,
+        searchArea: true
       });
     });
   };
@@ -272,7 +276,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({
       boundaries
     }, () => {
-      if (initialBoundaries) {
+      if (this.state.searchArea || initialBoundaries) {
         this.getRecordsForMap();
       }
     });

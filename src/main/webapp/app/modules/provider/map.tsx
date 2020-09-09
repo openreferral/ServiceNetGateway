@@ -5,6 +5,8 @@ import _ from 'lodash';
 import { MAP } from 'react-google-maps/lib/constants';
 
 const ICON_MARKER_SVG_PATH = 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z';
+const DEFAULT_ZOOM = 2;
+const MY_LOCATION_ZOOM = 12;
 
 const withLatLong = (
   wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
@@ -25,8 +27,8 @@ const extractMarkerLocations = props => {
 const MapWrapper = withScriptjs(withGoogleMap(withLatLong(props => props.children)));
 
 interface IPersistentMapProps {
-  lat: any;
-  lng: any;
+  lat: number;
+  lng: number;
   containerElement: any;
   showMyLocation: boolean;
   googleMapURL: string;
@@ -76,8 +78,8 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
     return <MapWrapper {...this.props} mapElement={<div style={{ height: `100%` }} />} >
       <GoogleMap
         ref={mapRef => this.setMapRef(mapRef)}
-        defaultZoom={2}
-        defaultCenter={{ lat: props.lat || 38.5816, lng: props.lng || -121.4944 }}
+        center={{ lat: props.lat || 38.5816, lng: props.lng || -121.4944 }}
+        zoom={props.lat ? MY_LOCATION_ZOOM : DEFAULT_ZOOM}
         defaultOptions={{ mapTypeControl: false, streetViewControl: false, fullscreenControl: false }}
         onBoundsChanged={this.onBoundsChanged}
       >
