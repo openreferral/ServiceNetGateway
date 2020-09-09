@@ -98,6 +98,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   componentDidUpdate(prevProps, prevState) {
     if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
       if (this.state.isMapView) {
+        this.getRecordsForMap();
+      } else {
         this.getRecords(true);
       }
     }
@@ -213,7 +215,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       isRecordHighlighted: false,
       selectedLat: null,
       selectedLng: null,
-      showMyLocation: false
+      showMyLocation: false,
+      boundaries: null
     });
   };
 
