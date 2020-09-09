@@ -62,6 +62,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   boundaries: any;
   requestedBoundaries: any;
   searchArea: boolean;
+  centeredAt: any;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
@@ -86,6 +87,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       boundaryTimeout: 0,
       boundaries: null,
       searchArea: false,
+      centeredAt: null,
       ...providerSearchPreferences
     };
     this.sortContainerRef = React.createRef();
@@ -245,7 +247,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         selectedLat: position.coords.latitude,
         selectedLng: position.coords.longitude,
         showMyLocation: true,
-        searchArea: true
+        searchArea: true,
+        centeredAt: new Date()
       });
     });
   };
@@ -273,10 +276,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   onMapBoundariesChanged = boundaries => {
     const initialBoundaries = _.isEmpty(this.state.boundaries);
+    const boundariesChanged = !_.isEqual(boundaries, this.state.requestedBoundaries);
     this.setState({
       boundaries
     }, () => {
-      if (this.state.searchArea || initialBoundaries) {
+      if ((this.state.searchArea && boundariesChanged) || initialBoundaries) {
         this.getRecordsForMap();
       }
     });
@@ -354,9 +358,17 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     </div>
   </div>;
 
+  mapOverlayBottom = (isMobile = false) => this.state.boundaries && <div className="position-absolute"
+    style={{ right: isMobile ? MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE : MY_LOCATION_BUTTON_POSITION_RIGHT,
+      bottom: isMobile ? MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE : MY_LOCATION_BUTTON_POSITION_BOTTOM }}>
+    <Button aria-label={translate('providerSite.centerMapOnMyLocation')} color="light" onClick={this.centerMapOnMyLocation}>
+      <FontAwesomeIcon icon="map-marker" size="lg"/>
+    </Button>
+  </div>;
+
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, isMapView } = this.state;
+    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, isMapView, centeredAt } = this.state;
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
@@ -366,6 +378,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       mapElement: <div style={{ height: '100%' }} />,
       onMarkerClick: this.selectRecord,
       showMyLocation,
+      centeredAt,
       onBoundariesChanged: this.onMapBoundariesChanged
     };
     return (
@@ -375,14 +388,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             <div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }}>
               {this.mapOverlay()}
               <PersistentMap {...mapProps} containerElement={<div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }} />} />
-              <div
-                className="position-absolute"
-                style={{ right: MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE, bottom: MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE }}
-              >
-                <Button aria-label={translate('providerSite.centerMapOnMyLocation')} color="light" onClick={this.centerMapOnMyLocation}>
-                  <FontAwesomeIcon icon="map-marker" size="lg" />
-                </Button>
-              </div>
+              {this.mapOverlayBottom(true)}
               {isRecordHighlighted && selectedRecord && !filterOpened ? (
                 <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
                   <div className="px-2">
@@ -403,14 +409,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative">
               {this.mapOverlay()}
               <PersistentMap {...mapProps} containerElement={<div style={{ height: '400px' }} />} />
-              <div
-                className="position-absolute"
-                style={{ right: MY_LOCATION_BUTTON_POSITION_RIGHT, bottom: MY_LOCATION_BUTTON_POSITION_BOTTOM }}
-              >
-                <Button aria-label={translate('providerSite.centerMapOnMyLocation')} color="light" onClick={this.centerMapOnMyLocation}>
-                  <FontAwesomeIcon icon="map-marker" size="lg" />
-                </Button>
-              </div>
+              {this.mapOverlayBottom()}
             </Col>
             {isRecordHighlighted && selectedRecord && !filterOpened ? (
               <Col md={4} className={`col-md-4 pr-0 selected-record`}>
