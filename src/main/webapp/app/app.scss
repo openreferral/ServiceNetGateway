@@ -1,6 +1,17 @@
 @import 'app-variables';
 @import 'src/main/webapp/app/shared/layout/button-pill';
 
+#root {
+  width: fit-content;
+  min-width: 100%;
+}
+
+#measure-layer {
+  > * {
+    display: inline-block;
+  }
+}
+
 .app {
   .break {
     white-space: normal;
@@ -82,17 +93,6 @@
 
   .form-control.invalid {
     background-color: #fff5bf;
-  }
-
-  #measure-layer {
-    > * {
-      display: inline-block;
-    }
-  }
-
-  #root {
-    width: fit-content;
-    min-width: 100%;
   }
 
   .icon-span {
