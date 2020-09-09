@@ -4,9 +4,10 @@ import _ from 'lodash';
 // tslint:disable-next-line:no-submodule-imports
 import { MAP } from 'react-google-maps/lib/constants';
 
-const ICON_MARKER_SVG_PATH = 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z';
 const DEFAULT_ZOOM = 2;
 const MY_LOCATION_ZOOM = 12;
+const LOCATION_MARKER_SIZE = 22;
+const LOCATION_MARKER_URL = '/content/images/location-marker.png';
 
 const withLatLong = (
   wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
@@ -35,6 +36,7 @@ interface IPersistentMapProps {
   records: any[];
   onBoundariesChanged: any;
   onMarkerClick: any;
+  centeredAt: any;
 }
 
 export default class PersistentMap extends React.Component<IPersistentMapProps> {
@@ -46,6 +48,7 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
 
   shouldComponentUpdate(nextProps, nextState) {
     return this.props.lat !== nextProps.lat
+      || this.props.centeredAt !== nextProps.centeredAt
       || this.props.lng !== nextProps.lng
       || this.props.googleMapURL !== nextProps.googleMapURL
       || !_.isEqual(this.props.records, nextProps.records)
@@ -94,10 +97,9 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
           <Marker
             position={{ lat: props.lat, lng: props.lng }}
             icon={{
-              path: ICON_MARKER_SVG_PATH,
-              strokeColor: 'white',
-              fillColor: 'blue',
-              fillOpacity: 1
+              url: LOCATION_MARKER_URL,
+              scaledSize: new google.maps.Size(LOCATION_MARKER_SIZE, LOCATION_MARKER_SIZE),
+              anchor: new google.maps.Point(LOCATION_MARKER_SIZE / 2, LOCATION_MARKER_SIZE / 2)
             }}
           />
         )}
