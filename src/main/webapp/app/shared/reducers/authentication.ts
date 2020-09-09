@@ -116,7 +116,7 @@ export const getSession = () => async (dispatch, getState) => {
   await dispatch({
     type: ACTION_TYPES.GET_SESSION,
     payload: axios.get(SERVICENET_API_URL + '/account')
-  });
+  }).catch(() => {});
 
   const { account } = getState().authentication;
   if (account && account.langKey) {
