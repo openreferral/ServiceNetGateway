@@ -27,6 +27,12 @@ const extractMarkerLocations = props => {
 };
 const MapWrapper = withScriptjs(withGoogleMap(withLatLong(props => props.children)));
 
+interface IPersistentMapState {
+  lat: number;
+  lng: number;
+  zoom: number;
+}
+
 interface IPersistentMapProps {
   lat: number;
   lng: number;
@@ -40,6 +46,11 @@ interface IPersistentMapProps {
 }
 
 export default class PersistentMap extends React.Component<IPersistentMapProps> {
+  state = {
+    lat: this.props.lat || 38.5816,
+    lng: this.props.lng || -121.4944,
+    zoom: this.props.lat ? MY_LOCATION_ZOOM : DEFAULT_ZOOM
+  };
   mapRef: any;
   constructor(props) {
     super(props);
@@ -47,12 +58,24 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.lat !== nextProps.lat
+    return this.state.lat !== nextState.lat
+      || this.state.lng !== nextState.lng
+      || this.state.zoom !== nextState.zoom
       || this.props.centeredAt !== nextProps.centeredAt
       || this.props.lng !== nextProps.lng
       || this.props.googleMapURL !== nextProps.googleMapURL
       || !_.isEqual(this.props.records, nextProps.records)
       || this.props.showMyLocation !== nextProps.showMyLocation;
+  }
+
+  componentDidUpdate(prevProps: Readonly<IPersistentMapProps>, prevState: Readonly<{}>, snapshot?: any) {
+    if (prevProps.centeredAt !== this.props.centeredAt) {
+      this.setState({
+        lat: this.props.lat,
+        lng: this.props.lng,
+        zoom: MY_LOCATION_ZOOM
+      });
+    }
   }
 
   onMapLoad = mapRef => {
@@ -65,6 +88,21 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
   onBoundsChanged = () => {
     const boundaries = this.mapRef.getBounds();
     this.props.onBoundariesChanged(boundaries);
+  }
+
+  onCenterChanged = () => {
+    const center = this.mapRef.getCenter();
+    this.setState({
+      lat: center.lat(),
+      lng: center.lng()
+    });
+  }
+
+  onZoomChanged = () => {
+    const zoom = this.mapRef.getZoom();
+    this.setState({
+      zoom
+    });
   }
 
   setMapRef = mapRef => {
@@ -81,10 +119,12 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
     return <MapWrapper {...this.props} mapElement={<div style={{ height: `100%` }} />} >
       <GoogleMap
         ref={mapRef => this.setMapRef(mapRef)}
-        center={{ lat: props.lat || 38.5816, lng: props.lng || -121.4944 }}
-        zoom={props.lat ? MY_LOCATION_ZOOM : DEFAULT_ZOOM}
+        center={{ lat: this.state.lat, lng: this.state.lng }}
+        zoom={this.state.zoom}
         defaultOptions={{ mapTypeControl: false, streetViewControl: false, fullscreenControl: false }}
         onBoundsChanged={this.onBoundsChanged}
+        onCenterChanged={this.onCenterChanged}
+        onZoomChanged={this.onZoomChanged}
       >
         {markerLocations.map((marker, idx) => (
           <Marker
