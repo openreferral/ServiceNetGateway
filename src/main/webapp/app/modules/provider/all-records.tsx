@@ -344,19 +344,23 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
-  mapOverlay = () => this.state.boundaries && <div className="d-flex flex-column align-items-center">
-    <div className="map-overlay-top d-flex flex-column align-items-center">
-      <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`} >
-        <FontAwesomeIcon icon="search" size="lg" />
-        <Translate contentKey="providerSite.searchThisArea" />
-      </ButtonPill>
-      {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP
-      && <span className="small"><Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} /></span>}
-      {this.props.loading && <div className="spinner-border mt-1" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>}
-    </div>
-  </div>;
+  mapOverlay = () => this.state.boundaries &&
+    <div className="d-flex flex-column align-items-center">
+      <div className={`map-overlay-top ${this.state.isSticky ? 'sticky' : ''}`}>
+        {(this.state.isMapView && this.state.isSticky) && this.sortContainer()}
+        <div className="d-flex flex-column align-items-center">
+          <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`} >
+            <FontAwesomeIcon icon="search" size="lg" />
+            <Translate contentKey="providerSite.searchThisArea" />
+          </ButtonPill>
+          {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP
+          && <span className="small"><Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} /></span>}
+          {this.props.loading && <div className="spinner-border mt-1" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>}
+        </div>
+      </div>
+    </div>;
 
   mapOverlayBottom = (isMobile = false) => this.state.boundaries && <div className="position-absolute"
     style={{ right: isMobile ? MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE : MY_LOCATION_BUTTON_POSITION_RIGHT,
@@ -482,6 +486,39 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
+  sortContainer = () =>
+    <div ref={this.sortContainerRef}>
+      <div className={`sort-container`}>
+        <ButtonPill onClick={this.toggleMapView} className="mr-1">
+          <span>
+            <FontAwesomeIcon icon={this.state.isMapView ? 'th' : 'map'} />
+            &nbsp;
+            <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+              {translate(this.state.isMapView ? 'providerSite.gridView' : 'providerSite.mapView')}
+            </MediaQuery>
+          </span>
+        </ButtonPill>
+        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+          <ButtonPill onClick={this.toggleViewType} className="mr-1">
+            <span>
+              <FontAwesomeIcon color={this.state.recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
+              {' | '}
+              <FontAwesomeIcon color={this.state.recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR} icon="bars" />
+            </span>
+          </ButtonPill>
+        </MediaQuery>
+        <SortSection
+          dropdownOpen={this.state.sortingOpened}
+          toggleSort={() => this.toggleSorting()}
+          values={PROVIDER_SORT_ARRAY}
+          sort={this.state.sort}
+          order={this.state.order}
+          sortFunc={this.sort}
+        />
+        <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" />
+      </div>
+  </div>
+
   render() {
     const { siloName } = this.props;
     const { sortingOpened, filterOpened, isMapView, isSticky, recordViewType } = this.state;
@@ -507,37 +544,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </b>
             <this.progress />
           </div>
-          <div ref={this.sortContainerRef}>
-            <div className={`sort-container${isMapView && isSticky ? ' sort-container-fixed' : ''}`}>
-              <ButtonPill onClick={this.toggleMapView} className="mr-1">
-                <span>
-                  <FontAwesomeIcon icon={isMapView ? 'th' : 'map'} />
-                  &nbsp;
-                  <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-                    {translate(isMapView ? 'providerSite.gridView' : 'providerSite.mapView')}
-                  </MediaQuery>
-                </span>
-              </ButtonPill>
-              <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-                <ButtonPill onClick={this.toggleViewType} className="mr-1">
-                  <span>
-                    <FontAwesomeIcon color={recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
-                    {' | '}
-                    <FontAwesomeIcon color={recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR} icon="bars" />
-                  </span>
-                </ButtonPill>
-              </MediaQuery>
-              <SortSection
-                dropdownOpen={sortingOpened}
-                toggleSort={() => this.toggleSorting()}
-                values={PROVIDER_SORT_ARRAY}
-                sort={this.state.sort}
-                order={this.state.order}
-                sortFunc={this.sort}
-              />
-              <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" />
-            </div>
-          </div>
+          {(!isMapView || !isSticky) && this.sortContainer()}
         </div>
         {isMapView ? <this.mapView /> : <this.gridView />}
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
