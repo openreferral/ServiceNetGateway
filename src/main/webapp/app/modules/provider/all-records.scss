@@ -1,7 +1,20 @@
 .all-records {
   .map-overlay-top {
-    margin-top: 8px;
-    margin-bottom: -100%;
+    &.sticky {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      .sort-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 0.5rem;
+      }
+    }
+    &:not(.sticky) {
+      margin-top: 8px;
+      margin-bottom: -100%;
+    }
     z-index: 1;
   }
 
