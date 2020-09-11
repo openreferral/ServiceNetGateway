@@ -20,5 +20,8 @@
 
   .search-area-button {
     background-color: rgba(245, 249, 252, 0.5);
+    &:hover:not(.disabled) {
+      color: black;
+    }
   }
 }
