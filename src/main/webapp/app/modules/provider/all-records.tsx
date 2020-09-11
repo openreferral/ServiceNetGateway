@@ -66,7 +66,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
-  sortContainerRef: any;
+  controlLineContainerRef: any;
   pageEndRef: any;
 
   constructor(props) {
@@ -90,7 +90,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       centeredAt: null,
       ...providerSearchPreferences
     };
-    this.sortContainerRef = React.createRef();
+    this.controlLineContainerRef = React.createRef();
     this.pageEndRef = React.createRef();
   }
 
@@ -118,9 +118,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   }
 
   handleScroll = () => {
-    if (this.sortContainerRef.current) {
+    if (this.controlLineContainerRef.current) {
+      const rect = this.controlLineContainerRef.current.getBoundingClientRect();
       this.setState({
-        isSticky: this.sortContainerRef.current.getBoundingClientRect().top <= (this.props.siloName ? 53 : 80)
+        isSticky: rect.top <= (this.state.isSticky ? rect.height : 0)
       });
     }
   };
@@ -487,7 +488,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   sortContainer = () =>
-    <div ref={this.sortContainerRef}>
+    <div>
       <div className={`sort-container`}>
         <ButtonPill onClick={this.toggleMapView} className="mr-1">
           <span>
@@ -537,7 +538,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           </Modal>
         </MediaQuery>
-        <div className={`control-line-container${siloName ? '-public' : ''}`}>
+        <div className={`control-line-container${siloName ? '-public' : ''}`} ref={this.controlLineContainerRef}>
           <div className="d-flex justify-content-between">
             <b className="align-self-center">
               <Translate contentKey="providerSite.allRecords" />
