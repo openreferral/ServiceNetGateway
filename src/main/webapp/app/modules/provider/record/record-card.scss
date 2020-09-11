@@ -102,6 +102,14 @@ div.card.record-card {
   div.card-body {
     padding: 0;
 
+    .empty-record {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
+
     .organization-name {
       height: 3em;
       font-size: large;
