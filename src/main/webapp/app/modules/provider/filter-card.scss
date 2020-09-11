@@ -26,15 +26,10 @@
     flex: 1 1 auto;
     padding-right: 1rem;
     padding-left: 1rem;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
   }
 
   .filter-footer {
-    position: absolute;
-    bottom: 1.5rem;
-    right: 1rem;
-    left: 1rem;
-    width: calc(100% - 2rem);
     display: flex;
     align-items: center;
     justify-content: center;

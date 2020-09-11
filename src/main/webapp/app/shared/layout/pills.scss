@@ -96,3 +96,39 @@ $new-record-color: #3b7b65;
 .button-pill.disabled:hover {
   cursor: auto !important;
 }
+
+.multi-select-pill {
+  span {
+    display: flex !important;
+    padding: 2px 1rem;
+
+    div {
+      svg {
+        width: auto !important;
+      }
+    }
+  }
+  span:hover {
+    cursor: pointer;
+  }
+}
+
+.pill {
+  display: inline-block;
+  max-width: 220px;
+  padding-right: 8px;
+
+  span {
+    max-width: 100%;
+    overflow: hidden;
+    vertical-align: top;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    text-decoration: none;
+    border: 1px black solid;
+    padding: 2px 8px;
+    border-radius: 16px;
+    transition: 0.5s;
+  }
+}
