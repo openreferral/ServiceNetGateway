@@ -1,5 +1,6 @@
 @import '../../app-variables';
 @import '../../bootstrap-variables';
+@import 'video-modal';
 
 .home {
   .hipster {
@@ -114,39 +115,6 @@
     color: inherit;
   }
 
-  .video-modal {
-    &.modal-dialog {
-      margin: 0;
-      background-color: transparent;
-    }
-
-    .modal-content {
-      background-color: transparent;
-      border: none;
-      height: 100vh;
-      width: 100vw;
-    }
-
-    .modal-header {
-      border: none;
-
-      button {
-        color: $white;
-
-        &:focus {
-          outline: none;
-        }
-      }
-    }
-
-    .video {
-      height: 80vh;
-      width: 90vw;
-      margin-left: 4vw;
-      border: none;
-    }
-  }
-
   @media only screen and (max-width: 650px) {
     .homepage-top-container {
       background-color: $light-blue;
@@ -177,12 +145,6 @@
 
       .homepage-bottom-bg-img {
         display: none;
-      }
-    }
-
-    .video-modal {
-      .video {
-        margin-left: 1vw;
       }
     }
   }

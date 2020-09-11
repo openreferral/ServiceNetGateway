@@ -15,25 +15,13 @@
     margin-left: auto;
   }
 
+  // overrides pill properties from pills.scss
   .pill {
-    display: inline-block;
-    max-width: 220px;
-    padding-right: 8px;
     font-size: 12px !important;
 
     span {
-      max-width: 100%;
-      overflow: hidden;
-      vertical-align: top;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      text-align: center;
-      text-decoration: none;
       display: inline-block;
       border: 1px lightgrey solid;
-      border-radius: 16px;
-      padding: 2px 8px;
-      transition: 0.5s;
 
       svg {
         width: 0.5em !important;
@@ -172,6 +160,7 @@
       &:hover {
         background-color: #f0f0f0;
 
+        // overrides pill properties from pills.scss
         .pill {
           span {
             background-color: white;
