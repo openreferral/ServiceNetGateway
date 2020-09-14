@@ -8,19 +8,25 @@ export const containerStyle = {
   zIndex: -1
 };
 
+const idsBeingMeasured = [];
+
 // measures and returns a list of widths of given elements
 export const measureWidths = (elements, parentId = 'measure-layer') =>
   new Promise((resolve, reject) => {
     const measureLayer = document.getElementById(parentId);
-    if (measureLayer) {
+    if (measureLayer && idsBeingMeasured.indexOf(parentId) === -1) {
+      // prevent measuring the same elements multiple times
+      idsBeingMeasured.push(parentId);
       try {
         ReactDOM.render(elements, measureLayer, () => {
           const rendered = document.getElementById(measureLayer.id);
           const widths = [].slice.call(rendered.children).map(child => child.clientWidth);
           ReactDOM.unmountComponentAtNode(rendered);
+          idsBeingMeasured.splice(idsBeingMeasured.indexOf(parentId), 1);
           resolve(widths);
         });
       } catch {
+        idsBeingMeasured.splice(idsBeingMeasured.indexOf(parentId), 1);
         reject();
       }
     }

@@ -16,6 +16,8 @@ const initialState = {
   updating: false,
   updateSuccess: false,
   records: [] as any[],
+  recordsByIndex: {},
+  recordsTotal: 0,
   allRecords: [] as any[],
   allRecordsForMap: [] as any[],
   allRecordsTotal: 0,
@@ -23,6 +25,13 @@ const initialState = {
 };
 
 export type ProviderRecordsState = Readonly<typeof initialState>;
+
+const addPage = (records, page) => {
+  _.forEach(page.content, (record, i) => {
+    records[page.size * page.number + i] = record;
+  });
+  return { ...records };
+};
 
 // Reducer
 export default (state: ProviderRecordsState = initialState, action): ProviderRecordsState => {
@@ -58,7 +67,9 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         updating: false,
         updateSuccess: true,
-        records: action.payload.data,
+        records: action.payload.data.content,
+        recordsByIndex: addPage(state.recordsByIndex, action.payload.data),
+        recordsTotal: action.payload.data.totalElements,
         loading: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_ALL_RECORDS):
@@ -100,10 +111,13 @@ const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
 
 // Actions
 
-export const getProviderRecords = () => ({
-  type: ACTION_TYPES.FETCH_RECORDS,
-  payload: axios.get(userRecordApiUrl)
-});
+export const getProviderRecords = (page, itemsPerPage) => {
+  const pageableUrl = `${userRecordApiUrl}?page=${page}&size=${itemsPerPage}`;
+  return {
+    type: ACTION_TYPES.FETCH_RECORDS,
+    payload: axios.get(pageableUrl)
+  };
+};
 
 export const getAllProviderRecords = (page, itemsPerPage, sort, filter, search, isInitLoading = true) => {
   const pageableUrl = `${allRecordApiUrl}?search=${search ? search : ''}&page=${page}&size=${itemsPerPage}&sort=${sort}`;

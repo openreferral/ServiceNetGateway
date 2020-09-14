@@ -36,7 +36,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
     }
 
     props.getAllProviderRecords(0, MAX_PAGE_SIZE, 'name', props.defaultFilter, '', true);
-    props.getProviderRecords();
+    props.getProviderRecords(0, MAX_PAGE_SIZE);
   }, []);
 
   const onBlobChange = (isAnImage, name) => event => {

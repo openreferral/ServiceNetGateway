@@ -18,6 +18,7 @@ import { getUser } from 'app/modules/administration/user-management/user-managem
 import { IRootState } from 'app/shared/reducers';
 import OwnerInfo from 'app/shared/layout/owner-info';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import _ from 'lodash';
 
 const REMAINDER_WIDTH = 25;
 const ONE_HOUR = 1000 * 60 * 60;
@@ -42,6 +43,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
 export interface IRecordCardState {
   serviceWidths: any[];
   locationWidths: any[];
+  loading: boolean;
 }
 
 const ServiceColumn = service =>
@@ -67,20 +69,34 @@ const measureId = orgId => 'measure-' + orgId;
 class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   state: IRecordCardState = {
     serviceWidths: [],
-    locationWidths: []
+    locationWidths: [],
+    loading: false
   };
 
-  componentDidMount() {
-    const record = this.props.record;
-    measureWidths(
-      [...record.services.map(item => ServiceColumn(item)), ...record.locations.map(item => LocationColumn(item))],
-      measureId(record.organization.id)
-    ).then((serviceAndLocationWidths: any[]) => {
-      this.setState({
-        serviceWidths: serviceAndLocationWidths.slice(0, record.services.length),
-        locationWidths: serviceAndLocationWidths.slice(record.services.length)
+  measureRecord() {
+    const { record } = this.props;
+    if (!_.isEmpty(record)) {
+      measureWidths(
+        [...record.services.map(item => ServiceColumn(item)), ...record.locations.map(item => LocationColumn(item))],
+        measureId(record.organization.id)
+      ).then((serviceAndLocationWidths: any[]) => {
+        this.setState({
+          loading: false,
+          serviceWidths: serviceAndLocationWidths.slice(0, record.services.length),
+          locationWidths: serviceAndLocationWidths.slice(record.services.length)
+        });
       });
-    });
+    }
+  }
+
+  componentDidMount() {
+    this.measureRecord();
+  }
+
+  componentDidUpdate(prevProps: Readonly<IRecordCardProps>, prevState: Readonly<IRecordCardState>, snapshot?: any) {
+    if (prevProps.record !== this.props.record) {
+      this.measureRecord();
+    }
   }
 
   getBookmarkColor = () => {
@@ -104,6 +120,9 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
 
   cardTitle = () => {
     const { record, user, fullWidth } = this.props;
+    if (_.isEmpty(record)) {
+      return null;
+    }
     return (
       <CardTitle>
         <div className="bookmark">
@@ -211,53 +230,68 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     );
   };
 
-  render() {
+  cardContent = () => {
     const { record, fullWidth } = this.props;
-    const latestDailyUpdate = record.dailyUpdates.find(du => du.expiry === null);
-    return (
-      <Card className={`record-shared record-card${fullWidth ? '-full-width' : ''} mx-3 mb-4`}>
-        <this.cardTitle />
-        <CardBody>
-          <div id={measureId(record.organization.id)} style={containerStyle} />
-          <this.getHeader />
-          {latestDailyUpdate ? (
-            <div className={`latest-daily-update${fullWidth ? '-full-width' : ''} mb-1`}>
+    if (!record) {
+      return <div className="empty-record">
+        <div className="spinner-border mt-1" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>;
+    } else {
+      const latestDailyUpdate = record.dailyUpdates && record.dailyUpdates.find(du => du.expiry === null);
+      return <>
+        <div id={measureId(record.organization.id)} style={containerStyle} />
+        <this.getHeader />
+        {latestDailyUpdate ? (
+          <div className={`latest-daily-update${fullWidth ? '-full-width' : ''} mb-1`}>
               <span>
                 Update (<TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                 ):
               </span>
-              {!fullWidth ? <br /> : ' '}
-              <span>{latestDailyUpdate.update}</span>
-            </div>
-          ) : (
-            <div style={{ height: '30px' }} />
-          )}
-          {!fullWidth && <this.serviceSection />}
-          <section className="locations">
-            {record.locations.length > 0 ? (
-              <AutoSizer disableHeight>
-                {({ width }) => {
-                  const itemCount = getColumnCount(this.state.locationWidths, width, REMAINDER_WIDTH);
-                  const overflow = itemCount < record.locations.length;
-                  const totalItemCount = itemCount + (overflow ? 1 : 0);
-                  return (
-                    <List
-                      height={50}
-                      itemCount={totalItemCount}
-                      itemSize={width / totalItemCount}
-                      layout="horizontal"
-                      width={width}
-                      style={{ flex: 1 }}
-                    >
-                      {({ index }) =>
-                        index === itemCount ? RemainderCount(record.locations.length - itemCount) : LocationColumn(record.locations[index])
-                      }
-                    </List>
-                  );
-                }}
-              </AutoSizer>
-            ) : null}
-          </section>
+            {!fullWidth ? <br /> : ' '}
+            <span>{latestDailyUpdate.update}</span>
+          </div>
+        ) : (
+          <div style={{ height: '30px' }} />
+        )}
+        {!fullWidth && <this.serviceSection />}
+        <section className="locations">
+          {record.locations.length > 0 ? (
+            <AutoSizer disableHeight>
+              {({ width }) => {
+                const itemCount = getColumnCount(this.state.locationWidths, width, REMAINDER_WIDTH);
+                const overflow = itemCount < record.locations.length;
+                const totalItemCount = itemCount + (overflow ? 1 : 0);
+                return (
+                  <List
+                    height={50}
+                    itemCount={totalItemCount}
+                    itemSize={width / totalItemCount}
+                    layout="horizontal"
+                    width={width}
+                    style={{ flex: 1 }}
+                  >
+                    {({ index }) =>
+                      index === itemCount ? RemainderCount(record.locations.length - itemCount) : LocationColumn(record.locations[index])
+                    }
+                  </List>
+                );
+              }}
+            </AutoSizer>
+          ) : null}
+        </section>
+      </>;
+    }
+  }
+
+  render() {
+    const { fullWidth } = this.props;
+    return (
+      <Card className={`record-shared record-card${fullWidth ? '-full-width' : ''} mx-3 mb-4`}>
+        <this.cardTitle />
+        <CardBody>
+          <this.cardContent />
         </CardBody>
       </Card>
     );
