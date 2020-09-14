@@ -11,6 +11,7 @@ import LoadingBar from 'react-redux-loading-bar';
 
 import { Home, Brand, Upload, FeedbackButton, DataStatus } from './header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu, SacramentoMenu } from './menus';
+import SearchBar from 'app/modules/provider/menus/search-bar';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -58,7 +59,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
-    const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled, isInProduction, isSacramento, isShelterOwner, match } = this.props;
+    const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled, isInProduction, isSacramento, isShelterOwner, isProvider } = this.props;
 
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
@@ -79,6 +80,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <FeedbackButton {...this.props} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
+              {isProvider ? <li className="self-align-center">
+                <SearchBar />
+              </li> : null}
               {(!isAuthenticated || !isSacramento) && <Home {...this.props} />}
               {isAuthenticated && !isSacramento && <DataStatus />}
               {isAuthenticated && isSacramento && <SacramentoMenu isShelterOwner={isShelterOwner} />}
