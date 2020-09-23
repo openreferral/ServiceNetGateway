@@ -46,14 +46,23 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
   }
 
   componentDidMount() {
-    const { siloName, isMapView } = this.props;
-    if (!this.props.isLoggingOut) {
-      this.props.getPostalCodeList(siloName);
-      this.props.getRegionList(siloName);
-      this.props.getCityList(siloName);
-      this.props.getPartnerList(siloName);
-      this.props.getTaxonomyMap(siloName);
-      this.setState({ ...this.props.filter });
+    const { isLoggingOut, filter, previousSiloName, siloName, previousUserName, userName,
+    postalCodeList, regionList, cityList, taxonomyOptions} = this.props;
+    if (!isLoggingOut) {
+      const hasUserOrSiloChanged = previousSiloName !== (siloName || '') || previousUserName !== userName;
+      if (hasUserOrSiloChanged || _.isEmpty(postalCodeList)) {
+        this.props.getPostalCodeList(userName, siloName);
+      }
+      if (hasUserOrSiloChanged || _.isEmpty(regionList)) {
+        this.props.getRegionList(userName, siloName);
+      }
+      if (hasUserOrSiloChanged || _.isEmpty(cityList)) {
+        this.props.getCityList(userName, siloName);
+      }
+      if (hasUserOrSiloChanged || _.isEmpty(taxonomyOptions)) {
+        this.props.getTaxonomyMap(userName, siloName);
+      }
+      this.setState({ ...filter });
     }
   }
 
@@ -221,9 +230,12 @@ function getTaxonomyOptions(taxonomyMap) {
 
 const mapStateToProps = (storeState: IRootState) => ({
   isLoggingOut: storeState.authentication.loggingOut,
-  postalCodeList: storeState.filterActivity.postalCodeList.map(code => ({ label: code, value: code })),
-  cityList: storeState.filterActivity.cityList.map(city => ({ label: city, value: city })),
-  regionList: storeState.filterActivity.regionList.map(region => ({ label: region, value: region })),
+  userName: storeState.authentication.account.login,
+  previousUserName: storeState.filterActivity.userName,
+  previousSiloName: storeState.filterActivity.siloName,
+  postalCodeList: storeState.filterActivity.providersPostalCodeList.map(code => ({ label: code, value: code })),
+  cityList: storeState.filterActivity.providersCityList.map(city => ({ label: city, value: city })),
+  regionList: storeState.filterActivity.providersRegionList.map(region => ({ label: region, value: region })),
   taxonomyOptions: getTaxonomyOptions(storeState.filterActivity.taxonomyMap),
   filter: storeState.providerFilter.filter
 });

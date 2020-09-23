@@ -165,7 +165,11 @@ describe('Filter activity reducer', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.FETCH_PARTNER_LIST),
-          payload
+          payload,
+          meta: {
+            'siloName': '',
+            'userName': ''
+          }
         })
       ).toEqual({
         ...initialState,
@@ -198,7 +202,11 @@ describe('Filter activity reducer', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.FETCH_TAXONOMY_LIST),
-          payload
+          payload,
+          meta: {
+            'siloName': '',
+            'userName': ''
+          }
         })
       ).toEqual({
         ...initialState,
@@ -278,9 +286,6 @@ describe('Filter activity reducer', () => {
         }
       ];
       await store.dispatch(getRegionList()).then(() => expect(store.getActions()).toEqual(expectedActions));
-      const mockStore = configureStore([thunk, promiseMiddleware]);
-      store = mockStore({});
-      await store.dispatch(getRegionListForServiceProviders()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
     it('dispatches ACTION_TYPES.FETCH_CITY_LIST actions', async () => {
@@ -306,32 +311,41 @@ describe('Filter activity reducer', () => {
           payload: resolvedObject
         }
       ];
-      await store
-        .dispatch(getPostalCodeListForServiceProviders('fakeSilo'))
-        .then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
     it('dispatches ACTION_TYPES.FETCH_PARTNER_LIST actions', async () => {
+      const meta = {
+        'siloName': '',
+        'userName': ''
+      };
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_PARTNER_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_PARTNER_LIST),
+          meta
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_PARTNER_LIST),
-          payload: resolvedObject
+          payload: resolvedObject,
+          meta
         }
       ];
       await store.dispatch(getPartnerList()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
     it('dispatches ACTION_TYPES.FETCH_TAXONOMY_LIST actions', async () => {
+      const meta = {
+        'siloName': '',
+        'userName': ''
+      };
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_TAXONOMY_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_TAXONOMY_LIST),
+          meta
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_TAXONOMY_LIST),
-          payload: resolvedObject
+          payload: resolvedObject,
+          meta
         }
       ];
       await store.dispatch(getTaxonomyMap()).then(() => expect(store.getActions()).toEqual(expectedActions));
@@ -400,7 +414,7 @@ describe('Filter activity reducer', () => {
           payload: resolvedObject
         }
       ];
-      await store.dispatch(getCityListForServiceProviders()).then(() => expect(store.getActions()).toEqual(expectedActions));
+      await store.dispatch(getCityList()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
   });
 });

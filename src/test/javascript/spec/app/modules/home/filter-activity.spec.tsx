@@ -41,6 +41,7 @@ describe('Filter Activity', () => {
       }
     },
     authentication: {
+      account: {},
       loggingOut: false
     }
   };

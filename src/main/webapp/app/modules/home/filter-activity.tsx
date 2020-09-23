@@ -74,30 +74,27 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
   state: IFilterActivityState = INITIAL_STATE;
 
   componentDidMount() {
-    if (!this.props.isLoggingOut) {
-      this.getPostalCodeList();
-      this.getRegionList();
-      this.getCityList();
-      this.getPartnerList();
-      this.getTaxonomyMap();
+    const { isLoggingOut, previousUserName, userName,
+      postalCodeList, regionList, cityList, partnerList, taxonomyOptions } = this.props;
+    if (!isLoggingOut) {
+      const hasUserChanged = previousUserName !== userName;
+      if (_.isEmpty(postalCodeList)) {
+        this.props.getPostalCodeList();
+      }
+      if (_.isEmpty(regionList)) {
+        this.props.getRegionList();
+      }
+      if (_.isEmpty(cityList)) {
+        this.props.getCityList();
+      }
+      if (hasUserChanged || _.isEmpty(partnerList)) {
+        this.props.getPartnerList(userName);
+      }
+      if (hasUserChanged || _.isEmpty(taxonomyOptions)) {
+        this.props.getTaxonomyMap(userName);
+      }
     }
   }
-
-  getPartnerList = () => {
-    this.props.getPartnerList();
-  };
-  getPostalCodeList = () => {
-    this.props.getPostalCodeList();
-  };
-  getRegionList = () => {
-    this.props.getRegionList();
-  };
-  getCityList = () => {
-    this.props.getCityList();
-  };
-  getTaxonomyMap = () => {
-    this.props.getTaxonomyMap();
-  };
 
   selectStyle = () => ({
     placeholder: style => ({ ...style, color: PLACEHOLDER_TEXT_COLOR })
@@ -738,6 +735,8 @@ function getTaxonomyOptions(taxonomyMap) {
 const mapStateToProps = (storeState: IRootState) => ({
   postalCodeList: storeState.filterActivity.postalCodeList.map(code => ({ label: code, value: code })),
   isLoggingOut: storeState.authentication.loggingOut,
+  userName: storeState.authentication.account.login,
+  previousUserName: storeState.filterActivity.userName,
   regionList: storeState.filterActivity.regionList.map(region => ({ label: region, value: region })),
   cityList: storeState.filterActivity.cityList.map(city => ({ label: city, value: city })),
   taxonomyOptions: getTaxonomyOptions(storeState.filterActivity.taxonomyMap),
