@@ -6,11 +6,15 @@
   position: inherit;
   overflow: auto;
   background-color: #f5f9fc;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
 
   .background {
     background: url('../../../static/images/background-provider.svg') no-repeat center top;
     background-size: contain;
     position: relative;
+    @extend .flex-column-stretch;
   }
 
   .background-public {
@@ -24,6 +28,8 @@
 
   .app-container {
     padding-top: $paddingTop !important;
+    flex: 1;
+    @extend .flex-column-stretch;
     &-public {
       @extend .app-container;
     }
@@ -97,7 +103,7 @@
     justify-content: space-between;
     padding: 1rem;
 
-    &-public {
+    &-solid {
       @extend .control-line-container;
     }
   }
@@ -118,7 +124,14 @@
   }
 
   @media only screen and (min-width: 769px) {
-    .control-line-container-public {
+    .flex-column-stretch {
+      display: flex;
+      flex: 1;
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .control-line-container-solid {
       display: flex;
       justify-content: space-between;
       padding: 1rem;
@@ -150,20 +163,18 @@
       padding-top: 1rem !important;
     }
 
-    .control-line-container-public {
-      background: white;
-      border-radius: 3rem;
-      margin-bottom: 1rem;
-      box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
-      margin-left: 1rem;
-      margin-right: 1rem;
-    }
-
     .control-line-container {
       display: block;
       padding: 1rem;
       margin-left: 0.5rem;
       margin-right: 0.5rem;
+    }
+
+    .control-line-container-solid {
+      background: white;
+      border-radius: 3rem;
+      margin-bottom: 1rem;
+      box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
     }
 
     .background-public {
@@ -375,12 +386,21 @@
     margin-top: 25px;
     margin-left: auto;
     margin-right: auto;
+    @extend .flex-column-stretch;
+
+    &.map {
+      margin-top: 0;
+      padding-top: 4rem !important;
+    }
 
     &-public {
       @extend .all-records-container;
       margin-top: 0;
       padding-top: 4rem;
       margin-bottom: 5rem;
+      &.map {
+       margin-bottom: 0;
+      }
     }
   }
 

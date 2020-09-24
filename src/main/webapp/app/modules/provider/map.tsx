@@ -116,7 +116,7 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
     const markerLocations = extractMarkerLocations(this.props);
     const props = this.props;
 
-    return <MapWrapper {...this.props} mapElement={<div style={{ height: `100%` }} />} >
+    return <MapWrapper {...this.props} mapElement={<div className="flex-column-stretch" style={{ height: `100%` }} />} >
       <GoogleMap
         ref={mapRef => this.setMapRef(mapRef)}
         center={{ lat: this.state.lat, lng: this.state.lng }}

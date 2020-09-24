@@ -17,7 +17,7 @@ const Routes = ({ isAdmin, match, location, account }) => {
   const isLoggingOut = location && (location.state && location.state.loggingOut);
 
   return (
-    <div>
+    <div className="flex-column-stretch">
       <Switch>
         <ErrorBoundaryRoute path={`${match.url}feedback`} component={Feedback} />
         <ErrorBoundaryRoute path={`${match.url}about-us`} component={AboutUs} />

@@ -9,35 +9,52 @@ import AllRecords from './all-records';
 
 export interface IHomeProps extends StateProps, DispatchProps {}
 
-export class Home extends React.Component<IHomeProps> {
+export interface IHomeState {
+  isMapView: boolean;
+}
+
+export class Home extends React.Component<IHomeProps, IHomeState> {
+  state = {
+    isMapView: false
+  };
   componentDidMount() {
     this.props.getSession();
   }
 
+  toggleMapView = () =>
+    this.setState({
+      isMapView: !this.state.isMapView
+    });
+
+  header = (userLogin: string) => <div>
+    <div className="hero-image">
+      <div className="hero-text py-2">
+        <div className="hero-avatar">
+          <Avatar size="big" name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
+        </div>
+        <h5 className="hello-text">
+          <b>{`${translate('providerSite.hello')}${userLogin}!`}</b>
+        </h5>
+        <h4 className="hello-text">
+          <Translate contentKey="providerSite.anyUpdates" />
+        </h4>
+      </div>
+    </div>
+  </div>
+
   render() {
     const { userLogin } = this.props;
+    const { isMapView } = this.state;
     return (
       <div className="background">
-        <div>
-          <div className="hero-image">
-            <div className="hero-text py-2">
-              <div className="hero-avatar">
-                <Avatar size="big" name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
-              </div>
-              <h5 className="hello-text">
-                <b>{`${translate('providerSite.hello')}${userLogin}!`}</b>
-              </h5>
-              <h4 className="hello-text">
-                <Translate contentKey="providerSite.anyUpdates" />
-              </h4>
-            </div>
+        {!isMapView && this.header(userLogin)}
+        {!isMapView &&
+          <div className="user-cards-container">
+            <UserRecords/>
           </div>
-        </div>
-        <div className="user-cards-container">
-          <UserRecords />
-        </div>
-        <div className="all-records-container">
-          <AllRecords />
+        }
+        <div className={`all-records-container${isMapView ? ' map' : ''}`}>
+          <AllRecords toggleMapView={this.toggleMapView} isMapView={isMapView} />
         </div>
       </div>
     );

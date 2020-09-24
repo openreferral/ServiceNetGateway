@@ -1415,7 +1415,7 @@ exports[`All records renders correctly 1`] = `
       uncheckFiltersChanged={[Function]}
     >
       <main
-        className="all-records"
+        className="all-records flex-column-stretch"
       >
         <MediaQuery
           maxDeviceWidth={768}
