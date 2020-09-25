@@ -21,6 +21,7 @@ import { getUser } from 'app/modules/administration/user-management/user-managem
 import { SideMenu } from './mobile-components/side-menu';
 import MediaQuery from 'react-responsive';
 import Routes from './routes';
+import Footer from 'app/shared/layout/footer/footer';
 
 export interface IProviderSiteProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -99,6 +100,9 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
           <ErrorBoundary>
             {!loggingOut && <Routes isAdmin={isAdmin} match={match} location={this.props.location} account={this.props.account} />}
           </ErrorBoundary>
+        </div>
+        <div className="d-none d-md-inline">
+          <Footer />
         </div>
       </div>
     );

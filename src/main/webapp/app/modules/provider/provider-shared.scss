@@ -3,6 +3,7 @@
 
 .provider-shared {
   min-height: 100vh;
+  max-height: 100vh;
   position: inherit;
   overflow: auto;
   background-color: #f5f9fc;
@@ -19,7 +20,11 @@
 
   .background-public {
     @extend .background;
-    height: calc(100vh - #{$paddingTop});
+    height: calc(100vh - #{$marginTopDesktop} - #{$footerSize});
+  }
+
+  > div > .footer {
+    margin-top: 0;
   }
 
   > * {
@@ -27,9 +32,14 @@
   }
 
   .app-container {
-    padding-top: $paddingTop !important;
+    margin-top: $marginTopDesktop !important;
+    height: calc(100vh - #{$marginTopDesktop} - #{$footerSize});
+    width: 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
     flex: 1;
     @extend .flex-column-stretch;
+
     &-public {
       @extend .app-container;
     }
@@ -148,11 +158,13 @@
 
   @media only screen and (max-width: 768px) {
     .app-container {
-      padding-top: $paddingTopMobile !important;
+      height: calc(100vh - #{$marginTopMobile});
+      margin-top: $marginTopMobile !important;
     }
 
     .app-container-public {
-      padding-top: $paddingTop !important;
+      height: calc(100vh - #{$marginTopDesktop});
+      margin-top: $marginTopDesktop !important;
     }
 
     .all-records-container {
@@ -399,7 +411,7 @@
       padding-top: 4rem;
       margin-bottom: 5rem;
       &.map {
-       margin-bottom: 0;
+        margin-bottom: 0;
       }
     }
   }
@@ -444,4 +456,3 @@
     margin-right: 0 !important;
   }
 }
-

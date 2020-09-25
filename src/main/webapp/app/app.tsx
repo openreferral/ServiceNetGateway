@@ -74,7 +74,9 @@ export class App extends React.Component<IAppProps> {
               </ErrorBoundary>
             </Card>
           </div>
-          <Footer />
+          <div className="d-none d-md-inline">
+            <Footer />
+          </div>
         </div>
       </div>
     );
