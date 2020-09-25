@@ -61,7 +61,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
               prependRoutesWithMatch
             />
           </ErrorBoundary>
-          <div>
+          <div className="flex-column-stretch">
             <Routes match={match} />
           </div>
         </div>

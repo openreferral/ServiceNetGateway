@@ -7,13 +7,27 @@ export interface IPublicHomeProps extends StateProps, DispatchProps {
   urlBase: string;
 }
 
-class PublicHome extends React.Component<IPublicHomeProps> {
+export interface IPublicHomeState {
+  isMapView: boolean;
+}
+
+class PublicHome extends React.Component<IPublicHomeProps, IPublicHomeState> {
+  state = {
+    isMapView: false
+  };
+
+  toggleMapView = () =>
+    this.setState({
+      isMapView: !this.state.isMapView
+    });
+
   render() {
     const { urlBase, siloName } = this.props;
+    const { isMapView } = this.state;
     return (
       <div className="background-public">
-        <div className="all-records-container-public">
-          <AllRecords urlBase={urlBase} siloName={siloName} />
+        <div className={`all-records-container-public${isMapView ? ' map' : ''}`}>
+          <AllRecords urlBase={urlBase} siloName={siloName} toggleMapView={this.toggleMapView} isMapView={isMapView} />
         </div>
       </div>
     );

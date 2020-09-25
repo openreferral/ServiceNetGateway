@@ -44,6 +44,8 @@ window.google = window.google || {};
 export interface IAllRecordsProps extends StateProps, DispatchProps {
   siloName?: string;
   urlBase: string;
+  toggleMapView: any;
+  isMapView: boolean;
 }
 
 export interface IAllRecordsState extends IPaginationBaseState {
@@ -51,7 +53,6 @@ export interface IAllRecordsState extends IPaginationBaseState {
   activePage: number;
   sortingOpened: boolean;
   filterOpened: boolean;
-  isMapView: boolean;
   isSticky: boolean;
   recordViewType: 'GRID' | 'LIST';
   isRecordHighlighted: boolean;
@@ -101,14 +102,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
-      if (this.state.isMapView) {
+      if (this.props.isMapView) {
         this.getRecordsForMap();
       } else {
         this.getRecords(true);
       }
     }
 
-    if (!prevState.isMapView && this.state.isMapView) {
+    if (!prevProps.isMapView && this.props.isMapView) {
       this.scrollToBottom();
     }
   }
@@ -211,12 +212,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   toggleMapView = () => {
     const { filtersChanged } = this.props;
-    if (this.state.isMapView && filtersChanged) {
+    if (this.props.isMapView && filtersChanged) {
       this.getRecords(true);
       this.props.uncheckFiltersChanged();
     }
+    this.props.toggleMapView();
     this.setState({
-      isMapView: !this.state.isMapView,
       filterOpened: false,
       isRecordHighlighted: false,
       selectedLat: null,
@@ -224,7 +225,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       showMyLocation: false,
       boundaries: null
     });
-  };
+  }
 
   getFirstPage = () => {
     this.setState({ activePage: 0 });
@@ -296,8 +297,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   }
 
   mapWithFilter = allRecords => {
-    const { filterOpened, isMapView } = this.state;
-    const { siloName } = this.props;
+    const { filterOpened } = this.state;
+    const { siloName, isMapView } = this.props;
     const fourCardsBesideFilter = _.slice(allRecords, 0, 4);
     const upperTwoCardsBesideFilter = _.slice(allRecords, 0, 2);
     const lowerTwoCardsBesideFilter = _.slice(allRecords, 2, 4);
@@ -348,7 +349,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   mapOverlay = () => this.state.boundaries &&
     <div className="d-flex flex-column align-items-center">
       <div className={`map-overlay-top ${this.state.isSticky ? 'sticky' : ''}`}>
-        {(this.state.isMapView && this.state.isSticky) && this.sortContainer()}
+        {(this.props.isMapView && this.state.isSticky) && this.sortContainer()}
         <div className="d-flex flex-column align-items-center">
           <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`} >
             <FontAwesomeIcon icon="search" size="lg" />
@@ -372,8 +373,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   </div>;
 
   mapView = () => {
-    const { allRecordsForMap, selectedRecord, urlBase, siloName } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, isMapView, centeredAt } = this.state;
+    const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
+    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
@@ -410,10 +411,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           </Col>
         </MediaQuery>
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-          <Row className="mb-4 mx-3">
-            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative">
+          <Row className="mb-5 mx-3 flex-column-stretch">
+            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative flex-column-stretch">
               {this.mapOverlay()}
-              <PersistentMap {...mapProps} containerElement={<div style={{ height: '400px' }} />} />
+              <PersistentMap {...mapProps} containerElement={<div className="flex-column-stretch" style={{ minHeight: 400 }} />} />
               {this.mapOverlayBottom()}
             </Col>
             {isRecordHighlighted && selectedRecord && !filterOpened ? (
@@ -471,8 +472,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   progress = () => {
-    const { allRecords, allRecordsTotal } = this.props;
-    const { isMapView } = this.state;
+    const { allRecords, allRecordsTotal, isMapView } = this.props;
     if (isMapView) {
       return null;
     }
@@ -492,10 +492,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       <div className={`sort-container`}>
         <ButtonPill onClick={this.toggleMapView} className="mr-1">
           <span>
-            <FontAwesomeIcon icon={this.state.isMapView ? 'th' : 'map'} />
+            <FontAwesomeIcon icon={this.props.isMapView ? 'th' : 'map'} />
             &nbsp;
             <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-              {translate(this.state.isMapView ? 'providerSite.gridView' : 'providerSite.mapView')}
+              {translate(this.props.isMapView ? 'providerSite.gridView' : 'providerSite.mapView')}
             </MediaQuery>
           </span>
         </ButtonPill>
@@ -521,10 +521,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   </div>
 
   render() {
-    const { siloName } = this.props;
-    const { sortingOpened, filterOpened, isMapView, isSticky, recordViewType } = this.state;
+    const { siloName, isMapView } = this.props;
+    const { filterOpened, isSticky } = this.state;
     return (
-      <main className="all-records">
+      <main className="all-records flex-column-stretch">
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
             <div className="filter-card mx-3 mb-4">
@@ -538,7 +538,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           </Modal>
         </MediaQuery>
-        <div className={`control-line-container${siloName ? '-public' : ''}`} ref={this.controlLineContainerRef}>
+        <div className={`control-line-container${(siloName || isMapView) ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
           <div className="d-flex justify-content-between">
             <b className="align-self-center">
               <Translate contentKey="providerSite.allRecords" />
