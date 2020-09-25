@@ -22,6 +22,7 @@ import 'slick-carousel/slick/slick-theme.css';
 // tslint:disable-next-line:no-submodule-imports
 import 'react-magic-slider-dots/dist/magic-dots.css';
 import Header from 'app/shared/layout/header/header';
+import Footer from 'app/shared/layout/footer/footer';
 
 export interface IPublicAppProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
   siloName: string;
@@ -64,6 +65,9 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
           <div className="flex-column-stretch">
             <Routes match={match} />
           </div>
+        </div>
+        <div className="d-none d-md-inline">
+          <Footer />
         </div>
       </div>
     );

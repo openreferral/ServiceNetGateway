@@ -46,11 +46,6 @@ export const Brand = props => {
         </MediaQuery>
         <span className="navbar-version mt-1">{appConfig.VERSION}</span>
       </NavbarBrand>
-      <NavLink exact tag={Link} to={`${prependRoutesWithMatch ? match.url : ''}/about-us`} className="px-0">
-        <span className="navbar-label text-dark about-us-link">
-          <Translate contentKey="global.menu.aboutUs" />
-        </span>
-      </NavLink>
     </div>
   );
 };
