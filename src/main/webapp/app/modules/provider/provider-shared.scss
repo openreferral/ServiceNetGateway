@@ -136,9 +136,9 @@
   @media only screen and (min-width: 769px) {
     .flex-column-stretch {
       display: flex;
-      flex: 1;
       align-items: stretch;
       flex-direction: column;
+      flex: 1;
     }
 
     .control-line-container-solid {
