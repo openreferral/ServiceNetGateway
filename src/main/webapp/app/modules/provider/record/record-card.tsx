@@ -19,6 +19,7 @@ import { IRootState } from 'app/shared/reducers';
 import OwnerInfo from 'app/shared/layout/owner-info';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import _ from 'lodash';
+import moment from 'moment';
 
 const REMAINDER_WIDTH = 25;
 const ONE_HOUR = 1000 * 60 * 60;
@@ -99,38 +100,24 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     }
   }
 
-  getBookmarkColor = () => {
-    const { record } = this.props;
-    const latestDailyUpdate = record.dailyUpdates.find(du => du.expiry === null);
-
-    if (latestDailyUpdate === undefined) {
-      return 'rgba(0, 0, 0, 0)';
-    } else {
-      const timeDelta = Date.now() - new Date(latestDailyUpdate.createdAt).getTime();
-      const hours = Math.ceil(timeDelta / ONE_HOUR);
-      if (hours < 24) {
-        return LESS_THAN_24_HOURS;
-      } else if (hours < 48) {
-        return LESS_THAN_48_HOURS;
-      } else {
-        return MORE_THAN_48_HOURS;
-      }
+  lastUpdatedIcon = lastUpdated => {
+    if (!lastUpdated) {
+      return null;
     }
-  };
+    const daysAgo = moment().diff(moment(lastUpdated), 'days');
+    return <span className={`last-updated-indicator ${
+      daysAgo < 7 ? 'recent' : daysAgo > 30 ? 'old' : ''}`} />;
+  }
 
   cardTitle = () => {
-    const { record, user, fullWidth } = this.props;
+    const { record, fullWidth } = this.props;
     if (_.isEmpty(record)) {
       return null;
     }
     return (
       <CardTitle>
         <div className="bookmark">
-          <FontAwesomeIcon
-            icon={record.organization.accountId === user.systemAccountId ? faBookmarkSolid : faBookmark}
-            size={'lg'}
-            color={this.getBookmarkColor()}
-          />
+          {this.lastUpdatedIcon(record.lastUpdated)}
         </div>
         <div className={`last-update${fullWidth ? '-full-width' : ''}`}>
           <div>

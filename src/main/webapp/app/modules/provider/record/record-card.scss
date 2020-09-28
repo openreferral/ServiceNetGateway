@@ -178,4 +178,19 @@ div.card.record-card {
       white-space: unset;
     }
   }
+
+  .last-updated-indicator {
+    height: 1.5em;
+    width: 1.5em;
+    background-color: #F9AB7E;
+    border-radius: 50%;
+    display: inline-block;
+
+    &.recent {
+      background-color: #7FEED0;
+    }
+    &.old {
+      background-color: #E1DEDC;
+    }
+  }
 }
