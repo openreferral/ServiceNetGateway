@@ -280,7 +280,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                   <div>
                     <Translate contentKey="multiRecordView.from" />
                     {baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                      <OwnerInfo record={baseRecord} direction="right" />
+                      <OwnerInfo owner={baseRecord.owner} direction="right" />
                     ) : (
                       baseProviderName
                     )}
@@ -333,7 +333,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                   <h4 className="from">
                     <Translate contentKey="multiRecordView.from" />
                     {partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                      <OwnerInfo record={partnerRecord} direction="right" />
+                      <OwnerInfo owner={partnerRecord.owner} direction="right" />
                     ) : (
                       partnerRecord.organization.accountName
                     )}

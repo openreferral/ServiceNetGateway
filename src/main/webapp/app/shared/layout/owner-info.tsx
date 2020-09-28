@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
+import { IUser } from 'app/shared/model/user.model';
 
 export interface IOwnerInfoProps {
-  record: any;
+  owner: IUser;
   direction: string;
 }
 
@@ -22,11 +23,11 @@ class OwnerInfo extends React.Component<IOwnerInfoProps, IOwnerInfoState> {
   }
 
   checkElement = id => {
-    const { record, direction } = this.props;
+    const { owner, direction } = this.props;
     if (_.get(this.tooltipContainerRef, 'current.id', null) === id) {
       return (
         <UncontrolledTooltip placement={direction} autohide={false} target={id}>
-          {record.owner.email}
+          {owner.email}
         </UncontrolledTooltip>
       );
     }
@@ -34,18 +35,18 @@ class OwnerInfo extends React.Component<IOwnerInfoProps, IOwnerInfoState> {
   };
 
   render() {
-    const { record } = this.props;
+    const { owner } = this.props;
     const { tooltipId } = this.state;
-    if (record) {
-      if (record.owner && (record.owner.firstName || record.owner.lastName)) {
+    if (owner) {
+      if (owner.firstName || owner.lastName) {
         return (
           <div className="d-inline-flex" id={tooltipId} ref={this.tooltipContainerRef}>
-            {`${_.get(record, 'owner.firstName', '')} ${_.get(record, 'owner.lastName', '')}`}
+            {`${_.get(owner, 'firstName', '')} ${_.get(owner, 'lastName', '')}`}
             {this.checkElement(tooltipId)}
           </div>
         );
       } else {
-        return <div className="d-inline-flex">{_.get(record, 'owner.email', '')}</div>;
+        return <div className="d-inline-flex">{_.get(owner, 'email', '')}</div>;
       }
     } else {
       return null;
