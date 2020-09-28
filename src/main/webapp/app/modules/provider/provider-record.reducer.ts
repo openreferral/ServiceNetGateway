@@ -24,6 +24,8 @@ const initialState = {
   selectedRecord: null
 };
 
+const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
+
 export type ProviderRecordsState = Readonly<typeof initialState>;
 
 const addPage = (records, page) => {
@@ -111,8 +113,8 @@ const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
 
 // Actions
 
-export const getProviderRecords = (page, itemsPerPage) => {
-  const pageableUrl = `${userRecordApiUrl}?page=${page}&size=${itemsPerPage}`;
+export const getProviderRecords = (page, itemsPerPage, sort = DEFAULT_RECORDS_SORT) => {
+  const pageableUrl = `${userRecordApiUrl}?page=${page}&size=${itemsPerPage}&sort=${sort}`;
   return {
     type: ACTION_TYPES.FETCH_RECORDS,
     payload: axios.get(pageableUrl)
