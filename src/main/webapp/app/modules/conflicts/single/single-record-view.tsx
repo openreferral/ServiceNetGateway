@@ -48,7 +48,7 @@ export class SingleRecordView extends React.Component<ISingleRecordViewProp, ISi
               <span>
                 <Translate contentKey="singleRecordView.partnerName" />
                 {isServiceProviderRecord ? (
-                  <OwnerInfo record={activityRecord} direction="right" />
+                  <OwnerInfo owner={activityRecord.record} direction="right" />
                 ) : (
                   activityRecord.organization.accountName
                 )}
