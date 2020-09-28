@@ -412,34 +412,36 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         </MediaQuery>
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
           <Row className="mb-5 mx-3 flex-column-stretch">
-            <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative flex-column-stretch">
-              {this.mapOverlay()}
-              <PersistentMap {...mapProps} containerElement={<div className="flex-column-stretch" style={{ minHeight: 400 }} />} />
-              {this.mapOverlayBottom()}
-            </Col>
-            {isRecordHighlighted && selectedRecord && !filterOpened ? (
-              <Col md={4} className={`col-md-4 pr-0 selected-record`}>
-                <RecordCard
-                  record={selectedRecord}
-                  link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
-                  coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
-                />
+            <div className="d-flex flex-grow-1">
+              <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative flex-column-stretch">
+                {this.mapOverlay()}
+                <PersistentMap {...mapProps} containerElement={<div className="flex-column-stretch" style={{ minHeight: 400 }} />} />
+                {this.mapOverlayBottom()}
               </Col>
-            ) : null}
-            {filterOpened &&
-            !isRecordHighlighted && (
-              <Col md={4}>
-                <div className="filter-card mb-4">
-                  <FilterCard
-                    siloName={siloName}
-                    dropdownOpen={filterOpened}
-                    toggleFilter={this.toggleFilter}
-                    getFirstPage={this.getFirstPage}
-                    isMapView={isMapView}
+              {isRecordHighlighted && selectedRecord && !filterOpened ? (
+                <Col md={4} className={`col-md-4 pr-0 selected-record`}>
+                  <RecordCard
+                    record={selectedRecord}
+                    link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+                    coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
                   />
-                </div>
-              </Col>
-            )}
+                </Col>
+              ) : null}
+              {filterOpened &&
+              !isRecordHighlighted && (
+                <Col md={4}>
+                  <div className="filter-card mb-4">
+                    <FilterCard
+                      siloName={siloName}
+                      dropdownOpen={filterOpened}
+                      toggleFilter={this.toggleFilter}
+                      getFirstPage={this.getFirstPage}
+                      isMapView={isMapView}
+                    />
+                  </div>
+                </Col>
+              )}
+            </div>
           </Row>
         </MediaQuery>
       </>
