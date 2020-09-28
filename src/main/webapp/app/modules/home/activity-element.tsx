@@ -41,7 +41,7 @@ const ActivityElement = props => {
               <IconSpan containerClass={isSystemProviderRecord ? 'pl-0' : 'pl-2'} visible={isSystemProviderRecord}>
                 <CardTitle className="activity-left-card-title">{props.activity.organizationName}</CardTitle>
                 <CardText>
-                  {isSystemProviderRecord ? <OwnerInfo record={props.activity} direction="right" /> : props.activity.accountName}
+                  {isSystemProviderRecord ? <OwnerInfo owner={props.activity.owner} direction="right" /> : props.activity.accountName}
                 </CardText>
               </IconSpan>
             </CardBody>
@@ -52,7 +52,7 @@ const ActivityElement = props => {
               {conflictsToDisplay.map((conflict, i) => (
                 <CardTitle className="activity-right-card-title" key={`activityCard${i}`}>
                   {conflict.partnerName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                    <OwnerInfo record={conflict} direction="top" />
+                    <OwnerInfo owner={conflict.owner} direction="top" />
                   ) : (
                     conflict.partnerName
                   )}
