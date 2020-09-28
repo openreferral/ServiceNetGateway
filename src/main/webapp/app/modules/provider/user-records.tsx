@@ -64,7 +64,8 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
   recordCard(index) {
     const { records } = this.props;
     const record = records[index];
-    return <RecordCard key={index} record={record} link={record ? `record/${record.organization.id}/edit` : ''} />;
+    return <RecordCard key={index} record={record} link={record ? `record/${record.organization.id}/edit` : ''}
+                       owner={this.props.currentUser}/>;
   }
 
   beforeIndexChange = (oldIndex, newIndex) => {
@@ -136,7 +137,8 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
 
 const mapStateToProps = state => ({
   records: state.providerRecord.recordsByIndex,
-  recordsTotal: state.providerRecord.recordsTotal
+  recordsTotal: state.providerRecord.recordsTotal,
+  currentUser: state.authentication.account
 });
 
 const mapDispatchToProps = {

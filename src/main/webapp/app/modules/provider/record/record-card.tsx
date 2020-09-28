@@ -19,6 +19,7 @@ import { IRootState } from 'app/shared/reducers';
 import OwnerInfo from 'app/shared/layout/owner-info';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import _ from 'lodash';
+import { IUser } from 'app/shared/model/user.model';
 
 const REMAINDER_WIDTH = 25;
 const ONE_HOUR = 1000 * 60 * 60;
@@ -38,6 +39,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   fullWidth?: boolean;
   closeCard?: Function;
   coordinates?: string;
+  owner?: IUser;
 }
 
 export interface IRecordCardState {
@@ -143,7 +145,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           </div>
           <div className={`updated-by ${fullWidth ? 'ml-3' : ''}`}>
             <Translate contentKey="recordCard.by" />
-            <OwnerInfo record={record} direction="top" />
+            <OwnerInfo owner={record.owner || this.props.owner || {}} direction="top" />
           </div>
         </div>
         {this.props.coordinates && (

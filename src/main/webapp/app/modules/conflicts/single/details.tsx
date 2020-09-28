@@ -119,7 +119,7 @@ export class Details extends React.Component<ISingleRecordViewProp, ISingleRecor
                         <div className="match-details">
                           <div>
                             {match.providerName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                              <OwnerInfo record={match} direction="right" />
+                              <OwnerInfo owner={match.owner} direction="right" />
                             ) : (
                               match.providerName
                             )}
