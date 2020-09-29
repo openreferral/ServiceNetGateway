@@ -2,6 +2,8 @@
   "recordCard": {
     "lastUpdate": "Last Update ",
     "unknown": "Unknown",
-    "by": "by: "
+    "by": "by: ",
+    "refer": "Refer",
+    "referred": "Referred"
   }
 }

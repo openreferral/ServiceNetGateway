@@ -1,0 +1,13 @@
+.refer-button {
+  cursor: pointer;
+  color: black;
+
+  &:hover {
+    color: #157ba5;
+  }
+
+  &.green,
+  &.green:hover {
+    color: green;
+  }
+}

@@ -18,6 +18,7 @@ import { getUser } from 'app/modules/administration/user-management/user-managem
 import { IRootState } from 'app/shared/reducers';
 import OwnerInfo from 'app/shared/layout/owner-info';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import ReferButton from 'app/modules/provider/record/refer-button';
 import _ from 'lodash';
 import moment from 'moment';
 import { IUser } from 'app/shared/model/user.model';
@@ -41,6 +42,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   closeCard?: Function;
   coordinates?: string;
   owner?: IUser;
+  referring: boolean;
 }
 
 export interface IRecordCardState {
@@ -107,9 +109,8 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       return null;
     }
     const daysAgo = moment().diff(moment(lastUpdated), 'days');
-    return <span className={`last-updated-indicator ${
-      daysAgo < 7 ? 'recent' : daysAgo > 30 ? 'old' : ''}`} />;
-  }
+    return <span className={`last-updated-indicator ${daysAgo < 7 ? 'recent' : daysAgo > 30 ? 'old' : ''}`} />;
+  };
 
   cardTitle = () => {
     const { record, user, fullWidth } = this.props;
@@ -118,9 +119,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     }
     return (
       <CardTitle>
-        <div className="bookmark">
-          {this.lastUpdatedIcon(record.lastUpdated)}
-        </div>
+        <div className="bookmark">{this.lastUpdatedIcon(record.lastUpdated)}</div>
         <div className={`last-update${fullWidth ? '-full-width' : ''}`}>
           <div>
             <Translate contentKey="recordCard.lastUpdate" />
@@ -220,59 +219,70 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   };
 
   cardContent = () => {
-    const { record, fullWidth } = this.props;
+    const { record, fullWidth, referring } = this.props;
     if (!record) {
-      return <div className="empty-record">
-        <div className="spinner-border mt-1" role="status">
-          <span className="sr-only">Loading...</span>
+      return (
+        <div className="empty-record">
+          <div className="spinner-border mt-1" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
         </div>
-      </div>;
+      );
     } else {
       const latestDailyUpdate = record.dailyUpdates && record.dailyUpdates.find(du => du.expiry === null);
-      return <>
-        <div id={measureId(record.organization.id)} style={containerStyle} />
-        <this.getHeader />
-        {latestDailyUpdate ? (
-          <div className={`latest-daily-update${fullWidth ? '-full-width' : ''} mb-1`}>
+      return (
+        <>
+          <div id={measureId(record.organization.id)} style={containerStyle} />
+          <this.getHeader />
+          {latestDailyUpdate ? (
+            <div className={`latest-daily-update${fullWidth ? '-full-width' : ''} mb-1`}>
               <span>
                 Update (<TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
                 ):
               </span>
-            {!fullWidth ? <br /> : ' '}
-            <span>{latestDailyUpdate.update}</span>
-          </div>
-        ) : (
-          <div style={{ height: '30px' }} />
-        )}
-        {!fullWidth && <this.serviceSection />}
-        <section className="locations">
-          {record.locations.length > 0 ? (
-            <AutoSizer disableHeight>
-              {({ width }) => {
-                const itemCount = getColumnCount(this.state.locationWidths, width, REMAINDER_WIDTH);
-                const overflow = itemCount < record.locations.length;
-                const totalItemCount = itemCount + (overflow ? 1 : 0);
-                return (
-                  <List
-                    height={50}
-                    itemCount={totalItemCount}
-                    itemSize={width / totalItemCount}
-                    layout="horizontal"
-                    width={width}
-                    style={{ flex: 1 }}
-                  >
-                    {({ index }) =>
-                      index === itemCount ? RemainderCount(record.locations.length - itemCount) : LocationColumn(record.locations[index])
-                    }
-                  </List>
-                );
-              }}
-            </AutoSizer>
-          ) : null}
-        </section>
-      </>;
+              {!fullWidth ? <br /> : ' '}
+              <span>{latestDailyUpdate.update}</span>
+            </div>
+          ) : (
+            <div style={{ height: '30px' }} />
+          )}
+          {!fullWidth && <this.serviceSection />}
+          <section className="d-flex justify-content-between">
+            <div style={referring ? { width: '90%' } : { width: '100%' }}>
+              <div className="locations">
+                {record.locations.length > 0 ? (
+                  <AutoSizer disableHeight>
+                    {({ width }) => {
+                      const itemCount = getColumnCount(this.state.locationWidths, width, REMAINDER_WIDTH);
+                      const overflow = itemCount < record.locations.length;
+                      const totalItemCount = itemCount + (overflow ? 1 : 0);
+                      return (
+                        <List
+                          height={50}
+                          itemCount={totalItemCount}
+                          itemSize={width / totalItemCount}
+                          layout="horizontal"
+                          width={width}
+                          style={{ flex: 1 }}
+                        >
+                          {({ index }) =>
+                            index === itemCount
+                              ? RemainderCount(record.locations.length - itemCount)
+                              : LocationColumn(record.locations[index])
+                          }
+                        </List>
+                      );
+                    }}
+                  </AutoSizer>
+                ) : null}
+              </div>
+            </div>
+            {referring ? <ReferButton recordId={record.organization.id} /> : null}
+          </section>
+        </>
+      );
     }
-  }
+  };
 
   render() {
     const { fullWidth } = this.props;

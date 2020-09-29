@@ -27,7 +27,7 @@ class PublicHome extends React.Component<IPublicHomeProps, IPublicHomeState> {
     return (
       <div className="background-public">
         <div className={`all-records-container-public${isMapView ? ' map' : ''}`}>
-          <AllRecords urlBase={urlBase} siloName={siloName} toggleMapView={this.toggleMapView} isMapView={isMapView} />
+          <AllRecords urlBase={urlBase} siloName={siloName} toggleMapView={this.toggleMapView} isMapView={isMapView} referring={false} />
         </div>
       </div>
     );

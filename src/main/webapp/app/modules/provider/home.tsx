@@ -6,6 +6,7 @@ import { IRootState } from 'app/shared/reducers';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import AllRecords from './all-records';
+import { cleanReferredRecords } from './provider-record.reducer';
 
 export interface IHomeProps extends StateProps, DispatchProps {}
 
@@ -18,6 +19,11 @@ export class Home extends React.Component<IHomeProps, IHomeState> {
     isMapView: false
   };
   componentDidMount() {
+    const { previousUserName, userName } = this.props;
+    const hasUserChanged = previousUserName !== userName;
+    if (hasUserChanged) {
+      this.props.cleanReferredRecords();
+    }
     this.props.getSession();
   }
 
@@ -26,21 +32,23 @@ export class Home extends React.Component<IHomeProps, IHomeState> {
       isMapView: !this.state.isMapView
     });
 
-  header = (userLogin: string) => <div>
-    <div className="hero-image">
-      <div className="hero-text py-2">
-        <div className="hero-avatar">
-          <Avatar size="big" name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
+  header = (userLogin: string) => (
+    <div>
+      <div className="hero-image">
+        <div className="hero-text py-2">
+          <div className="hero-avatar">
+            <Avatar size="big" name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
+          </div>
+          <h5 className="hello-text">
+            <b>{`${translate('providerSite.hello')}${userLogin}!`}</b>
+          </h5>
+          <h4 className="hello-text">
+            <Translate contentKey="providerSite.anyUpdates" />
+          </h4>
         </div>
-        <h5 className="hello-text">
-          <b>{`${translate('providerSite.hello')}${userLogin}!`}</b>
-        </h5>
-        <h4 className="hello-text">
-          <Translate contentKey="providerSite.anyUpdates" />
-        </h4>
       </div>
     </div>
-  </div>
+  );
 
   render() {
     const { userLogin } = this.props;
@@ -48,25 +56,28 @@ export class Home extends React.Component<IHomeProps, IHomeState> {
     return (
       <div className="background">
         {!isMapView && this.header(userLogin)}
-        {!isMapView &&
+        {!isMapView && (
           <div className="user-cards-container">
-            <UserRecords/>
+            <UserRecords />
           </div>
-        }
+        )}
         <div className={`all-records-container${isMapView ? ' map' : ''}`}>
-          <AllRecords toggleMapView={this.toggleMapView} isMapView={isMapView} />
+          <AllRecords toggleMapView={this.toggleMapView} isMapView={isMapView} referring />
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ authentication }: IRootState) => ({
-  userLogin: authentication.account.login
+const mapStateToProps = ({ authentication, providerRecord }: IRootState) => ({
+  userLogin: authentication.account.login,
+  userName: authentication.account.login,
+  previousUserName: providerRecord.userName
 });
 
 const mapDispatchToProps = {
-  getSession
+  getSession,
+  cleanReferredRecords
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

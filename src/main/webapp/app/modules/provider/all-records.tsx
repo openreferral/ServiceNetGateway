@@ -1,5 +1,11 @@
 import React from 'react';
-import { getAllProviderRecords, getProviderRecordsForMap, selectRecord, getAllProviderRecordsPublic } from './provider-record.reducer';
+import {
+  getAllProviderRecords,
+  getProviderRecordsForMap,
+  selectRecord,
+  getAllProviderRecordsPublic,
+  referRecord
+} from './provider-record.reducer';
 import { connect } from 'react-redux';
 import { Col, Row, Progress, Modal, Button } from 'reactstrap';
 import _ from 'lodash';
@@ -46,6 +52,7 @@ export interface IAllRecordsProps extends StateProps, DispatchProps {
   urlBase: string;
   toggleMapView: any;
   isMapView: boolean;
+  referring: boolean;
 }
 
 export interface IAllRecordsState extends IPaginationBaseState {
@@ -225,7 +232,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       showMyLocation: false,
       boundaries: null
     });
-  }
+  };
 
   getFirstPage = () => {
     this.setState({ activePage: 0 });
@@ -270,6 +277,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             fullWidth={recordViewType === LIST_VIEW && isInAllRecordSection}
             record={record}
             link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${record.organization.id}`}
+            referring={this.props.referring}
           />
         </div>
       </div>
@@ -279,14 +287,17 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   onMapBoundariesChanged = boundaries => {
     const initialBoundaries = _.isEmpty(this.state.boundaries);
     const boundariesChanged = !_.isEqual(boundaries, this.state.requestedBoundaries);
-    this.setState({
-      boundaries
-    }, () => {
-      if ((this.state.searchArea && boundariesChanged) || initialBoundaries) {
-        this.getRecordsForMap();
+    this.setState(
+      {
+        boundaries
+      },
+      () => {
+        if ((this.state.searchArea && boundariesChanged) || initialBoundaries) {
+          this.getRecordsForMap();
+        }
       }
-    });
-  }
+    );
+  };
 
   canRedoSearch = () => !this.props.loading && !_.isEqual(this.state.requestedBoundaries, this.state.boundaries);
 
@@ -294,7 +305,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     if (this.canRedoSearch()) {
       this.getRecordsForMap();
     }
-  }
+  };
 
   mapWithFilter = allRecords => {
     const { filterOpened } = this.state;
@@ -346,31 +357,45 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
-  mapOverlay = () => this.state.boundaries &&
-    <div className="d-flex flex-column align-items-center">
-      <div className={`map-overlay-top ${this.state.isSticky ? 'sticky' : ''}`}>
-        {(this.props.isMapView && this.state.isSticky) && this.sortContainer()}
-        <div className="d-flex flex-column align-items-center">
-          <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`} >
-            <FontAwesomeIcon icon="search" size="lg" />
-            <Translate contentKey="providerSite.searchThisArea" />
-          </ButtonPill>
-          {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP
-          && <span className="small"><Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} /></span>}
-          {this.props.loading && <div className="spinner-border mt-1" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>}
+  mapOverlay = () =>
+    this.state.boundaries && (
+      <div className="d-flex flex-column align-items-center">
+        <div className={`map-overlay-top ${this.state.isSticky ? 'sticky' : ''}`}>
+          {this.props.isMapView && this.state.isSticky && this.sortContainer()}
+          <div className="d-flex flex-column align-items-center">
+            <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`}>
+              <FontAwesomeIcon icon="search" size="lg" />
+              <Translate contentKey="providerSite.searchThisArea" />
+            </ButtonPill>
+            {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP && (
+              <span className="small">
+                <Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} />
+              </span>
+            )}
+            {this.props.loading && (
+              <div className="spinner-border mt-1" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>;
+    );
 
-  mapOverlayBottom = (isMobile = false) => this.state.boundaries && <div className="position-absolute"
-    style={{ right: isMobile ? MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE : MY_LOCATION_BUTTON_POSITION_RIGHT,
-      bottom: isMobile ? MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE : MY_LOCATION_BUTTON_POSITION_BOTTOM }}>
-    <Button aria-label={translate('providerSite.centerMapOnMyLocation')} color="light" onClick={this.centerMapOnMyLocation}>
-      <FontAwesomeIcon icon="map-marker" size="lg"/>
-    </Button>
-  </div>;
+  mapOverlayBottom = (isMobile = false) =>
+    this.state.boundaries && (
+      <div
+        className="position-absolute"
+        style={{
+          right: isMobile ? MY_LOCATION_BUTTON_POSITION_RIGHT_MOBILE : MY_LOCATION_BUTTON_POSITION_RIGHT,
+          bottom: isMobile ? MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE : MY_LOCATION_BUTTON_POSITION_BOTTOM
+        }}
+      >
+        <Button aria-label={translate('providerSite.centerMapOnMyLocation')} color="light" onClick={this.centerMapOnMyLocation}>
+          <FontAwesomeIcon icon="map-marker" size="lg" />
+        </Button>
+      </div>
+    );
 
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
@@ -403,6 +428,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                       link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
                       closeCard={this.closeRecordCard}
                       coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
+                      referring={this.props.referring}
                     />
                   </div>
                 </Col>
@@ -413,7 +439,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
           <Row className="mb-5 mx-3 flex-column-stretch">
             <div className="d-flex flex-grow-1">
-              <Col md={isRecordHighlighted || filterOpened ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative flex-column-stretch">
+              <Col
+                md={isRecordHighlighted || filterOpened ? 8 : 12}
+                className="pb-2 pl-0 pr-1 map-view position-relative flex-column-stretch"
+              >
                 {this.mapOverlay()}
                 <PersistentMap {...mapProps} containerElement={<div className="flex-column-stretch" style={{ minHeight: 400 }} />} />
                 {this.mapOverlayBottom()}
@@ -424,23 +453,24 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                     record={selectedRecord}
                     link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
                     coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
+                    referring={this.props.referring}
                   />
                 </Col>
               ) : null}
               {filterOpened &&
-              !isRecordHighlighted && (
-                <Col md={4}>
-                  <div className="filter-card mb-4">
-                    <FilterCard
-                      siloName={siloName}
-                      dropdownOpen={filterOpened}
-                      toggleFilter={this.toggleFilter}
-                      getFirstPage={this.getFirstPage}
-                      isMapView={isMapView}
-                    />
-                  </div>
-                </Col>
-              )}
+                !isRecordHighlighted && (
+                  <Col md={4}>
+                    <div className="filter-card mb-4">
+                      <FilterCard
+                        siloName={siloName}
+                        dropdownOpen={filterOpened}
+                        toggleFilter={this.toggleFilter}
+                        getFirstPage={this.getFirstPage}
+                        isMapView={isMapView}
+                      />
+                    </div>
+                  </Col>
+                )}
             </div>
           </Row>
         </MediaQuery>
@@ -489,7 +519,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
-  sortContainer = () =>
+  sortContainer = () => (
     <div>
       <div className={`sort-container`}>
         <ButtonPill onClick={this.toggleMapView} className="mr-1">
@@ -520,7 +550,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         />
         <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" />
       </div>
-  </div>
+    </div>
+  );
 
   render() {
     const { siloName, isMapView } = this.props;
@@ -540,7 +571,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           </Modal>
         </MediaQuery>
-        <div className={`control-line-container${(siloName || isMapView) ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
+        <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
           <div className="d-flex justify-content-between">
             <b className="align-self-center">
               <Translate contentKey="providerSite.allRecords" />
