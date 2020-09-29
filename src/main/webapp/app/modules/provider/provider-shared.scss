@@ -164,7 +164,7 @@
 
     .app-container-public {
       height: calc(100vh - #{$marginTopDesktop});
-      margin-top: $marginTopDesktop !important;
+      margin-top: $marginTopMobile !important;
     }
 
     .all-records-container {

@@ -27,7 +27,7 @@ describe('Header', () => {
     isSacramento: false,
     isShelterOwner: false,
     isStaging: false,
-    isProvider: false
+    isPublic: false
   };
   const prodProps = {
     ...devProps,

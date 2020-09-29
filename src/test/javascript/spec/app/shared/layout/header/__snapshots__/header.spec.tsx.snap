@@ -54,7 +54,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
       isAdmin={true}
       isAuthenticated={true}
       isInProduction={false}
-      isProvider={false}
+      isPublic={false}
       isSacramento={false}
       isShelterOwner={false}
       isStaging={false}
@@ -68,7 +68,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
       isAdmin={true}
       isAuthenticated={true}
       isInProduction={false}
-      isProvider={false}
+      isPublic={false}
       isSacramento={false}
       isShelterOwner={false}
       isStaging={false}
@@ -107,7 +107,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           isAdmin={true}
           isAuthenticated={true}
           isInProduction={false}
-          isProvider={false}
+          isPublic={false}
           isSacramento={false}
           isShelterOwner={false}
           isStaging={false}
@@ -132,7 +132,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           isAdmin={true}
           isAuthenticated={true}
           isInProduction={false}
-          isProvider={false}
+          isPublic={false}
           isSacramento={false}
           isShelterOwner={false}
           isStaging={false}
@@ -189,7 +189,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       isAdmin={true}
       isAuthenticated={true}
       isInProduction={true}
-      isProvider={false}
+      isPublic={false}
       isSacramento={false}
       isShelterOwner={false}
       isStaging={false}
@@ -203,7 +203,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       isAdmin={true}
       isAuthenticated={true}
       isInProduction={true}
-      isProvider={false}
+      isPublic={false}
       isSacramento={false}
       isShelterOwner={false}
       isStaging={false}
@@ -242,7 +242,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           isAdmin={true}
           isAuthenticated={true}
           isInProduction={true}
-          isProvider={false}
+          isPublic={false}
           isSacramento={false}
           isShelterOwner={false}
           isStaging={false}
@@ -267,7 +267,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           isAdmin={true}
           isAuthenticated={true}
           isInProduction={true}
-          isProvider={false}
+          isPublic={false}
           isSacramento={false}
           isShelterOwner={false}
           isStaging={false}
