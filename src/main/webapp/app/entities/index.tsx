@@ -54,6 +54,8 @@ import RequestLogger from './request-logger';
 import DailyUpdate from './daily-update';
 import Silo from './silo';
 import UserGroup from './user-group';
+import Beneficiary from './beneficiary';
+import Referral from './referral';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -110,6 +112,8 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/daily-update`} component={DailyUpdate} />
       <ErrorBoundaryRoute path={`${match.url}/silo`} component={Silo} />
       <ErrorBoundaryRoute path={`${match.url}/user-group`} component={UserGroup} />
+      <ErrorBoundaryRoute path={`${match.url}/beneficiary`} component={Beneficiary} />
+      <ErrorBoundaryRoute path={`${match.url}/referral`} component={Referral} />
       {/* jhipster-needle-add-route-path - JHipster will routes here */}
     </Switch>
   </div>

@@ -72,7 +72,9 @@
         "userManagement": "User management",
         "clientManagement": "Client management",
         "silo": "Silo",
-        "userGroup": "User Group"
+        "userGroup": "User Group",
+        "beneficiary": "Beneficiary",
+        "referral": "Referral"
       },
       "account": {
         "main": "Account",
