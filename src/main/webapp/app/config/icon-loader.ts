@@ -60,6 +60,7 @@ import { faClipboardList } from '@fortawesome/free-solid-svg-icons/faClipboardLi
 import { faMap } from '@fortawesome/free-solid-svg-icons/faMap';
 import { faDirections } from '@fortawesome/free-solid-svg-icons/faDirections';
 import { faMapMarker } from '@fortawesome/free-solid-svg-icons/faMapMarker';
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 
 export const loadIcons = () => {
   library.add(
@@ -122,6 +123,7 @@ export const loadIcons = () => {
     faClipboardList,
     faMap,
     faDirections,
-    faMapMarker
+    faMapMarker,
+    faCheck
   );
 };

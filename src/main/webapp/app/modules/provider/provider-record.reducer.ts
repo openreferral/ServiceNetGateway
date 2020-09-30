@@ -7,7 +7,10 @@ export const ACTION_TYPES = {
   FETCH_RECORDS: 'records/FETCH_RECORDS',
   FETCH_ALL_RECORDS: 'records/FETCH_ALL_RECORDS',
   FETCH_ALL_RECORDS_FOR_MAP: 'records/FETCH_ALL_RECORDS_FOR_MAP',
-  SELECT_RECORD: 'records/SELECT_RECORD'
+  SELECT_RECORD: 'records/SELECT_RECORD',
+  REFER_RECORD: 'records/REFER_RECORD',
+  UNREFER_RECORD: 'records/UNREFER_RECORD',
+  CLEAN_REFERRED_RECORDS: 'records/CLEAN_REFERRED_RECORDS'
 };
 
 const initialState = {
@@ -21,7 +24,9 @@ const initialState = {
   allRecords: [] as any[],
   allRecordsForMap: [] as any[],
   allRecordsTotal: 0,
-  selectedRecord: null
+  selectedRecord: null,
+  referredRecords: [] as any[],
+  userName: ''
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -98,6 +103,24 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         selectedRecord: action.payload.data
       };
+    case ACTION_TYPES.REFER_RECORD:
+      return {
+        ...state,
+        referredRecords: [...state.referredRecords, action.payload],
+        userName: action.meta.userName
+      };
+    case ACTION_TYPES.UNREFER_RECORD:
+      return {
+        ...state,
+        referredRecords: _.remove(state.referredRecords, record => record !== action.payload),
+        userName: action.meta.userName
+      };
+    case ACTION_TYPES.CLEAN_REFERRED_RECORDS:
+      return {
+        ...state,
+        referredRecords: [],
+        userName: ''
+      };
     default:
       return state;
   }
@@ -163,4 +186,20 @@ export const selectRecord = (id, siloName = '') => {
 const clearFilter = filter => ({
   ...filter,
   serviceTypes: _.map(filter.serviceTypes, s => s.value)
+});
+
+export const referRecord = (recordId, userName = '') => ({
+  type: ACTION_TYPES.REFER_RECORD,
+  payload: recordId,
+  meta: { userName }
+});
+
+export const unreferRecord = (recordId, userName = '') => ({
+  type: ACTION_TYPES.UNREFER_RECORD,
+  payload: recordId,
+  meta: { userName }
+});
+
+export const cleanReferredRecords = () => ({
+  type: ACTION_TYPES.CLEAN_REFERRED_RECORDS
 });

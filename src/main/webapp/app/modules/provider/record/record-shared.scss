@@ -45,6 +45,8 @@
     font-size: 12px;
     border-top: 1px solid #f0f0f0;
     margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
 
     span {
       svg {

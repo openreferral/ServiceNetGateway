@@ -64,8 +64,15 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
   recordCard(index) {
     const { records } = this.props;
     const record = records[index];
-    return <RecordCard key={index} record={record} link={record ? `record/${record.organization.id}/edit` : ''}
-                       owner={this.props.currentUser}/>;
+    return (
+      <RecordCard
+        key={index}
+        record={record}
+        link={record ? `record/${record.organization.id}/edit` : ''}
+        owner={this.props.currentUser}
+        referring={false}
+      />
+    );
   }
 
   beforeIndexChange = (oldIndex, newIndex) => {
@@ -74,11 +81,11 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
     const missingIndexes = Array.from(Array(SLIDES_TO_SHOW).keys())
       .map(i => firstIdx + i)
       .filter(index => index > 0 && index < recordsTotal && !records[index]);
-    const pagesToLoad = _.sortedUniq(missingIndexes.map(index => index / PAGE_SIZE | 0));
+    const pagesToLoad = _.sortedUniq(missingIndexes.map(index => (index / PAGE_SIZE) | 0));
     for (const page of pagesToLoad) {
       this.props.getProviderRecords(page, PAGE_SIZE);
     }
-  }
+  };
 
   render() {
     const { recordsTotal } = this.props;
