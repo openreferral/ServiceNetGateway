@@ -100,7 +100,7 @@ export default (state: ShelterState = initialState, action): ShelterState => {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: action.payload.data.length
+        totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(ACTION_TYPES.FETCH_MY_SHELTER_LIST):
       return {
