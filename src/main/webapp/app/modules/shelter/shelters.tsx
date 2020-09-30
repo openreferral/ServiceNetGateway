@@ -167,11 +167,11 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
           >
             <Container>
               <Row>
-                <Col sm="12" className="searchBar">
-                  <FontAwesomeIcon icon="search" size="lg" className="searchIcon" />
+                <Col sm="12" className="search-bar search-bar-large">
+                  <FontAwesomeIcon icon="search" size="lg" className="search-icon" />
                   <Input
                     bsSize="lg"
-                    className="searchInput"
+                    className="search-input"
                     type="search"
                     name="search"
                     id="searchBar"
@@ -180,8 +180,8 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
                     onChange={this.changeSearchPhrase}
                   />
                 </Col>
-                <div className="searchClearIconContainer" onClick={this.clearSearchBar}>
-                  <FontAwesomeIcon icon="times-circle" size="lg" className="searchClearIcon" />
+                <div className="clear-icon-container" onClick={this.clearSearchBar}>
+                  <FontAwesomeIcon icon="times-circle" size="lg" className="clear-icon" />
                 </div>
               </Row>
               <Row>
