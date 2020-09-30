@@ -166,7 +166,7 @@ export class UsersOrganizations extends React.Component<IOrganizationProps, IOrg
           <Translate contentKey="global.menu.admin.organizationOwners">Organization owners</Translate>
         </h2>
         <Row className="mt-4">
-          <Col sm="12" className="search-bar">
+          <Col sm="12" className="search-bar search-bar-large">
             <FontAwesomeIcon icon="search" size="lg" className="search-icon" />
             <input
               name="search"
