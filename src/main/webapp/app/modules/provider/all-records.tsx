@@ -416,9 +416,9 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       <>
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Col md={12} className="px-0 mx-0 absolute-card-container">
-            <div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }}>
+            <div style={{ height: `calc(100vh - 80px)` }}>
               {this.mapOverlay()}
-              <PersistentMap {...mapProps} containerElement={<div style={{ height: `calc(100vh - ${siloName ? '53' : '80'}px)` }} />} />
+              <PersistentMap {...mapProps} containerElement={<div style={{ height: `calc(100vh - 80px)` }} />} />
               {this.mapOverlayBottom(true)}
               {isRecordHighlighted && selectedRecord && !filterOpened ? (
                 <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>

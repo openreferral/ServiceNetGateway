@@ -51,7 +51,7 @@ export const Brand = props => {
 };
 
 export const FeedbackButton = props =>
-  (props.isSacramento || props.isProvider) && (
+  (props.isSacramento || props.isPublic) && (
     <NavLink exact tag={Link} to={`${props.prependRoutesWithMatch ? props.match.url : ''}/feedback`} className="px-0">
       <span className="navbar-label text-dark about-us-link">
         <Translate contentKey="global.menu.feedback" />

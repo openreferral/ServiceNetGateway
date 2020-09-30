@@ -64,7 +64,7 @@ export class App extends React.Component<IAppProps> {
               userLogin={this.props.userLogin}
               isSacramento={this.props.isSacramento}
               isShelterOwner={this.props.isShelterOwner}
-              isProvider={false}
+              isPublic={false}
             />
           </ErrorBoundary>
           <div className="container-fluid view-container" id="app-view-container">
