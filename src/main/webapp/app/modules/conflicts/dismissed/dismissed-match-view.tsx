@@ -30,7 +30,7 @@ export class DismissedMatchView extends React.Component<IDismissedMatchViewProp>
     );
 
     return (
-      <div className="dismissed-match-view">
+      <div className="dismissed-match-view shared-record-view">
         <Link to={`/dismissed-matches/${orgId}`}>
           <FontAwesomeIcon icon="arrow-left" />
           &nbsp;
