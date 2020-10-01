@@ -172,7 +172,6 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
                   <Input
                     bsSize="lg"
                     className="search-input"
-                    type="search"
                     name="search"
                     id="searchBar"
                     placeholder={translate('serviceNetApp.shelter.home.search.placeholder')}
@@ -180,8 +179,8 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
                     onChange={this.changeSearchPhrase}
                   />
                 </Col>
-                <div className="clear-icon-container" onClick={this.clearSearchBar}>
-                  <FontAwesomeIcon icon="times-circle" size="lg" className="clear-icon" />
+                <div className="clear-search-icon-container" onClick={this.clearSearchBar}>
+                  <FontAwesomeIcon icon="times-circle" size="lg" className="clear-search-icon" />
                 </div>
               </Row>
               <Row>
