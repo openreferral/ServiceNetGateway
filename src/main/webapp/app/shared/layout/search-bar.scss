@@ -1,6 +1,6 @@
 .search-bar-large {
   margin-bottom: 15px;
-  margin-right: -80px;
+  margin-right: -60px;
   .search-icon {
     position: absolute;
     margin-top: 12px;
@@ -8,17 +8,17 @@
     color: $gray-card-accent;
   }
 
-  .clear-search-icon {
-    color: $gray-card-accent;
-  }
-
-  .clear-search-icon-container {
-    cursor: pointer;
-    margin-top: 10px;
-    z-index: 1;
-  }
-
   .search-input {
     padding-left: 35px;
   }
+}
+
+.clear-search-icon {
+  color: $gray-card-accent;
+}
+
+.clear-search-icon-container {
+  cursor: pointer;
+  margin-top: 10px;
+  z-index: 1;
 }
