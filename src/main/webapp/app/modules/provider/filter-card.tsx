@@ -47,7 +47,7 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
 
   componentDidMount() {
     const { isLoggingOut, filter, previousSiloName, siloName, previousUserName, userName,
-    postalCodeList, regionList, cityList, taxonomyOptions} = this.props;
+    postalCodeList, regionList, cityList, taxonomyOptions, siloId } = this.props;
     if (!isLoggingOut) {
       const hasUserOrSiloChanged = previousSiloName !== (siloName || '') || previousUserName !== userName;
       if (hasUserOrSiloChanged || _.isEmpty(postalCodeList)) {
@@ -60,7 +60,7 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
         this.props.getCityList(userName, siloName);
       }
       if (hasUserOrSiloChanged || _.isEmpty(taxonomyOptions)) {
-        this.props.getTaxonomyMap(userName, siloName);
+        this.props.getTaxonomyMap(userName, siloName, siloId);
       }
       this.setState({ ...filter });
     }
@@ -144,7 +144,8 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
                 inputId="serviceType"
                 components={{ MultiValueContainer }}
                 isMulti
-                options={taxonomyOptions && taxonomyOptions['ServiceProvider']}
+                options={taxonomyOptions && _.get(taxonomyOptions, 'ServiceProvider', [])
+                .concat(_.get(taxonomyOptions, 'silo', []))}
                 value={serviceTypes}
                 onChange={this.handleServiceTypeChanged}
                 styles={{
@@ -231,6 +232,7 @@ function getTaxonomyOptions(taxonomyMap) {
 const mapStateToProps = (storeState: IRootState) => ({
   isLoggingOut: storeState.authentication.loggingOut,
   userName: storeState.authentication.account.login,
+  siloId: storeState.authentication.account.siloId,
   previousUserName: storeState.filterActivity.userName,
   previousSiloName: storeState.filterActivity.siloName,
   postalCodeList: storeState.filterActivity.providersPostalCodeList.map(code => ({ label: code, value: code })),

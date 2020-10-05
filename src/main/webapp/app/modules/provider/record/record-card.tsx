@@ -10,7 +10,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-regular-svg-icons';
 import { faBookmark as faBookmarkSolid, faCircle } from '@fortawesome/free-solid-svg-icons';
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
@@ -104,12 +104,13 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     }
   }
 
-  lastUpdatedIcon = lastUpdated => {
+  lastUpdatedIcon = (lastUpdated, systemAccountName) => {
     if (!lastUpdated) {
       return null;
     }
     const daysAgo = moment().diff(moment(lastUpdated), 'days');
-    return <span className={`last-updated-indicator ${daysAgo < 7 ? 'recent' : daysAgo > 30 ? 'old' : ''}`} />;
+    return <span className={`last-updated-indicator ${
+      systemAccountName !== SYSTEM_ACCOUNTS.SERVICE_PROVIDER || daysAgo > 30 ? 'old' : daysAgo < 7 ? 'recent' : ''}`} />;
   };
 
   cardTitle = () => {
@@ -117,9 +118,10 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     if (_.isEmpty(record)) {
       return null;
     }
+    const systemAccountName = record.organization.accountName;
     return (
       <CardTitle>
-        <div className="bookmark">{this.lastUpdatedIcon(record.lastUpdated)}</div>
+        <div className="bookmark">{this.lastUpdatedIcon(record.lastUpdated, systemAccountName)}</div>
         <div className={`last-update${fullWidth ? '-full-width' : ''}`}>
           <div>
             <Translate contentKey="recordCard.lastUpdate" />
@@ -131,7 +133,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           </div>
           <div className={`updated-by ${fullWidth ? 'ml-3' : ''}`}>
             <Translate contentKey="recordCard.by" />
-            <OwnerInfo owner={record.owner || this.props.owner || {}} direction="top" />
+            <OwnerInfo owner={record.owner || this.props.owner || {}} organization={record.organization} direction="top" />
           </div>
         </div>
         {this.props.coordinates && (

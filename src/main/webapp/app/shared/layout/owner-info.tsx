@@ -2,10 +2,12 @@ import _ from 'lodash';
 import React from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import { IUser } from 'app/shared/model/user.model';
+import { IOrganization } from 'app/shared/model/organization.model';
 
 export interface IOwnerInfoProps {
   owner: IUser;
   direction: string;
+  organization?: IOrganization;
 }
 
 export interface IOwnerInfoState {
@@ -35,9 +37,9 @@ class OwnerInfo extends React.Component<IOwnerInfoProps, IOwnerInfoState> {
   };
 
   render() {
-    const { owner } = this.props;
+    const { owner, organization } = this.props;
     const { tooltipId } = this.state;
-    if (owner) {
+    if (!_.isEmpty(owner)) {
       if (owner.firstName || owner.lastName) {
         return (
           <div className="d-inline-flex" id={tooltipId} ref={this.tooltipContainerRef}>
@@ -48,9 +50,10 @@ class OwnerInfo extends React.Component<IOwnerInfoProps, IOwnerInfoState> {
       } else {
         return <div className="d-inline-flex">{_.get(owner, 'email', '')}</div>;
       }
-    } else {
-      return null;
+    } else if (organization) {
+      return <div className="d-inline-flex">{_.get(organization, 'accountName', '')}</div>;
     }
+    return null;
   }
 }
 
