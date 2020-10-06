@@ -153,6 +153,9 @@
 
     .all-records-container {
       width: 90vw;
+      &.map, &-public.map {
+        padding-top: 4rem !important;
+      }
     }
   }
 
@@ -169,6 +172,9 @@
 
     .all-records-container {
       width: 100vw;
+      &.map, &-public.map {
+        padding-top: 1rem;
+      }
     }
 
     .all-records-container-public {
@@ -402,7 +408,6 @@
 
     &.map {
       margin-top: 0;
-      padding-top: 4rem !important;
     }
 
     &-public {
@@ -412,6 +417,7 @@
       margin-bottom: 5rem;
       &.map {
         margin-bottom: 0;
+        padding-top: 0;
       }
     }
   }
