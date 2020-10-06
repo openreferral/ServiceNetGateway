@@ -1,4 +1,5 @@
 @import '../../../bootstrap-variables';
+@import '../../../app-variables';
 $link-blue: #157ba5;
 
 div.card.record-card {
@@ -187,7 +188,7 @@ div.card.record-card {
     display: inline-block;
 
     &.recent {
-      background-color: #7FEED0;
+      background-color: $new-record-color;
     }
     &.old {
       background-color: #E1DEDC;
