@@ -59,6 +59,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
+
     const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled, isInProduction, isSacramento, isShelterOwner, isPublic } = this.props;
 
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
