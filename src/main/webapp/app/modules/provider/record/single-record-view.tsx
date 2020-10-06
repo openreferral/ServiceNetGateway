@@ -23,6 +23,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import _ from 'lodash';
 
 const LocationPill = location => {
   if (!location) {
@@ -95,7 +96,6 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
   componentDidMount() {
     const siloName = this.getSiloName();
-    this.props.getProviderTaxonomies(SYSTEM_ACCOUNTS.SERVICE_PROVIDER, siloName);
     this.props.getProviderEntity(this.props.match.params.orgId, siloName);
   }
 
@@ -108,12 +108,24 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   }
 
   componentDidUpdate(prevProps: Readonly<ISingleRecordViewProps>, prevState: Readonly<ISingleRecordViewState>) {
-    if (this.props.taxonomyOptions !== prevProps.taxonomyOptions) {
-      measureWidths([...this.props.taxonomyOptions.map(item => TaxonomyOptionPill(item))], measureId(this.props.match.params.orgId)).then(
-        (taxonomyWidths: any[]) => {
-          this.props.taxonomyOptions.forEach((to, i) => (to['width'] = taxonomyWidths[i]));
-        }
-      );
+    const { organization, taxonomyOptions, match } = this.props;
+    const orgDiffers = organization !== prevProps.organization;
+    if (orgDiffers) {
+      const siloName = this.getSiloName();
+      this.props.getProviderTaxonomies(organization.accountName, siloName);
+    }
+    if (orgDiffers || taxonomyOptions !== prevProps.taxonomyOptions) {
+      if (!_.isEmpty(organization) && !_.isEmpty(taxonomyOptions)) {
+        const usedTaxonomyIds = [].concat.apply([], organization.services.map(service => service.taxonomyIds));
+        const usedTaxonomies = taxonomyOptions.filter(taxonomy => usedTaxonomyIds.indexOf(taxonomy.value) !== -1);
+        measureWidths([...usedTaxonomies.map(item => TaxonomyOptionPill(item))], measureId(match.params.orgId)).then(
+          (taxonomyWidths: any[]) => {
+            usedTaxonomies.forEach((to, i) => {
+              to['width'] = taxonomyWidths[i];
+            });
+          }
+        );
+      }
     }
   }
 
@@ -499,7 +511,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                             <div key={`tax-${srvTaxonomy}`} className="pill mb-1">
                               <span className="ml-1">
                                 {taxonomyOptions && taxonomyOptions.length > 0
-                                  ? taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy).label
+                                  ? _.get(taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy), 'label')
                                   : translate('record.singleRecordView.untyped')}
                               </span>
                             </div>

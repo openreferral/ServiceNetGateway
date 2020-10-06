@@ -10,6 +10,7 @@ export interface ISimpleOrganization {
   locations?: any[];
   services?: any[];
   dailyUpdates?: any[];
+  accountName?: string;
 }
 
 export const defaultSimpleOrganization: ISimpleOrganization = {
