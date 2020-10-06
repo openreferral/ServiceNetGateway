@@ -2,7 +2,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import _ from 'lodash';
 import React, { ComponentClass, FunctionComponent } from 'react';
-import { Button, Col, Container, Row, Collapse, Card, CardBody, TabPane, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
+import { Button, Col, Container, Row, Collapse, Card, CardBody, TabPane, TabContent, Nav, NavItem, NavLink, Label } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import Select from 'react-select';
 import axios from 'axios';
@@ -47,6 +47,8 @@ const INITIAL_STATE = {
   lat: null,
   lng: null
 };
+const DATE_RANGE = 'DATE_RANGE';
+const PLACEHOLDER_TEXT_COLOR = '#555';
 
 const withLatLong = (
   wrappedComponent: string | ComponentClass<any> | FunctionComponent<any>
@@ -72,35 +74,36 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
   state: IFilterActivityState = INITIAL_STATE;
 
   componentDidMount() {
-    if (!this.props.isLoggingOut) {
-      this.getPostalCodeList();
-      this.getRegionList();
-      this.getCityList();
-      this.getPartnerList();
-      this.getTaxonomyMap();
+    const { isLoggingOut, previousUserName, userName,
+      postalCodeList, regionList, cityList, partnerList, taxonomyOptions } = this.props;
+    if (!isLoggingOut) {
+      const hasUserChanged = previousUserName !== userName;
+      if (_.isEmpty(postalCodeList)) {
+        this.props.getPostalCodeList();
+      }
+      if (_.isEmpty(regionList)) {
+        this.props.getRegionList();
+      }
+      if (_.isEmpty(cityList)) {
+        this.props.getCityList();
+      }
+      if (hasUserChanged || _.isEmpty(partnerList)) {
+        this.props.getPartnerList(userName);
+      }
+      if (hasUserChanged || _.isEmpty(taxonomyOptions)) {
+        this.props.getTaxonomyMap(userName);
+      }
     }
   }
 
-  getPartnerList = () => {
-    this.props.getPartnerList();
-  };
-  getPostalCodeList = () => {
-    this.props.getPostalCodeList();
-  };
-  getRegionList = () => {
-    this.props.getRegionList();
-  };
-  getCityList = () => {
-    this.props.getCityList();
-  };
-  getTaxonomyMap = () => {
-    this.props.getTaxonomyMap();
-  };
+  selectStyle = () => ({
+    placeholder: style => ({ ...style, color: PLACEHOLDER_TEXT_COLOR })
+  });
 
   getDateFilterList = () => [
     { value: 'LAST_7_DAYS', label: translate('serviceNetApp.activity.home.filter.date.last7Days') },
     { value: 'LAST_30_DAYS', label: translate('serviceNetApp.activity.home.filter.date.last30Days') },
-    { value: 'DATE_RANGE', label: translate('serviceNetApp.activity.home.filter.date.dateRange') }
+    { value: DATE_RANGE, label: translate('serviceNetApp.activity.home.filter.date.dateRange') }
   ];
 
   getDateFilterValue = value => {
@@ -146,7 +149,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
   };
 
   validateFilters = () => {
-    if (this.props.dateFilter === 'DATE_RANGE') {
+    if (this.props.dateFilter === DATE_RANGE) {
       const { fromDate, toDate } = this.props.activityFilter;
       let fromDateValid = true;
       let toDateValid = true;
@@ -406,7 +409,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
     const searchFieldList = getSearchFieldOptions(this.props.searchOn);
     const radiusOptions = [1, 2, 3, 4, 5, 10, 20].map(number => ({ label: `${number} mile${number > 1 ? 's' : ''}`, value: number }));
     return (
-      <div>
+      <div key="filter-activity">
         <Collapse isOpen={filterCollapseExpanded} style={{ marginBottom: '1rem' }}>
           <Card>
             <CardBody>
@@ -491,25 +494,62 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                         </div>
                         <div>
                           <Translate contentKey="serviceNetApp.activity.home.filter.searchFields" />
+                          <Label className="sr-only" for="searchFields">
+                            {translate('serviceNetApp.activity.home.filter.searchFields')}
+                          </Label>
                           <Select
+                            styles={this.selectStyle()}
                             value={this.props.selectedSearchFields}
                             onChange={this.handleSearchFieldsChange}
                             options={searchFieldList}
                             isMulti
+                            inputId="searchFields"
                           />
                         </div>
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.city" />
-                        <Select value={this.props.selectedCity} onChange={this.handleCityChange} options={cityList} isMulti />
+                        <label className="sr-only" htmlFor="cityInput">
+                          <Translate contentKey="serviceNetApp.activity.home.filter.city" />
+                        </label>
+                        <Select
+                          styles={this.selectStyle()}
+                          name="cityInput"
+                          id="cityInput"
+                          value={this.props.selectedCity}
+                          onChange={this.handleCityChange}
+                          options={cityList}
+                          isMulti
+                          inputId="cityInput"
+                        />
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.county" />
-                        <Select value={this.props.selectedCounty} onChange={this.handleCountyChange} options={regionList} isMulti />
+                        <Label className="sr-only" for="county">
+                          {translate('serviceNetApp.activity.home.filter.county')}
+                        </Label>
+                        <Select
+                          styles={this.selectStyle()}
+                          value={this.props.selectedCounty}
+                          onChange={this.handleCountyChange}
+                          options={regionList}
+                          isMulti
+                          inputId="county"
+                        />
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.zip" />
-                        <Select value={this.props.selectedZip} onChange={this.handleZipChange} options={postalCodeList} isMulti />
+                        <Label className="sr-only" for="zip">
+                          {translate('serviceNetApp.activity.home.filter.zip')}
+                        </Label>
+                        <Select
+                          styles={this.selectStyle()}
+                          value={this.props.selectedZip}
+                          onChange={this.handleZipChange}
+                          options={postalCodeList}
+                          isMulti
+                          inputId="zip"
+                        />
                         <div className="form-check form-check-inline">
                           <input
                             type="checkbox"
@@ -525,7 +565,17 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                       </Col>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.partner" />
-                        <Select value={this.getPartnerListValues()} onChange={this.handlePartnerChange} options={partnerList} isMulti />
+                        <Label className="sr-only" for="partner">
+                          {translate('serviceNetApp.activity.home.filter.partner')}
+                        </Label>
+                        <Select
+                          styles={this.selectStyle()}
+                          value={this.getPartnerListValues()}
+                          onChange={this.handlePartnerChange}
+                          options={partnerList}
+                          isMulti
+                          inputId="partner"
+                        />
                         <div className="form-check form-check-inline">
                           <input
                             type="checkbox"
@@ -534,7 +584,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                             onChange={this.handleOnlyShowMatchingChange}
                             checked={this.props.onlyShowMatching}
                           />
-                          <label className="form-check-label" htmlFor="onlyShowMatchingCheckbox">
+                          <label key="onlyShowMatchingCheckboxLabel" className="form-check-label" htmlFor="onlyShowMatchingCheckbox">
                             <Translate contentKey="serviceNetApp.activity.home.filter.onlyShowMatching" />
                           </label>
                         </div>
@@ -543,19 +593,28 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                     <Row>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.taxonomy" />
+                        <Label className="sr-only" for="taxonomy">
+                          {translate('serviceNetApp.activity.home.filter.taxonomy')}
+                        </Label>
                         {this.props.onlyShowMatching ? (
                           <Select
+                            styles={this.selectStyle()}
+                            key="taxonomy-select-only-show-matching"
                             value={this.props.selectedTaxonomy}
                             onChange={this.handleTaxonomyChange}
                             options={this.mergeTaxonomyOptions(taxonomyOptions, this.getPartnerListValues())}
                             isMulti
+                            inputId="taxonomy"
                           />
                         ) : (
                           <Select
+                            styles={this.selectStyle()}
+                            key="taxonomy-select"
                             value={this.props.selectedTaxonomy}
                             onChange={this.handleTaxonomyChange}
                             options={taxonomyOptions['all']}
                             isMulti
+                            inputId="taxonomy"
                           />
                         )}
                       </Col>
@@ -563,13 +622,18 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                     <Row>
                       <Col md="3">
                         <Translate contentKey="serviceNetApp.activity.home.filter.dateFilter" />
+                        <Label className="sr-only" for="date">
+                          {translate('serviceNetApp.activity.home.filter.dateFilter')}
+                        </Label>
                         <Select
+                          styles={this.selectStyle()}
                           value={this.getDateFilterValue(this.props.dateFilter)}
                           onChange={this.handleDateFilterChange}
                           options={this.getDateFilterList()}
+                          inputId="date"
                         />
                       </Col>
-                      {this.props.dateFilter !== 'DATE_RANGE'
+                      {this.props.dateFilter !== DATE_RANGE
                         ? null
                         : [
                             <Col key="fromDate" md="3">
@@ -606,7 +670,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                       </Col>
                       <Col md={{ size: 2, offset: 10 }}>
                         <div className="pt-3">
-                          <Button color="primary" onClick={this.resetFilter} block>
+                          <Button key="resetButton" color="primary" onClick={this.resetFilter} block>
                             <Translate contentKey="serviceNetApp.activity.home.filter.resetFilter" />
                           </Button>
                         </div>
@@ -616,17 +680,22 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
                   <TabPane tabId="mapTab">
                     <Row className="my-2">
                       <Col>
-                        <Button className="btn btn-primary" onClick={this.getMyCurrentLocation}>
+                        <Button key="location-button" className="btn btn-primary" onClick={this.getMyCurrentLocation}>
                           <Translate contentKey="serviceNetApp.activity.home.filter.setMyCurrentLocation" />
                         </Button>
                       </Col>
                       <Col md="4" className="d-flex align-items-center">
                         <Translate contentKey="serviceNetApp.activity.home.filter.radius" />
+                        <Label className="sr-only" for="radius">
+                          {translate('serviceNetApp.activity.home.filter.radius')}
+                        </Label>
                         <Select
+                          styles={this.selectStyle()}
                           value={this.getRadiusValue(this.props.radius)}
                           onChange={this.handleRadiusChange}
                           options={radiusOptions}
                           className="flex-fill ml-2"
+                          inputId="radius"
                         />
                       </Col>
                     </Row>
@@ -666,6 +735,8 @@ function getTaxonomyOptions(taxonomyMap) {
 const mapStateToProps = (storeState: IRootState) => ({
   postalCodeList: storeState.filterActivity.postalCodeList.map(code => ({ label: code, value: code })),
   isLoggingOut: storeState.authentication.loggingOut,
+  userName: storeState.authentication.account.login,
+  previousUserName: storeState.filterActivity.userName,
   regionList: storeState.filterActivity.regionList.map(region => ({ label: region, value: region })),
   cityList: storeState.filterActivity.cityList.map(city => ({ label: city, value: city })),
   taxonomyOptions: getTaxonomyOptions(storeState.filterActivity.taxonomyMap),

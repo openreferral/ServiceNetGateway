@@ -39,7 +39,7 @@ export class DismissedMatches extends React.Component<IDismissedMatchesProp> {
   render() {
     const { dismissedMatches, orgId } = this.props;
     return (
-      <div>
+      <div className="dismissed-matches">
         <Link to={`/${this.props.matches.length > 0 ? 'multi' : 'single'}-record-view/${orgId}`}>
           <FontAwesomeIcon icon="arrow-left" />
           &nbsp;

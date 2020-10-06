@@ -192,7 +192,7 @@ export class OrganizationMatchUpdate extends React.Component<IOrganizationMatchU
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/organization-match" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/organization-match" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

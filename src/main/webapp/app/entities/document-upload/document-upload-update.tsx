@@ -145,7 +145,7 @@ export class DocumentUploadUpdate extends React.Component<IDocumentUploadUpdateP
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/document-upload" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/document-upload" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

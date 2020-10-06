@@ -152,23 +152,24 @@ export class ServiceAtLocation extends React.Component<IServiceAtLocationProps, 
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceAtLocation.description">Description</Translate>
+                <th className="hand" onClick={this.sort('description')}>
+                  <Translate contentKey="serviceNetApp.serviceAtLocation.description">Description</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceAtLocation.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.serviceAtLocation.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceAtLocation.location">Location</Translate>
+                <th className="hand" onClick={this.sort('location.name')}>
+                  <Translate contentKey="serviceNetApp.serviceAtLocation.location">Location</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceAtLocation.externalDbId" />
+                <th className="hand" onClick={this.sort('externalDbId')}>
+                  <Translate contentKey="serviceNetApp.serviceAtLocation.externalDbId" /> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceAtLocation.providerName" />
+                <th className="hand" onClick={this.sort('providerName')}>
+                  <Translate contentKey="serviceNetApp.serviceAtLocation.providerName" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

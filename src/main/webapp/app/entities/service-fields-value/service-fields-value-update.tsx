@@ -129,7 +129,7 @@ export class ServiceFieldsValueUpdate extends React.Component<IServiceFieldsValu
                     <option value="PHONES">{translate('serviceNetApp.ServiceFields.PHONES')}</option>
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/service-fields-value" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/service-fields-value" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

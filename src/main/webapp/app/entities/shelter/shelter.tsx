@@ -152,68 +152,73 @@ export class Shelter extends React.Component<IShelterProps, IShelterState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.agencyName">Agency Name</Translate>
+                <th className="hand" onClick={this.sort('agencyName')}>
+                  <Translate contentKey="serviceNetApp.shelter.agencyName">Agency Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.programName">Program Name</Translate>
+                <th className="hand" onClick={this.sort('programName')}>
+                  <Translate contentKey="serviceNetApp.shelter.programName">Program Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.alternateName">Alternate Name</Translate>
+                <th className="hand" onClick={this.sort('alternateName')}>
+                  <Translate contentKey="serviceNetApp.shelter.alternateName">Alternate Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.website">Website</Translate>
+                <th className="hand" onClick={this.sort('website')}>
+                  <Translate contentKey="serviceNetApp.shelter.website">Website</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.eligibilityDetails">Eligibility Details</Translate>
+                <th className="hand" onClick={this.sort('eligibilityDetails')}>
+                  <Translate contentKey="serviceNetApp.shelter.eligibilityDetails">Eligibility Details</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.documentsRequired">Documents Required</Translate>
+                <th className="hand" onClick={this.sort('documentsRequired')}>
+                  <Translate contentKey="serviceNetApp.shelter.documentsRequired">Documents Required</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.applicationProcess">Application Process</Translate>
+                <th className="hand" onClick={this.sort('applicationProcess')}>
+                  <Translate contentKey="serviceNetApp.shelter.applicationProcess">Application Process</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.fees">Fees</Translate>
+                <th className="hand" onClick={this.sort('fees')}>
+                  <Translate contentKey="serviceNetApp.shelter.fees">Fees</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.programHours">Program Hours</Translate>
+                <th className="hand" onClick={this.sort('programHours')}>
+                  <Translate contentKey="serviceNetApp.shelter.programHours">Program Hours</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.holidaySchedule">Holiday Schedule</Translate>
+                <th className="hand" onClick={this.sort('holidaySchedule')}>
+                  <Translate contentKey="serviceNetApp.shelter.holidaySchedule">Holiday Schedule</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.address1">Address 1</Translate>
+                <th className="hand" onClick={this.sort('address1')}>
+                  <Translate contentKey="serviceNetApp.shelter.address1">Address 1</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.address2">Address 2</Translate>
+                <th className="hand" onClick={this.sort('address2')}>
+                  <Translate contentKey="serviceNetApp.shelter.address2">Address 2</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.city">City</Translate>
+                <th className="hand" onClick={this.sort('city')}>
+                  <Translate contentKey="serviceNetApp.shelter.city">City</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.zipcode">Zipcode</Translate>
+                <th className="hand" onClick={this.sort('zipcode')}>
+                  <Translate contentKey="serviceNetApp.shelter.zipcode">Zipcode</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.locationDescription">Location Description</Translate>
+                <th className="hand" onClick={this.sort('locationDescription')}>
+                  <Translate contentKey="serviceNetApp.shelter.locationDescription">Location Description</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.busService">Bus Service</Translate>
+                <th className="hand" onClick={this.sort('busService')}>
+                  <Translate contentKey="serviceNetApp.shelter.busService">Bus Service</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.transportation">Transportation</Translate>
+                <th className="hand" onClick={this.sort('transportation')}>
+                  <Translate contentKey="serviceNetApp.shelter.transportation">Transportation</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.disabilityAccess">Disability Access</Translate>
+                <th className="hand" onClick={this.sort('disabilityAccess')}>
+                  <Translate contentKey="serviceNetApp.shelter.disabilityAccess">Disability Access</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.availableBeds">Available Beds</Translate>
+                <th className="hand" onClick={this.sort('beds.availableBeds')}>
+                  <Translate contentKey="serviceNetApp.shelter.availableBeds">Available Beds</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.shelter.waitlist">Waitlist</Translate>
+                <th className="hand" onClick={this.sort('beds.waitlist')}>
+                  <Translate contentKey="serviceNetApp.shelter.waitlist">Waitlist</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   <Translate contentKey="serviceNetApp.shelter.tags">Tags</Translate>

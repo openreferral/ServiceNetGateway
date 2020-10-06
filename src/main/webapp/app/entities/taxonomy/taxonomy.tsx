@@ -152,29 +152,29 @@ export class Taxonomy extends React.Component<ITaxonomyProps, ITaxonomyState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.taxonomy.name">Name</Translate>
+                <th className="hand" onClick={this.sort('name')}>
+                  <Translate contentKey="serviceNetApp.taxonomy.name">Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.taxonomy.taxonomyId">Taxonomy Id</Translate>
+                <th className="hand" onClick={this.sort('taxonomyId')}>
+                  <Translate contentKey="serviceNetApp.taxonomy.taxonomyId">Taxonomy Id</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.taxonomy.details">Details</Translate>
+                <th className="hand" onClick={this.sort('details')}>
+                  <Translate contentKey="serviceNetApp.taxonomy.details">Details</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.taxonomy.vocabulary">Vocabulary</Translate>
+                <th className="hand" onClick={this.sort('vocabulary')}>
+                  <Translate contentKey="serviceNetApp.taxonomy.vocabulary">Vocabulary</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.taxonomy.parent">Parent</Translate>
+                <th className="hand" onClick={this.sort('parent.name')}>
+                  <Translate contentKey="serviceNetApp.taxonomy.parent">Parent</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.taxonomy.externalDbId" />
+                <th className="hand" onClick={this.sort('externalDbId')}>
+                  <Translate contentKey="serviceNetApp.taxonomy.externalDbId" /> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.taxonomy.providerName" />
+                <th className="hand" onClick={this.sort('providerName')}>
+                  <Translate contentKey="serviceNetApp.taxonomy.providerName" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

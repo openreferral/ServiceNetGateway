@@ -16,6 +16,9 @@
     "city": "City",
     "county": "County",
     "zipCode": "ZIP code",
+    "searchThisArea": "Search this area",
+    "recordLimit": "Showing first {{count}} records",
+    "centerMapOnMyLocation": "Center map on my location",
     "menu": {
       "deactivatedRecords": "Deactivated Records"
     },
@@ -32,6 +35,7 @@
     "appNotConfiguredMessage": "Your account has not been configured. Please contact servicenet@benetech.org to complete set-up.",
     "alert": "Alert",
     "mapView": "Map View",
-    "gridView": "Grid View"
+    "gridView": "Grid View",
+    "directions": "Directions"
   }
 }

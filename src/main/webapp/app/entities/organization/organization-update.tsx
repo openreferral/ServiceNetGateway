@@ -269,7 +269,7 @@ export class OrganizationUpdate extends React.Component<IOrganizationUpdateProps
                   </Label>
                   <AvInput id="organization-providerName" type="textarea" name="providerName" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/organization" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/organization" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

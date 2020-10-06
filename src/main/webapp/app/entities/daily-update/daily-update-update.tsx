@@ -36,7 +36,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
     }
 
     props.getAllProviderRecords(0, MAX_PAGE_SIZE, 'name', props.defaultFilter, '', true);
-    props.getProviderRecords();
+    props.getProviderRecords(0, MAX_PAGE_SIZE);
   }, []);
 
   const onBlobChange = (isAnImage, name) => event => {
@@ -47,11 +47,14 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
     props.setBlob(name, undefined, undefined);
   };
 
-  useEffect(() => {
-    if (props.updateSuccess) {
-      handleClose();
-    }
-  }, [props.updateSuccess]);
+  useEffect(
+    () => {
+      if (props.updateSuccess) {
+        handleClose();
+      }
+    },
+    [props.updateSuccess]
+  );
 
   const saveEntity = (event, errors, values) => {
     values.expiry = convertDateTimeToServer(values.expiry);
@@ -124,11 +127,11 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
                     required: { value: true, errorMessage: translate('entity.validation.required') }
                   }}
                   name="organizationId"
-                  options={allRecords
-                    ? allRecords.map(otherEntity => (
-                      { value: otherEntity.organization.id, label: otherEntity.organization.name }
-                    ))
-                    : []}
+                  options={
+                    allRecords
+                      ? allRecords.map(otherEntity => ({ value: otherEntity.organization.id, label: otherEntity.organization.name }))
+                      : []
+                  }
                 >
                   <option value="" key="0" />
                   {allRecords
@@ -140,7 +143,7 @@ export const DailyUpdateUpdate = (props: IDailyUpdateUpdateProps) => {
                     : null}
                 </AvSelect>
               </AvGroup>
-              <Button tag={Link} id="cancel-save" to="/entity/daily-update" replace color="info">
+              <Button tag={Link} id="cancel-save" to="/entity/daily-update" color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">Back</span>
@@ -180,4 +183,7 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(DailyUpdateUpdate);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DailyUpdateUpdate);

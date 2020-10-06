@@ -34,7 +34,7 @@ export class ClientManagementDetail extends React.Component<IClientManagementDet
           </dt>
           <dd>{client.tokenValiditySeconds}</dd>
         </dl>
-        <Button tag={Link} to="/admin/client-management" replace color="info">
+        <Button tag={Link} to="/admin/client-management" color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

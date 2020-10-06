@@ -101,7 +101,7 @@ describe('Notification Middleware', () => {
     payload: Promise.reject({
       response: {
         data: {
-          message: 'Error'
+          message: 'Error.error'
         }
       }
     })
@@ -158,7 +158,7 @@ describe('Notification Middleware', () => {
   });
   it('should trigger an error toast message and return promise error for generic message', async () => {
     await store.dispatch(GENERIC_ERROR).catch(err => {
-      expect(err.response.data.message).toEqual('Error');
+      expect(err.response.data.message).toEqual('Error.error');
     });
     const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
     expect(toastMsg).toContain('Error');

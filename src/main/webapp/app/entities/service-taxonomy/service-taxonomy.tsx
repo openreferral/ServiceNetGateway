@@ -152,23 +152,24 @@ export class ServiceTaxonomy extends React.Component<IServiceTaxonomyProps, ISer
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceTaxonomy.taxonomyDetails">Taxonomy Details</Translate>
+                <th className="hand" onClick={this.sort('taxonomyDetails')}>
+                  <Translate contentKey="serviceNetApp.serviceTaxonomy.taxonomyDetails">Taxonomy Details</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceTaxonomy.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.serviceTaxonomy.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceTaxonomy.taxonomy">Taxonomy</Translate>
+                <th className="hand" onClick={this.sort('taxonomy.name')}>
+                  <Translate contentKey="serviceNetApp.serviceTaxonomy.taxonomy">Taxonomy</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceTaxonomy.externalDbId" />
+                <th className="hand" onClick={this.sort('externalDbId')}>
+                  <Translate contentKey="serviceNetApp.serviceTaxonomy.externalDbId" /> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.serviceTaxonomy.providerName" />
+                <th className="hand" onClick={this.sort('providerName')}>
+                  <Translate contentKey="serviceNetApp.serviceTaxonomy.providerName" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

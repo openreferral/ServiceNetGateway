@@ -1,0 +1,27 @@
+.all-records {
+  .map-overlay-top {
+    &.sticky {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      .sort-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 0.5rem;
+      }
+    }
+    &:not(.sticky) {
+      margin-top: 8px;
+      margin-bottom: -100%;
+    }
+    z-index: 1;
+  }
+
+  .search-area-button {
+    background-color: rgba(245, 249, 252, 0.5);
+    &:hover:not(.disabled) {
+      color: black;
+    }
+  }
+}

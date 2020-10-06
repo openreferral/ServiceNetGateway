@@ -127,7 +127,7 @@ export class GeocodingResultUpdate extends React.Component<IGeocodingResultUpdat
                     }}
                   />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/geocoding-result" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/geocoding-result" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

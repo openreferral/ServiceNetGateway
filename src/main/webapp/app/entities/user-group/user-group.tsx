@@ -1,30 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
-import {
-  ICrudGetAllAction,
-  getSortState,
-  IPaginationBaseState,
-  JhiPagination,
-  JhiItemCount,
-  getPaginationItemsNumber,
-  Translate
-} from 'react-jhipster';
+import { Button, Row, Table } from 'reactstrap';
+import { JhiPagination, getPaginationItemsNumber, Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import _ from 'lodash';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './user-group.reducer';
 import { getAllSilos as getSilos } from '../silo/silo.reducer';
-import { IUserGroup } from 'app/shared/model/user-group.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { ITEMS_PER_PAGE, MAX_BUTTONS } from 'app/shared/util/pagination.constants';
+import { FIRST_PAGE, ITEMS_PER_PAGE_ENTITY, MAX_BUTTONS } from 'app/shared/util/pagination.constants';
+import PageSizeSelector from 'app/entities/page-size-selector';
+import { getSortStateWithPagination } from 'app/shared/util/pagination-utils';
 
 export interface IUserGroupProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const UserGroup = (props: IUserGroupProps) => {
-  const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [dropdownOpenTop, setDropdownOpenTop] = useState(false);
+  const [dropdownOpenBottom, setDropdownOpenBottom] = useState(false);
+  const [paginationState, setPaginationState] = useState(getSortStateWithPagination(props.location, ITEMS_PER_PAGE_ENTITY));
 
   useEffect(() => {
     props.getSilos();
@@ -37,7 +31,9 @@ export const UserGroup = (props: IUserGroupProps) => {
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
+      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}&itemsPerPage=${
+        paginationState.itemsPerPage
+      }`
     );
   };
 
@@ -45,7 +41,14 @@ export const UserGroup = (props: IUserGroupProps) => {
     () => {
       sortEntities();
     },
-    [paginationState.activePage, paginationState.order, paginationState.sort]
+    [paginationState.activePage, paginationState.order, paginationState.sort, paginationState.itemsPerPage]
+  );
+
+  useEffect(
+    () => {
+      setPaginationState(getSortStateWithPagination(props.location, ITEMS_PER_PAGE_ENTITY));
+    },
+    [props.location]
   );
 
   const sort = p => () => {
@@ -67,6 +70,13 @@ export const UserGroup = (props: IUserGroupProps) => {
     return _.get(_.find(allSilos, silo => silo.id === id), 'name', '');
   };
 
+  const select = itemsPerPage => () =>
+    setPaginationState({
+      ...paginationState,
+      activePage: FIRST_PAGE,
+      itemsPerPage
+    });
+
   const { userGroupList, match, loading, totalItems } = props;
   return (
     <div>
@@ -77,6 +87,22 @@ export const UserGroup = (props: IUserGroupProps) => {
           &nbsp; Create new User Group
         </Link>
       </h2>
+      <div className={userGroupList && userGroupList.length > 0 ? '' : 'd-none'}>
+        <Row className="justify-content-center">
+          <PageSizeSelector
+            dropdownOpen={dropdownOpenTop}
+            toggleSelect={() => setDropdownOpenTop(!dropdownOpenTop)}
+            itemsPerPage={paginationState.itemsPerPage}
+            selectFunc={select}
+          />
+          <JhiPagination
+            items={getPaginationItemsNumber(totalItems, paginationState.itemsPerPage)}
+            activePage={paginationState.activePage}
+            onSelect={handlePagination}
+            maxButtons={MAX_BUTTONS}
+          />
+        </Row>
+      </div>
       <div className="table-responsive">
         {userGroupList && userGroupList.length > 0 ? (
           <Table responsive>
@@ -144,11 +170,14 @@ export const UserGroup = (props: IUserGroupProps) => {
       </div>
       <div className={userGroupList && userGroupList.length > 0 ? '' : 'd-none'}>
         <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
-        </Row>
-        <Row className="justify-content-center">
+          <PageSizeSelector
+            dropdownOpen={dropdownOpenBottom}
+            toggleSelect={() => setDropdownOpenBottom(!dropdownOpenBottom)}
+            itemsPerPage={paginationState.itemsPerPage}
+            selectFunc={select}
+          />
           <JhiPagination
-            items={getPaginationItemsNumber(totalItems, ITEMS_PER_PAGE)}
+            items={getPaginationItemsNumber(totalItems, paginationState.itemsPerPage)}
             activePage={paginationState.activePage}
             onSelect={handlePagination}
             maxButtons={MAX_BUTTONS}

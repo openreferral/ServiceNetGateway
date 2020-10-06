@@ -36,14 +36,14 @@ export class PostalAddressFieldsValueDetail extends React.Component<IPostalAddre
             </dt>
             <dd>{postalAddressFieldsValueEntity.postalAddressField}</dd>
           </dl>
-          <Button tag={Link} to="/entity/postal-address-fields-value" replace color="info">
+          <Button tag={Link} to="/entity/postal-address-fields-value" color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/postal-address-fields-value/${postalAddressFieldsValueEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/postal-address-fields-value/${postalAddressFieldsValueEntity.id}/edit`} color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>

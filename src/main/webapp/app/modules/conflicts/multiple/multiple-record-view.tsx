@@ -3,7 +3,7 @@ import './multiple-record-view.scss';
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Jumbotron, Button, Tooltip } from 'reactstrap';
+import { Row, Col, Jumbotron, Button, Tooltip, Label } from 'reactstrap';
 import Details from '../shared/components/details';
 import { getBaseRecord, getPartnerRecord, getNotHiddenMatchesByOrg } from '../shared/shared-record-view.reducer';
 import {
@@ -61,6 +61,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     tooltipOpen: false,
     selectedSettings: {}
   };
+  private settingsBtnRef = React.createRef() as React.LegacyRef<HTMLDivElement>;
 
   componentDidMount() {
     this.props.getBaseRecord(this.props.orgId);
@@ -279,7 +280,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                   <div>
                     <Translate contentKey="multiRecordView.from" />
                     {baseProviderName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                      <OwnerInfo record={baseRecord} direction="right" />
+                      <OwnerInfo owner={baseRecord.owner} direction="right" />
                     ) : (
                       baseProviderName
                     )}
@@ -332,7 +333,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
                   <h4 className="from">
                     <Translate contentKey="multiRecordView.from" />
                     {partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                      <OwnerInfo record={partnerRecord} direction="right" />
+                      <OwnerInfo owner={partnerRecord.owner} direction="right" />
                     ) : (
                       partnerRecord.organization.accountName
                     )}
@@ -406,7 +407,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     }
 
     return (
-      <div>
+      <div className="multiple-record-view shared-record-view">
         <SuccessModal showModal={this.state.showSuccessModal} handleClose={this.handleSuccessModalClose} />
         <DismissModal
           showModal={this.state.showDismissModal}
@@ -418,6 +419,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
           className={this.state.fieldSettingsExpanded ? 'fields-display-settings-btn-return' : 'fields-display-settings-btn'}
           onClick={this.toggleFieldSettings}
           id="fields-display-settings-btn"
+          ref={this.settingsBtnRef}
         >
           {this.state.fieldSettingsExpanded ? (
             <FontAwesomeIcon icon="undo-alt" size="lg" />
@@ -427,19 +429,23 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
             </span>
           )}
         </div>
+        <Label className="sr-only" for="settings">
+          <Translate contentKey="multiRecordView.showLessFields" />
+        </Label>
         <Select
           options={this.props.fieldsDisplaySettingsOptions}
           onChange={this.handleSettingsChange}
           value={this.props.selectedSettings}
           className="fields-display-settings-selector"
           isDisabled={this.state.fieldSettingsExpanded}
+          inputId="settings"
         />
         <Tooltip
           placement="bottom"
           innerClassName="tooltip-clip-inner"
           className="tooltip-clip"
           isOpen={this.state.tooltipOpen}
-          target="fields-display-settings-btn"
+          target={this.settingsBtnRef}
           toggle={this.toggleTooltip}
           autohide
         >

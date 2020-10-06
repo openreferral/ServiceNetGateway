@@ -1,7 +1,7 @@
 import React from 'react';
-import { Col, Row, Button } from 'reactstrap';
+import { Col, Row, Button, Label } from 'reactstrap';
 import '../../shared-record-view.scss';
-import { TextFormat, Translate } from 'react-jhipster';
+import { TextFormat, translate, Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { IActivityRecord } from 'app/shared/model/activity-record.model';
 import { OpeningHoursDetails } from '../opening-hours-details';
@@ -156,14 +156,17 @@ export class SingleServiceDetails extends React.Component<ISingleServiceDetailsP
         </div>
         {isOnlyOne ? null : (
           <div className="flex-grow-1">
-            <Select onChange={this.changeRecord} options={selectOptions} value={selectOptions[selectedOption]} />
+            <Label className="sr-only" for="services">
+              {translate('serviceNetApp.activity.home.services')}
+            </Label>
+            <Select onChange={this.changeRecord} options={selectOptions} value={selectOptions[selectedOption]} inputId="services" />
           </div>
         )}
       </div>
     );
 
     const matchButton = (
-      <Button onClick={this.matchService} replace color="info">
+      <Button onClick={this.matchService} color="info">
         <FontAwesomeIcon icon="arrow-left" />{' '}
         <span className="d-none d-md-inline">
           <Translate contentKey="multiRecordView.matchesMyServiceRecord" />
@@ -172,7 +175,7 @@ export class SingleServiceDetails extends React.Component<ISingleServiceDetailsP
     );
 
     const unmatchButton = (
-      <Button onClick={this.unmatchService} replace color="danger">
+      <Button onClick={this.unmatchService} color="danger">
         <FontAwesomeIcon icon="arrow-left" />{' '}
         <span className="d-none d-md-inline">
           <Translate contentKey="multiRecordView.unmatchThisRecord" />

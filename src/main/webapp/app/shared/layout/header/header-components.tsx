@@ -4,6 +4,9 @@ import { UncontrolledDropdown, DropdownToggle, DropdownMenu, NavItem, NavLink, N
 import { NavLink as Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MediaQuery from 'react-responsive';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 import appConfig from 'app/config/constants';
 
@@ -21,45 +24,60 @@ export const NavDropdown = props => (
 
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img src="content/images/benetech-logo.png" alt="Logo" />
+    <img data-src="content/images/benetech-logo.png" className="lazyload" alt="Logo" />
   </div>
 );
 
-export const Brand = props => (
-  <div className="d-flex align-items-center">
-    <NavbarBrand tag={Link} to={props.isSacramento ? '/shelters' : '/'} className="brand-logo d-flex align-items-center mr-1">
-      <MediaQuery minDeviceWidth={769}>
-        <BrandIcon />
-      </MediaQuery>
-      <span className="navbar-version mt-1">{appConfig.VERSION}</span>
-    </NavbarBrand>
-    <NavLink exact tag={Link} to="/about-us" className="pl-0">
-      <span className="navbar-label text-dark about-us-link">
-        <Translate contentKey="global.menu.aboutUs" />
-      </span>
-    </NavLink>
-  </div>
-);
+export const Brand = props => {
+  const { isSacramento, prependRoutesWithMatch, match } = props;
+  let url = `/`;
+
+  if (isSacramento) {
+    url = '/shelters';
+  } else if (prependRoutesWithMatch) {
+    url = match.url;
+  }
+
+  return (
+    <div className="d-flex align-items-center">
+      <NavbarBrand tag={Link} to={url} className="brand-logo d-flex align-items-center mr-1">
+        <MediaQuery minDeviceWidth={769}>
+          <BrandIcon />
+        </MediaQuery>
+        <span className="navbar-version mt-1">{appConfig.VERSION}</span>
+      </NavbarBrand>
+      <NavLink exact tag={Link} to={`${prependRoutesWithMatch ? match.url : ''}/about-us`} className="px-0">
+        <span className="navbar-label text-dark about-us-link">
+          <Translate contentKey="global.menu.aboutUs" />
+        </span>
+      </NavLink>
+    </div>
+  );
+};
 
 export const FeedbackButton = props =>
-  props.isSacramento && (
-    <NavLink exact tag={Link} to="/feedback" className="pl-0">
+  (props.isSacramento || props.isPublic) && (
+    <NavLink exact tag={Link} to={`${props.prependRoutesWithMatch ? props.match.url : ''}/feedback`} className="px-0">
       <span className="navbar-label text-dark about-us-link">
         <Translate contentKey="global.menu.feedback" />
       </span>
     </NavLink>
   );
 
-export const Home = props => (
-  <NavItem>
-    <NavLink exact tag={Link} to="/" className="d-flex align-items-center">
-      <FontAwesomeIcon icon="home" />
-      <span className="navbar-label">
-        <Translate contentKey="global.menu.home" />
-      </span>
-    </NavLink>
-  </NavItem>
-);
+export const Home = props => {
+  const { prependRoutesWithMatch, match } = props;
+  const url = prependRoutesWithMatch ? match.url : `/`;
+  return (
+    <NavItem>
+      <NavLink exact tag={Link} to={url} className="d-flex align-items-center">
+        <FontAwesomeIcon icon="home" />
+        <span className="navbar-label">
+          <Translate contentKey="global.menu.home" />
+        </span>
+      </NavLink>
+    </NavItem>
+  );
+};
 
 export const DataStatus = props => (
   <NavItem>

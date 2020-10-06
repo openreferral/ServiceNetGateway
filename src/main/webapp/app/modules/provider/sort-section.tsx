@@ -25,7 +25,7 @@ const SortActivity = props => {
   const menuContent = (
     <div>
       {values.map((value, i) => (
-        <div className="p-2 sort-menu-item" onClick={sortFunc(value)} key={`sortItem${i}`}>
+        <div role="menuitem" className="p-2 sort-menu-item" onClick={sortFunc(value)} key={`sortItem${i}`}>
           <Translate contentKey={`providerSite.sortProperties.${value}`} />{' '}
           {sort === value ? <FontAwesomeIcon icon={order === ORDER_ASC ? 'angle-up' : 'angle-down'} /> : null}
         </div>
@@ -36,7 +36,7 @@ const SortActivity = props => {
   return (
     <div>
       <MediaQuery maxDeviceWidth={768}>
-        <ButtonPill onClick={toggleSort} translate="providerSite.sort" />
+        <ButtonPill onClick={toggleSort} translate="providerSite.sort" className="mr-1" />
         <Modal isOpen={dropdownOpen} centered toggle={toggleSort}>
           <ModalHeader>
             <Translate contentKey="providerSite.sort" />
@@ -50,7 +50,7 @@ const SortActivity = props => {
       <MediaQuery minDeviceWidth={769}>
         <Dropdown isOpen={dropdownOpen} toggle={toggleSort}>
           <DropdownToggle tag="div">
-            <ButtonPill translate="providerSite.sort" />
+            <ButtonPill translate="providerSite.sort" className="mr-1" />
           </DropdownToggle>
           <DropdownMenu right={false}>{menuContent}</DropdownMenu>
         </Dropdown>

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Translate } from 'react-jhipster';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface IConfirmationDialogProps {
   question: any;
@@ -24,16 +25,14 @@ export class ConfirmationDialog extends React.Component<IConfirmationDialogProps
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="global.dialog.confirm" />
         </ModalHeader>
-        <ModalBody>
-          {this.props.question}
-        </ModalBody>
+        <ModalBody>{this.props.question}</ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={this.handleClose}>
+          <ButtonPill className="button-pill-secondary" onClick={this.handleClose}>
             <Translate contentKey="global.dialog.cancel" />
-          </Button>
-          <Button color="danger" onClick={this.confirm}>
+          </ButtonPill>
+          <ButtonPill className="button-pill-danger" onClick={this.confirm}>
             <Translate contentKey="global.dialog.confirm" />
-          </Button>
+          </ButtonPill>
         </ModalFooter>
       </Modal>
     );

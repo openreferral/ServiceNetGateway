@@ -2,6 +2,7 @@
 
 exports[`Header Renders a Header component in dev profile with LoadingBar, Navbar, Nav and dev ribbon. 1`] = `
 <div
+  className="header"
   id="app-header"
 >
   <div
@@ -42,16 +43,39 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
         >
           <img
             alt="Logo"
-            src="content/images/benetech-logo.png"
+            className="lazyload"
+            data-src="content/images/benetech-logo.png"
           />
         </div>
       </div>
     </MediaQuery>
     <Component
+      currentLocale="en"
+      isAdmin={true}
+      isAuthenticated={true}
+      isInProduction={false}
+      isPublic={false}
       isSacramento={false}
+      isShelterOwner={false}
+      isStaging={false}
+      isSwaggerEnabled={true}
+      onLocaleChange={[Function]}
+      ribbonEnv="dev"
+      userLogin="user"
     />
     <Component
+      currentLocale="en"
+      isAdmin={true}
+      isAuthenticated={true}
+      isInProduction={false}
+      isPublic={false}
       isSacramento={false}
+      isShelterOwner={false}
+      isStaging={false}
+      isSwaggerEnabled={true}
+      onLocaleChange={[Function]}
+      ribbonEnv="dev"
+      userLogin="user"
     />
     <Collapse
       appear={false}
@@ -78,7 +102,20 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
         tag="ul"
         vertical={false}
       >
-        <Component />
+        <Component
+          currentLocale="en"
+          isAdmin={true}
+          isAuthenticated={true}
+          isInProduction={false}
+          isPublic={false}
+          isSacramento={false}
+          isShelterOwner={false}
+          isStaging={false}
+          isSwaggerEnabled={true}
+          onLocaleChange={[Function]}
+          ribbonEnv="dev"
+          userLogin="user"
+        />
         <Component />
         <Component />
         <Component />
@@ -91,9 +128,17 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           onClick={[Function]}
         />
         <Component
+          currentLocale="en"
           isAdmin={true}
           isAuthenticated={true}
+          isInProduction={false}
+          isPublic={false}
           isSacramento={false}
+          isShelterOwner={false}
+          isStaging={false}
+          isSwaggerEnabled={true}
+          onLocaleChange={[Function]}
+          ribbonEnv="dev"
           userLogin="user"
         />
       </Nav>
@@ -104,6 +149,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
 
 exports[`Header Renders a Header component in prod profile with LoadingBar, Navbar, Nav. 1`] = `
 <div
+  className="header"
   id="app-header"
 >
   <Connect(LoadingBar)
@@ -132,16 +178,39 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
         >
           <img
             alt="Logo"
-            src="content/images/benetech-logo.png"
+            className="lazyload"
+            data-src="content/images/benetech-logo.png"
           />
         </div>
       </div>
     </MediaQuery>
     <Component
+      currentLocale="en"
+      isAdmin={true}
+      isAuthenticated={true}
+      isInProduction={true}
+      isPublic={false}
       isSacramento={false}
+      isShelterOwner={false}
+      isStaging={false}
+      isSwaggerEnabled={false}
+      onLocaleChange={[Function]}
+      ribbonEnv="prod"
+      userLogin="user"
     />
     <Component
+      currentLocale="en"
+      isAdmin={true}
+      isAuthenticated={true}
+      isInProduction={true}
+      isPublic={false}
       isSacramento={false}
+      isShelterOwner={false}
+      isStaging={false}
+      isSwaggerEnabled={false}
+      onLocaleChange={[Function]}
+      ribbonEnv="prod"
+      userLogin="user"
     />
     <Collapse
       appear={false}
@@ -168,7 +237,20 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
         tag="ul"
         vertical={false}
       >
-        <Component />
+        <Component
+          currentLocale="en"
+          isAdmin={true}
+          isAuthenticated={true}
+          isInProduction={true}
+          isPublic={false}
+          isSacramento={false}
+          isShelterOwner={false}
+          isStaging={false}
+          isSwaggerEnabled={false}
+          onLocaleChange={[Function]}
+          ribbonEnv="prod"
+          userLogin="user"
+        />
         <Component />
         <Component />
         <Component />
@@ -181,9 +263,17 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           onClick={[Function]}
         />
         <Component
+          currentLocale="en"
           isAdmin={true}
           isAuthenticated={true}
+          isInProduction={true}
+          isPublic={false}
           isSacramento={false}
+          isShelterOwner={false}
+          isStaging={false}
+          isSwaggerEnabled={false}
+          onLocaleChange={[Function]}
+          ribbonEnv="prod"
           userLogin="user"
         />
       </Nav>

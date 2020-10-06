@@ -11,6 +11,7 @@ import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { IRootState } from 'app/shared/reducers';
 import { handleRegister, handleRegisterWithinSilo, reset } from './register.reducer';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface IRegisterProps extends StateProps, DispatchProps, RouteComponentProps<{ siloName: any }> {}
 
@@ -86,6 +87,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
             <AvForm id="register-form" onValidSubmit={this.handleValidSubmit}>
               <AvField
                 name="username"
+                autoComplete="username"
                 label={translate('global.form.username')}
                 placeholder={translate('global.form.username.placeholder')}
                 validate={{
@@ -164,6 +166,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
               </AvGroup>
               <AvField
                 name="firstPassword"
+                autoComplete="new-password"
                 label={translate('global.form.newpassword')}
                 placeholder={translate('global.form.newpassword.placeholder')}
                 type="password"
@@ -177,6 +180,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
               <PasswordStrengthBar password={this.state.password} />
               <AvField
                 name="secondPassword"
+                autoComplete="new-password"
                 label={translate('global.form.confirmpassword')}
                 placeholder={translate('global.form.confirmpassword.placeholder')}
                 type="password"
@@ -187,9 +191,11 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                   match: { value: 'firstPassword', errorMessage: translate('global.messages.error.dontmatch') }
                 }}
               />
-              <Button id="register-submit" color="primary" type="submit">
-                <Translate contentKey="register.form.button">Register</Translate>
-              </Button>
+              <ButtonPill className="button-pill-primary">
+                <button id="register-submit" type="submit">
+                  <Translate contentKey="register.form.button">Register</Translate>
+                </button>
+              </ButtonPill>
             </AvForm>
             <p>&nbsp;</p>
             <Alert color="warning">

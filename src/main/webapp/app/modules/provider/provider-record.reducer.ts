@@ -16,6 +16,8 @@ const initialState = {
   updating: false,
   updateSuccess: false,
   records: [] as any[],
+  recordsByIndex: {},
+  recordsTotal: 0,
   allRecords: [] as any[],
   allRecordsForMap: [] as any[],
   allRecordsTotal: 0,
@@ -23,6 +25,13 @@ const initialState = {
 };
 
 export type ProviderRecordsState = Readonly<typeof initialState>;
+
+const addPage = (records, page) => {
+  _.forEach(page.content, (record, i) => {
+    records[page.size * page.number + i] = record;
+  });
+  return { ...records };
+};
 
 // Reducer
 export default (state: ProviderRecordsState = initialState, action): ProviderRecordsState => {
@@ -32,7 +41,8 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
     case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
       return {
         ...state,
-        selectedRecord: null
+        selectedRecord: null,
+        loading: true
       };
     case REQUEST(ACTION_TYPES.SELECT_RECORD):
       return {
@@ -57,7 +67,10 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         updating: false,
         updateSuccess: true,
-        records: action.payload.data
+        records: action.payload.data.content,
+        recordsByIndex: addPage(state.recordsByIndex, action.payload.data),
+        recordsTotal: action.payload.data.totalElements,
+        loading: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_ALL_RECORDS):
       const { isInitLoading } = action.meta;
@@ -67,14 +80,16 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         updating: false,
         updateSuccess: true,
         allRecords: payload,
-        allRecordsTotal: action.payload.headers['x-total-count']
+        allRecordsTotal: action.payload.headers['x-total-count'],
+        loading: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        allRecordsForMap: action.payload.data
+        allRecordsForMap: action.payload.data,
+        loading: false
       };
     case SUCCESS(ACTION_TYPES.SELECT_RECORD):
       return {
@@ -96,10 +111,13 @@ const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
 
 // Actions
 
-export const getProviderRecords = () => ({
-  type: ACTION_TYPES.FETCH_RECORDS,
-  payload: axios.get(userRecordApiUrl)
-});
+export const getProviderRecords = (page, itemsPerPage) => {
+  const pageableUrl = `${userRecordApiUrl}?page=${page}&size=${itemsPerPage}`;
+  return {
+    type: ACTION_TYPES.FETCH_RECORDS,
+    payload: axios.get(pageableUrl)
+  };
+};
 
 export const getAllProviderRecords = (page, itemsPerPage, sort, filter, search, isInitLoading = true) => {
   const pageableUrl = `${allRecordApiUrl}?search=${search ? search : ''}&page=${page}&size=${itemsPerPage}&sort=${sort}`;
@@ -123,11 +141,12 @@ export const getAllProviderRecordsPublic = (silo, page, itemsPerPage, sort, filt
   };
 };
 
-export const getAllProviderRecordsForMap = (siloName = '') => {
-  const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}` : allRecordForMapApiUrl;
+export const getProviderRecordsForMap = (siloName = '', providerFilter, search, boundaries, itemsPerPage) => {
+  const params = `size=${itemsPerPage}&search=${search ? search : ''}&boundaries=${boundaries ? boundaries.toUrlValue() : ''}`;
+  const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}&${params}` : `${allRecordForMapApiUrl}?${params}`;
   return {
     type: ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP,
-    payload: axios.get(baseUrl)
+    payload: axios.post(baseUrl, clearFilter(providerFilter))
   };
 };
 

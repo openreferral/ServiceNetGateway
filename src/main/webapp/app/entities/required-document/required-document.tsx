@@ -152,20 +152,20 @@ export class RequiredDocument extends React.Component<IRequiredDocumentProps, IR
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.requiredDocument.document">Document</Translate>
+                <th className="hand" onClick={this.sort('document')}>
+                  <Translate contentKey="serviceNetApp.requiredDocument.document">Document</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.requiredDocument.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.requiredDocument.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.requiredDocument.externalDbId" />
+                <th className="hand" onClick={this.sort('externalDbId')}>
+                  <Translate contentKey="serviceNetApp.requiredDocument.externalDbId" /> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.requiredDocument.providerName" />
+                <th className="hand" onClick={this.sort('providerName')}>
+                  <Translate contentKey="serviceNetApp.requiredDocument.providerName" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

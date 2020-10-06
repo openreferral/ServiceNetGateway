@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
+import renderer from 'react-test-renderer';
 
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 
@@ -27,12 +28,11 @@ describe('error-boundary-route component', () => {
     expect(renderedRoute.props().path).toEqual('/');
     expect(renderedRoute.props().render).toBeDefined();
     const renderFn: Function = renderedRoute.props().render;
-    const comp = mount(
+    const comp = renderer.create(
       renderFn({
         location: '/'
       })
-    );
-    expect(comp.length).toEqual(1);
-    expect(comp.html()).toEqual('<div><h2 class="error">An unexpected error has occurred.</h2></div>');
+    ).root;
+    expect(comp.findByProps({ className: 'error' }).children).toEqual(['An unexpected error has occurred.']);
   });
 });

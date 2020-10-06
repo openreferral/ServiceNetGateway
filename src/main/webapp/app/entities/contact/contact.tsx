@@ -152,32 +152,32 @@ export class Contact extends React.Component<IContactProps, IContactState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.contact.name">Name</Translate>
+                <th className="hand" onClick={this.sort('name')}>
+                  <Translate contentKey="serviceNetApp.contact.name">Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.contact.title">Title</Translate>
+                <th className="hand" onClick={this.sort('title')}>
+                  <Translate contentKey="serviceNetApp.contact.title">Title</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.contact.department">Department</Translate>
+                <th className="hand" onClick={this.sort('department')}>
+                  <Translate contentKey="serviceNetApp.contact.department">Department</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.contact.email">Email</Translate>
+                <th className="hand" onClick={this.sort('email')}>
+                  <Translate contentKey="serviceNetApp.contact.email">Email</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.contact.organization">Organization</Translate>
+                <th className="hand" onClick={this.sort('organization.name')}>
+                  <Translate contentKey="serviceNetApp.contact.organization">Organization</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.contact.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.contact.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.contact.externalDbId" />
+                <th className="hand" onClick={this.sort('externalDbId')}>
+                  <Translate contentKey="serviceNetApp.contact.externalDbId" /> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.contact.providerName" />
+                <th className="hand" onClick={this.sort('providerName')}>
+                  <Translate contentKey="serviceNetApp.contact.providerName" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -198,6 +198,8 @@ export class Contact extends React.Component<IContactProps, IContactState> {
                     {contact.organizationName ? <Link to={`organization/${contact.organizationId}`}>{contact.organizationName}</Link> : ''}
                   </td>
                   <td>{contact.srvcName ? <Link to={`service/${contact.srvcId}`}>{contact.srvcName}</Link> : ''}</td>
+                  <td>{contact.externalDbId}</td>
+                  <td>{contact.providerName}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${contact.id}`} color="info" size="sm">

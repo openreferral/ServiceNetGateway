@@ -103,7 +103,7 @@ export class ShelterUpdate extends React.Component<IShelterUpdateProps, IShelter
       } else {
         const beds = shelterEntity.beds;
         if (!beds || (beds.availableBeds || '') !== availableBeds || (beds.waitlist || '') !== waitlist) {
-          entity.beds = { availableBeds, waitlist };
+          entity.beds = { availableBeds, waitlist, id: beds.id ? beds.id : null };
         }
         this.props.updateEntity(entity);
       }
@@ -440,7 +440,7 @@ export class ShelterUpdate extends React.Component<IShelterUpdateProps, IShelter
                     ))}
                   </tbody>
                 </table>
-                <Button onClick={this.goBack} id="cancel-save" replace color="info">
+                <Button onClick={this.goBack} id="cancel-save" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

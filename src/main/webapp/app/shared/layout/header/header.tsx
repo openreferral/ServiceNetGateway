@@ -3,11 +3,15 @@ import React from 'react';
 import { Translate, Storage } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, Collapse } from 'reactstrap';
 import MediaQuery from 'react-responsive';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Home, Brand, Upload, FeedbackButton, DataStatus } from './header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu, SacramentoMenu } from './menus';
+import SearchBar from 'app/modules/provider/menus/search-bar';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -21,7 +25,9 @@ export interface IHeaderProps {
   userLogin: string;
   isShelterOwner: boolean;
   isStaging: boolean;
+  isPublic?: boolean;
   match?: any;
+  prependRoutesWithMatch?: boolean;
 }
 
 export interface IHeaderState {
@@ -53,22 +59,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
-    const {
-      currentLocale,
-      isAuthenticated,
-      isAdmin,
-      isSwaggerEnabled,
-      isInProduction,
-      userLogin,
-      isSacramento,
-      isShelterOwner,
-      match
-    } = this.props;
+
+    const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled, isInProduction, isSacramento, isShelterOwner, isPublic } = this.props;
 
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
     return (
-      <div id="app-header">
+      <div id="app-header" className="header">
         {this.renderDevRibbon()}
         <LoadingBar className="loading-bar" />
         <Navbar expand="sm" fixed="top" className="navbar-light bg-white">
@@ -76,28 +73,25 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <MediaQuery maxDeviceWidth={768}>
             <div className="brand-logo">
               <div className="brand-icon ">
-                <img src="content/images/benetech-logo.png" alt="Logo" />
+                <img data-src="content/images/benetech-logo.png" className="lazyload" alt="Logo" />
               </div>
             </div>
           </MediaQuery>
-          <Brand isSacramento={isSacramento} />
-          <FeedbackButton isSacramento={isSacramento} />
+          <Brand {...this.props} />
+          <FeedbackButton {...this.props} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
-              {(!isAuthenticated || !isSacramento) && <Home />}
+              {isPublic ? <li className="self-align-center">
+                <SearchBar />
+              </li> : null}
+              {(!isAuthenticated || !isSacramento) && <Home {...this.props} />}
               {isAuthenticated && !isSacramento && <DataStatus />}
               {isAuthenticated && isSacramento && <SacramentoMenu isShelterOwner={isShelterOwner} />}
               {isAuthenticated && isAdmin && <EntitiesMenu />}
               {isAuthenticated && isAdmin && <Upload />}
               {isAuthenticated && isAdmin && <AdminMenu showSwagger={isSwaggerEnabled} showDatabase={!isInProduction} />}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
-              <AccountMenu
-                isAuthenticated={isAuthenticated}
-                userLogin={userLogin}
-                isAdmin={isAdmin}
-                isSacramento={isSacramento}
-                match={match}
-              />
+              <AccountMenu {...this.props} />
             </Nav>
           </Collapse>
         </Navbar>

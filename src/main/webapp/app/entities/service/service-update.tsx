@@ -287,7 +287,7 @@ export class ServiceUpdate extends React.Component<IServiceUpdateProps, IService
                   </Label>
                   <AvInput id="service-providerName" type="textarea" name="providerName" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/service" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/service" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

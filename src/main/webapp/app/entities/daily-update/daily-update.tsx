@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
-import { byteSize, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount, getPaginationItemsNumber } from 'react-jhipster';
+import { Button, Row, Table } from 'reactstrap';
+import { TextFormat, JhiPagination, getPaginationItemsNumber } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './daily-update.reducer';
-import { IDailyUpdate } from 'app/shared/model/ServiceNet/daily-update.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import { APP_DATE_FORMAT } from 'app/config/constants';
+import { FIRST_PAGE, ITEMS_PER_PAGE_ENTITY, MAX_BUTTONS } from 'app/shared/util/pagination.constants';
+import PageSizeSelector from 'app/entities/page-size-selector';
+import { getSortStateWithPagination } from 'app/shared/util/pagination-utils';
 
 export interface IDailyUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const DailyUpdate = (props: IDailyUpdateProps) => {
-  const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [dropdownOpenTop, setDropdownOpenTop] = useState(false);
+  const [dropdownOpenBottom, setDropdownOpenBottom] = useState(false);
+  const [paginationState, setPaginationState] = useState(getSortStateWithPagination(props.location, ITEMS_PER_PAGE_ENTITY));
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -23,13 +26,25 @@ export const DailyUpdate = (props: IDailyUpdateProps) => {
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
+      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}&itemsPerPage=${
+        paginationState.itemsPerPage
+      }`
     );
   };
 
-  useEffect(() => {
-    sortEntities();
-  }, [paginationState.activePage, paginationState.order, paginationState.sort]);
+  useEffect(
+    () => {
+      sortEntities();
+    },
+    [paginationState.activePage, paginationState.order, paginationState.sort, paginationState.itemsPerPage]
+  );
+
+  useEffect(
+    () => {
+      setPaginationState(getSortStateWithPagination(props.location, ITEMS_PER_PAGE_ENTITY));
+    },
+    [props.location]
+  );
 
   const sort = p => () => {
     setPaginationState({
@@ -45,6 +60,13 @@ export const DailyUpdate = (props: IDailyUpdateProps) => {
       activePage: currentPage
     });
 
+  const select = itemsPerPage => () =>
+    setPaginationState({
+      ...paginationState,
+      activePage: FIRST_PAGE,
+      itemsPerPage
+    });
+
   const { dailyUpdateList, match, loading, totalItems } = props;
   return (
     <div>
@@ -55,6 +77,22 @@ export const DailyUpdate = (props: IDailyUpdateProps) => {
           &nbsp; Create new Daily Update
         </Link>
       </h2>
+      <div className={dailyUpdateList && dailyUpdateList.length > 0 ? '' : 'd-none'}>
+        <Row className="justify-content-center">
+          <PageSizeSelector
+            dropdownOpen={dropdownOpenTop}
+            toggleSelect={() => setDropdownOpenTop(!dropdownOpenTop)}
+            itemsPerPage={paginationState.itemsPerPage}
+            selectFunc={select}
+          />
+          <JhiPagination
+            items={getPaginationItemsNumber(totalItems, paginationState.itemsPerPage)}
+            activePage={paginationState.activePage}
+            onSelect={handlePagination}
+            maxButtons={MAX_BUTTONS}
+          />
+        </Row>
+      </div>
       <div className="table-responsive">
         {dailyUpdateList && dailyUpdateList.length > 0 ? (
           <Table responsive>
@@ -72,7 +110,7 @@ export const DailyUpdate = (props: IDailyUpdateProps) => {
                 <th className="hand" onClick={sort('createdAt')}>
                   Created At <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
+                <th className="hand" onClick={sort('organization.name')}>
                   Organization <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
@@ -87,11 +125,7 @@ export const DailyUpdate = (props: IDailyUpdateProps) => {
                     </Button>
                   </td>
                   <td>{dailyUpdate.update}</td>
-                  <td>
-                    {dailyUpdate.expiry ?
-                      <TextFormat value={dailyUpdate.expiry} type="date" format={APP_DATE_FORMAT}/>
-                      : '-'}
-                  </td>
+                  <td>{dailyUpdate.expiry ? <TextFormat value={dailyUpdate.expiry} type="date" format={APP_DATE_FORMAT} /> : '-'}</td>
                   <td>
                     <TextFormat type="date" value={dailyUpdate.createdAt} format={APP_DATE_FORMAT} />
                   </td>
@@ -109,7 +143,9 @@ export const DailyUpdate = (props: IDailyUpdateProps) => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`${match.url}/${dailyUpdate.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`${match.url}/${dailyUpdate.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${
+                          paginationState.order
+                        }`}
                         color="primary"
                         size="sm"
                       >
@@ -117,7 +153,9 @@ export const DailyUpdate = (props: IDailyUpdateProps) => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`${match.url}/${dailyUpdate.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`${match.url}/${dailyUpdate.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${
+                          paginationState.order
+                        }`}
                         color="danger"
                         size="sm"
                       >
@@ -135,9 +173,12 @@ export const DailyUpdate = (props: IDailyUpdateProps) => {
       </div>
       <div className={dailyUpdateList && dailyUpdateList.length > 0 ? '' : 'd-none'}>
         <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
-        </Row>
-        <Row className="justify-content-center">
+          <PageSizeSelector
+            dropdownOpen={dropdownOpenBottom}
+            toggleSelect={() => setDropdownOpenBottom(!dropdownOpenBottom)}
+            itemsPerPage={paginationState.itemsPerPage}
+            selectFunc={select}
+          />
           <JhiPagination
             items={getPaginationItemsNumber(totalItems, paginationState.itemsPerPage)}
             activePage={paginationState.activePage}
@@ -163,4 +204,7 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(DailyUpdate);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DailyUpdate);

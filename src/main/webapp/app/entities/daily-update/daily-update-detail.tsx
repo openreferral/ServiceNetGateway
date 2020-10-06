@@ -32,11 +32,7 @@ export const DailyUpdateDetail = (props: IDailyUpdateDetailProps) => {
           <dt>
             <span id="expiry">Expiry</span>
           </dt>
-          <dd>
-            {dailyUpdateEntity.expiry ?
-              <TextFormat value={dailyUpdateEntity.expiry} type="date" format={APP_DATE_FORMAT}/>
-              : '-'}
-          </dd>
+          <dd>{dailyUpdateEntity.expiry ? <TextFormat value={dailyUpdateEntity.expiry} type="date" format={APP_DATE_FORMAT} /> : '-'}</dd>
           <dt>
             <span id="createdAt">Created At</span>
           </dt>
@@ -46,11 +42,11 @@ export const DailyUpdateDetail = (props: IDailyUpdateDetailProps) => {
           <dt>Organization</dt>
           <dd>{dailyUpdateEntity.organizationName ? dailyUpdateEntity.organizationName : ''}</dd>
         </dl>
-        <Button tag={Link} to="/entity/daily-update" replace color="info">
+        <Button tag={Link} to="/entity/daily-update" color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/daily-update/${dailyUpdateEntity.id}/edit`} replace color="primary">
+        <Button tag={Link} to={`/daily-update/${dailyUpdateEntity.id}/edit`} color="primary">
           <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>
@@ -67,4 +63,7 @@ const mapDispatchToProps = { getEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(DailyUpdateDetail);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DailyUpdateDetail);

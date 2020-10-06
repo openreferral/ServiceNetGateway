@@ -1,5 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
-import './provider-home.scss';
+import './provider-shared.scss';
 import '../../bootstrap.scss';
 
 import React from 'react';
@@ -22,6 +22,9 @@ import 'slick-carousel/slick/slick-theme.css';
 // tslint:disable-next-line:no-submodule-imports
 import 'react-magic-slider-dots/dist/magic-dots.css';
 import Header from 'app/shared/layout/header/header';
+import HeaderMobile from 'app/modules/provider/mobile-components/header-mobile';
+import MediaQuery from 'react-responsive';
+import { SideMenu } from 'app/modules/provider/mobile-components/side-menu';
 
 export interface IPublicAppProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
   siloName: string;
@@ -33,10 +36,24 @@ export interface IPublicAppState {
 }
 
 export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      menuOpen: false
+    };
+  }
+
+  toggleMenu = () => {
+    this.setState({ menuOpen: !this.state.menuOpen });
+  };
+
   render() {
     const { match } = this.props;
     return (
-      <div className="provider-public" id="provider-home-view-container">
+      <div className="provider-shared public-app" id="provider-home-view-container">
+        <SideMenu menuOpen={this.state.menuOpen} toggleMenu={this.toggleMenu}
+                  match={match} isPublic isAuthenticated={this.props.isAuthenticated} />
         <div className="app-container-public">
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}
@@ -44,25 +61,46 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
             toastClassName="toastify-toast"
           />
           <ErrorBoundary>
-            <Header
-              isAuthenticated={this.props.isAuthenticated}
-              isAdmin={this.props.isAdmin}
-              currentLocale={this.props.currentLocale}
-              onLocaleChange={this.props.setLocale}
-              ribbonEnv={this.props.ribbonEnv}
-              isStaging={this.props.isStaging}
-              isInProduction={this.props.isInProduction}
-              isSwaggerEnabled={this.props.isSwaggerEnabled}
-              userLogin={this.props.userLogin}
-              isSacramento={this.props.isSacramento}
-              isShelterOwner={this.props.isShelterOwner}
-              match={match}
-            />
+            <MediaQuery maxDeviceWidth={768}>
+              <HeaderMobile
+                isAuthenticated={this.props.isAuthenticated}
+                isAdmin={this.props.isAdmin}
+                currentLocale={this.props.currentLocale}
+                onLocaleChange={this.props.setLocale}
+                ribbonEnv={this.props.ribbonEnv}
+                isStaging={this.props.isStaging}
+                isInProduction={this.props.isInProduction}
+                isSwaggerEnabled={this.props.isSwaggerEnabled}
+                userLogin={this.props.userLogin}
+                isSacramento={this.props.isSacramento}
+                isShelterOwner={this.props.isShelterOwner}
+                toggleMenu={this.toggleMenu}
+                isPublic
+                match={match}
+                prependRoutesWithMatch
+              />
+            </MediaQuery>
+            <MediaQuery minDeviceWidth={769}>
+              <Header
+                isAuthenticated={this.props.isAuthenticated}
+                isAdmin={this.props.isAdmin}
+                currentLocale={this.props.currentLocale}
+                onLocaleChange={this.props.setLocale}
+                ribbonEnv={this.props.ribbonEnv}
+                isStaging={this.props.isStaging}
+                isInProduction={this.props.isInProduction}
+                isSwaggerEnabled={this.props.isSwaggerEnabled}
+                userLogin={this.props.userLogin}
+                isSacramento={this.props.isSacramento}
+                isShelterOwner={this.props.isShelterOwner}
+                isPublic
+                match={match}
+                prependRoutesWithMatch
+              />
+            </MediaQuery>
           </ErrorBoundary>
           <div>
-            <div className="background-public">
-              <Routes match={match} />
-            </div>
+            <Routes match={match} />
           </div>
         </div>
       </div>

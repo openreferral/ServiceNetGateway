@@ -1,144 +1,140 @@
 @import '../../../app-variables';
 @import '../../../bootstrap-variables';
 
-.title {
-  margin-top: 15px;
-}
+.single-record-view {
+  .title {
+    margin-top: 15px;
+  }
 
-.blueBorder {
-  border-color: $blue-card-text;
-  border-width: 3px;
-}
+  .blueBorder {
+    border-color: $blue-card-text;
+    border-width: 3px;
+  }
 
-.grayBorder {
-  border-color: $gray-card-accent;
-  border-width: 3px;
-}
+  .grayBorder {
+    border-color: $gray-card-accent;
+    border-width: 3px;
+  }
 
-.icon-conflicting {
-  color: $blue-card-text;
-}
+  .icon-conflicting {
+    color: $blue-card-text;
+  }
 
-.icon-excluded {
-  color: $gray-card-accent;
-}
+  .icon-excluded {
+    color: $gray-card-accent;
+  }
 
-.icon-text {
-  margin-top: 8px;
-  margin-left: -45px;
-  position: relative;
-}
+  .icon-text {
+    margin-top: 8px;
+    margin-left: -45px;
+    position: relative;
+  }
 
-.icon-textarea {
-  margin-top: 8px;
-  margin-left: -55px;
-  position: relative;
-}
+  .icon-textarea {
+    margin-top: 8px;
+    margin-left: -55px;
+    position: relative;
+  }
 
-.icon-checkbox {
-  margin-left: 5px;
-}
+  .icon-checkbox {
+    margin-left: 5px;
+  }
 
-.tooltip-inner {
-  color: $tooltip-text-secondary;
-  background-color: $tooltip-bg;
-  box-shadow: 2px 2px 2px $tooltip-text-secondary;
-}
+  .tooltip {
+    margin-left: 10px;
+  }
 
-.tooltip {
-  margin-left: 10px;
-}
+  .half-rule {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: $tooltip-text-secondary;
+  }
 
-.half-rule {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  background-color: $tooltip-text-secondary;
-}
+  .suggested {
+    color: $tooltip-text-primary;
+    text-align: left;
+  }
 
-.suggested {
-  color: $tooltip-text-primary;
-  text-align: left;
-}
+  .secondary {
+    color: $tooltip-text-secondary;
+    margin: 0;
+  }
 
-.secondary {
-  color: $tooltip-text-secondary;
-  margin: 0;
-}
+  .jumbotron {
+    margin-top: 15px;
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+  }
 
-.jumbotron {
-  margin-top: 15px;
-  padding: 0;
-  background-color: transparent;
-  border: 0;
-}
+  .jumbotron-header {
+    padding: 10px;
+    margin: 0;
+    background-color: $compare-header-bg;
+    border: 1px $compare-border solid;
+    border-bottom: 0;
+  }
 
-.jumbotron-header {
-  padding: 10px;
-  margin: 0;
-  background-color: $compare-header-bg;
-  border: 1px $compare-border solid;
-  border-bottom: 0;
-}
+  .jumbotron-content {
+    padding: 0 !important;
+    margin: 0;
+    background-color: $compare-content-bg;
+    border: 1px $compare-border solid;
+  }
 
-.jumbotron-content {
-  padding: 0 !important;
-  margin: 0;
-  background-color: $compare-content-bg;
-  border: 1px $compare-border solid;
-}
+  .jumbotron-header-title {
+    color: rgb(102, 101, 101); //secondary
+  }
 
-.jumbotron-header-title {
-  color: rgb(109, 108, 108); //secondary
-}
+  .jumbotron-header-text {
+    margin: 0;
+  }
 
-.jumbotron-header-text {
-  margin: 0;
-}
+  .review-title {
+    margin-bottom: 0;
+  }
 
-.review-title {
-  margin-bottom: 0;
-}
+  .collapseBtn {
+    display: inline;
+    cursor: pointer;
+  }
 
-.collapseBtn {
-  display: inline;
-  cursor: pointer;
-}
+  .collapseIcon {
+    display: inline;
+    margin-right: 5px;
+  }
 
-.collapseIcon {
-  display: inline;
-  margin-right: 5px;
-}
+  .match-details {
+    display: flex;
+    flex-direction: row;
+  }
 
-.match-details {
-  display: flex;
-  flex-direction: row;
-}
+  .match-details > * {
+    flex: 1;
+  }
 
-.match-details > * {
-  flex: 1;
-}
+  .jumbotron-content > a {
+    color: black;
+    text-decoration: none;
+  }
 
-.jumbotron-content > a {
-  color: black;
-  text-decoration: none;
-}
+  .match > h5 {
+    color: #6d6c6c;
+  }
 
-.match > h5 {
-  color: #6d6c6c;
-}
+  .match {
+    display: block;
+    padding: 18px 10px 18px 2rem;
+  }
 
-.match {
-  display: block;
-  padding: 18px 10px 18px 2rem;
-}
+  .match:not(:last-child) {
+    border-bottom: 1px black solid;
+  }
 
-.match:not(:last-child) {
-  border-bottom: 1px black solid;
-}
-
-.no-match-text {
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
+  .no-match-text {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
 }

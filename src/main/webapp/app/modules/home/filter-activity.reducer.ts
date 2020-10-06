@@ -8,6 +8,9 @@ export const ACTION_TYPES = {
   FETCH_POSTAL_CODE_LIST: 'filterActivity/FETCH_POSTAL_CODE_LIST',
   FETCH_REGION_LIST: 'filterActivity/FETCH_REGION_LIST',
   FETCH_CITY_LIST: 'filterActivity/FETCH_CITY_LIST',
+  FETCH_PROVIDERS_POSTAL_CODE_LIST: 'filterActivity/FETCH_PROVIDERS_POSTAL_CODE_LIST',
+  FETCH_PROVIDERS_REGION_LIST: 'filterActivity/FETCH_PROVIDERS_REGION_LIST',
+  FETCH_PROVIDERS_CITY_LIST: 'filterActivity/FETCH_PROVIDERS_CITY_LIST',
   FETCH_PARTNER_LIST: 'filterActivity/FETCH_PARTNER_LIST',
   FETCH_TAXONOMY_LIST: 'filterActivity/FETCH_TAXONOMY_LIST',
   UPDATE_ACTIVITY_FILTER: 'filterActivity/UPDATE_ACTIVITY_FILTER',
@@ -16,15 +19,20 @@ export const ACTION_TYPES = {
   RESET_ACTIVITY_FILTER: 'filterActivity/RESET_ACTIVITY_FILTER'
 };
 
-const initialState = {
+export const initialState = {
   loading: false,
   errorMessage: null,
   currentProvider: null,
   postalCodeList: [],
   regionList: [],
   cityList: [],
+  providersPostalCodeList: [],
+  providersRegionList: [],
+  providersCityList: [],
   partnerList: [],
   taxonomyMap: [],
+  userName: '',
+  siloName: '',
   savedFilters: [],
   activityFilter: {
     citiesFilterList: [],
@@ -55,6 +63,9 @@ export default (state: FilterActivityState = initialState, action): FilterActivi
     case REQUEST(ACTION_TYPES.FETCH_POSTAL_CODE_LIST):
     case REQUEST(ACTION_TYPES.FETCH_REGION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_CITY_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_PROVIDERS_POSTAL_CODE_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_PROVIDERS_REGION_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_PROVIDERS_CITY_LIST):
     case REQUEST(ACTION_TYPES.FETCH_PARTNER_LIST):
     case REQUEST(ACTION_TYPES.FETCH_TAXONOMY_LIST):
     case REQUEST(ACTION_TYPES.FETCH_SAVED_FILTERS):
@@ -66,6 +77,9 @@ export default (state: FilterActivityState = initialState, action): FilterActivi
     case FAILURE(ACTION_TYPES.FETCH_POSTAL_CODE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_REGION_LIST):
     case FAILURE(ACTION_TYPES.FETCH_CITY_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_PROVIDERS_POSTAL_CODE_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_PROVIDERS_REGION_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_PROVIDERS_CITY_LIST):
     case FAILURE(ACTION_TYPES.FETCH_PARTNER_LIST):
     case FAILURE(ACTION_TYPES.FETCH_TAXONOMY_LIST):
     case FAILURE(ACTION_TYPES.FETCH_SAVED_FILTERS):
@@ -92,10 +106,36 @@ export default (state: FilterActivityState = initialState, action): FilterActivi
         cityList: action.payload.data,
         loading: false
       };
+    case SUCCESS(ACTION_TYPES.FETCH_PROVIDERS_POSTAL_CODE_LIST):
+      return {
+        ...state,
+        providersPostalCodeList: action.payload.data,
+        siloName: action.meta.siloName,
+        userName: action.meta.userName,
+        loading: false
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_PROVIDERS_REGION_LIST):
+      return {
+        ...state,
+        providersRegionList: action.payload.data,
+        siloName: action.meta.siloName,
+        userName: action.meta.userName,
+        loading: false
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_PROVIDERS_CITY_LIST):
+      return {
+        ...state,
+        providersCityList: action.payload.data,
+        siloName: action.meta.siloName,
+        userName: action.meta.userName,
+        loading: false
+      };
     case SUCCESS(ACTION_TYPES.FETCH_PARTNER_LIST):
       return {
         ...state,
         partnerList: action.payload.data,
+        siloName: action.meta.siloName,
+        userName: action.meta.userName,
         loading: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_TAXONOMY_LIST):
@@ -103,6 +143,8 @@ export default (state: FilterActivityState = initialState, action): FilterActivi
         ...state,
         taxonomyMap: action.payload.data.taxonomiesByProvider,
         currentProvider: action.payload.data.currentProvider,
+        siloName: action.meta.siloName,
+        userName: action.meta.userName,
         loading: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_SAVED_FILTERS):
@@ -153,48 +195,68 @@ export const getCityList = () => {
   };
 };
 
-export const getPostalCodeListForServiceProviders = (siloName = '') => {
+export const getPostalCodeListForServiceProviders = (userName = '', siloName = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
   const requestUrl = `${baseUrl}/activity-filter/service-providers/get-postal-codes?siloName=${siloName}`;
   return {
-    type: ACTION_TYPES.FETCH_POSTAL_CODE_LIST,
-    payload: axios.get<any>(requestUrl)
+    type: ACTION_TYPES.FETCH_PROVIDERS_POSTAL_CODE_LIST,
+    payload: axios.get<any>(requestUrl),
+    meta: {
+      userName,
+      siloName
+    }
   };
 };
 
-export const getRegionListForServiceProviders = (siloName = '') => {
+export const getRegionListForServiceProviders = (userName = '', siloName = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
   const requestUrl = `${baseUrl}/activity-filter/service-providers/get-regions?siloName=${siloName}`;
   return {
-    type: ACTION_TYPES.FETCH_REGION_LIST,
-    payload: axios.get<any>(requestUrl)
+    type: ACTION_TYPES.FETCH_PROVIDERS_REGION_LIST,
+    payload: axios.get<any>(requestUrl),
+    meta: {
+      userName,
+      siloName
+    }
   };
 };
 
-export const getCityListForServiceProviders = (siloName = '') => {
+export const getCityListForServiceProviders = (userName = '', siloName = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
   const requestUrl = `${baseUrl}/activity-filter/service-providers/get-cities?siloName=${siloName}`;
   return {
-    type: ACTION_TYPES.FETCH_CITY_LIST,
-    payload: axios.get<any>(requestUrl)
+    type: ACTION_TYPES.FETCH_PROVIDERS_CITY_LIST,
+    payload: axios.get<any>(requestUrl),
+    meta: {
+      userName,
+      siloName
+    }
   };
 };
 
-export const getPartnerList = (siloName = '') => {
+export const getPartnerList = (userName = '', siloName = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
   const requestUrl = `${baseUrl}/system-accounts`;
   return {
     type: ACTION_TYPES.FETCH_PARTNER_LIST,
-    payload: axios.get<any>(requestUrl)
+    payload: axios.get<any>(requestUrl),
+    meta: {
+      userName,
+      siloName
+    }
   };
 };
 
-export const getTaxonomyMap = (siloName = '') => {
+export const getTaxonomyMap = (userName = '', siloName = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
   const requestUrl = `${baseUrl}/activity-filter/get-taxonomies`;
   return {
     type: ACTION_TYPES.FETCH_TAXONOMY_LIST,
-    payload: axios.get<any>(requestUrl)
+    payload: axios.get<any>(requestUrl),
+    meta: {
+      userName,
+      siloName
+    }
   };
 };
 

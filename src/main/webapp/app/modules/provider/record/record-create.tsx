@@ -1,7 +1,8 @@
+import './record-shared.scss';
 import './record-create.scss';
 
 import React from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Button, Col, Row } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Col, Row, Label } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
@@ -12,6 +13,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { US_STATES } from 'app/shared/util/us-states';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import AvSelect from '@availity/reactstrap-validation-select';
+import 'lazysizes';
+// tslint:disable-next-line:no-submodule-imports
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 // @ts-ignore
 import BuildingLogo from '../../../../static/images/building.svg';
 // @ts-ignore
@@ -19,6 +23,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
 import _ from 'lodash';
+import ButtonPill from '../shared/button-pill';
 
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -27,7 +32,7 @@ export interface IRecordCreateViewState {
   activeTab: string;
   locationCount: number;
   locations: object[];
-  services: object[];
+  services: any[];
   serviceCount: number;
   invalidTabs: string[];
   leaving: boolean;
@@ -52,7 +57,8 @@ const serviceModel = {
   description: '',
   applicationProcess: '',
   eligibilityCriteria: '',
-  locationIndexes: []
+  locationIndexes: [],
+  docs: []
 };
 const initialServices = [{ ...serviceModel }];
 
@@ -199,24 +205,38 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     });
   };
 
+  onServiceDocsChange = i => event => {
+    const { services } = this.state;
+    const value = event != null && event.target ? event.target.value : event;
+    if (services[i].docs.length === 0) {
+      services[i].docs.push({ document: value, id: null });
+    } else {
+      services[i].docs[0] = { ...services[i].docs[0], document: value };
+    }
+    this.setState({ services });
+  };
+
   render() {
     const { organization, locations, services, activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
     const { updating, taxonomyOptions } = this.props;
     return (
-      <div className="record-create">
+      <div className="record-shared record-create">
         <Nav tabs>
           <NavItem className={`${invalidTabs.includes(ORGANIZATION_TAB) ? 'invalid' : ''}`}>
-            <NavLink className={`${activeTab === ORGANIZATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(ORGANIZATION_TAB)}>
+            <NavLink
+              className={`text-nowrap ${activeTab === ORGANIZATION_TAB ? 'active' : ''}`}
+              onClick={() => this.toggle(ORGANIZATION_TAB)}
+            >
               1. <Translate contentKey="record.tabs.organization" />
             </NavLink>
           </NavItem>
           <NavItem className={`${invalidTabs.includes(LOCATION_TAB) ? 'invalid' : ''}`}>
-            <NavLink className={`${activeTab === LOCATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(LOCATION_TAB)}>
+            <NavLink className={`text-nowrap ${activeTab === LOCATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(LOCATION_TAB)}>
               2. <Translate contentKey="record.tabs.locations" />
             </NavLink>
           </NavItem>
           <NavItem className={`${invalidTabs.includes(SERVICE_TAB) ? 'invalid' : ''}`}>
-            <NavLink className={`${activeTab === SERVICE_TAB ? 'active' : ''}`} onClick={() => this.toggle(SERVICE_TAB)}>
+            <NavLink className={`text-nowrap ${activeTab === SERVICE_TAB ? 'active' : ''}`} onClick={() => this.toggle(SERVICE_TAB)}>
               3. <Translate contentKey="record.tabs.services" />
             </NavLink>
           </NavItem>
@@ -236,7 +256,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
             <TabPane tabId={ORGANIZATION_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
-                  <img src={PeopleLogo} height={100} alt="Organization" />
+                  <img data-src={PeopleLogo} className="lazyload" height={100} alt="Organization" />
                   <h2>
                     <Translate contentKey="record.heading.organization" />
                   </h2>
@@ -246,6 +266,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 </div>
                 <AvGroup className="flex">
                   <div className="required" />
+                  <Label className="sr-only" for="organization-name">
+                    {translate('record.name')}
+                  </Label>
                   <AvField
                     id="organization-name"
                     type="text"
@@ -258,6 +281,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-description">
+                    {translate('record.description')}
+                  </Label>
                   <AvInput
                     id="organization-description"
                     type="textarea"
@@ -267,6 +293,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-url">
+                    {translate('record.description')}
+                  </Label>
                   <AvField
                     id="organization-url"
                     type="text"
@@ -276,6 +305,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-email">
+                    {translate('record.email')}
+                  </Label>
                   <AvField
                     id="organization-email"
                     type="text"
@@ -289,18 +321,22 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                 </AvGroup>
               </Col>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.props.history.goBack()} className="go-back">
-                  {'<'} <Translate contentKey="record.navigation.goBack" />
-                </Button>
-                <Button onClick={() => this.toggle(LOCATION_TAB)} className="pull-right">
-                  <Translate contentKey="record.navigation.addLocations" /> >
-                </Button>
+                <ButtonPill onClick={() => this.props.history.goBack()} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="angle-left" />
+                  &nbsp;
+                  <Translate contentKey="record.navigation.goBack" />
+                </ButtonPill>
+                <ButtonPill onClick={() => this.toggle(LOCATION_TAB)} className="pull-right button-pill-secondary">
+                  <Translate contentKey="record.navigation.addLocations" />
+                  &nbsp;
+                  <FontAwesomeIcon icon="angle-right" />
+                </ButtonPill>
               </div>
             </TabPane>
             <TabPane tabId={LOCATION_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
-                  <img src={BuildingLogo} height={100} alt="Location" />
+                  <img data-src={BuildingLogo} height={100} className="lazyload" alt="Location" />
                   <h2>
                     <Translate contentKey="record.heading.locations" />
                   </h2>
@@ -309,14 +345,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   </div>
                 </div>
                 {Array.apply(null, { length: locationCount }).map((e, i) => (
-                  <Row className="item location">
+                  <Row key={`location-${i}`} className="item location">
                     <Col md={1}>
                       <h4>{i + 1}.</h4>
                     </Col>
                     <Col md={11}>
                       <AvGroup className="flex">
                         <div className="required" />
+                        <Label className="sr-only" for={'location-id[' + i + '].address1'}>
+                          {translate('record.location.address1')}
+                        </Label>
                         <AvInput
+                          id={'location-id[' + i + '].address1'}
                           type="textarea"
                           name={'locations[' + i + '].address1'}
                           onChange={this.onLocationChange(i, 'address1')}
@@ -327,7 +367,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'location-id[' + i + '].address2'}>
+                          {translate('record.location.address2')}
+                        </Label>
                         <AvInput
+                          id={'location-id[' + i + '].address2'}
                           type="textarea"
                           name={'locations[' + i + '].address2'}
                           onChange={this.onLocationChange(i, 'address2')}
@@ -337,7 +381,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       <Row>
                         <Col md={7} className="flex mb-3">
                           <div className="required" />
+                          <Label className="sr-only" for={'location-id[' + i + '].city'}>
+                            {translate('record.location.city')}
+                          </Label>
                           <AvInput
+                            id={'location-id[' + i + '].city'}
                             type="text"
                             name={'locations[' + i + '].city'}
                             onChange={this.onLocationChange(i, 'city')}
@@ -349,7 +397,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         </Col>
                         <Col md={2} className="flex mb-3">
                           <div className="required" />
+                          <Label className="sr-only" for={'location-id[' + i + '].ca'}>
+                            {translate('entity.validation.required')}
+                          </Label>
                           <AvField
+                            id={'location-id[' + i + '].ca'}
                             type="select"
                             name={'locations[' + i + '].ca'}
                             onChange={this.onLocationChange(i, 'ca')}
@@ -358,7 +410,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                             validate={{
                               required: { value: true, errorMessage: translate('entity.validation.required') }
                             }}
-                            style={{ 'min-width': '5em' }}
+                            style={{ minWidth: '5em' }}
                           >
                             {US_STATES.map(state => (
                               <option value={state} key={state}>
@@ -369,7 +421,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         </Col>
                         <Col md={3} className="flex mb-3">
                           <div className="required" />
+                          <Label className="sr-only" for={'location-id[' + i + '].zipcode'}>
+                            {translate('record.location.zipcode')}
+                          </Label>
                           <AvInput
+                            id={'location-id[' + i + '].zipcode'}
                             type="text"
                             name={'locations[' + i + '].zipcode'}
                             onChange={this.onLocationChange(i, 'zipcode')}
@@ -386,27 +442,33 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               </Col>
               <div className="buttons list-buttons">
                 {this.state.locationCount === 1 ? null : (
-                  <Button onClick={this.removeLocation}>
+                  <ButtonPill onClick={this.removeLocation} className="button-pill-secondary mr-1">
                     <Translate contentKey="record.remove" />
-                  </Button>
+                  </ButtonPill>
                 )}
-                <Button onClick={this.addAnotherLocation} className="add-another">
-                  + <Translate contentKey="record.addAnother" />
-                </Button>
+                <ButtonPill onClick={this.addAnotherLocation} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="plus" />
+                  &nbsp;
+                  <Translate contentKey="record.addAnother" />
+                </ButtonPill>
               </div>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.toggle(ORGANIZATION_TAB)} className="go-back">
-                  {'<'} <Translate contentKey="record.navigation.goBack" />
-                </Button>
-                <Button onClick={() => this.toggle(SERVICE_TAB)} className="pull-right">
-                  <Translate contentKey="record.navigation.addServices" /> >
-                </Button>
+                <ButtonPill onClick={() => this.toggle(ORGANIZATION_TAB)} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="angle-left" />
+                  &nbsp;
+                  <Translate contentKey="record.navigation.goBack" />
+                </ButtonPill>
+                <ButtonPill onClick={() => this.toggle(SERVICE_TAB)} className="pull-right button-pill-secondary">
+                  <Translate contentKey="record.navigation.addServices" />
+                  &nbsp;
+                  <FontAwesomeIcon icon="angle-right" />
+                </ButtonPill>
               </div>
             </TabPane>
             <TabPane tabId={SERVICE_TAB}>
               <Col md={{ size: 10, offset: 1 }}>
                 <div className="heading">
-                  <img src={ServiceLogo} height={100} alt="Service" />
+                  <img data-src={ServiceLogo} height={100} className="lazyload" alt="Service" />
                   <h2>
                     <Translate contentKey="record.heading.services" />
                   </h2>
@@ -415,14 +477,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   </div>
                 </div>
                 {Array.apply(null, { length: serviceCount }).map((e, i) => (
-                  <Row className="item service">
+                  <Row key={`service-${i}`} className="item service">
                     <Col md={1}>
                       <h4>{i + 1}.</h4>
                     </Col>
                     <Col md={11}>
                       <AvGroup className="flex">
                         <div className="required" />
+                        <Label className="sr-only" for={'service-id[' + i + '].name'}>
+                          {translate('entity.validation.required')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].name'}
                           type="text"
                           name={'services[' + i + '].name'}
                           placeholder={translate('record.service.name')}
@@ -434,6 +500,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       </AvGroup>
                       <AvGroup className="flex">
                         <div className="required" />
+                        <Label className="sr-only" for={'services[' + i + '].taxonomyIds'}>
+                          {translate('record.service.type')}
+                        </Label>
                         <AvSelect
                           name={'services[' + i + '].taxonomyIds'}
                           validate={{
@@ -448,7 +517,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                       </AvGroup>
                       <AvGroup className="flex">
                         <div className="required" />
+                        <Label className="sr-only" for={'service-id[' + i + '].description'}>
+                          {translate('record.service.description')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].description'}
                           type="textarea"
                           name={'services[' + i + '].description'}
                           placeholder={translate('record.service.description')}
@@ -459,7 +532,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'service-id[' + i + '].applicationProcess'}>
+                          {translate('record.service.applicationProcess')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].applicationProcess'}
                           type="textarea"
                           name={'services[' + i + '].applicationProcess'}
                           placeholder={translate('record.service.applicationProcess')}
@@ -467,7 +544,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'service-id[' + i + '].eligibilityCriteria'}>
+                          {translate('record.service.eligibilityCriteria')}
+                        </Label>
                         <AvInput
+                          id={'service-id[' + i + '].eligibilityCriteria'}
                           type="textarea"
                           name={'services[' + i + '].eligibilityCriteria'}
                           placeholder={translate('record.service.eligibilityCriteria')}
@@ -475,6 +556,21 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'service-id[' + i + '].docs[0].document'}>
+                          {translate('record.service.requiredDocuments')}
+                        </Label>
+                        <AvInput
+                          id={'service-id[' + i + '].docs[0].document'}
+                          type="textarea"
+                          name={'services[' + i + '].docs[0].document'}
+                          placeholder={translate('record.service.requiredDocuments')}
+                          onChange={this.onServiceDocsChange(i)}
+                        />
+                      </AvGroup>
+                      <AvGroup>
+                        <Label className="sr-only" for={'services[' + i + '].locationIndexes'}>
+                          {translate('record.service.locations')}
+                        </Label>
                         <AvSelect
                           name={'services[' + i + '].locationIndexes'}
                           value={this.state.services[i]['locationIndexes']}
@@ -491,23 +587,29 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               </Col>
               <div className="buttons list-buttons">
                 {this.state.serviceCount === 1 ? null : (
-                  <Button onClick={this.removeService} type="primary">
+                  <ButtonPill onClick={this.removeService} className="button-pill-secondary mr-1">
                     <Translate contentKey="record.remove" />
-                  </Button>
+                  </ButtonPill>
                 )}
-                <Button onClick={this.addAnotherService} className="add-another">
-                  + <Translate contentKey="record.addAnother" />
-                </Button>
+                <ButtonPill onClick={this.addAnotherService} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="plus" />
+                  &nbsp;
+                  <Translate contentKey="record.addAnother" />
+                </ButtonPill>
               </div>
               <div className="buttons navigation-buttons">
-                <Button onClick={() => this.toggle(LOCATION_TAB)} className="go-back">
-                  {'<'} <Translate contentKey="record.navigation.goBack" />
-                </Button>
-                <Button id="submit" type="submit" disabled={updating} className="pull-right">
-                  <FontAwesomeIcon icon="save" />
+                <ButtonPill onClick={() => this.toggle(LOCATION_TAB)} className="button-pill-secondary">
+                  <FontAwesomeIcon icon="angle-left" />
                   &nbsp;
-                  <Translate contentKey="record.navigation.submit" />
-                </Button>
+                  <Translate contentKey="record.navigation.goBack" />
+                </ButtonPill>
+                <ButtonPill className={`pull-right button-pill-primary outline-none ${updating ? 'disabled' : ''}`}>
+                  <button id="submit" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp;
+                    <Translate contentKey="record.navigation.submit" />
+                  </button>
+                </ButtonPill>
               </div>
             </TabPane>
           </TabContent>

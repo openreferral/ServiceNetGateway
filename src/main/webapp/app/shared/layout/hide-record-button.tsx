@@ -18,6 +18,7 @@ class HideRecordButton extends React.Component<IHideRecordButtonProps, IHideReco
   state: IHideRecordButtonState = {
     tooltipOpen: false
   };
+  private ref = React.createRef() as React.LegacyRef<HTMLDivElement>;
 
   toggle = () => {
     this.setState({
@@ -31,8 +32,8 @@ class HideRecordButton extends React.Component<IHideRecordButtonProps, IHideReco
 
   render() {
     return (
-      <div>
-        <div onClick={this.handleClick} className="close-icon" id={this.props.id}>
+      <div className="hide-record-button">
+        <div onClick={this.handleClick} className="close-icon" id={this.props.id} ref={this.ref}>
           <FontAwesomeIcon icon="times" />
         </div>
         <Tooltip
@@ -40,7 +41,7 @@ class HideRecordButton extends React.Component<IHideRecordButtonProps, IHideReco
           innerClassName="tooltip-clip-inner"
           className="tooltip-clip"
           isOpen={this.state.tooltipOpen}
-          target={this.props.id}
+          target={this.ref}
           toggle={this.toggle}
           autohide
         >

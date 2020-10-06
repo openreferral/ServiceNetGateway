@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
+import { Col, Row, Label } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonPill from './shared/button-pill';
@@ -14,13 +14,16 @@ import {
 } from 'app/modules/home/filter-activity.reducer';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
-import { updateFilter, reset } from './provider-filter.reducer';
+import { updateFilter, reset, checkFiltersChanged } from './provider-filter.reducer';
+
+const PLACEHOLDER_TEXT_COLOR = '#555';
 
 export interface IFilterCardProps extends StateProps, DispatchProps {
   dropdownOpen: boolean;
   toggleFilter: Function;
   getFirstPage: Function;
   siloName?: string;
+  isMapView: boolean;
 }
 
 export interface IFilterCardState {
@@ -28,6 +31,7 @@ export interface IFilterCardState {
   region: string;
   zip: string;
   serviceTypes: any[];
+  filtersChanged?: boolean;
 }
 
 export class FilterCard extends React.Component<IFilterCardProps, IFilterCardState> {
@@ -42,14 +46,23 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
   }
 
   componentDidMount() {
-    const { siloName } = this.props;
-    if (!this.props.isLoggingOut) {
-      this.props.getPostalCodeList(siloName);
-      this.props.getRegionList(siloName);
-      this.props.getCityList(siloName);
-      this.props.getPartnerList(siloName);
-      this.props.getTaxonomyMap(siloName);
-      this.setState({ ...this.props.filter });
+    const { isLoggingOut, filter, previousSiloName, siloName, previousUserName, userName,
+    postalCodeList, regionList, cityList, taxonomyOptions} = this.props;
+    if (!isLoggingOut) {
+      const hasUserOrSiloChanged = previousSiloName !== (siloName || '') || previousUserName !== userName;
+      if (hasUserOrSiloChanged || _.isEmpty(postalCodeList)) {
+        this.props.getPostalCodeList(userName, siloName);
+      }
+      if (hasUserOrSiloChanged || _.isEmpty(regionList)) {
+        this.props.getRegionList(userName, siloName);
+      }
+      if (hasUserOrSiloChanged || _.isEmpty(cityList)) {
+        this.props.getCityList(userName, siloName);
+      }
+      if (hasUserOrSiloChanged || _.isEmpty(taxonomyOptions)) {
+        this.props.getTaxonomyMap(userName, siloName);
+      }
+      this.setState({ ...filter });
     }
   }
 
@@ -59,12 +72,20 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
 
   applyFilter = () => {
     const filter = { ...this.state };
+    const { isMapView } = this.props;
+    if (isMapView) {
+      this.props.checkFiltersChanged();
+    }
     this.props.getFirstPage();
     this.props.updateFilter({ ...filter });
     this.props.toggleFilter();
   };
 
   resetFilter = () => {
+    const { isMapView } = this.props;
+    if (isMapView) {
+      this.props.checkFiltersChanged();
+    }
     this.props.getFirstPage();
     this.props.reset();
     this.props.toggleFilter();
@@ -81,6 +102,10 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
   handleCityChanged = v => {
     this.setState({ city: v.value });
   };
+
+  selectStyle = () => ({
+    placeholder: style => ({ ...style, color: PLACEHOLDER_TEXT_COLOR })
+  });
 
   render() {
     const { taxonomyOptions, cityList, regionList, postalCodeList } = this.props;
@@ -112,13 +137,18 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
                   <Translate contentKey="providerSite.serviceType" />
                 </b>
               </div>
+              <Label className="sr-only" for="serviceType">
+                <Translate contentKey="providerSite.serviceType" />
+              </Label>
               <Select
+                inputId="serviceType"
                 components={{ MultiValueContainer }}
                 isMulti
                 options={taxonomyOptions && taxonomyOptions['ServiceProvider']}
                 value={serviceTypes}
                 onChange={this.handleServiceTypeChanged}
                 styles={{
+                  ...this.selectStyle(),
                   control: base => ({
                     ...base,
                     minHeight: '6em'
@@ -137,38 +167,53 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
               </div>
               <Row>
                 <Col>
+                  <Label className="sr-only" for="filter-city">
+                    <Translate contentKey="providerSite.city" />
+                  </Label>
                   <Select
                     onChange={this.handleCityChanged}
                     options={cityList}
                     placeholder={translate('providerSite.city')}
                     value={_.find(cityList, c => c.value === city)}
+                    inputId="filter-city"
+                    styles={this.selectStyle()}
                   />
                 </Col>
                 <Col>
+                  <Label className="sr-only" for="filter-county">
+                    <Translate contentKey="providerSite.county" />
+                  </Label>
                   <Select
+                    inputId="filter-county"
                     onChange={this.handleRegionChanged}
                     options={regionList}
                     placeholder={translate('providerSite.county')}
                     value={_.find(regionList, r => r.value === region)}
+                    styles={this.selectStyle()}
                   />
                 </Col>
               </Row>
             </div>
             <Row>
               <Col xs="6">
+                <Label className="sr-only" for="filter-zipCode">
+                  <Translate contentKey="providerSite.zipCode" />
+                </Label>
                 <Select
+                  inputId="filter-zipCode"
                   onChange={this.handleZipChanged}
                   options={postalCodeList}
                   placeholder={translate('providerSite.zipCode')}
                   value={_.find(postalCodeList, c => c.value === zip)}
+                  styles={this.selectStyle()}
                 />
               </Col>
             </Row>
           </div>
         </div>
         <div className="filter-footer">
-          <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" />
-          <ButtonPill additionalClass="apply" onClick={this.applyFilter} translate="providerSite.apply" />
+          <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" className="mr-1" />
+          <ButtonPill className="button-pill-orange" onClick={this.applyFilter} translate="providerSite.apply" />
         </div>
       </div>
     );
@@ -185,9 +230,12 @@ function getTaxonomyOptions(taxonomyMap) {
 
 const mapStateToProps = (storeState: IRootState) => ({
   isLoggingOut: storeState.authentication.loggingOut,
-  postalCodeList: storeState.filterActivity.postalCodeList.map(code => ({ label: code, value: code })),
-  cityList: storeState.filterActivity.cityList.map(city => ({ label: city, value: city })),
-  regionList: storeState.filterActivity.regionList.map(region => ({ label: region, value: region })),
+  userName: storeState.authentication.account.login,
+  previousUserName: storeState.filterActivity.userName,
+  previousSiloName: storeState.filterActivity.siloName,
+  postalCodeList: storeState.filterActivity.providersPostalCodeList.map(code => ({ label: code, value: code })),
+  cityList: storeState.filterActivity.providersCityList.map(city => ({ label: city, value: city })),
+  regionList: storeState.filterActivity.providersRegionList.map(region => ({ label: region, value: region })),
   taxonomyOptions: getTaxonomyOptions(storeState.filterActivity.taxonomyMap),
   filter: storeState.providerFilter.filter
 });
@@ -199,7 +247,8 @@ const mapDispatchToProps = {
   getPartnerList,
   getTaxonomyMap,
   updateFilter,
-  reset
+  reset,
+  checkFiltersChanged
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

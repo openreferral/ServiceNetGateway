@@ -36,11 +36,11 @@ export const UserGroupDetail = (props: IUserGroupDetailProps) => {
           </dt>
           <dd>{userGroupEntity.siloId ? userGroupEntity.siloId : ''}</dd>
         </dl>
-        <Button tag={Link} to="/user-group" replace color="info">
+        <Button tag={Link} to="/user-group" color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/user-group/${userGroupEntity.id}/edit`} replace color="primary">
+        <Button tag={Link} to={`/user-group/${userGroupEntity.id}/edit`} color="primary">
           <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>

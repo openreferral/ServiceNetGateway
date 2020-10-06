@@ -17,6 +17,7 @@ export interface IOrganizationMatch {
   similarity?: number;
   locationMatches?: any;
   freshness?: number;
+  owner?: any;
 }
 
 export const defaultValue: Readonly<IOrganizationMatch> = {

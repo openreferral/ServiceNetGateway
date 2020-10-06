@@ -152,35 +152,36 @@ export class PhysicalAddress extends React.Component<IPhysicalAddressProps, IPhy
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.attention">Attention</Translate>
+                <th className="hand" onClick={this.sort('attention')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.attention">Attention</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.address1">Address 1</Translate>
+                <th className="hand" onClick={this.sort('address1')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.address1">Address 1</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.address2">Address 2</Translate>
+                <th className="hand" onClick={this.sort('address2')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.address2">Address 2</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.city">City</Translate>
+                <th className="hand" onClick={this.sort('city')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.city">City</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.region">Region</Translate>
+                <th className="hand" onClick={this.sort('region')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.region">Region</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.stateProvince">State Province</Translate>
+                <th className="hand" onClick={this.sort('stateProvince')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.stateProvince">State Province</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.postalCode">Postal Code</Translate>
+                <th className="hand" onClick={this.sort('postalCode')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.postalCode">Postal Code</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.country">Country</Translate>
+                <th className="hand" onClick={this.sort('country')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.country">Country</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.physicalAddress.location">Location</Translate>
+                <th className="hand" onClick={this.sort('location.name')}>
+                  <Translate contentKey="serviceNetApp.physicalAddress.location">Location</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

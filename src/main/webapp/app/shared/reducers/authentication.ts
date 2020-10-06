@@ -116,7 +116,7 @@ export const getSession = () => async (dispatch, getState) => {
   await dispatch({
     type: ACTION_TYPES.GET_SESSION,
     payload: axios.get(SERVICENET_API_URL + '/account')
-  });
+  }).catch(() => {});
 
   const { account } = getState().authentication;
   if (account && account.langKey) {
@@ -128,7 +128,7 @@ export const getSession = () => async (dispatch, getState) => {
 export const login = (username, password, rememberMe = false) => async (dispatch, getState) => {
   const result = await dispatch({
     type: ACTION_TYPES.LOGIN,
-    payload: axios.post('auth/login', { username, password })
+    payload: axios.post('auth/login', { username, password, rememberMe })
   });
   await dispatch(getSession());
 };

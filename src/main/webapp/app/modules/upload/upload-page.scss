@@ -1,12 +1,14 @@
 @import '../../app-variables';
 @import '../../bootstrap-variables';
 
-.filepond--panel-root {
-  background-color: transparent;
-}
+.upload-page {
+  .filepond--panel-root {
+    background-color: transparent;
+  }
 
-.dropArea {
-  border: 3px dashed;
-  border-color: $primary;
-  border-radius: 10px;
+  .drop-area {
+    border: 3px dashed;
+    border-color: $primary;
+    border-radius: 10px;
+  }
 }

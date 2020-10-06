@@ -129,7 +129,7 @@ export class ProgramUpdate extends React.Component<IProgramUpdateProps, IProgram
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/program" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/program" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

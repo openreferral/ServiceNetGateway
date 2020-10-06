@@ -33,7 +33,7 @@ const ActivityElement = props => {
   const isSystemProviderRecord = props.activity.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER;
 
   return (
-    <Row className="activity-row" id={props.activity.organizationId}>
+    <Row className="activity-element" id={props.activity.organizationId}>
       <Col>
         <CardGroup>
           <Card className="activity-card">
@@ -41,7 +41,7 @@ const ActivityElement = props => {
               <IconSpan containerClass={isSystemProviderRecord ? 'pl-0' : 'pl-2'} visible={isSystemProviderRecord}>
                 <CardTitle className="activity-left-card-title">{props.activity.organizationName}</CardTitle>
                 <CardText>
-                  {isSystemProviderRecord ? <OwnerInfo record={props.activity} direction="right" /> : props.activity.accountName}
+                  {isSystemProviderRecord ? <OwnerInfo owner={props.activity.owner} direction="right" /> : props.activity.accountName}
                 </CardText>
               </IconSpan>
             </CardBody>
@@ -52,7 +52,7 @@ const ActivityElement = props => {
               {conflictsToDisplay.map((conflict, i) => (
                 <CardTitle className="activity-right-card-title" key={`activityCard${i}`}>
                   {conflict.partnerName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                    <OwnerInfo record={conflict} direction="top" />
+                    <OwnerInfo owner={conflict.owner} direction="top" />
                   ) : (
                     conflict.partnerName
                   )}
@@ -65,7 +65,11 @@ const ActivityElement = props => {
                 </CardTitle>
               ))}
               <div className="info-container">
-                {areAllDisplayed ? <div /> : `and ${props.activity.conflicts.length - maxConflicts} more...`}
+                {areAllDisplayed ? (
+                  <div />
+                ) : (
+                  <div className="multi-record-view-link">{`and ${props.activity.conflicts.length - maxConflicts} more...`}</div>
+                )}
                 {conflictsToDisplay.length > 0 && (
                   <CardText className="activity-right-card-info">
                     <Translate contentKey="serviceNetApp.activity.lastPartnerUpdate" />

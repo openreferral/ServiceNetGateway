@@ -153,20 +153,22 @@ export class MatchSimilarity extends React.Component<IMatchSimilarityProps, IMat
             <Table responsive>
               <thead>
                 <tr>
-                  <th>
-                    <Translate contentKey="global.field.id">ID</Translate>
+                  <th className="hand" onClick={this.sort('id')}>
+                    <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.matchSimilarity.similarity">Similarity</Translate>
+                  <th className="hand" onClick={this.sort('similarity')}>
+                    <Translate contentKey="serviceNetApp.matchSimilarity.similarity">Similarity</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.matchSimilarity.resourceClass">Resource Class</Translate>
+                  <th className="hand" onClick={this.sort('resourceClass')}>
+                    <Translate contentKey="serviceNetApp.matchSimilarity.resourceClass">Resource Class</Translate>{' '}
+                    <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.matchSimilarity.fieldName">Field Name</Translate>
+                  <th className="hand" onClick={this.sort('fieldName')}>
+                    <Translate contentKey="serviceNetApp.matchSimilarity.fieldName">Field Name</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
-                  <th>
-                    <Translate contentKey="serviceNetApp.matchSimilarity.organizationMatch">Organization Match</Translate>
+                  <th className="hand" onClick={this.sort('organizationMatch.id')}>
+                    <Translate contentKey="serviceNetApp.matchSimilarity.organizationMatch">Organization Match</Translate>{' '}
+                    <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>

@@ -26,7 +26,8 @@ describe('Header', () => {
     userLogin: 'user',
     isSacramento: false,
     isShelterOwner: false,
-    isStaging: false
+    isStaging: false,
+    isPublic: false
   };
   const prodProps = {
     ...devProps,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Button } from 'reactstrap';
+import { Col, Row, Button, Label } from 'reactstrap';
 import '../../shared-record-view.scss';
 import { TextFormat, translate, Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
@@ -52,9 +52,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
   myRef: any;
   state: ISingleLocationDetailsState = {
     isAreaOpen: this.props.isAreaOpen,
-    id: `location_${Math.random()
-      .toString()
-      .replace(/0\./, '')}`
+    id: `location_${this.props.orgId}_${this.props.locationNumber}`
   };
 
   static getSelectOption = (record, locationNumber) => ({
@@ -169,10 +167,14 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
         </div>
         {isOnlyOne ? null : (
           <div className={isBaseRecord ? 'col-8 changeRecordSelect flex-grow-1' : 'w-100'}>
+            <Label className="sr-only" for="changeRecord">
+              <Translate contentKey="singleRecordView.details.titleLocations" />
+            </Label>
             <Select
               onChange={this.changeRecord}
               options={selectOptions}
               value={SingleLocationDetails.getSelectOption(record, locationNumber)}
+              inputId="changeRecord"
             />
           </div>
         )}
@@ -194,7 +196,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
     );
 
     const matchButton = (
-      <Button onClick={this.matchLocation} replace color="info">
+      <Button onClick={this.matchLocation} color="info">
         <FontAwesomeIcon icon="arrow-left" />{' '}
         <span className="d-none d-md-inline">
           <Translate contentKey="multiRecordView.matchesMyLocationRecord" />
@@ -203,7 +205,7 @@ export class SingleLocationDetails extends React.Component<ISingleLocationDetail
     );
 
     const unmatchButton = (
-      <Button onClick={this.unmatchLocation} replace color="danger">
+      <Button onClick={this.unmatchLocation} color="danger">
         <FontAwesomeIcon icon="arrow-left" />{' '}
         <span className="d-none d-md-inline">
           <Translate contentKey="multiRecordView.unmatchThisRecord" />

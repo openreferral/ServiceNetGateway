@@ -1,9 +1,11 @@
-.centered-flex {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
+.data-status {
+  .centered-flex {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
 
-.pagination {
-  justify-content: center;
+  .pagination {
+    justify-content: center;
+  }
 }

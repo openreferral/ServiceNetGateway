@@ -176,7 +176,7 @@ export class HolidayScheduleUpdate extends React.Component<IHolidayScheduleUpdat
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/holiday-schedule" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/holiday-schedule" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

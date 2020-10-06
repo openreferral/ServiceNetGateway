@@ -152,35 +152,36 @@ export class PostalAddress extends React.Component<IPostalAddressProps, IPostalA
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.attention">Attention</Translate>
+                <th className="hand" onClick={this.sort('attention')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.attention">Attention</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.address1">Address 1</Translate>
+                <th className="hand" onClick={this.sort('address1')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.address1">Address 1</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.address2">Address 2</Translate>
+                <th className="hand" onClick={this.sort('address2')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.address2">Address 2</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.city">City</Translate>
+                <th className="hand" onClick={this.sort('city')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.city">City</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.region">Region</Translate>
+                <th className="hand" onClick={this.sort('region')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.region">Region</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.stateProvince">State Province</Translate>
+                <th className="hand" onClick={this.sort('stateProvince')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.stateProvince">State Province</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.postalCode">Postal Code</Translate>
+                <th className="hand" onClick={this.sort('postalCode')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.postalCode">Postal Code</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.country">Country</Translate>
+                <th className="hand" onClick={this.sort('country')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.country">Country</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.postalAddress.location">Location</Translate>
+                <th className="hand" onClick={this.sort('location.name')}>
+                  <Translate contentKey="serviceNetApp.postalAddress.location">Location</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

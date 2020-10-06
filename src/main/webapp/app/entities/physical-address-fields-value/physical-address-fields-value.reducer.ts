@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IPhysicalAddressFieldsValue>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false
 };
 
@@ -64,7 +65,8 @@ export default (state: PhysicalAddressFieldsValueState = initialState, action): 
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(ACTION_TYPES.FETCH_PHYSICALADDRESSFIELDSVALUE):
       return {
@@ -100,10 +102,13 @@ const apiUrl = SERVICENET_API_URL + '/physical-address-fields-values';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IPhysicalAddressFieldsValue> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_PHYSICALADDRESSFIELDSVALUE_LIST,
-  payload: axios.get<IPhysicalAddressFieldsValue>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
-});
+export const getEntities: ICrudGetAllAction<IPhysicalAddressFieldsValue> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_PHYSICALADDRESSFIELDSVALUE_LIST,
+    payload: axios.get<IPhysicalAddressFieldsValue>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getEntity: ICrudGetAction<IPhysicalAddressFieldsValue> = id => {
   const requestUrl = `${apiUrl}/${id}`;

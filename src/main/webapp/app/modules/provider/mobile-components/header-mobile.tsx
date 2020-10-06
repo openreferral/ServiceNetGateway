@@ -1,12 +1,14 @@
 import './header-mobile.scss';
 import React from 'react';
 import { Translate } from 'react-jhipster';
-import { Navbar, Row, Col } from 'reactstrap';
+import { NavbarBrand, Navbar, Row, Col } from 'reactstrap';
+import { NavLink as Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LoadingBar from 'react-redux-loading-bar';
 import { Avatar } from 'app/modules/provider/avatar';
 import { BrandIcon } from 'app/modules/provider/menus/header-components';
 import SearchBar from '../menus/search-bar';
+import { Brand, FeedbackButton } from 'app/shared/layout/header/header-components';
 
 export interface IHeaderMobileProps {
   isAuthenticated: boolean;
@@ -21,6 +23,9 @@ export interface IHeaderMobileProps {
   isShelterOwner: boolean;
   isStaging: boolean;
   toggleMenu: Function;
+  isPublic?: boolean;
+  match?: any;
+  prependRoutesWithMatch?: boolean;
 }
 
 export interface IHeaderMobileState {
@@ -42,8 +47,8 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
     ) : null;
 
   render() {
-    const { currentLocale, isAuthenticated, isSwaggerEnabled, isInProduction, userLogin, isSacramento } = this.props;
-
+    const { currentLocale, isAuthenticated, isSwaggerEnabled, isInProduction, userLogin, isSacramento, match } = this.props;
+    const rootUrl = (match) ? match.url : '/';
     return (
       <div>
         {this.renderDevRibbon()}
@@ -58,14 +63,17 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
                   </div>
                 </div>
               </Col>
-              <Col className="height-fluid">
-                <div className="brand-logo">
+              <Col className="height-fluid d-flex justify-content-center">
+                <NavbarBrand tag={Link} to={`${rootUrl}${isSacramento ? 'shelters' : ''}`} className="brand-logo d-flex align-items-center mr-1">
                   <BrandIcon />
-                </div>
+                </NavbarBrand>
               </Col>
               <Col xs="2">
                 <div style={{ float: 'right' }}>
-                  <Avatar size="small" mobile name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
+                  {this.props.isPublic ?
+                    <FeedbackButton {...this.props} />
+                    : <Avatar size="small" mobile name={`${userLogin && userLogin.charAt(0).toUpperCase()} `}/>
+                  }
                 </div>
               </Col>
             </Row>

@@ -114,7 +114,7 @@ export class OrganizationFieldsValueUpdate extends React.Component<
                     <option value="ACTIVE">{translate('serviceNetApp.OrganizationFields.ACTIVE')}</option>
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/organization-fields-value" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/organization-fields-value" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

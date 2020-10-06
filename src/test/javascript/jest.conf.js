@@ -2,7 +2,7 @@ const tsconfig = require('../../../tsconfig.json');
 
 module.exports = {
   transform: {
-    '^.+\\.tsx?$': 'ts-jest'
+    '^.+\\.([t|j]sx?)$': 'ts-jest'
   },
   rootDir: '../../../',
   testURL: 'http://localhost/',
@@ -13,8 +13,11 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '<rootDir>/src/test/javascript'
   ],
+  transformIgnorePatterns: [
+    "node_modules/(?!(@availity)/)"
+  ],
   moduleNameMapper: mapTypescriptAliasToJestAlias({
-    '\\.(css|scss)$': 'identity-obj-proxy'
+    '\\.(css|scss|svg|png|jpg)$': 'identity-obj-proxy'
   }),
   reporters: [
     'default',
@@ -34,7 +37,12 @@ module.exports = {
       tsConfig: './tsconfig.test.json',
       diagnostics: false
     }
-  }
+  },
+  collectCoverageFrom: [
+    "!**/*.d.ts",
+    "src/main/webapp/**/*.{js,jsx,ts,tsx}",
+    "!**/config/**",
+  ]
 };
 
 function mapTypescriptAliasToJestAlias(alias = {}) {

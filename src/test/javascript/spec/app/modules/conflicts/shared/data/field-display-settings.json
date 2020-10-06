@@ -1,0 +1,37 @@
+[ {
+  "id" : "783c4ebb-6ec0-4847-a2b3-1a2c45648029",
+  "name" : "New set ",
+  "locationFields" : [ "ALTERNATE_NAME", "PHYSICAL_ADDRESS", "POSTAL_ADDRESS" ],
+  "organizationFields" : [ "NAME" ],
+  "physicalAddressFields" : [ "ATTENTION" ],
+  "postalAddressFields" : [ "ATTENTION" ],
+  "serviceFields" : [ "ALTERNATE_NAME" ],
+  "serviceTaxonomiesDetailsFields" : [ ],
+  "contactDetailsFields" : [ ],
+  "userId" : "30000000-0000-0000-0000-000000000000",
+  "userLogin" : "admin"
+}, {
+  "id" : "c8ab0d7d-b662-4ad0-bde0-c4a0defe445c",
+  "name" : "Test Setting",
+  "locationFields" : [ "PHYSICAL_ADDRESS", "POSTAL_ADDRESS" ],
+  "organizationFields" : [ "ALTERNATE_NAME" ],
+  "physicalAddressFields" : [ "ADDRESS_1" ],
+  "postalAddressFields" : [ "CITY", "ATTENTION" ],
+  "serviceFields" : [ "NAME", "TAXONOMIES", "CONTACTS" ],
+  "serviceTaxonomiesDetailsFields" : [ "TAXONOMY_NAME" ],
+  "contactDetailsFields" : [ "NAME" ],
+  "userId" : "30000000-0000-0000-0000-000000000000",
+  "userLogin" : "admin"
+}, {
+  "id" : "d59333bc-d6a4-4cbe-961d-1ec2761fc2da",
+  "name" : "New set",
+  "locationFields" : [ "ALTERNATE_NAME", "PHYSICAL_ADDRESS", "POSTAL_ADDRESS" ],
+  "organizationFields" : [ "NAME" ],
+  "physicalAddressFields" : [ "ATTENTION" ],
+  "postalAddressFields" : [ "ATTENTION" ],
+  "serviceFields" : [ "ALTERNATE_NAME" ],
+  "serviceTaxonomiesDetailsFields" : [ ],
+  "contactDetailsFields" : [ ],
+  "userId" : "30000000-0000-0000-0000-000000000000",
+  "userLogin" : "admin"
+} ]

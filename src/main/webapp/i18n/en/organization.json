@@ -6,6 +6,8 @@
         "createLabel": "Create a new Organization",
         "createOrEditLabel": "Create or edit a Organization"
       },
+      "updateOwner": "Update Organization's owner",
+      "searchPlaceholder": "Search organizations",
       "created": "A new Organization is created with identifier {{ param }}",
       "updated": "A Organization is updated with identifier {{ param }}",
       "deleted": "A Organization is deleted with identifier {{ param }}",
@@ -34,7 +36,8 @@
       "funding": "Funding",
       "programs": "Programs",
       "services": "Services",
-      "providerName": "Provider Name"
+      "providerName": "Provider Name",
+      "owner": "Owner"
     }
   }
 }

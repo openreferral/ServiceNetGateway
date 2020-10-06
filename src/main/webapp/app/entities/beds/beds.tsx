@@ -152,20 +152,20 @@ export class Beds extends React.Component<IBedsProps, IBedsState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.beds.availableBeds">Available Beds</Translate>
+                <th className="hand" onClick={this.sort('availableBeds')}>
+                  <Translate contentKey="serviceNetApp.beds.availableBeds">Available Beds</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.beds.waitlist">Waitlist</Translate>
+                <th className="hand" onClick={this.sort('waitlist')}>
+                  <Translate contentKey="serviceNetApp.beds.waitlist">Waitlist</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.beds.updatedAt">Updated At</Translate>
+                <th className="hand" onClick={this.sort('updatedAt')}>
+                  <Translate contentKey="serviceNetApp.beds.updatedAt">Updated At</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.beds.shelter">Shelter</Translate>
+                <th className="hand" onClick={this.sort('shelter.id')}>
+                  <Translate contentKey="serviceNetApp.beds.shelter">Shelter</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

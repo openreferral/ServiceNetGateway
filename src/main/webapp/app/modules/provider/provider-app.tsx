@@ -1,5 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
-import './provider-home.scss';
+import './provider-shared.scss';
 import '../../bootstrap.scss';
 
 import React from 'react';
@@ -87,7 +87,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
     );
 
     return (
-      <div className="provider" id="provider-home-view-container">
+      <div className="provider-shared provider-app" id="provider-home-view-container">
         <SideMenu menuOpen={menuOpen} toggleMenu={this.toggleMenu} />
         <div className="app-container">
           <ToastContainer

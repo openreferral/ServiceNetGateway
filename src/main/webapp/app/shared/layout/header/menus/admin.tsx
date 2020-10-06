@@ -13,8 +13,8 @@ const adminMenuItems = (
     <DropdownItem tag={Link} to="/admin/client-management">
       <FontAwesomeIcon icon="user" /> <Translate contentKey="global.menu.admin.clientManagement">External client management</Translate>
     </DropdownItem>
-    <DropdownItem tag={Link} to="/admin/metrics">
-      <FontAwesomeIcon icon="tachometer-alt" /> <Translate contentKey="global.menu.admin.metrics">Metrics</Translate>
+    <DropdownItem tag={Link} to="/admin/organization-owners">
+      <FontAwesomeIcon icon="user" /> <Translate contentKey="global.menu.admin.organizationOwners">Organization owners</Translate>
     </DropdownItem>
     <DropdownItem tag={Link} to="/admin/health">
       <FontAwesomeIcon icon="heart" /> <Translate contentKey="global.menu.admin.health">Health</Translate>

@@ -114,12 +114,12 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
     }
   };
 
-  sort = prop => () => {
-    setShelterSort(this.props.account.login, prop);
+  sort = (sort, order) => {
+    setShelterSort(this.props.account.login, sort, order);
 
     ReactGA.event({ category: 'UserActions', action: 'Shelter - Sorting Records' });
 
-    this.setState({ sort: prop }, () => {
+    this.setState({ sort, order }, () => {
       this.reset();
     });
   };
@@ -155,7 +155,7 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
   render() {
     const { shelterList } = this.props;
     return (
-      <div>
+      <div className="shelters">
         <Container>
           <InfiniteScroll
             pageStart={this.state.activePage}
@@ -167,12 +167,11 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
           >
             <Container>
               <Row>
-                <Col sm="12" className="searchBar">
-                  <FontAwesomeIcon icon="search" size="lg" className="searchIcon" />
+                <Col sm="12" className="search-bar search-bar-large">
+                  <FontAwesomeIcon icon="search" size="lg" className="search-icon" />
                   <Input
                     bsSize="lg"
-                    className="searchInput"
-                    type="search"
+                    className="search-input"
                     name="search"
                     id="searchBar"
                     placeholder={translate('serviceNetApp.shelter.home.search.placeholder')}
@@ -180,8 +179,8 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
                     onChange={this.changeSearchPhrase}
                   />
                 </Col>
-                <div className="searchClearIconContainer" onClick={this.clearSearchBar}>
-                  <FontAwesomeIcon icon="times-circle" size="lg" className="searchClearIcon" />
+                <div className="clear-search-icon-container" onClick={this.clearSearchBar}>
+                  <FontAwesomeIcon icon="times-circle" size="lg" className="clear-search-icon" />
                 </div>
               </Row>
               <Row>
@@ -201,6 +200,7 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
                     dropdownOpen={this.state.dropdownOpen}
                     toggleSort={this.toggleSort}
                     sort={this.state.sort}
+                    order={this.state.order}
                     sortFunc={this.sort}
                     values={SHELTER_SORT_ARRAY}
                   />

@@ -179,7 +179,7 @@ export class PostalAddressUpdate extends React.Component<IPostalAddressUpdatePro
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/postal-address" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/postal-address" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

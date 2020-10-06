@@ -153,47 +153,50 @@ export class Conflict extends React.Component<IConflictProps, IConflictState> {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.currentValue">Current Value</Translate>
+                <th className="hand" onClick={this.sort('currentValue')}>
+                  <Translate contentKey="serviceNetApp.conflict.currentValue">Current Value</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.currentValueDate">Current Value Date</Translate>
+                <th className="hand" onClick={this.sort('currentValueDate')}>
+                  <Translate contentKey="serviceNetApp.conflict.currentValueDate">Current Value Date</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.offeredValue">Offered Value</Translate>
+                <th className="hand" onClick={this.sort('offeredValue')}>
+                  <Translate contentKey="serviceNetApp.conflict.offeredValue">Offered Value</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.offeredValueDate">Offered Value Date</Translate>
+                <th className="hand" onClick={this.sort('offeredValueDate')}>
+                  <Translate contentKey="serviceNetApp.conflict.offeredValueDate">Offered Value Date</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.fieldName">Field Name</Translate>
+                <th className="hand" onClick={this.sort('fieldName')}>
+                  <Translate contentKey="serviceNetApp.conflict.fieldName">Field Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.entityPath">Entity Path</Translate>
+                <th className="hand" onClick={this.sort('entityPath')}>
+                  <Translate contentKey="serviceNetApp.conflict.entityPath">Entity Path</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.state">State</Translate>
+                <th className="hand" onClick={this.sort('state')}>
+                  <Translate contentKey="serviceNetApp.conflict.state">State</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.stateDate">State Date</Translate>
+                <th className="hand" onClick={this.sort('stateDate')}>
+                  <Translate contentKey="serviceNetApp.conflict.stateDate">State Date</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.createdDate">Created Date</Translate>
+                <th className="hand" onClick={this.sort('createdDate')}>
+                  <Translate contentKey="serviceNetApp.conflict.createdDate">Created Date</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.resourceId">Resource Id</Translate>
+                <th className="hand" onClick={this.sort('resourceId')}>
+                  <Translate contentKey="serviceNetApp.conflict.resourceId">Resource Id</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.partnerResourceId">Partner Resource Id</Translate>
+                <th className="hand" onClick={this.sort('partnerResourceId')}>
+                  <Translate contentKey="serviceNetApp.conflict.partnerResourceId">Partner Resource Id</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.owner">Owner</Translate>
+                <th className="hand" onClick={this.sort('owner.id')}>
+                  <Translate contentKey="serviceNetApp.conflict.owner">Owner</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.conflict.partner">Partner</Translate>
+                <th className="hand" onClick={this.sort('partner.id')}>
+                  <Translate contentKey="serviceNetApp.conflict.partner">Partner</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

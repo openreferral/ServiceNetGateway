@@ -102,7 +102,7 @@ export class SystemAccountUpdate extends React.Component<ISystemAccountUpdatePro
                     }}
                   />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/system-account" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/system-account" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

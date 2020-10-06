@@ -23,6 +23,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IFieldsDisplaySettings>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false,
   selectedSettings: {
     id: null,
@@ -75,7 +76,8 @@ export default (state: FieldsDisplaySettingsState = initialState, action): Field
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        totalItems: action.payload.headers['x-total-count']
       };
     case SUCCESS(ACTION_TYPES.FETCH_FIELDSDISPLAYSETTINGS):
       return {
@@ -117,10 +119,13 @@ const apiUrl = SERVICENET_API_URL + '/fields-display-settings';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IFieldsDisplaySettings> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_FIELDSDISPLAYSETTINGS_LIST,
-  payload: axios.get<IFieldsDisplaySettings>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
-});
+export const getEntities: ICrudGetAllAction<IFieldsDisplaySettings> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_FIELDSDISPLAYSETTINGS_LIST,
+    payload: axios.get<IFieldsDisplaySettings>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getUserEntities: ICrudGetAllAction<IFieldsDisplaySettings> = (page, size, sort) => ({
   type: ACTION_TYPES.FETCH_FIELDSDISPLAYSETTINGS_LIST,

@@ -152,14 +152,14 @@ export class Eligibility extends React.Component<IEligibilityProps, IEligibility
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.eligibility.eligibility">Eligibility</Translate>
+                <th className="hand" onClick={this.sort('eligibility')}>
+                  <Translate contentKey="serviceNetApp.eligibility.eligibility">Eligibility</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="serviceNetApp.eligibility.srvc">Srvc</Translate>
+                <th className="hand" onClick={this.sort('srvc.name')}>
+                  <Translate contentKey="serviceNetApp.eligibility.srvc">Srvc</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>

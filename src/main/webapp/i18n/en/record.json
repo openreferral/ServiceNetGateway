@@ -12,6 +12,7 @@
     },
     "name": "Organization Name",
     "description": "Organization Description",
+    "update": "Update",
     "url": "Organization Website",
     "email": "Main Email Address",
     "tabs": {
@@ -42,7 +43,8 @@
       "eligibilityCriteria": "Eligibility Criteria",
       "locations": "Which Locations Offer This Service?",
       "details": "Service Details",
-      "back": "Back to all Services"
+      "back": "Back to all Services",
+      "requiredDocuments": "Required Documents"
     },
     "navigation": {
       "goBack": "Go Back",

@@ -42,8 +42,8 @@ export class ShelterDetails extends React.Component<IShelterDetailsProps> {
     const geocodingResult = !Array.isArray(results) || !results.length ? null : results[0];
 
     return (
-      <Row>
-        <Col md="6" className="shelter-details">
+      <Row className="shelter-details">
+        <Col md="6">
           <h2>
             {shelterEntity.agencyName}
             {shelterEntity.programName ? <span>: {shelterEntity.programName}</span> : null}
@@ -184,7 +184,7 @@ export class ShelterDetails extends React.Component<IShelterDetailsProps> {
               </div>
             </CardBody>
           </Card>
-          <Button onClick={this.goBack} replace color="info">
+          <Button onClick={this.goBack} color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>

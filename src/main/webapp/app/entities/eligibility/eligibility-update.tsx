@@ -123,7 +123,7 @@ export class EligibilityUpdate extends React.Component<IEligibilityUpdateProps, 
                       : null}
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/eligibility" replace color="info">
+                <Button tag={Link} id="cancel-save" to="/entity/eligibility" color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

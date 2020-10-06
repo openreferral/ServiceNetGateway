@@ -1,4 +1,4 @@
-import './provider-home.scss';
+import './provider-shared.scss';
 import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -14,10 +14,21 @@ import { getProviderRecords } from './provider-record.reducer';
 import { Card, CardBody, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
+import ButtonPill from 'app/modules/provider/shared/button-pill';
 
 export interface IUserRecordsProps extends StateProps, DispatchProps {}
 
-export class UserRecords extends React.Component<IUserRecordsProps> {
+const SLIDES_TO_SHOW = 3;
+const PAGE_SIZE = SLIDES_TO_SHOW * 2;
+
+interface IUserRecordsState {
+  index: number;
+}
+
+export class UserRecords extends React.Component<IUserRecordsProps, IUserRecordsState> {
+  state = {
+    index: 0
+  };
   slider: any;
   constructor(props) {
     super(props);
@@ -25,7 +36,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
   }
 
   componentDidMount() {
-    this.props.getProviderRecords();
+    this.props.getProviderRecords(0, PAGE_SIZE);
   }
 
   next = () => {
@@ -50,19 +61,39 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
     </div>
   );
 
-  render() {
+  recordCard(index) {
     const { records } = this.props;
+    const record = records[index];
+    return <RecordCard key={index} record={record} link={record ? `record/${record.organization.id}/edit` : ''}
+                       owner={this.props.currentUser}/>;
+  }
+
+  beforeIndexChange = (oldIndex, newIndex) => {
+    const { records, recordsTotal } = this.props;
+    const firstIdx = newIndex - 1;
+    const missingIndexes = Array.from(Array(SLIDES_TO_SHOW).keys())
+      .map(i => firstIdx + i)
+      .filter(index => index > 0 && index < recordsTotal && !records[index]);
+    const pagesToLoad = _.sortedUniq(missingIndexes.map(index => index / PAGE_SIZE | 0));
+    for (const page of pagesToLoad) {
+      this.props.getProviderRecords(page, PAGE_SIZE);
+    }
+  }
+
+  render() {
+    const { recordsTotal } = this.props;
     const settings = {
       className: 'center',
       dots: true,
       arrows: false,
       speed: 500,
-      slidesToShow: 3,
-      slidesToScroll: 3,
+      slidesToShow: SLIDES_TO_SHOW,
+      slidesToScroll: SLIDES_TO_SHOW,
       infinite: true,
       initialSlide: 0,
       adaptiveHeight: true,
       appendDots: this.addCustomDots,
+      beforeChange: this.beforeIndexChange,
       responsive: [
         {
           breakpoint: 1024,
@@ -73,7 +104,7 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
           }
         },
         {
-          breakpoint: 768,
+          breakpoint: 767,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -82,33 +113,32 @@ export class UserRecords extends React.Component<IUserRecordsProps> {
         }
       ]
     };
-
     return (
       <Slider ref={c => (this.slider = c)} {...settings}>
         <Card className="record-card new-record mx-3 mb-4">
           <CardBody>
-            <div>
+            <div className="d-flex flex-column align-items-center">
               <h1>
                 <Translate contentKey="record.newCard.title" />
               </h1>
-              <Link to={`/record-create`} className="alert-link">
-                <Button>
+              <ButtonPill className="button-pill-new-record d-flex align-items-center p-0">
+                <Link to={`/record-create`} className="alert-link w-100 h-100 d-flex align-items-center" style={{ color: 'white' }}>
                   <Translate contentKey="record.newCard.buttonLabel" />
-                </Button>
-              </Link>
+                </Link>
+              </ButtonPill>
             </div>
           </CardBody>
         </Card>
-        {_.map(records, record => (
-          <RecordCard key={record.organization.id} record={record} link={`record/${record.organization.id}/edit`} />
-        ))}
+        {_.map(Array.from(Array(recordsTotal).keys()), index => this.recordCard(index))}
       </Slider>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  records: state.providerRecord.records
+  records: state.providerRecord.recordsByIndex,
+  recordsTotal: state.providerRecord.recordsTotal,
+  currentUser: state.authentication.account
 });
 
 const mapDispatchToProps = {
