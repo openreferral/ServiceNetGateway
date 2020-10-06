@@ -16,7 +16,6 @@ Array [
           className="text-nowrap active nav-link"
           onClick={[Function]}
         >
-          1. 
           <span />
         </a>
       </li>
@@ -27,7 +26,6 @@ Array [
           className="text-nowrap  nav-link"
           onClick={[Function]}
         >
-          2. 
           <span />
         </a>
       </li>
@@ -38,7 +36,6 @@ Array [
           className="text-nowrap  nav-link"
           onClick={[Function]}
         >
-          3. 
           <span />
         </a>
       </li>

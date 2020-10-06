@@ -44,5 +44,10 @@ export const Brand = props => (
         <Translate contentKey="global.menu.feedback" />
       </span>
     </NavLink>
+    <NavLink exact tag={Link} to="/referral" className="pl-0">
+      <span className="navbar-label text-dark header-link">
+        <Translate contentKey="global.menu.referral" />
+      </span>
+    </NavLink>
   </div>
 );

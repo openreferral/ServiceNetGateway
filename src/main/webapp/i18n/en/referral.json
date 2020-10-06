@@ -16,5 +16,15 @@
         "title": "Referral"
       }
     }
+  },
+  "referral": {
+    "tabs": {
+      "check_in": "Beneficiary Check In",
+      "referral": "Referral",
+      "bulk_upload": "Bulk Transaction Upload",
+      "check_in_mobile": "Check In",
+      "referral_mobile": "Referral",
+      "bulk_upload_mobile": "Bulk Upload"
+    }
   }
 }

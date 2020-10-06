@@ -1,0 +1,22 @@
+.referral-page {
+  .nav-item {
+    background-color: darken(#f4f5f6, 5%);
+    flex: 1;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: -3px;
+
+    .nav-link {
+      background-color: #f4f5f6;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+
+      &.active {
+        cursor: default;
+        background-color: #333e51;
+        border-color: #333e51;
+        color: white;
+      }
+    }
+  }
+}
