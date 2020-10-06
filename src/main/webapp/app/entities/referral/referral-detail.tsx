@@ -46,11 +46,11 @@ export const ReferralDetail = (props: IReferralDetailProps) => {
           <dt>Beneficiary</dt>
           <dd>{referralEntity.beneficiaryId ? referralEntity.beneficiaryId : ''}</dd>
         </dl>
-        <Button tag={Link} to="/referral" replace color="info">
+        <Button tag={Link} to="/entity/referral" replace color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/referral/${referralEntity.id}/edit`} replace color="primary">
+        <Button tag={Link} to={`/entity/referral/${referralEntity.id}/edit`} replace color="primary">
           <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>

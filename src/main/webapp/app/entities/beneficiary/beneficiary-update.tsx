@@ -20,7 +20,7 @@ export const BeneficiaryUpdate = (props: IBeneficiaryUpdateProps) => {
   const { beneficiaryEntity, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/beneficiary');
+    props.history.push('/entity/beneficiary');
   };
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export const BeneficiaryUpdate = (props: IBeneficiaryUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="serviceNetGatewayApp.serviceNetBeneficiary.home.createOrEditLabel">Create or edit a Beneficiary</h2>
+          <h2 id="serviceNetGatewayApp.beneficiary.home.createOrEditLabel">Create or edit a Beneficiary</h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
@@ -75,7 +75,7 @@ export const BeneficiaryUpdate = (props: IBeneficiaryUpdateProps) => {
                 </Label>
                 <AvField id="beneficiary-phoneNumber" type="text" name="phoneNumber" />
               </AvGroup>
-              <Button tag={Link} id="cancel-save" to="/beneficiary" replace color="info">
+              <Button tag={Link} id="cancel-save" to="/entity/beneficiary" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">Back</span>

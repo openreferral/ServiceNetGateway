@@ -30,11 +30,11 @@ export const BeneficiaryDetail = (props: IBeneficiaryDetailProps) => {
           </dt>
           <dd>{beneficiaryEntity.phoneNumber}</dd>
         </dl>
-        <Button tag={Link} to="/beneficiary" replace color="info">
+        <Button tag={Link} to="/entity/beneficiary" replace color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/beneficiary/${beneficiaryEntity.id}/edit`} replace color="primary">
+        <Button tag={Link} to={`/entity/beneficiary/${beneficiaryEntity.id}/edit`} replace color="primary">
           <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>

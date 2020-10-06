@@ -17,7 +17,7 @@ export const ReferralDeleteDialog = (props: IReferralDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/referral');
+    props.history.push('/entity/referral');
   };
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const ReferralDeleteDialog = (props: IReferralDeleteDialogProps) => {
   return (
     <Modal isOpen toggle={handleClose}>
       <ModalHeader toggle={handleClose}>Confirm delete operation</ModalHeader>
-      <ModalBody id="serviceNetGatewayApp.serviceNetReferral.delete.question">Are you sure you want to delete this Referral?</ModalBody>
+      <ModalBody id="serviceNetGatewayApp.referral.delete.question">Are you sure you want to delete this Referral?</ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban" />

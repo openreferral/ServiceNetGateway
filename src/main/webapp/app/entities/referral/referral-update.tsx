@@ -27,7 +27,7 @@ export const ReferralUpdate = (props: IReferralUpdateProps) => {
   const { referralEntity, organizations, beneficiaries, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/referral');
+    props.history.push('/entity/referral');
   };
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export const ReferralUpdate = (props: IReferralUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="serviceNetGatewayApp.serviceNetReferral.home.createOrEditLabel">Create or edit a Referral</h2>
+          <h2 id="serviceNetGatewayApp.referral.home.createOrEditLabel">Create or edit a Referral</h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
@@ -147,13 +147,13 @@ export const ReferralUpdate = (props: IReferralUpdateProps) => {
                   {beneficiaries
                     ? beneficiaries.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.id} {otherEntity.phoneNumber ? `(${otherEntity.phoneNumber})` : ''}
                         </option>
                       ))
                     : null}
                 </AvInput>
               </AvGroup>
-              <Button tag={Link} id="cancel-save" to="/referral" replace color="info">
+              <Button tag={Link} id="cancel-save" to="/entity/referral" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">Back</span>
