@@ -1,0 +1,20 @@
+{
+  "serviceNetApp": {
+    "referral": {
+      "home": {
+        "title": "Referral",
+        "createLabel": "Create a new Referral",
+        "createOrEditLabel": "Create or edit a Referral"
+      },
+      "created": "A new Referral is created with identifier {{ param }}",
+      "updated": "A Referral is updated with identifier {{ param }}",
+      "deleted": "A Referral is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Referral {{ id }}?"
+      },
+      "detail": {
+        "title": "Referral"
+      }
+    }
+  }
+}

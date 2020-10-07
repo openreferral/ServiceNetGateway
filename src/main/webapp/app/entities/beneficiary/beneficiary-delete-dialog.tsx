@@ -17,7 +17,7 @@ export const BeneficiaryDeleteDialog = (props: IBeneficiaryDeleteDialogProps) =>
   }, []);
 
   const handleClose = () => {
-    props.history.push('/beneficiary');
+    props.history.push('/entity/beneficiary');
   };
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const BeneficiaryDeleteDialog = (props: IBeneficiaryDeleteDialogProps) =>
   return (
     <Modal isOpen toggle={handleClose}>
       <ModalHeader toggle={handleClose}>Confirm delete operation</ModalHeader>
-      <ModalBody id="serviceNetGatewayApp.serviceNetBeneficiary.delete.question">
+      <ModalBody id="serviceNetGatewayApp.beneficiary.delete.question">
         Are you sure you want to delete this Beneficiary?
       </ModalBody>
       <ModalFooter>
