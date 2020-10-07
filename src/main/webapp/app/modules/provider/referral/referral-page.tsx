@@ -25,6 +25,13 @@ class ReferralPage extends React.Component<IReferralPageProp, IReferralPageState
     activeTab: BENEFICIARY_CHECK_IN_TAB
   };
 
+  componentDidMount() {
+    const { referredRecords } = this.props;
+    if (referredRecords && referredRecords.length) {
+      this.setState({ activeTab: REFERRAL_TAB });
+    }
+  }
+
   toggle(activeTab) {
     if (activeTab !== this.state.activeTab) {
       this.setState({ activeTab });
@@ -90,7 +97,9 @@ class ReferralPage extends React.Component<IReferralPageProp, IReferralPageState
   }
 }
 
-const mapStateToProps = (storeState: IRootState) => ({});
+const mapStateToProps = ({ providerRecord }: IRootState) => ({
+  referredRecords: providerRecord.referredRecords
+});
 
 const mapDispatchToProps = {};
 
