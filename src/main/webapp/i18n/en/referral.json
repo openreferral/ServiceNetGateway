@@ -42,6 +42,13 @@
       "check_in": "Beneficiary Check In",
       "referrals": "Referrals",
       "bulk_upload": "Log Upload"
+    },
+    "records": {
+      "empty": "There are no referred records.",
+      "name": "Name",
+      "remove": "Remove",
+      "referSuccess": "The beneficiary was successfully referred!",
+      "referFailure": "Could not refer beneficiary due to a server error."
     }
   }
 }

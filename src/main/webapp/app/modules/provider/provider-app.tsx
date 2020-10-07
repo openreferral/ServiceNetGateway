@@ -124,7 +124,7 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, activity,
   userLogin: authentication.account.login,
   isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
   loggingOut: authentication.loggingOut,
-  referralCount: providerRecord.referredRecords.length
+  referralCount: providerRecord.referredRecords.size
 });
 
 const mapDispatchToProps = {

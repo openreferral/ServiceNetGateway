@@ -2,6 +2,7 @@ import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { SERVICENET_API_URL, SERVICENET_PUBLIC_API_URL } from 'app/shared/util/service-url.constants';
 import _ from 'lodash';
+import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 
 export const ACTION_TYPES = {
   FETCH_RECORDS: 'records/FETCH_RECORDS',
@@ -12,7 +13,8 @@ export const ACTION_TYPES = {
   UNREFER_RECORD: 'records/UNREFER_RECORD',
   CLEAN_REFERRED_RECORDS: 'records/CLEAN_REFERRED_RECORDS',
   CHECK_IN: 'records/CHECK_IN',
-  RESET_CHECKED_IN: 'records/RESET_CHECKED_IN'
+  RESET_CHECKED_IN: 'records/RESET_CHECKED_IN',
+  SEND_REFERRALS: 'records/SEND_REFERRALS'
 };
 
 const initialState = {
@@ -27,9 +29,10 @@ const initialState = {
   allRecordsForMap: [] as any[],
   allRecordsTotal: 0,
   selectedRecord: null,
-  referredRecords: [] as any[],
+  referredRecords: new Map<string, ISimpleOrganization>(),
   userName: '',
-  checkedIn: false
+  checkedIn: false,
+  referSuccess: false
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -45,6 +48,7 @@ const addPage = (records, page) => {
 
 // Reducer
 export default (state: ProviderRecordsState = initialState, action): ProviderRecordsState => {
+  const referredRecords = new Map(state.referredRecords);
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_RECORDS):
     case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS):
@@ -66,15 +70,22 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         checkedIn: false
       };
+    case REQUEST(ACTION_TYPES.SEND_REFERRALS):
+      return {
+        ...state,
+        referSuccess: false
+      };
     case FAILURE(ACTION_TYPES.FETCH_RECORDS):
     case FAILURE(ACTION_TYPES.FETCH_ALL_RECORDS):
     case FAILURE(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
     case FAILURE(ACTION_TYPES.SELECT_RECORD):
+    case FAILURE(ACTION_TYPES.SEND_REFERRALS):
       return {
         ...state,
         loading: false,
         updating: false,
         updateSuccess: false,
+        referSuccess: false,
         errorMessage: action.payload
       };
     case FAILURE(ACTION_TYPES.CHECK_IN):
@@ -121,22 +132,30 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         checkedIn: true
       };
-    case ACTION_TYPES.REFER_RECORD:
+    case SUCCESS(ACTION_TYPES.SEND_REFERRALS):
       return {
         ...state,
-        referredRecords: [...state.referredRecords, action.payload],
+        referredRecords: new Map(),
+        referSuccess: true
+      };
+    case ACTION_TYPES.REFER_RECORD:
+      referredRecords.set(action.payload.id, action.payload);
+      return {
+        ...state,
+        referredRecords,
         userName: action.meta.userName
       };
     case ACTION_TYPES.UNREFER_RECORD:
+      referredRecords.delete(action.payload.id);
       return {
         ...state,
-        referredRecords: _.remove(state.referredRecords, record => record !== action.payload),
+        referredRecords,
         userName: action.meta.userName
       };
     case ACTION_TYPES.CLEAN_REFERRED_RECORDS:
       return {
         ...state,
-        referredRecords: [],
+        referredRecords: new Map(),
         userName: ''
       };
     case ACTION_TYPES.RESET_CHECKED_IN:
@@ -157,6 +176,7 @@ const selectRecordApiUrl = SERVICENET_API_URL + '/select-record';
 const allRecordForMapPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/all-provider-records-map';
 const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
 const checkInApiUrl = SERVICENET_API_URL + '/beneficiaries/check-in';
+const referUrl = SERVICENET_API_URL + '/beneficiaries/refer';
 
 // Actions
 
@@ -212,15 +232,15 @@ const clearFilter = filter => ({
   serviceTypes: _.map(filter.serviceTypes, s => s.value)
 });
 
-export const referRecord = (recordId, userName = '') => ({
+export const referRecord = (organization, userName = '') => ({
   type: ACTION_TYPES.REFER_RECORD,
-  payload: recordId,
+  payload: organization,
   meta: { userName }
 });
 
-export const unreferRecord = (recordId, userName = '') => ({
+export const unreferRecord = (organization, userName = '') => ({
   type: ACTION_TYPES.UNREFER_RECORD,
-  payload: recordId,
+  payload: organization,
   meta: { userName }
 });
 
@@ -236,3 +256,11 @@ export const checkIn = (phoneNumber, beneficiaryId, cboId) => ({
 export const resetCheckedIn = () => ({
   type: ACTION_TYPES.RESET_CHECKED_IN
 });
+
+export const sendReferrals = (cboId: string, referrals: Map<string, ISimpleOrganization>, phone = '', beneficiaryId = '') => {
+  const url = `${referUrl}?referringOrganizationId=${cboId ? cboId : ''}&phoneNumber=${phone ? phone : ''}&beneficiaryId=${beneficiaryId ? beneficiaryId : ''}`;
+  return {
+    type: ACTION_TYPES.SEND_REFERRALS,
+    payload: axios.post(url, Array.from(referrals.keys()))
+  };
+};

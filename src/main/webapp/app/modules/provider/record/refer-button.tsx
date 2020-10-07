@@ -7,18 +7,19 @@ import _ from 'lodash';
 import { referRecord, unreferRecord } from '../provider-record.reducer';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
+import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 
 export interface IReferButtonProp extends StateProps, DispatchProps {
-  recordId: any;
+  organization: ISimpleOrganization;
 }
 
 export class ReferButton extends React.Component<IReferButtonProp, {}> {
   render() {
-    const { userName, recordId, referredRecords } = this.props;
+    const { userName, organization, referredRecords } = this.props;
 
-    if (_.includes(referredRecords, recordId)) {
+    if (referredRecords.has(organization.id)) {
       return (
-        <div className="refer-button green" onClick={() => this.props.unreferRecord(recordId, userName)}>
+        <div className="refer-button green" onClick={() => this.props.unreferRecord(organization, userName)}>
           <b className="d-flex align-items-center">
             <Translate contentKey="recordCard.referred" />
             &nbsp;
@@ -28,7 +29,7 @@ export class ReferButton extends React.Component<IReferButtonProp, {}> {
       );
     } else {
       return (
-        <div className="refer-button" onClick={() => this.props.referRecord(recordId, userName)}>
+        <div className="refer-button" onClick={() => this.props.referRecord(organization, userName)}>
           <b>
             <Translate contentKey="recordCard.refer" />
           </b>

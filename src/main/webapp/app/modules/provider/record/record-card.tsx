@@ -279,7 +279,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
                 ) : null}
               </div>
             </div>
-            {referring ? <ReferButton recordId={record.organization.id} /> : null}
+            {referring ? <ReferButton organization={record.organization} /> : null}
           </section>
         </>
       );
