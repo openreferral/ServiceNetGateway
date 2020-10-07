@@ -23,6 +23,7 @@ export interface IHeaderProps {
   isShelterOwner: boolean;
   isStaging: boolean;
   toggleMenu: Function;
+  referralCount?: any;
 }
 
 export interface IHeaderState {
@@ -48,14 +49,14 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
-    const { currentLocale, isAuthenticated, isSwaggerEnabled, isInProduction, userLogin, isSacramento } = this.props;
+    const { currentLocale, isAuthenticated, isSwaggerEnabled, isInProduction, userLogin, isSacramento, referralCount } = this.props;
 
     return (
       <div>
         {this.renderDevRibbon()}
         <LoadingBar className="loading-bar" />
         <Navbar expand="sm" fixed="top" className="navbar-light bg-white header-bar">
-          <Brand isSacramento={isSacramento} />
+          <Brand isSacramento={isSacramento} referralCount={referralCount} />
 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto header-item" navbar>
