@@ -72,17 +72,22 @@ $apply-button-color: #e78859;
   background-color: darken($color: #4bc64e, $amount: 10%) !important;
 }
 
-.button-pill-new-record {
-  height: 30px;
+.button-pill-green {
   background-color: $new-record-color !important;
   color: white;
   border: 1px $new-record-color solid;
+}
+
+.button-pill-new-record {
+  @extend .button-pill-green;
+  height: 30px;
   padding: 0;
   span {
     padding: 2px 2rem;
   }
 }
 
+.button-pill-green:hover,
 .button-pill-new-record:hover {
   background-color: darken($color: #67bba4, $amount: 10%) !important;
 }

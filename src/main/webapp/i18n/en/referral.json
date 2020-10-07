@@ -18,6 +18,14 @@
     }
   },
   "referral": {
+    "labels": {
+      "or": "OR",
+      "send": "Send"
+    },
+    "placeholder": {
+      "beneficiary": "Enter Unique Identifier",
+      "phone": "Enter Phone Number"
+    },
     "tabs": {
       "check_in": "Beneficiary Check In",
       "referral": "Referral",
@@ -25,6 +33,11 @@
       "check_in_mobile": "Check In",
       "referral_mobile": "Referral",
       "bulk_upload_mobile": "Bulk Upload"
+    },
+    "title": {
+      "check_in": "Beneficiary Check In",
+      "referrals": "Referrals",
+      "bulk_upload": "Log Upload"
     }
   }
 }
