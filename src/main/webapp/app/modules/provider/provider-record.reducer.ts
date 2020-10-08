@@ -10,7 +10,9 @@ export const ACTION_TYPES = {
   SELECT_RECORD: 'records/SELECT_RECORD',
   REFER_RECORD: 'records/REFER_RECORD',
   UNREFER_RECORD: 'records/UNREFER_RECORD',
-  CLEAN_REFERRED_RECORDS: 'records/CLEAN_REFERRED_RECORDS'
+  CLEAN_REFERRED_RECORDS: 'records/CLEAN_REFERRED_RECORDS',
+  CHECK_IN: 'records/CHECK_IN',
+  RESET_CHECKED_IN: 'records/RESET_CHECKED_IN'
 };
 
 const initialState = {
@@ -26,7 +28,8 @@ const initialState = {
   allRecordsTotal: 0,
   selectedRecord: null,
   referredRecords: [] as any[],
-  userName: ''
+  userName: '',
+  checkedIn: false
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -58,6 +61,11 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         updateSuccess: false,
         updating: true
       };
+    case REQUEST(ACTION_TYPES.CHECK_IN):
+      return {
+        ...state,
+        checkedIn: false
+      };
     case FAILURE(ACTION_TYPES.FETCH_RECORDS):
     case FAILURE(ACTION_TYPES.FETCH_ALL_RECORDS):
     case FAILURE(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
@@ -68,6 +76,11 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         updating: false,
         updateSuccess: false,
         errorMessage: action.payload
+      };
+    case FAILURE(ACTION_TYPES.CHECK_IN):
+      return {
+        ...state,
+        checkedIn: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_RECORDS):
       return {
@@ -103,6 +116,11 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         selectedRecord: action.payload.data
       };
+    case SUCCESS(ACTION_TYPES.CHECK_IN):
+      return {
+        ...state,
+        checkedIn: true
+      };
     case ACTION_TYPES.REFER_RECORD:
       return {
         ...state,
@@ -121,6 +139,11 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         referredRecords: [],
         userName: ''
       };
+    case ACTION_TYPES.RESET_CHECKED_IN:
+      return {
+        ...state,
+        checkedIn: false
+      };
     default:
       return state;
   }
@@ -133,6 +156,7 @@ const allRecordForMapApiUrl = SERVICENET_API_URL + '/all-provider-records-map';
 const selectRecordApiUrl = SERVICENET_API_URL + '/select-record';
 const allRecordForMapPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/all-provider-records-map';
 const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
+const checkInApiUrl = SERVICENET_API_URL + '/beneficiaries/check-in';
 
 // Actions
 
@@ -202,4 +226,13 @@ export const unreferRecord = (recordId, userName = '') => ({
 
 export const cleanReferredRecords = () => ({
   type: ACTION_TYPES.CLEAN_REFERRED_RECORDS
+});
+
+export const checkIn = (phoneNumber, beneficiaryId, cboId) => ({
+  payload: axios.post(checkInApiUrl, { phoneNumber, beneficiaryId, cboId }),
+  type: ACTION_TYPES.CHECK_IN
+});
+
+export const resetCheckedIn = () => ({
+  type: ACTION_TYPES.RESET_CHECKED_IN
 });

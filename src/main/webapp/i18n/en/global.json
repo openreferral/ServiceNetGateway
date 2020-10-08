@@ -225,6 +225,7 @@
     "idexists": "A new {{ entityName }} cannot already have an ID",
     "settingNameExists": "Setting with this name already exists in your organization. Please change the name.",
     "idnull": "Invalid ID",
+    "idnotfound": "ID not found",
     "badrequest": "Bad Request",
     "nameunique": "Name must be unique",
     "cantedit": "You are not allowed to edit this shelter",
