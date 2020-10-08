@@ -9,7 +9,7 @@ import ButtonPill from '../shared/button-pill';
 import { Link } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import Select from 'react-select';
-import { checkIn, resetReferralSent } from '../provider-record.reducer';
+import { checkIn, resetCheckedIn } from '../provider-record.reducer';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 const PLACEHOLDER_TEXT_COLOR = '#8e8e8e';
@@ -47,7 +47,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
   };
 
   close = () => {
-    this.props.resetReferralSent();
+    this.props.resetCheckedIn();
   };
 
   onSelect = cbo => {
@@ -73,14 +73,14 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
 
   render() {
     const { phoneNumber, cbo } = this.state;
-    const { referralSent, referralOptions } = this.props;
+    const { checkedIn, referralOptions } = this.props;
 
     return (
       <div className="col-12 col-md-4 offset-md-4">
         <div className="content-title my-5">
           <Translate contentKey="referral.title.check_in" />
         </div>
-        {!referralSent ? (
+        {!checkedIn ? (
           <div className="d-flex flex-column justify-content-center align-items-center">
             <Input
               className="my-2 form-control"
@@ -151,12 +151,12 @@ const mapStateToProps = ({ providerRecord }: IRootState) => ({
     value: record.organization.id,
     label: record.organization.name
   })),
-  referralSent: providerRecord.referralSent
+  checkedIn: providerRecord.checkedIn
 });
 
 const mapDispatchToProps = {
   checkIn,
-  resetReferralSent
+  resetCheckedIn
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

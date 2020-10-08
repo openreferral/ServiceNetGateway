@@ -12,7 +12,7 @@ export const ACTION_TYPES = {
   UNREFER_RECORD: 'records/UNREFER_RECORD',
   CLEAN_REFERRED_RECORDS: 'records/CLEAN_REFERRED_RECORDS',
   CHECK_IN: 'records/CHECK_IN',
-  RESET_REFERRAL_SENT: 'records/RESET_REFERRAL_SENT'
+  RESET_CHECKED_IN: 'records/RESET_CHECKED_IN'
 };
 
 const initialState = {
@@ -29,7 +29,7 @@ const initialState = {
   selectedRecord: null,
   referredRecords: [] as any[],
   userName: '',
-  referralSent: false
+  checkedIn: false
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -64,7 +64,7 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
     case REQUEST(ACTION_TYPES.CHECK_IN):
       return {
         ...state,
-        referralSent: false
+        checkedIn: false
       };
     case FAILURE(ACTION_TYPES.FETCH_RECORDS):
     case FAILURE(ACTION_TYPES.FETCH_ALL_RECORDS):
@@ -80,7 +80,7 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
     case FAILURE(ACTION_TYPES.CHECK_IN):
       return {
         ...state,
-        referralSent: false
+        checkedIn: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_RECORDS):
       return {
@@ -119,7 +119,7 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
     case SUCCESS(ACTION_TYPES.CHECK_IN):
       return {
         ...state,
-        referralSent: true
+        checkedIn: true
       };
     case ACTION_TYPES.REFER_RECORD:
       return {
@@ -139,10 +139,10 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         referredRecords: [],
         userName: ''
       };
-    case ACTION_TYPES.RESET_REFERRAL_SENT:
+    case ACTION_TYPES.RESET_CHECKED_IN:
       return {
         ...state,
-        referralSent: false
+        checkedIn: false
       };
     default:
       return state;
@@ -233,6 +233,6 @@ export const checkIn = (phoneNumber, beneficiaryId, cboId) => ({
   type: ACTION_TYPES.CHECK_IN
 });
 
-export const resetReferralSent = () => ({
-  type: ACTION_TYPES.RESET_REFERRAL_SENT
+export const resetCheckedIn = () => ({
+  type: ACTION_TYPES.RESET_CHECKED_IN
 });
