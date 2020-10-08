@@ -19,11 +19,15 @@
   },
   "referral": {
     "labels": {
+      "close": "Close",
+      "homePage": "Go to Home Page",
       "or": "OR",
-      "send": "Send"
+      "send": "Send",
+      "sent": "Congratulations, referral sent!"
     },
     "placeholder": {
       "beneficiary": "Enter Unique Identifier",
+      "cbo": "Select Organization to Check In",
       "phone": "Enter Phone Number"
     },
     "tabs": {
