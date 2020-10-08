@@ -10,6 +10,7 @@ import Settings from 'app/modules/account/settings/settings';
 import Password from 'app/modules/account/password/password';
 import DeactivatedRecords from 'app/modules/provider/deactivated/deactivated-records';
 import NotConfiguredAccount from 'app/modules/provider/not-configured-account';
+import ReferralPage from 'app/modules/provider/referral/referral-page';
 import Feedback from 'app/modules/feedback/feedback';
 
 const Routes = ({ isAdmin, match, location, account }) => {
@@ -28,6 +29,7 @@ const Routes = ({ isAdmin, match, location, account }) => {
         <ErrorBoundaryRoute path={`${match.url}single-record-view/:orgId`} component={SingleRecordView} />
         <ErrorBoundaryRoute path={`${match.url}record/:id/edit`} component={RecordEdit} />
         <ErrorBoundaryRoute path={`${match.url}deactivated-records`} component={DeactivatedRecords} />
+        <ErrorBoundaryRoute path={`${match.url}referral`} component={ReferralPage} />
         <ErrorBoundaryRoute path={`${match.url}`} component={Home} />
       </Switch>
     </div>

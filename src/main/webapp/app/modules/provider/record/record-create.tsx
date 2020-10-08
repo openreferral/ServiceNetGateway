@@ -227,17 +227,17 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               className={`text-nowrap ${activeTab === ORGANIZATION_TAB ? 'active' : ''}`}
               onClick={() => this.toggle(ORGANIZATION_TAB)}
             >
-              1. <Translate contentKey="record.tabs.organization" />
+              <Translate contentKey="record.tabs.organization" />
             </NavLink>
           </NavItem>
           <NavItem className={`${invalidTabs.includes(LOCATION_TAB) ? 'invalid' : ''}`}>
             <NavLink className={`text-nowrap ${activeTab === LOCATION_TAB ? 'active' : ''}`} onClick={() => this.toggle(LOCATION_TAB)}>
-              2. <Translate contentKey="record.tabs.locations" />
+              <Translate contentKey="record.tabs.locations" />
             </NavLink>
           </NavItem>
           <NavItem className={`${invalidTabs.includes(SERVICE_TAB) ? 'invalid' : ''}`}>
             <NavLink className={`text-nowrap ${activeTab === SERVICE_TAB ? 'active' : ''}`} onClick={() => this.toggle(SERVICE_TAB)}>
-              3. <Translate contentKey="record.tabs.services" />
+              <Translate contentKey="record.tabs.services" />
             </NavLink>
           </NavItem>
         </Nav>

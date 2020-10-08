@@ -8,6 +8,7 @@ import { Avatar } from '../avatar';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const NavDropdown = props => (
   <UncontrolledDropdown inNavbar id={props.id}>
@@ -43,6 +44,23 @@ export const Brand = props => (
       <span className="navbar-label text-dark header-link">
         <Translate contentKey="global.menu.feedback" />
       </span>
+    </NavLink>
+    <NavLink exact tag={Link} to="/referral" className="pl-0">
+      <div className="navbar-label text-dark header-link d-flex">
+        <Translate contentKey="global.menu.referral" />
+        {props.referralCount && props.referralCount > 0 ? (
+          <div className="" style={{ position: 'relative' }}>
+            &nbsp;
+            <FontAwesomeIcon icon="layer-group" />
+            <div className={`referrals-counter ${props.referralCount > 99 ? 'referral-counter-big' : ''}`}>{props.referralCount}</div>
+          </div>
+        ) : (
+          <div>
+            &nbsp;
+            <FontAwesomeIcon icon="layer-group" />
+          </div>
+        )}
+      </div>
     </NavLink>
   </div>
 );

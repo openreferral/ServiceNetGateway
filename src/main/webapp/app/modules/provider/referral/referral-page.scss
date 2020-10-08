@@ -1,0 +1,44 @@
+.referral-page {
+  .nav-item {
+    background-color: darken(#f4f5f6, 5%);
+    flex: 1;
+    font-weight: bold;
+    text-align: center;
+
+    .nav-link {
+      background-color: #f4f5f6;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+
+      &.active {
+        cursor: default;
+        background-color: #333e51;
+        border-color: #333e51;
+        color: white;
+      }
+    }
+  }
+
+  .tab-content {
+    max-height: calc(100vh - 60px - 45px - 50px);
+    width: 100%;
+
+    @media only screen and (max-width: 768px) {
+      max-height: calc(100vh - 60px - 45px);
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .content-title {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    vertical-align: middle;
+
+    span {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  }
+}

@@ -82,6 +82,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             isSacramento={this.props.isSacramento}
             isShelterOwner={this.props.isShelterOwner}
             toggleMenu={this.toggleMenu}
+            referralCount={this.props.referralCount}
           />
         </MediaQuery>
       </div>
@@ -109,7 +110,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
   }
 }
 
-const mapStateToProps = ({ authentication, applicationProfile, locale, activity }: IRootState) => ({
+const mapStateToProps = ({ authentication, applicationProfile, locale, activity, providerRecord }: IRootState) => ({
   account: authentication.account,
   autosuggestOptions: MainHome.getAutosuggestOptions(activity.suggestions),
   currentLocale: locale.currentLocale,
@@ -122,7 +123,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, activity 
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
   userLogin: authentication.account.login,
   isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
-  loggingOut: authentication.loggingOut
+  loggingOut: authentication.loggingOut,
+  referralCount: providerRecord.referredRecords.length
 });
 
 const mapDispatchToProps = {

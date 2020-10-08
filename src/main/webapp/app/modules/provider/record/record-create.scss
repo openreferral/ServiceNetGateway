@@ -7,7 +7,8 @@
   }
 
   .nav-item {
-    background-color: #f4f5f6;
+    background-color: darken(#f4f5f6, 5%);
+    margin-bottom: -3px;
 
     &.invalid {
       .nav-link {
@@ -24,12 +25,16 @@
     text-align: center;
 
     .nav-link {
-      border-radius: 8px;
-    }
+      background-color: #f4f5f6;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
 
-    > .active {
-      background-color: #333e51;
-      color: white;
+      &.active {
+        cursor: default;
+        background-color: #333e51;
+        border-color: #333e51;
+        color: white;
+      }
     }
   }
 
