@@ -41,12 +41,11 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
     const { phoneNumber, beneficiaryId, cbo } = this.state;
     const { referralOptions } = this.props;
     const cboId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
-    if (phoneNumber && isPossiblePhoneNumber(phoneNumber)) {
-      this.props.checkIn(phoneNumber, beneficiaryId, cboId);
-    }
+    this.props.checkIn(phoneNumber, beneficiaryId, cboId);
   };
 
   close = () => {
+    this.setState({ phoneNumber: '', beneficiaryId: '', cbo: null });
     this.props.resetCheckedIn();
   };
 
