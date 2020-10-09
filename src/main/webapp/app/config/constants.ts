@@ -30,3 +30,9 @@ export const APP_LOCAL_DATETIME_FORMAT_Z = 'YYYY-MM-DDTHH:mm Z';
 export const APP_WHOLE_NUMBER_FORMAT = '0,0';
 export const APP_TWO_DIGITS_AFTER_POINT_NUMBER_FORMAT = '0,0.[00]';
 export const GOOGLE_API_KEY = _.get(window, '_env_.GOOGLE_API_KEY', '');
+
+// overridden component styles
+const PLACEHOLDER_TEXT_COLOR = '#8e8e8e';
+export const selectStyle = () => ({
+  placeholder: style => ({ ...style, color: PLACEHOLDER_TEXT_COLOR })
+});

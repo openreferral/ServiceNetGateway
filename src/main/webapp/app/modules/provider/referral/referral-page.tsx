@@ -9,6 +9,7 @@ import { Translate } from 'react-jhipster';
 import BeneficiaryCheckInTab from './benefeciary-check-in-tab';
 import ReferralTab from './referral-tab';
 import BulkUploadTab from './bulk-upload-tab';
+import _ from 'lodash';
 
 const BENEFICIARY_CHECK_IN_TAB = 'check_in';
 const REFERRAL_TAB = 'referral';
@@ -27,7 +28,7 @@ class ReferralPage extends React.Component<IReferralPageProp, IReferralPageState
 
   componentDidMount() {
     const { referredRecords } = this.props;
-    if (referredRecords && referredRecords.length) {
+    if (!_.isEmpty(referredRecords)) {
       this.setState({ activeTab: REFERRAL_TAB });
     }
   }

@@ -11,8 +11,7 @@ import { IRootState } from 'app/shared/reducers';
 import Select from 'react-select';
 import { checkIn, resetCheckedIn } from '../provider-record.reducer';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
-
-const PLACEHOLDER_TEXT_COLOR = '#8e8e8e';
+import { selectStyle } from 'app/config/constants';
 
 export interface IBeneficiaryCheckInTabState {
   phoneNumber: String;
@@ -52,10 +51,6 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
   onSelect = cbo => {
     this.setState({ cbo: cbo.value });
   };
-
-  selectStyle = () => ({
-    placeholder: style => ({ ...style, color: PLACEHOLDER_TEXT_COLOR })
-  });
 
   canBeSent = () => {
     const { phoneNumber, beneficiaryId, cbo } = this.state;
@@ -114,7 +109,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
                 onChange={this.onSelect}
                 inputId="cityInput"
                 placeholder={translate('referral.placeholder.cbo')}
-                styles={this.selectStyle()}
+                styles={selectStyle()}
               />
             ) : null}
             <ButtonPill
