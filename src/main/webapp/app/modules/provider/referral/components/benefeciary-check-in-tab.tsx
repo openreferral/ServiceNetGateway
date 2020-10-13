@@ -5,11 +5,11 @@ import _ from 'lodash';
 import Input from 'react-phone-number-input/input';
 import { Input as StrapInput } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
-import ButtonPill from '../shared/button-pill';
+import ButtonPill from '../../shared/button-pill';
 import { Link } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import Select from 'react-select';
-import { checkIn, resetCheckedIn } from '../provider-record.reducer';
+import { checkIn, resetCheckedIn } from '../../provider-record.reducer';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { selectStyle } from 'app/config/constants';
 

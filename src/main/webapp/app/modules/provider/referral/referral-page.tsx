@@ -1,4 +1,4 @@
-import './referral-page.scss';
+import './referral-shared.scss';
 
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -6,9 +6,9 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import { Translate } from 'react-jhipster';
-import BeneficiaryCheckInTab from './benefeciary-check-in-tab';
-import ReferralTab from './referral-tab';
-import BulkUploadTab from './bulk-upload-tab';
+import BeneficiaryCheckInTab from './components/benefeciary-check-in-tab';
+import ReferralTab from './components/referral-tab';
+import BulkUploadTab from './components/bulk-upload-tab';
 import _ from 'lodash';
 
 const BENEFICIARY_CHECK_IN_TAB = 'check_in';
@@ -43,7 +43,7 @@ class ReferralPage extends React.Component<IReferralPageProp, IReferralPageState
     const { activeTab } = this.state;
 
     return (
-      <div className="background referral-page">
+      <div className="background referral referral-page">
         <Nav tabs>
           <NavItem>
             <NavLink

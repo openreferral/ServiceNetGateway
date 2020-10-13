@@ -32,6 +32,7 @@ describe('Entities reducer tests', () => {
     errorMessage: null,
     entities: [] as ReadonlyArray<IReferral>,
     entity: defaultValue,
+    referrals: [],
     links: {
       next: 0
     },

@@ -3,7 +3,7 @@ import { Translate, translate } from 'react-jhipster';
 // tslint:disable-next-line:no-submodule-imports
 import Input from 'react-phone-number-input/input';
 import { Table, Input as StrapInput } from 'reactstrap';
-import ButtonPill from '../shared/button-pill';
+import ButtonPill from '../../shared/button-pill';
 import { sendReferrals, unreferRecord } from 'app/modules/provider/provider-record.reducer';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';

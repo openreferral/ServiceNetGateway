@@ -12,6 +12,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IReferral, defaultValue } from 'app/shared/model/ServiceNet/referral.model';
+import { MAX_PAGE_SIZE } from 'app/config/constants';
 
 export const ACTION_TYPES = {
   FETCH_REFERRAL_LIST: 'referral/FETCH_REFERRAL_LIST',
@@ -19,7 +20,8 @@ export const ACTION_TYPES = {
   CREATE_REFERRAL: 'referral/CREATE_REFERRAL',
   UPDATE_REFERRAL: 'referral/UPDATE_REFERRAL',
   DELETE_REFERRAL: 'referral/DELETE_REFERRAL',
-  RESET: 'referral/RESET'
+  RESET: 'referral/RESET',
+  SEARCH_REFERRALS: 'referral/SEARCH_REFERRALS'
 };
 
 const initialState = {
@@ -30,7 +32,8 @@ const initialState = {
   links: { next: 0 },
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  referrals: [] as any[]
 };
 
 export type ReferralState = Readonly<typeof initialState>;
@@ -41,6 +44,7 @@ export default (state: ReferralState = initialState, action): ReferralState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_REFERRAL_LIST):
     case REQUEST(ACTION_TYPES.FETCH_REFERRAL):
+    case REQUEST(ACTION_TYPES.SEARCH_REFERRALS):
       return {
         ...state,
         errorMessage: null,
@@ -61,6 +65,7 @@ export default (state: ReferralState = initialState, action): ReferralState => {
     case FAILURE(ACTION_TYPES.CREATE_REFERRAL):
     case FAILURE(ACTION_TYPES.UPDATE_REFERRAL):
     case FAILURE(ACTION_TYPES.DELETE_REFERRAL):
+    case FAILURE(ACTION_TYPES.SEARCH_REFERRALS):
       return {
         ...state,
         loading: false,
@@ -100,6 +105,14 @@ export default (state: ReferralState = initialState, action): ReferralState => {
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.SEARCH_REFERRALS): {
+      return {
+        ...state,
+        loading: false,
+        referrals: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+      };
+    }
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -157,3 +170,11 @@ export const deleteEntity: ICrudDeleteAction<IReferral> = id => async dispatch =
 export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
+
+export const searchReferrals = (since = '', status = '', page = 0, size = MAX_PAGE_SIZE, order = '', sort = '') => {
+  const pageableUrl = `${apiUrl}/search?page=${page}&size=${size}&sort=${sort},${order}${since ? '&since=' + since : ''}${status ? '&status=' + status : ''}`;
+  return {
+    type: ACTION_TYPES.SEARCH_REFERRALS,
+    payload: axios.get(pageableUrl)
+  };
+};

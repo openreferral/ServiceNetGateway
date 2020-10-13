@@ -20,7 +20,8 @@
     "recordLimit": "Showing first {{count}} records",
     "centerMapOnMyLocation": "Center map on my location",
     "menu": {
-      "deactivatedRecords": "Deactivated Records"
+      "deactivatedRecords": "Deactivated Records",
+      "beneficiaryHistory": "Beneficiary History"
     },
     "deactivatedRecords": {
       "name": "Name",
