@@ -97,11 +97,17 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
   };
 
   handleDateRangeChange = dateRange => {
-    this.setState({ dateRange }, this.searchReferrals);
+    this.setState({
+      dateRange,
+      activePage: FIRST_PAGE
+    }, this.searchReferrals);
   };
 
   handleStatusChange = status => {
-    this.setState({ status }, this.searchReferrals);
+    this.setState({
+      status,
+      activePage: FIRST_PAGE
+    }, this.searchReferrals);
   };
 
   dateRangeOptions = () => [
@@ -129,7 +135,7 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
 
   filters = () =>
     <Row className="filters">
-      <Col md={{ size: 6 }}>
+      <Col md={{ size: 6 }} className="mb-1 mb-md-0">
         <Select
           styles={selectStyle()}
           name="dateRange"
@@ -158,7 +164,7 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
 
     return (
       <div className="col-12 col-md-10 offset-md-1">
-        <div className="content-title my-5">
+        <div className="content-title my-2 my-md-4 my-lg-5">
           <Translate contentKey="referral.title.referralHistory" />
         </div>
         {this.filters()}
