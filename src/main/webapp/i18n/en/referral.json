@@ -36,12 +36,16 @@
       "bulk_upload": "Bulk Transaction Upload",
       "check_in_mobile": "Check In",
       "referral_mobile": "Referral",
-      "bulk_upload_mobile": "Bulk Upload"
+      "bulk_upload_mobile": "Bulk Upload",
+      "referralHistory": "Referral History",
+      "numberOfReferrals": "Number of Referrals"
     },
     "title": {
       "check_in": "Beneficiary Check In",
       "referrals": "Referrals",
-      "bulk_upload": "Log Upload"
+      "bulk_upload": "Log Upload",
+      "referralHistory": "Referral History",
+      "numberOfReferrals": "Number of Referrals"
     },
     "records": {
       "empty": "There are no referred records.",
@@ -49,6 +53,23 @@
       "remove": "Remove",
       "referSuccess": "The beneficiary was successfully referred!",
       "referFailure": "Could not refer beneficiary due to a server error."
+    },
+    "columns": {
+      "beneficiaryPhoneNumber": "Beneficiary Phone Number",
+      "id": "Unique Identifier",
+      "dateStamp": "Date Stamp",
+      "referredFrom": "Referred From",
+      "referredTo": "Referred To",
+      "status": "Status"
+    },
+    "filters": {
+      "filters": "Filters",
+      "allTime": "All time",
+      "pastWeek": "Past Week Referral History",
+      "pastMonth": "Past Month Referral History",
+      "allStatuses": "All Referral Statuses",
+      "sent": "Sent",
+      "fulfilled": "Fulfilled"
     }
   }
 }
