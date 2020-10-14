@@ -28,7 +28,8 @@
     "placeholder": {
       "beneficiary": "Enter Unique Identifier",
       "cbo": "Select Organization to Check In",
-      "phone": "Enter Phone Number"
+      "phone": "Enter Phone Number",
+      "referFrom": "Select Organization to Refer from"
     },
     "tabs": {
       "check_in": "Beneficiary Check In",

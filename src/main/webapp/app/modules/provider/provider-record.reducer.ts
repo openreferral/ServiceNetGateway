@@ -3,10 +3,12 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { SERVICENET_API_URL, SERVICENET_PUBLIC_API_URL } from 'app/shared/util/service-url.constants';
 import _ from 'lodash';
 import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
+import { IOrganizationOption } from 'app/shared/model/organization-option.model';
 
 export const ACTION_TYPES = {
   FETCH_RECORDS: 'records/FETCH_RECORDS',
   FETCH_ALL_RECORDS: 'records/FETCH_ALL_RECORDS',
+  FETCH_PROVIDER_OPTIONS: 'records/FETCH_PROVIDER_OPTIONS',
   FETCH_ALL_RECORDS_FOR_MAP: 'records/FETCH_ALL_RECORDS_FOR_MAP',
   SELECT_RECORD: 'records/SELECT_RECORD',
   REFER_RECORD: 'records/REFER_RECORD',
@@ -32,7 +34,8 @@ const initialState = {
   referredRecords: new Map<string, ISimpleOrganization>(),
   userName: '',
   checkedIn: false,
-  referSuccess: false
+  referSuccess: false,
+  providerOptions: [] as ReadonlyArray<IOrganizationOption>
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -132,6 +135,11 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         checkedIn: true
       };
+    case SUCCESS(ACTION_TYPES.FETCH_PROVIDER_OPTIONS):
+      return {
+        ...state,
+        providerOptions: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.SEND_REFERRALS):
       return {
         ...state,
@@ -169,6 +177,7 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
 };
 
 const userRecordApiUrl = SERVICENET_API_URL + '/provider-records';
+const providerOptionsApiUrl = SERVICENET_API_URL + '/provider-record-options';
 const allRecordApiUrl = SERVICENET_API_URL + '/all-provider-records';
 const allRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/all-provider-records';
 const allRecordForMapApiUrl = SERVICENET_API_URL + '/all-provider-records-map';
@@ -187,6 +196,11 @@ export const getProviderRecords = (page, itemsPerPage, sort = DEFAULT_RECORDS_SO
     payload: axios.get(pageableUrl)
   };
 };
+
+export const getProviderOptions = () => ({
+  type: ACTION_TYPES.FETCH_PROVIDER_OPTIONS,
+  payload: axios.get(providerOptionsApiUrl)
+});
 
 export const getAllProviderRecords = (page, itemsPerPage, sort, filter, search, isInitLoading = true) => {
   const pageableUrl = `${allRecordApiUrl}?search=${search ? search : ''}&page=${page}&size=${itemsPerPage}&sort=${sort}`;

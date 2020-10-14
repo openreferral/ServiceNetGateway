@@ -7,9 +7,11 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { IOrganization, defaultValue } from 'app/shared/model/organization.model';
 import { SERVICENET_API_URL, SERVICENET_PUBLIC_API_URL } from 'app/shared/util/service-url.constants';
 import { ISimpleOrganization, defaultSimpleOrganization } from 'app/shared/model/simple-organization.model';
+import { IOrganizationOption } from 'app/shared/model/organization-option.model';
 
 export const ACTION_TYPES = {
   FETCH_ORGANIZATION_LIST: 'organization/FETCH_ORGANIZATION_LIST',
+  FETCH_ORGANIZATION_OPTIONS: 'organization/FETCH_ORGANIZATION_OPTIONS',
   FETCH_ORGANIZATION: 'organization/FETCH_ORGANIZATION',
   FETCH_SIMPLE_ORGANIZATION: 'organization/FETCH_SIMPLE_ORGANIZATION',
   CREATE_ORGANIZATION: 'organization/CREATE_ORGANIZATION',
@@ -28,7 +30,8 @@ const initialState = {
   providersEntity: defaultSimpleOrganization,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  options: [] as ReadonlyArray<IOrganizationOption>
 };
 
 export type OrganizationState = Readonly<typeof initialState>;
@@ -75,6 +78,11 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         loading: false,
         entities: action.payload.data,
         totalItems: action.payload.headers['x-total-count']
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_ORGANIZATION_OPTIONS):
+      return {
+        ...state,
+        options: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_ORGANIZATION):
       return {
@@ -130,6 +138,7 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
 };
 
 const apiUrl = SERVICENET_API_URL + '/organizations';
+const optionApiUrl = SERVICENET_API_URL + '/organization-options';
 
 // Actions
 
@@ -140,6 +149,11 @@ export const getEntities: ICrudGetAllAction<IOrganization> = (page, size, sort) 
     payload: axios.get<IOrganization>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const getOrganizationOptions: ICrudGetAllAction<IOrganizationOption> = () => ({
+  type: ACTION_TYPES.FETCH_ORGANIZATION_OPTIONS,
+  payload: axios.get<IOrganizationOption>(optionApiUrl)
+});
 
 export const getEntity: ICrudGetAction<IOrganization> = id => {
   const requestUrl = `${apiUrl}/${id}`;

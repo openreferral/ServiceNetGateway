@@ -141,9 +141,9 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
 }
 
 const mapStateToProps = ({ providerRecord }: IRootState) => ({
-  referralOptions: _.map(providerRecord.records, record => ({
-    value: record.organization.id,
-    label: record.organization.name
+  referralOptions: _.map(providerRecord.providerOptions, org => ({
+    value: org.id,
+    label: org.name
   })),
   checkedIn: providerRecord.checkedIn
 });

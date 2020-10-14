@@ -4,7 +4,7 @@ import { Translate, translate } from 'react-jhipster';
 import Input from 'react-phone-number-input/input';
 import { Table, Input as StrapInput } from 'reactstrap';
 import ButtonPill from '../../shared/button-pill';
-import { sendReferrals, unreferRecord } from 'app/modules/provider/provider-record.reducer';
+import { getProviderOptions, sendReferrals, unreferRecord } from 'app/modules/provider/provider-record.reducer';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
@@ -136,7 +136,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
             options={referralOptions}
             onChange={this.onSelect}
             inputId="cityInput"
-            placeholder={translate('referral.placeholder.cbo')}
+            placeholder={translate('referral.placeholder.referFrom')}
             styles={selectStyle()}
           />
         ) : null}
@@ -167,9 +167,9 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
 const mapStateToProps = ({ authentication, providerRecord }: IRootState) => ({
   referredRecords: providerRecord.referredRecords,
   userName: authentication.account.login,
-  referralOptions: _.map(providerRecord.records, record => ({
-    value: record.organization.id,
-    label: record.organization.name
+  referralOptions: _.map(providerRecord.providerOptions, org => ({
+    value: org.id,
+    label: org.name
   })),
   referSuccess: providerRecord.referSuccess,
   error: providerRecord.errorMessage

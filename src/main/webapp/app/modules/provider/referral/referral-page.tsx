@@ -10,6 +10,7 @@ import BeneficiaryCheckInTab from './components/benefeciary-check-in-tab';
 import ReferralTab from './components/referral-tab';
 import BulkUploadTab from './components/bulk-upload-tab';
 import _ from 'lodash';
+import { getProviderOptions } from 'app/modules/provider/provider-record.reducer';
 
 const BENEFICIARY_CHECK_IN_TAB = 'check_in';
 const REFERRAL_TAB = 'referral';
@@ -28,6 +29,7 @@ class ReferralPage extends React.Component<IReferralPageProp, IReferralPageState
 
   componentDidMount() {
     const { referredRecords } = this.props;
+    this.props.getProviderOptions();
     if (!_.isEmpty(referredRecords)) {
       this.setState({ activeTab: REFERRAL_TAB });
     }
@@ -102,7 +104,9 @@ const mapStateToProps = ({ providerRecord }: IRootState) => ({
   referredRecords: providerRecord.referredRecords
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getProviderOptions
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

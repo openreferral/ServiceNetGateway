@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { IOrganization } from 'app/shared/model/organization.model';
-import { getEntities as getOrganizations } from 'app/entities/organization/organization.reducer';
+import { getEntities as getOrganizations, getOrganizationOptions } from 'app/entities/organization/organization.reducer';
 import { IBeneficiary } from 'app/shared/model/ServiceNet/beneficiary.model';
 import { getEntities as getBeneficiaries } from 'app/entities/beneficiary/beneficiary.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './referral.reducer';
@@ -35,7 +35,7 @@ export const ReferralUpdate = (props: IReferralUpdateProps) => {
       props.getEntity(props.match.params.id);
     }
 
-    props.getOrganizations();
+    props.getOrganizationOptions();
     props.getBeneficiaries();
   }, []);
 
@@ -172,7 +172,7 @@ export const ReferralUpdate = (props: IReferralUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  organizations: storeState.organization.entities,
+  organizations: storeState.organization.options,
   beneficiaries: storeState.beneficiary.entities,
   referralEntity: storeState.referral.entity,
   loading: storeState.referral.loading,
@@ -181,7 +181,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getOrganizations,
+  getOrganizationOptions,
   getBeneficiaries,
   getEntity,
   updateEntity,
