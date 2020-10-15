@@ -33,10 +33,6 @@ export const Referral = (props: IReferralProps) => {
   };
 
   useEffect(() => {
-    resetAll();
-  }, []);
-
-  useEffect(() => {
     if (props.updateSuccess) {
       resetAll();
     }
