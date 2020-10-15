@@ -142,11 +142,11 @@ $avatar-height: 25px;
 
     .search-bar {
       padding-right: 0;
-    }
-    .search-from {
-      width: 100%;
-      height: 100%;
-      border-radius: 3px;
+
+      .search-from {
+        width: 100%;
+        height: 100%;
+      }
     }
 
     .nav-bar {
