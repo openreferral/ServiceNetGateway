@@ -1,4 +1,5 @@
 import './referral-shared.scss';
+import './referral-page.scss';
 
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';

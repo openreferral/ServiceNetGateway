@@ -63,6 +63,7 @@ import { faMapMarker } from '@fortawesome/free-solid-svg-icons/faMapMarker';
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 import { faLayerGroup } from '@fortawesome/free-solid-svg-icons/faLayerGroup';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
+import { faDownload } from '@fortawesome/free-solid-svg-icons/faDownload';
 
 export const loadIcons = () => {
   library.add(
@@ -128,6 +129,7 @@ export const loadIcons = () => {
     faMapMarker,
     faCheck,
     faLayerGroup,
-    faEdit
+    faEdit,
+    faDownload
   );
 };

@@ -122,7 +122,7 @@ export default (state: ReferralState = initialState, action): ReferralState => {
   }
 };
 
-const apiUrl = 'services/servicenet/api/referrals';
+export const apiUrl = 'services/servicenet/api/referrals';
 
 // Actions
 
