@@ -71,6 +71,9 @@
       "allStatuses": "All Referral Statuses",
       "sent": "Sent",
       "fulfilled": "Fulfilled"
+    },
+    "buttons": {
+      "csv": "CSV"
     }
   }
 }

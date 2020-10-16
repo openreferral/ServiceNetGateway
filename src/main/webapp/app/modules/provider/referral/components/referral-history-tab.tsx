@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Table, Row, Col, Card, CardBody, CardTitle, Container } from 'reactstrap';
+import { Table, Row, Col, Button } from 'reactstrap';
 import { getPaginationItemsNumber, getSortState, IPaginationBaseState, JhiPagination, TextFormat, translate, Translate } from 'react-jhipster';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import { APP_DATE_FORMAT, MS_IN_A_DAY, selectStyle } from 'app/config/constants';
-import { searchReferrals } from 'app/entities/referral/referral.reducer';
+import { apiUrl, searchReferrals } from 'app/entities/referral/referral.reducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageSizeSelector from 'app/entities/page-size-selector';
 import { FIRST_PAGE, ITEMS_PER_PAGE_ENTITY, MAX_BUTTONS } from 'app/shared/util/pagination.constants';
@@ -166,6 +166,14 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
       <div className="col-12 col-md-10 offset-md-1">
         <div className="content-title my-2 my-md-4 my-lg-5">
           <Translate contentKey="referral.title.referralHistory" />
+          <a href={`/${apiUrl}/csv`}>
+            <Button color="primary" size="sm" className="ml-2 csv-download">
+              <FontAwesomeIcon icon="download" />{' '}
+              <span className="d-inline">
+                <Translate contentKey="referral.buttons.csv">CSV</Translate>
+              </span>
+            </Button>
+          </a>
         </div>
         {this.filters()}
         <div className="table-responsive">
