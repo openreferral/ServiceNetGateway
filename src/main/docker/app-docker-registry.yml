@@ -42,6 +42,9 @@ services:
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
       - SENTRY_DSN=${SENTRY_DSN}
       - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
   servicenetauth-app:
     image: johnhbenetech/servicenetauth:${SN_VERSION_TAG:-dev}
     environment:

@@ -38,6 +38,9 @@ services:
       - JHIPSTER_OAUTH2_CLIENT_SECRET=${JHIPSTER_OAUTH2_CLIENT_SECRET:-changeme}
       - SPRING_OAUTH2_CLIENT_SECRET=${SPRING_OAUTH2_CLIENT_SECRET:-changeme}
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
   servicenetauth-app:
     image: servicenetauth
     environment:
