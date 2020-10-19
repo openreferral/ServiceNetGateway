@@ -2,4 +2,10 @@
   .filters {
     margin-bottom: 2em;
   }
+
+  .csv-download {
+    &:not(:hover) {
+      color: black;
+    }
+  }
 }
