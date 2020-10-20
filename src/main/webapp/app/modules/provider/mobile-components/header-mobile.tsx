@@ -8,7 +8,7 @@ import LoadingBar from 'react-redux-loading-bar';
 import { Avatar } from 'app/modules/provider/avatar';
 import { BrandIcon } from 'app/modules/provider/menus/header-components';
 import SearchBar from '../menus/search-bar';
-import { Brand, FeedbackButton } from 'app/shared/layout/header/header-components';
+import { FeedbackButton } from 'app/shared/layout/header/header-components';
 
 export interface IHeaderMobileProps {
   isAuthenticated: boolean;

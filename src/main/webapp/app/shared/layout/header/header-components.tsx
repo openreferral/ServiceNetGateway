@@ -29,7 +29,7 @@ export const BrandIcon = props => (
 );
 
 export const Brand = props => {
-  const { isSacramento, prependRoutesWithMatch, match } = props;
+  const { isSacramento, prependRoutesWithMatch, match, isPublic } = props;
   let url = `/`;
 
   if (isSacramento) {
@@ -44,11 +44,20 @@ export const Brand = props => {
         <MediaQuery minDeviceWidth={769}>
           <BrandIcon />
         </MediaQuery>
-        <span className="navbar-version mt-1">{appConfig.VERSION}</span>
+        {!isPublic && <span className="navbar-version mt-1">{appConfig.VERSION}</span>}
       </NavbarBrand>
     </div>
   );
 };
+
+export const HomeButton = props =>
+  (props.isSacramento || props.isPublic) && (
+    <NavLink exact tag={Link} to={`${props.prependRoutesWithMatch ? props.match.url : ''}`} className="px-0">
+      <span className="navbar-label text-dark about-us-link mx-1">
+        <Translate contentKey="global.menu.home" />
+      </span>
+    </NavLink>
+  );
 
 export const FeedbackButton = props =>
   (props.isSacramento || props.isPublic) && (

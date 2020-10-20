@@ -9,7 +9,7 @@ import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 import LoadingBar from 'react-redux-loading-bar';
 
-import { Home, Brand, Upload, FeedbackButton, DataStatus } from './header-components';
+import { Home, Brand, Upload, HomeButton, FeedbackButton, DataStatus } from './header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu, SacramentoMenu } from './menus';
 import SearchBar from 'app/modules/provider/menus/search-bar';
 
@@ -77,6 +77,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             </div>
           </MediaQuery>
           <Brand {...this.props} />
+          <HomeButton {...this.props} />
           <FeedbackButton {...this.props} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
