@@ -24,6 +24,7 @@ export interface IHeaderProps {
   isStaging: boolean;
   toggleMenu: Function;
   referralCount?: any;
+  isReferralEnabled: boolean;
 }
 
 export interface IHeaderState {
@@ -49,14 +50,14 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
-    const { currentLocale, isAuthenticated, isSwaggerEnabled, isInProduction, userLogin, isSacramento, referralCount } = this.props;
+    const { currentLocale, isAuthenticated, isSwaggerEnabled, isInProduction, userLogin, isSacramento, referralCount, isReferralEnabled } = this.props;
 
     return (
       <div>
         {this.renderDevRibbon()}
         <LoadingBar className="loading-bar" />
         <Navbar expand="sm" fixed="top" className="navbar-light bg-white header-bar">
-          <Brand isSacramento={isSacramento} referralCount={referralCount} />
+          <Brand isSacramento={isSacramento} referralCount={referralCount} isReferralEnabled={isReferralEnabled} />
 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto header-item" navbar>
@@ -71,7 +72,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <FontAwesomeIcon className="self-align-center" size="lg" icon="bell" />
               </li>
               <li className="header-item-padding">
-                <AccountMenu isAuthenticated={isAuthenticated} userLogin={userLogin} />
+                <AccountMenu isAuthenticated={isAuthenticated} userLogin={userLogin} isReferralEnabled={isReferralEnabled} />
               </li>
             </Nav>
           </Collapse>

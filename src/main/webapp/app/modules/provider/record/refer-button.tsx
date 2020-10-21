@@ -15,8 +15,10 @@ export interface IReferButtonProp extends StateProps, DispatchProps {
 
 export class ReferButton extends React.Component<IReferButtonProp, {}> {
   render() {
-    const { userName, organization, referredRecords } = this.props;
-
+    const { userName, organization, referredRecords, isReferralEnabled } = this.props;
+    if (!isReferralEnabled) {
+      return null;
+    }
     if (referredRecords.has(organization.id)) {
       return (
         <div className="refer-button green" onClick={() => this.props.unreferRecord(organization, userName)}>
@@ -41,7 +43,8 @@ export class ReferButton extends React.Component<IReferButtonProp, {}> {
 
 const mapStateToProps = ({ authentication, providerRecord }: IRootState) => ({
   referredRecords: providerRecord.referredRecords,
-  userName: authentication.account.login
+  userName: authentication.account.login,
+  isReferralEnabled: authentication.account.siloIsReferralEnabled
 });
 
 const mapDispatchToProps = {

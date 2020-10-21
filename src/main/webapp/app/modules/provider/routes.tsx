@@ -16,6 +16,7 @@ import ReferralHistory from 'app/modules/provider/referral/referral-history';
 
 const Routes = ({ isAdmin, match, location, account }) => {
   const hasUserSilo = account && account.siloId !== null;
+  const isReferralEnabled = account && account.siloIsReferralEnabled;
   const isLoggingOut = location && (location.state && location.state.loggingOut);
 
   return (
@@ -30,8 +31,8 @@ const Routes = ({ isAdmin, match, location, account }) => {
         <ErrorBoundaryRoute path={`${match.url}single-record-view/:orgId`} component={SingleRecordView} />
         <ErrorBoundaryRoute path={`${match.url}record/:id/edit`} component={RecordEdit} />
         <ErrorBoundaryRoute path={`${match.url}deactivated-records`} component={DeactivatedRecords} />
-        <ErrorBoundaryRoute path={`${match.url}referral`} component={ReferralPage} />
-        <ErrorBoundaryRoute path={`${match.url}referral-history`} component={ReferralHistory} />
+        {isReferralEnabled && <ErrorBoundaryRoute path={`${match.url}referral`} component={ReferralPage} />}
+        {isReferralEnabled && <ErrorBoundaryRoute path={`${match.url}referral-history`} component={ReferralHistory} />}
         <ErrorBoundaryRoute path={`${match.url}`} component={Home} />
       </Switch>
     </div>
