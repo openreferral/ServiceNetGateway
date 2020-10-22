@@ -16,7 +16,8 @@ export const ACTION_TYPES = {
   CLEAN_REFERRED_RECORDS: 'records/CLEAN_REFERRED_RECORDS',
   CHECK_IN: 'records/CHECK_IN',
   RESET_CHECKED_IN: 'records/RESET_CHECKED_IN',
-  SEND_REFERRALS: 'records/SEND_REFERRALS'
+  SEND_REFERRALS: 'records/SEND_REFERRALS',
+  FETCH_MADE_TO_OPTIONS: 'records/FETCH_MADE_TO_OPTIONS'
 };
 
 const initialState = {
@@ -35,7 +36,8 @@ const initialState = {
   userName: '',
   checkedIn: false,
   referSuccess: false,
-  providerOptions: [] as ReadonlyArray<IOrganizationOption>
+  providerOptions: [] as ReadonlyArray<IOrganizationOption>,
+  madeToOptions: [] as ReadonlyArray<IOrganizationOption>
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -140,6 +142,11 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         providerOptions: action.payload.data
       };
+    case SUCCESS(ACTION_TYPES.FETCH_MADE_TO_OPTIONS):
+      return {
+        ...state,
+        madeToOptions: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.SEND_REFERRALS):
       return {
         ...state,
@@ -186,6 +193,7 @@ const allRecordForMapPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/all-provider-r
 const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
 const checkInApiUrl = SERVICENET_API_URL + '/beneficiaries/check-in';
 const referUrl = SERVICENET_API_URL + '/beneficiaries/refer';
+const madeToOptionsApiUrl = SERVICENET_API_URL + '/referrals/made-to-options';
 
 // Actions
 
@@ -272,9 +280,16 @@ export const resetCheckedIn = () => ({
 });
 
 export const sendReferrals = (cboId: string, referrals: Map<string, ISimpleOrganization>, phone = '', beneficiaryId = '') => {
-  const url = `${referUrl}?referringOrganizationId=${cboId ? cboId : ''}&phoneNumber=${phone ? phone : ''}&beneficiaryId=${beneficiaryId ? beneficiaryId : ''}`;
+  const url = `${referUrl}?referringOrganizationId=${cboId ? cboId : ''}&phoneNumber=${phone ? phone : ''}&beneficiaryId=${
+    beneficiaryId ? beneficiaryId : ''
+  }`;
   return {
     type: ACTION_TYPES.SEND_REFERRALS,
     payload: axios.post(url, Array.from(referrals.keys()))
   };
 };
+
+export const getMadeToOptions = () => ({
+  type: ACTION_TYPES.FETCH_MADE_TO_OPTIONS,
+  payload: axios.get(madeToOptionsApiUrl)
+});

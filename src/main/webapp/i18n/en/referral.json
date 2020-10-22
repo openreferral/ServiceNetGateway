@@ -61,7 +61,10 @@
       "dateStamp": "Date Stamp",
       "referredFrom": "Referred From",
       "referredTo": "Referred To",
-      "status": "Status"
+      "status": "Status",
+      "madeTo": "Our referrals made to",
+      "numberMade": "Number of referrals made",
+      "madeFrom": "Referrals made to us"
     },
     "filters": {
       "filters": "Filters",
@@ -70,7 +73,10 @@
       "pastMonth": "Past Month Referral History",
       "allStatuses": "All Referral Statuses",
       "sent": "Sent",
-      "fulfilled": "Fulfilled"
+      "allReferrals": "All Referrals Made To History",
+      "fulfilled": "Fulfilled",
+      "waiting": "Waiting For Arrival",
+      "arrived": "Arrived"
     },
     "buttons": {
       "csv": "CSV"
