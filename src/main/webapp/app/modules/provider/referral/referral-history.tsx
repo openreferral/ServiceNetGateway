@@ -47,7 +47,10 @@ class ReferralHistory extends React.Component<IReferralHistoryProp, IReferralHis
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className={`text-nowrap ${activeTab === NUMBER_OF_REFERRALS_TAB ? 'active' : ''}`} onClick={() => this.toggle(NUMBER_OF_REFERRALS_TAB)}>
+            <NavLink
+              className={`text-nowrap ${activeTab === NUMBER_OF_REFERRALS_TAB ? 'active' : ''}`}
+              onClick={() => this.toggle(NUMBER_OF_REFERRALS_TAB)}
+            >
               <span className="d-inline">
                 <Translate contentKey="referral.tabs.numberOfReferrals" />
               </span>
@@ -67,11 +70,9 @@ class ReferralHistory extends React.Component<IReferralHistoryProp, IReferralHis
   }
 }
 
-const mapStateToProps = ({ referral }: IRootState) => ({
-});
+const mapStateToProps = ({ referral }: IRootState) => ({});
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
