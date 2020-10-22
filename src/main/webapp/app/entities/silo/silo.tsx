@@ -106,6 +106,9 @@ export const Silo = (props: ISiloProps) => {
                 <th className="hand" onClick={sort('isPublic')}>
                   <Translate contentKey="serviceNetApp.silo.isPublic" /> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('referralEnabled')}>
+                  <Translate contentKey="serviceNetApp.silo.isReferralEnabled" /> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -119,6 +122,7 @@ export const Silo = (props: ISiloProps) => {
                   </td>
                   <td>{silo.name}</td>
                   <td>{silo.public ? 'true' : 'false'}</td>
+                  <td>{silo.referralEnabled ? 'true' : 'false'}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${silo.id}`} color="info" size="sm">

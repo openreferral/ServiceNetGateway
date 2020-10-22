@@ -1,3 +1,4 @@
+import './silo.scss';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -53,7 +54,7 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
   };
 
   return (
-    <div>
+    <div className="silo">
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="serviceNetGatewayApp.serviceNetSilo.home.createOrEditLabel">Create or edit a Silo</h2>
@@ -77,10 +78,16 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
                 </Label>
                 <AvField id="silo-name" type="text" name="name" />
               </AvGroup>
-              <AvGroup>
+              <AvGroup className="my-4">
                 <Label id="activeLabel" check>
                   <AvInput id="silo-public" type="checkbox" className="form-control" name="public" />
                   <Translate contentKey="serviceNetApp.silo.isPublic">Public</Translate>
+                </Label>
+              </AvGroup>
+              <AvGroup className="my-4">
+                <Label id="activeLabel" check>
+                  <AvInput id="silo-referralEnabled" type="checkbox" className="form-control" name="referralEnabled" />
+                  <Translate contentKey="serviceNetApp.silo.isReferralEnabled">Referral enabled</Translate>
                 </Label>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/entity/silo" color="info">
