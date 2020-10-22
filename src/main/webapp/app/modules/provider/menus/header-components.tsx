@@ -45,7 +45,7 @@ export const Brand = props => (
         <Translate contentKey="global.menu.feedback" />
       </span>
     </NavLink>
-    <NavLink exact tag={Link} to="/referral" className="pl-0">
+    {props.isReferralEnabled ? <NavLink exact tag={Link} to="/referral" className="pl-0">
       <div className="navbar-label text-dark header-link d-flex">
         <Translate contentKey="global.menu.referral" />
         {props.referralCount && props.referralCount > 0 ? (
@@ -61,6 +61,6 @@ export const Brand = props => (
           </div>
         )}
       </div>
-    </NavLink>
+    </NavLink> : null}
   </div>
 );

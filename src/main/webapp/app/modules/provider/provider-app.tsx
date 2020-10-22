@@ -83,6 +83,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             isShelterOwner={this.props.isShelterOwner}
             toggleMenu={this.toggleMenu}
             referralCount={this.props.referralCount}
+            isReferralEnabled={this.props.isReferralEnabled}
           />
         </MediaQuery>
       </div>
@@ -90,7 +91,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
 
     return (
       <div className="provider-shared provider-app" id="provider-home-view-container">
-        <SideMenu menuOpen={menuOpen} toggleMenu={this.toggleMenu} />
+        <SideMenu menuOpen={menuOpen} toggleMenu={this.toggleMenu} isReferralEnabled={this.props.isReferralEnabled} />
         <div className="app-container">
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}
@@ -124,7 +125,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, activity,
   userLogin: authentication.account.login,
   isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
   loggingOut: authentication.loggingOut,
-  referralCount: providerRecord.referredRecords.size
+  referralCount: providerRecord.referredRecords.size,
+  isReferralEnabled: authentication.account.siloIsReferralEnabled
 });
 
 const mapDispatchToProps = {

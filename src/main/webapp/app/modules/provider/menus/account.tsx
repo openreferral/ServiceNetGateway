@@ -5,14 +5,15 @@ import { NavLink as Link } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { NavDropdown } from './header-components';
 
-const accountMenuItemsAuthenticated = () => (
+const accountMenuItemsAuthenticated = (isReferralEnabled: boolean) => (
   <>
     <DropdownItem tag={Link} to="/account/settings">
       <FontAwesomeIcon icon="wrench" /> <Translate contentKey="global.menu.account.settings">Settings</Translate>
     </DropdownItem>
-    <DropdownItem tag={Link} to="/referral-history">
-      <FontAwesomeIcon icon="edit" /> <Translate contentKey="providerSite.menu.beneficiaryHistory">Beneficiary History</Translate>
-    </DropdownItem>
+    {isReferralEnabled ?
+      <DropdownItem tag={Link} to="/referral-history">
+        <FontAwesomeIcon icon="edit" /> <Translate contentKey="providerSite.menu.beneficiaryHistory">Beneficiary History</Translate>
+      </DropdownItem> : null}
     <DropdownItem tag={Link} to="/account/password">
       <FontAwesomeIcon icon="clock" /> <Translate contentKey="global.menu.account.password">Password</Translate>
     </DropdownItem>
@@ -36,9 +37,9 @@ const accountMenuItems = (
   </>
 );
 
-export const AccountMenu = ({ isAuthenticated = false, userLogin }) => (
+export const AccountMenu = ({ isAuthenticated = false, userLogin, isReferralEnabled }) => (
   <NavDropdown icon="user" name={userLogin ? userLogin : translate('global.menu.account.main')} id="account-menu">
-    {isAuthenticated ? accountMenuItemsAuthenticated() : accountMenuItems}
+    {isAuthenticated ? accountMenuItemsAuthenticated(isReferralEnabled) : accountMenuItems}
   </NavDropdown>
 );
 
