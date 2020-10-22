@@ -2,7 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Table, Row, Col } from 'reactstrap';
-import { getPaginationItemsNumber, getSortState, IPaginationBaseState, JhiPagination, TextFormat, translate, Translate } from 'react-jhipster';
+import {
+  getPaginationItemsNumber,
+  getSortState,
+  IPaginationBaseState,
+  JhiPagination,
+  TextFormat,
+  translate,
+  Translate
+} from 'react-jhipster';
 import { RouteComponentProps } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import { APP_DATE_FORMAT, MS_IN_A_DAY, selectStyle } from 'app/config/constants';
@@ -65,7 +73,7 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
 
   toggleBottom = () => {
     this.setState({ dropdownOpenBottom: !this.state.dropdownOpenBottom });
-  }
+  };
 
   select = prop => () => {
     this.setState(
@@ -80,11 +88,14 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
   handlePagination = activePage => this.setState({ activePage }, () => this.searchReferrals());
 
   setCustomState(page, items, sort) {
-    this.setState({
-      activePage: Number(page),
-      itemsPerPage: Number(items),
-      ...getSortState(this.props.location, items)
-    }, this.searchReferrals);
+    this.setState(
+      {
+        activePage: Number(page),
+        itemsPerPage: Number(items),
+        ...getSortState(this.props.location, items)
+      },
+      this.searchReferrals
+    );
   }
 
   sort = prop => () => {
@@ -98,17 +109,23 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
   };
 
   handleDateRangeChange = dateRange => {
-    this.setState({
-      dateRange,
-      activePage: FIRST_PAGE
-    }, this.searchReferrals);
+    this.setState(
+      {
+        dateRange,
+        activePage: FIRST_PAGE
+      },
+      this.searchReferrals
+    );
   };
 
   handleStatusChange = status => {
-    this.setState({
-      status,
-      activePage: FIRST_PAGE
-    }, this.searchReferrals);
+    this.setState(
+      {
+        status,
+        activePage: FIRST_PAGE
+      },
+      this.searchReferrals
+    );
   };
 
   dateRangeOptions = () => [
@@ -119,22 +136,22 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
 
   referralStatusOptions = () => [
     { value: '', label: translate('referral.filters.allStatuses') },
-    { value: SENT, label: translate('referral.filters.sent') },
-    { value: FULFILLED, label: translate('referral.filters.fulfilled') }
+    { value: SENT, label: translate('referral.filters.waiting') },
+    { value: FULFILLED, label: translate('referral.filters.arrived') }
   ];
 
   searchReferrals() {
     const { order, sort, activePage, itemsPerPage, dateRange, status } = this.state;
     let since = null;
     if (dateRange && dateRange.value === WEEK) {
-      since = new Date(new Date().getTime() - (7 * MS_IN_A_DAY)).toISOString();
+      since = new Date(new Date().getTime() - 7 * MS_IN_A_DAY).toISOString();
     } else if (dateRange && dateRange.value === MONTH) {
-      since = new Date(new Date().getTime() - (30 * MS_IN_A_DAY)).toISOString();
+      since = new Date(new Date().getTime() - 30 * MS_IN_A_DAY).toISOString();
     }
     this.props.searchReferrals(since, status && status.value, activePage - 1, itemsPerPage, order, sort);
   }
 
-  filters = () =>
+  filters = () => (
     <Row className="filters">
       <Col md={{ size: 6 }} className="mb-1 mb-md-0">
         <Select
@@ -158,7 +175,8 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
           inputId="status"
         />
       </Col>
-    </Row>;
+    </Row>
+  );
 
   render() {
     const { referrals, totalItems } = this.props;
@@ -180,39 +198,41 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
         <div className="table-responsive">
           <Table responsive>
             <thead>
-            <tr>
-              <th className="hand" onClick={this.sort('beneficiary.phoneNumber')}>
-                <Translate contentKey="referral.columns.beneficiaryPhoneNumber" /> <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('id')}>
-                <Translate contentKey="referral.columns.id" /> <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('sentAt')}>
-                <Translate contentKey="referral.columns.dateStamp" /> <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('from.name')}>
-                <Translate contentKey="referral.columns.referredFrom" /> <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('to.name')}>
-                <Translate contentKey="referral.columns.referredTo" /> <FontAwesomeIcon icon="sort" />
-              </th>
-              <th className="hand" onClick={this.sort('fulfilledAt')}>
-                <Translate contentKey="referral.columns.status" /> <FontAwesomeIcon icon="sort" />
-              </th>
-              <th />
-            </tr>
+              <tr>
+                <th className="hand" onClick={this.sort('beneficiary.phoneNumber')}>
+                  <Translate contentKey="referral.columns.beneficiaryPhoneNumber" /> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={this.sort('id')}>
+                  <Translate contentKey="referral.columns.id" /> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={this.sort('sentAt')}>
+                  <Translate contentKey="referral.columns.dateStamp" /> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={this.sort('from.name')}>
+                  <Translate contentKey="referral.columns.referredFrom" /> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={this.sort('to.name')}>
+                  <Translate contentKey="referral.columns.referredTo" /> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={this.sort('fulfilledAt')}>
+                  <Translate contentKey="referral.columns.status" /> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th />
+              </tr>
             </thead>
             <tbody>
-            {referrals.map((referral, i) => (
-              <tr key={`entity-${i}`}>
-                <td>{referral.beneficiaryPhoneNumber}</td>
-                <td>{referral.shortcode ? referral.shortcode : referral.id}</td>
-                <td><TextFormat value={referral.sentAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid /></td>
-                <td>{referral.fromName}</td>
-                <td>{referral.toName}</td>
-                <td>{referral.fulfilledAt ? 'Fulfilled' : 'Sent'}</td>
-              </tr>
-            ))}
+              {referrals.map((referral, i) => (
+                <tr key={`entity-${i}`}>
+                  <td>{referral.beneficiaryPhoneNumber}</td>
+                  <td>{referral.shortcode ? referral.shortcode : referral.id}</td>
+                  <td>
+                    <TextFormat value={referral.sentAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                  </td>
+                  <td>{referral.fromName}</td>
+                  <td>{referral.toName}</td>
+                  <td>{referral.fulfilledAt ? translate('referral.filters.arrived') : translate('referral.filters.waiting')}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </div>
