@@ -32,6 +32,10 @@ export const SiloDetail = (props: ISiloDetailProps) => {
           </dt>
           <dd>{siloEntity.public ? 'true' : 'false'}</dd>
           <dt>
+            <Translate contentKey="serviceNetApp.silo.isReferralEnabled" />
+          </dt>
+          <dd>{siloEntity.referralEnabled ? 'true' : 'false'}</dd>
+          <dt>
             <span>Registration link</span>
           </dt>
           <dd>{`${window.location.origin}/#/register/${siloEntity.name}`}</dd>

@@ -9,7 +9,8 @@
       },
       "id": "ID",
       "name": "Name",
-      "isPublic": "Public"
+      "isPublic": "Public",
+      "isReferralEnabled": "Referral enabled"
     }
   }
 }
