@@ -12,7 +12,7 @@ import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
-import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
@@ -295,7 +295,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   ({translate('record.singleRecordView.lastUpdated')}
                   :&nbsp;
                   {latestDailyUpdate.createdAt ? (
-                    <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                    <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                   ) : (
                     <Translate contentKey="recordCard.unknown" />
                   )}
