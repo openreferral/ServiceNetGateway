@@ -108,7 +108,13 @@ export const Referral = (props: IReferralProps) => {
                     From <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
+                    From Location <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th>
                     To <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th>
+                    To Location <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
                     Beneficiary <FontAwesomeIcon icon="sort" />
@@ -130,7 +136,9 @@ export const Referral = (props: IReferralProps) => {
                       {referral.fulfilledAt ? <TextFormat type="date" value={referral.fulfilledAt} format={APP_DATE_FORMAT} /> : null}
                     </td>
                     <td>{referral.fromName ? <Link to={`organization/${referral.fromId}`}>{referral.fromName}</Link> : ''}</td>
+                    <td>{referral.fromLocationName ? <Link to={`location/${referral.fromLocationId}`}>{referral.fromLocationName}</Link> : ''}</td>
                     <td>{referral.toName ? <Link to={`organization/${referral.toId}`}>{referral.toName}</Link> : ''}</td>
+                    <td>{referral.toLocationName ? <Link to={`location/${referral.toLocationId}`}>{referral.toLocationName}</Link> : ''}</td>
                     <td>
                       {referral.beneficiaryId ? <Link to={`beneficiary/${referral.beneficiaryId}`}>{referral.beneficiaryId}</Link> : ''}
                     </td>

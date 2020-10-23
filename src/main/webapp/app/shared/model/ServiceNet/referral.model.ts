@@ -9,6 +9,10 @@ export interface IReferral {
   fromId?: number;
   toName?: string;
   toId?: number;
+  fromLocationName?: string;
+  fromLocationId?: number;
+  toLocationName?: string;
+  toLocationId?: number;
   beneficiaryId?: number;
 }
 
