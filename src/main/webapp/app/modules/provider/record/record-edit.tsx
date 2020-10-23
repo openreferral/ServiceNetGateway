@@ -23,7 +23,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT } from 'app/config/constants';
 import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/measure-widths';
 import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
@@ -367,7 +367,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 <Translate contentKey="record.edit.lastUpdated" />
                 :&nbsp;
                 {latestDailyUpdate.createdAt ? (
-                  <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                  <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                 ) : (
                   <Translate contentKey="recordCard.unknown" />
                 )}

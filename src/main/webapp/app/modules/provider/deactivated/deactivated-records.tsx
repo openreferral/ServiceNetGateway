@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Table } from 'reactstrap';
 import { TextFormat, Translate } from 'react-jhipster';
 import { getDeactivatedProviderRecords, reactivateRecord } from './deactivated-records.reducer';
-import { APP_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT } from 'app/config/constants';
 import ButtonPill from '../shared/button-pill';
 
 export interface IDeactivatedRecordsProps extends StateProps, DispatchProps {}
@@ -45,12 +45,12 @@ export class DeactivatedRecords extends React.Component<IDeactivatedRecordsProps
                   </td>
                   <td>
                     <div>
-                      <TextFormat value={record.updatedAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                      <TextFormat value={record.updatedAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                     </div>
                   </td>
                   <td>
                     <div>
-                      <TextFormat value={record.deactivatedAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                      <TextFormat value={record.deactivatedAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                     </div>
                   </td>
                   <td className="d-flex pull-right">

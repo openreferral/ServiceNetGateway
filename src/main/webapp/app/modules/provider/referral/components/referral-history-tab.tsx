@@ -13,7 +13,7 @@ import {
 } from 'react-jhipster';
 import { RouteComponentProps } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
-import { APP_DATE_FORMAT, MS_IN_A_DAY, selectStyle } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, MS_IN_A_DAY, selectStyle } from 'app/config/constants';
 import { apiUrl, searchReferrals } from 'app/entities/referral/referral.reducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageSizeSelector from 'app/entities/page-size-selector';
@@ -226,7 +226,7 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
                   <td>{referral.beneficiaryPhoneNumber}</td>
                   <td>{referral.shortcode ? referral.shortcode : referral.id}</td>
                   <td>
-                    <TextFormat value={referral.sentAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                    <TextFormat value={referral.sentAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                   </td>
                   <td>{referral.fromName}</td>
                   <td>{referral.toName}</td>

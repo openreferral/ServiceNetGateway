@@ -10,7 +10,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-regular-svg-icons';
 import { faBookmark as faBookmarkSolid, faCircle } from '@fortawesome/free-solid-svg-icons';
-import { APP_DATE_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
@@ -109,8 +109,13 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       return null;
     }
     const daysAgo = moment().diff(moment(lastUpdated), 'days');
-    return <span className={`last-updated-indicator ${
-      systemAccountName !== SYSTEM_ACCOUNTS.SERVICE_PROVIDER || daysAgo > 30 ? 'old' : daysAgo < 7 ? 'recent' : ''}`} />;
+    return (
+      <span
+        className={`last-updated-indicator ${
+          systemAccountName !== SYSTEM_ACCOUNTS.SERVICE_PROVIDER || daysAgo > 30 ? 'old' : daysAgo < 7 ? 'recent' : ''
+        }`}
+      />
+    );
   };
 
   cardTitle = () => {
@@ -126,7 +131,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           <div>
             <Translate contentKey="recordCard.lastUpdate" />
             {record.lastUpdated ? (
-              <TextFormat value={record.lastUpdated} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+              <TextFormat value={record.lastUpdated} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
             ) : (
               <Translate contentKey="recordCard.unknown" />
             )}
@@ -239,7 +244,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           {latestDailyUpdate ? (
             <div className={`latest-daily-update${fullWidth ? '-full-width' : ''} mb-1`}>
               <span>
-                Update (<TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                Update (<TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                 ):
               </span>
               {!fullWidth ? <br /> : ' '}
