@@ -230,7 +230,8 @@
     "nameunique": "Name must be unique",
     "cantedit": "You are not allowed to edit this shelter",
     "cantEditRecord": "You are not allowed to edit this record",
-    "notFound": "<strong>Silo does not exist!</strong> Please check your registration link."
+    "notFound": "<strong>Silo does not exist!</strong> Please check your registration link.",
+    "invalidphone": "The Phone Number is invalid."
   },
   "footerLeft": "Copyright {{ year }} | Benetech | Software for Social Good",
   "footerRight": "<a href=\"/#/about-us\">About us</a>",
