@@ -29,7 +29,9 @@
       "beneficiary": "Enter Unique Identifier",
       "cbo": "Select Organization to Check In",
       "phone": "Enter Phone Number",
-      "referFrom": "Select Organization to Refer from"
+      "referFrom": "Select Organization to Refer from",
+      "location": "Select Location to Check In",
+      "fromLocation": "Select Location to Refer from"
     },
     "tabs": {
       "check_in": "Beneficiary Check In",
@@ -53,7 +55,8 @@
       "name": "Name",
       "remove": "Remove",
       "referSuccess": "The beneficiary was successfully referred!",
-      "referFailure": "Could not refer beneficiary due to a server error."
+      "referFailure": "Could not refer beneficiary due to a server error.",
+      "location": "Location"
     },
     "columns": {
       "beneficiaryPhoneNumber": "Beneficiary Phone Number",

@@ -128,6 +128,15 @@ export const ReferralUpdate = (props: IReferralUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
+                <Label for="referral-from-location">From Location</Label>
+                <AvInput id="referral-from-location" type="select" className="form-control" name="fromLocationId" disabled>
+                  <option value="" key="0" />
+                  <option value={referralEntity.fromLocationId} key={referralEntity.fromLocationId}>
+                    {referralEntity.fromLocationName}
+                  </option>
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
                 <Label for="referral-to">To</Label>
                 <AvInput id="referral-to" type="select" className="form-control" name="toId">
                   <option value="" key="0" />
@@ -138,6 +147,15 @@ export const ReferralUpdate = (props: IReferralUpdateProps) => {
                         </option>
                       ))
                     : null}
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
+                <Label for="referral-to-location">To Location</Label>
+                <AvInput id="referral-to-location" type="select" className="form-control" name="toLocationId" disabled>
+                  <option value="" key="0" />
+                  <option value={referralEntity.toLocationId} key={referralEntity.toLocationId}>
+                    {referralEntity.toLocationName}
+                  </option>
                 </AvInput>
               </AvGroup>
               <AvGroup>

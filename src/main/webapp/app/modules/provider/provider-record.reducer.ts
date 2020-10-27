@@ -32,7 +32,7 @@ const initialState = {
   allRecordsForMap: [] as any[],
   allRecordsTotal: 0,
   selectedRecord: null,
-  referredRecords: new Map<string, ISimpleOrganization>(),
+  referredRecords: new Map<string, any>(),
   userName: '',
   checkedIn: false,
   referSuccess: false,
@@ -154,14 +154,14 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         referSuccess: true
       };
     case ACTION_TYPES.REFER_RECORD:
-      referredRecords.set(action.payload.id, action.payload);
+      referredRecords.set(action.payload.organization.id, action.payload);
       return {
         ...state,
         referredRecords,
         userName: action.meta.userName
       };
     case ACTION_TYPES.UNREFER_RECORD:
-      referredRecords.delete(action.payload.id);
+      referredRecords.delete(action.payload.organization.id);
       return {
         ...state,
         referredRecords,
@@ -254,15 +254,15 @@ const clearFilter = filter => ({
   serviceTypes: _.map(filter.serviceTypes, s => s.value)
 });
 
-export const referRecord = (organization, userName = '') => ({
+export const referRecord = (record, userName = '') => ({
   type: ACTION_TYPES.REFER_RECORD,
-  payload: organization,
+  payload: record,
   meta: { userName }
 });
 
-export const unreferRecord = (organization, userName = '') => ({
+export const unreferRecord = (record, userName = '') => ({
   type: ACTION_TYPES.UNREFER_RECORD,
-  payload: organization,
+  payload: record,
   meta: { userName }
 });
 
@@ -270,8 +270,8 @@ export const cleanReferredRecords = () => ({
   type: ACTION_TYPES.CLEAN_REFERRED_RECORDS
 });
 
-export const checkIn = (phoneNumber, beneficiaryId, cboId) => ({
-  payload: axios.post(checkInApiUrl, { phoneNumber, beneficiaryId, cboId }),
+export const checkIn = (phoneNumber, beneficiaryId, cboId, locationId) => ({
+  payload: axios.post(checkInApiUrl, { phoneNumber, beneficiaryId, cboId, locationId }),
   type: ACTION_TYPES.CHECK_IN
 });
 
@@ -279,13 +279,12 @@ export const resetCheckedIn = () => ({
   type: ACTION_TYPES.RESET_CHECKED_IN
 });
 
-export const sendReferrals = (cboId: string, referrals: Map<string, ISimpleOrganization>, phone = '', beneficiaryId = '') => {
-  const url = `${referUrl}?referringOrganizationId=${cboId ? cboId : ''}&phoneNumber=${phone ? phone : ''}&beneficiaryId=${
-    beneficiaryId ? beneficiaryId : ''
-  }`;
+export const sendReferrals = (cboId: string, referrals: any, fromLocation: string, phone = '', beneficiaryId = '') => {
+  const url = `${referUrl}?referringOrganizationId=${cboId ? cboId : ''}&referringLocationId=${fromLocation ? fromLocation : ''}`
+  + `&phoneNumber=${phone ? phone : ''}&beneficiaryId=${beneficiaryId ? beneficiaryId : ''}`;
   return {
     type: ACTION_TYPES.SEND_REFERRALS,
-    payload: axios.post(url, Array.from(referrals.keys()))
+    payload: axios.post(url, referrals)
   };
 };
 

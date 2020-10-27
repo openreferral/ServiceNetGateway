@@ -19,13 +19,17 @@ export interface IReferralTabState {
   phoneNumber: string;
   beneficiaryId: string;
   cbo: any;
+  fromLocation: any;
+  orgLocations: any;
 }
 
 class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> {
   state: IReferralTabState = {
     phoneNumber: '',
     beneficiaryId: '',
-    cbo: null
+    cbo: null,
+    fromLocation: null,
+    orgLocations: {}
   };
 
   componentDidUpdate(prevProps: Readonly<IReferralTabProps>, prevState: Readonly<IReferralTabState>, snapshot?: any) {
@@ -52,11 +56,19 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
   };
 
   sendReferrals = () => {
-    const { phoneNumber, beneficiaryId, cbo } = this.state;
-    const { referredRecords, referralOptions } = this.props;
+    const { phoneNumber, beneficiaryId, cbo, fromLocation, orgLocations } = this.state;
+    const { referredRecords, referralOptions, organizations } = this.props;
+    // from
     const cboId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
+    const fromOrganization = organizations.find(org => org.id === cbo);
+    const fromLocationId = fromOrganization.locations.length === 1 ? fromOrganization.locations[0].id : fromLocation;
+    // to
+    const orgLocationMap = {};
+    referredRecords.forEach((record, id) => {
+      orgLocationMap[id] = orgLocations[id] || record.locations[0].id;
+    });
     this.props.sendReferrals(
-      cboId, referredRecords, phoneNumber, beneficiaryId
+      cboId, orgLocationMap, fromLocationId, phoneNumber, beneficiaryId
     );
   }
 
@@ -69,18 +81,51 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     } else return !!(!phoneNumber && beneficiaryId && (cbo || referralOptions.length === 1));
   };
 
+  locationOptions = () => this.state.cbo ? _.map(
+    _.get(this.props.organizations.find(org => org.id === this.state.cbo), 'locations'),
+    loc => ({
+      value: loc.id,
+      label: loc.name
+    })
+  ) : [];
+
+  onFromLocationSelect = evt => {
+    this.setState({ fromLocation: evt.value });
+  };
+
+  recordLocationOptions = record => _.map(record.locations, loc => ({
+    value: loc.id,
+    label: loc.name
+  }));
+
+  onToLocationSelect = id => evt => {
+    const orgLocations = this.state;
+    orgLocations[id] = evt.value;
+    this.setState({ orgLocations });
+  };
+
   content = () => {
-    const { phoneNumber, cbo } = this.state;
+    const { phoneNumber, cbo, fromLocation, orgLocations } = this.state;
     const { referralOptions } = this.props;
     const referralTableBody = [];
-    this.props.referredRecords.forEach((organization, id) => {
+    const locationOptions = this.locationOptions();
+    this.props.referredRecords.forEach((record, id) => {
       referralTableBody.push(
         <tr key={`org-${id}`}>
           <td>
-            <div>{organization.name}</div>
+            <div>{record.organization.name}</div>
           </td>
-          <td className="d-flex pull-right">
-            <ButtonPill className="button-pill-danger" onClick={() => this.props.unreferRecord(organization, this.props.userName)}>
+          <td className="d-flex">
+            <Select
+              className="full-width"
+              value={orgLocations[id] ? orgLocations[id].id : null}
+              options={this.recordLocationOptions(record)}
+              onChange={this.onToLocationSelect(id)}
+              styles={selectStyle()}
+            />
+          </td>
+          <td>
+            <ButtonPill className="button-pill-danger pull-right" onClick={() => this.props.unreferRecord(record, this.props.userName)}>
               <Translate contentKey="referral.records.remove" />
             </ButtonPill>
           </td>
@@ -94,6 +139,9 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
           <tr>
             <th>
               <Translate contentKey="referral.records.name">Name</Translate>
+            </th>
+            <th>
+              <Translate contentKey="referral.records.location">Location</Translate>
             </th>
             <th />
           </tr>
@@ -129,14 +177,27 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
         />
         {referralOptions.length > 1 ? (
           <Select
-            className="my-2"
+            className="my-2 full-width"
             name="cbo"
             id="cbo"
             value={cbo ? cbo.id : null}
             options={referralOptions}
             onChange={this.onSelect}
-            inputId="cityInput"
+            inputId="cbo"
             placeholder={translate('referral.placeholder.referFrom')}
+            styles={selectStyle()}
+          />
+        ) : null}
+        {cbo != null && locationOptions.length > 1 ? (
+          <Select
+            className="my-2 full-width"
+            name="fromLocation"
+            id="fromLocation"
+            value={fromLocation ? fromLocation.id : null}
+            options={locationOptions}
+            onChange={this.onFromLocationSelect}
+            inputId="fromLocationSelect"
+            placeholder={translate('referral.placeholder.fromLocation')}
             styles={selectStyle()}
           />
         ) : null}
@@ -154,7 +215,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
 
   render() {
     return (
-      <div className="col-12 col-md-4 offset-md-4">
+      <div className="col-12 col-md-6 offset-md-3">
         <div className="content-title my-5">
           <Translate contentKey="referral.title.referrals" />
         </div>
@@ -167,6 +228,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
 const mapStateToProps = ({ authentication, providerRecord }: IRootState) => ({
   referredRecords: providerRecord.referredRecords,
   userName: authentication.account.login,
+  organizations: providerRecord.providerOptions,
   referralOptions: _.map(providerRecord.providerOptions, org => ({
     value: org.id,
     label: org.name

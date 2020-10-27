@@ -41,8 +41,12 @@ export const ReferralDetail = (props: IReferralDetailProps) => {
           </dd>
           <dt>From</dt>
           <dd>{referralEntity.fromName ? referralEntity.fromName : ''}</dd>
+          <dt>From Location</dt>
+          <dd>{referralEntity.fromLocationName ? referralEntity.fromLocationName : ''}</dd>
           <dt>To</dt>
           <dd>{referralEntity.toName ? referralEntity.toName : ''}</dd>
+          <dt>To Location</dt>
+          <dd>{referralEntity.toLocationName ? referralEntity.toLocationName : ''}</dd>
           <dt>Beneficiary</dt>
           <dd>{referralEntity.beneficiaryId ? referralEntity.beneficiaryId : ''}</dd>
         </dl>

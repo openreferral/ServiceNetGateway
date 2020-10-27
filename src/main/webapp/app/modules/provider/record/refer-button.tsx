@@ -3,25 +3,23 @@ import './refer-button.scss';
 import React from 'react';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import _ from 'lodash';
 import { referRecord, unreferRecord } from '../provider-record.reducer';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
-import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 
 export interface IReferButtonProp extends StateProps, DispatchProps {
-  organization: ISimpleOrganization;
+  record: any;
 }
 
 export class ReferButton extends React.Component<IReferButtonProp, {}> {
   render() {
-    const { userName, organization, referredRecords, isReferralEnabled } = this.props;
+    const { userName, record, referredRecords, isReferralEnabled } = this.props;
     if (!isReferralEnabled) {
       return null;
     }
-    if (referredRecords.has(organization.id)) {
+    if (referredRecords.has(record.organization.id)) {
       return (
-        <div className="refer-button green" onClick={() => this.props.unreferRecord(organization, userName)}>
+        <div className="refer-button green" onClick={() => this.props.unreferRecord(record, userName)}>
           <b className="d-flex align-items-center">
             <Translate contentKey="recordCard.referred" />
             &nbsp;
@@ -31,7 +29,7 @@ export class ReferButton extends React.Component<IReferButtonProp, {}> {
       );
     } else {
       return (
-        <div className="refer-button" onClick={() => this.props.referRecord(organization, userName)}>
+        <div className="refer-button" onClick={() => this.props.referRecord(record, userName)}>
           <b>
             <Translate contentKey="recordCard.refer" />
           </b>

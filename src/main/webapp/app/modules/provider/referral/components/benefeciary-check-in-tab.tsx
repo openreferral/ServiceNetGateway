@@ -17,6 +17,7 @@ export interface IBeneficiaryCheckInTabState {
   phoneNumber: String;
   beneficiaryId: String;
   cbo: any;
+  location: any;
 }
 
 export interface IBeneficiaryCheckInTabProps extends StateProps, DispatchProps {}
@@ -25,7 +26,8 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
   state: IBeneficiaryCheckInTabState = {
     phoneNumber: '',
     beneficiaryId: '',
-    cbo: null
+    cbo: null,
+    location: null
   };
 
   setPhone = phoneNumber => {
@@ -36,38 +38,51 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
     this.setState({ beneficiaryId: evt.target.value });
   };
 
-  sendReferral = () => {
-    const { phoneNumber, beneficiaryId, cbo } = this.state;
-    const { referralOptions } = this.props;
-    const cboId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
-    this.props.checkIn(phoneNumber, beneficiaryId, cboId);
+  checkIn = () => {
+    const { phoneNumber, beneficiaryId, cbo, location } = this.state;
+    const { referralOptions, organizations } = this.props;
+    const orgId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
+    const organization = organizations.find(org => org.id === cbo);
+    const locId = organization.locations.length === 1 ? organization.locations[0].id : location;
+    this.props.checkIn(phoneNumber, beneficiaryId, orgId, locId);
   };
 
   close = () => {
-    this.setState({ phoneNumber: '', beneficiaryId: '', cbo: null });
+    this.setState({ phoneNumber: '', beneficiaryId: '', cbo: null, location: null });
     this.props.resetCheckedIn();
   };
 
-  onSelect = cbo => {
-    this.setState({ cbo: cbo.value });
+  onSelect = evt => {
+    this.setState({ cbo: evt.value });
+  };
+
+  onLocationSelect = evt => {
+    this.setState({ location: evt.value });
   };
 
   canBeSent = () => {
-    const { phoneNumber, beneficiaryId, cbo } = this.state;
+    const { phoneNumber, beneficiaryId, cbo, location } = this.state;
     const { referralOptions } = this.props;
+    const selected = (cbo || referralOptions.length === 1)
+      && (location || this.locationOptions().length === 1);
 
-    if (phoneNumber && isPossiblePhoneNumber(phoneNumber) && (cbo || referralOptions.length === 1)) {
+    if (phoneNumber && isPossiblePhoneNumber(phoneNumber) && selected) {
       return true;
-    } else if (!phoneNumber && beneficiaryId && (cbo || referralOptions.length === 1)) {
-      return true;
-    } else {
-      return false;
-    }
+    } else return !!(!phoneNumber && beneficiaryId && selected);
   };
 
+  locationOptions = () => this.state.cbo ? _.map(
+    _.get(this.props.organizations.find(org => org.id === this.state.cbo), 'locations'),
+    loc => ({
+      value: loc.id,
+      label: loc.name
+    })
+  ) : [];
+
   render() {
-    const { phoneNumber, cbo } = this.state;
+    const { phoneNumber, cbo, location } = this.state;
     const { checkedIn, referralOptions } = this.props;
+    const locationOptions = this.locationOptions();
 
     return (
       <div className="col-12 col-md-4 offset-md-4">
@@ -101,21 +116,34 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
             />
             {referralOptions.length > 1 ? (
               <Select
-                className="my-2"
+                className="my-2 full-width"
                 name="cbo"
                 id="cbo"
                 value={cbo ? cbo.id : null}
                 options={referralOptions}
                 onChange={this.onSelect}
-                inputId="cityInput"
+                inputId="cboSelect"
                 placeholder={translate('referral.placeholder.cbo')}
+                styles={selectStyle()}
+              />
+            ) : null}
+            {cbo != null && locationOptions.length > 1 ? (
+              <Select
+                className="my-2 full-width"
+                name="location"
+                id="location"
+                value={location ? location.id : null}
+                options={locationOptions}
+                onChange={this.onLocationSelect}
+                inputId="locationSelect"
+                placeholder={translate('referral.placeholder.location')}
                 styles={selectStyle()}
               />
             ) : null}
             <ButtonPill
               className={`button-pill-green my-2 ${this.canBeSent() ? '' : 'disabled'}`}
               style={{ width: '100px' }}
-              onClick={this.canBeSent() ? this.sendReferral : null}
+              onClick={this.canBeSent() ? this.checkIn : null}
             >
               <Translate contentKey="referral.labels.send" />
             </ButtonPill>
@@ -141,6 +169,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
 }
 
 const mapStateToProps = ({ providerRecord }: IRootState) => ({
+  organizations: providerRecord.providerOptions,
   referralOptions: _.map(providerRecord.providerOptions, org => ({
     value: org.id,
     label: org.name
