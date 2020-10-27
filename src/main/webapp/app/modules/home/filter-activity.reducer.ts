@@ -197,7 +197,7 @@ export const getCityList = () => {
 
 export const getPostalCodeListForServiceProviders = (userName = '', siloName = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
-  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-postal-codes?siloName=${siloName}`;
+  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-postal-codes${siloName ? `?siloName=${siloName}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_PROVIDERS_POSTAL_CODE_LIST,
     payload: axios.get<any>(requestUrl),
@@ -210,7 +210,7 @@ export const getPostalCodeListForServiceProviders = (userName = '', siloName = '
 
 export const getRegionListForServiceProviders = (userName = '', siloName = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
-  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-regions?siloName=${siloName}`;
+  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-regions${siloName ? `?siloName=${siloName}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_PROVIDERS_REGION_LIST,
     payload: axios.get<any>(requestUrl),
@@ -223,7 +223,7 @@ export const getRegionListForServiceProviders = (userName = '', siloName = '') =
 
 export const getCityListForServiceProviders = (userName = '', siloName = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
-  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-cities?siloName=${siloName}`;
+  const requestUrl = `${baseUrl}/activity-filter/service-providers/get-cities${siloName ? `?siloName=${siloName}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_PROVIDERS_CITY_LIST,
     payload: axios.get<any>(requestUrl),
@@ -249,7 +249,7 @@ export const getPartnerList = (userName = '', siloName = '') => {
 
 export const getTaxonomyMap = (userName = '', siloName = '', siloId = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
-  const requestUrl = `${baseUrl}/activity-filter/get-taxonomies?siloId=${siloId}`;
+  const requestUrl = `${baseUrl}/activity-filter/get-taxonomies${siloId ? `?siloId=${siloId}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_TAXONOMY_LIST,
     payload: axios.get<any>(requestUrl),
