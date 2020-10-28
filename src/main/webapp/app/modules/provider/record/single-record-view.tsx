@@ -453,9 +453,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                               {srv.taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
                                 this.taxonomyPills(srv)
                               ) : (
-                                <div className="pill">
-                                  <span>{translate('record.singleRecordView.untyped')}</span>
-                                </div>
+                                <span>{translate('record.singleRecordView.untyped')}</span>
                               )}
                             </div>
                           </CardBody>
@@ -506,20 +504,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         <b className="mb-1">
                           <Translate contentKey="record.singleRecordView.srvTypes" />
                         </b>
-                        {organization.services[currentServiceIdx].taxonomyIds.length > 0 ? (
+                        {organization.services[currentServiceIdx].taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
                           organization.services[currentServiceIdx].taxonomyIds.map(srvTaxonomy => (
                             <div key={`tax-${srvTaxonomy}`} className="pill mb-1">
                               <span className="ml-1">
-                                {taxonomyOptions && taxonomyOptions.length > 0
-                                  ? _.get(taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy), 'label')
-                                  : translate('record.singleRecordView.untyped')}
+                                {_.get(taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy), 'label')}
                               </span>
                             </div>
                           ))
                         ) : (
-                          <div className="pill">
-                            <span>{translate('record.singleRecordView.untyped')}</span>
-                          </div>
+                          <span>{translate('record.singleRecordView.untyped')}</span>
                         )}
                       </h6>
                     </section>
