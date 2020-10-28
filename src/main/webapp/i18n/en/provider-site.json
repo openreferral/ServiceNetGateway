@@ -37,6 +37,7 @@
     "alert": "Alert",
     "mapView": "Map View",
     "gridView": "Grid View",
-    "directions": "Directions"
+    "directions": "Directions",
+    "referElsewhere": "Refer Elsewhere"
   }
 }

@@ -3,8 +3,7 @@ import {
   getAllProviderRecords,
   getProviderRecordsForMap,
   selectRecord,
-  getAllProviderRecordsPublic,
-  referRecord
+  getAllProviderRecordsPublic
 } from './provider-record.reducer';
 import { connect } from 'react-redux';
 import { Col, Row, Progress, Modal, Button } from 'reactstrap';
@@ -23,6 +22,7 @@ import { GOOGLE_API_KEY } from 'app/config/constants';
 import { uncheckFiltersChanged } from './provider-filter.reducer';
 import PersistentMap from 'app/modules/provider/map';
 import './all-records.scss';
+import SearchBar from 'app/modules/provider/menus/search-bar';
 
 const MEDIUM_WIDTH_BREAKPOINT = 991;
 const LARGE_WIDTH_BREAKPOINT = 992;
@@ -554,7 +554,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   );
 
   render() {
-    const { siloName, isMapView } = this.props;
+    const { siloName, isMapView, isReferralEnabled } = this.props;
     const { filterOpened, isSticky } = this.state;
     return (
       <main className="all-records flex-column-stretch">
@@ -572,12 +572,26 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           </Modal>
         </MediaQuery>
         <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
-          <div className="d-flex justify-content-between">
-            <b className="align-self-center">
-              <Translate contentKey="providerSite.allRecords" />
-            </b>
-            <this.progress />
-          </div>
+          <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+            <div className="d-flex justify-content-between">
+              <b className="align-self-center">
+                <Translate contentKey="providerSite.allRecords" />
+              </b>
+              <this.progress />
+            </div>
+          </MediaQuery>
+          <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+            {siloName ? null :
+              <div className="all-records-title">
+                <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
+              </div>
+            }
+            <Row className="search">
+              <Col className="height-fluid">
+                <SearchBar />
+              </Col>
+            </Row>
+          </MediaQuery>
           {(!isMapView || !isSticky) && this.sortContainer()}
         </div>
         {isMapView ? <this.mapView /> : <this.gridView />}
@@ -598,7 +612,8 @@ const mapStateToProps = state => ({
   allRecordsForMap: state.providerRecord.allRecordsForMap,
   selectedRecord: state.providerRecord.selectedRecord,
   filtersChanged: state.providerFilter.filtersChanged,
-  loading: state.providerRecord.loading
+  loading: state.providerRecord.loading,
+  isReferralEnabled: state.authentication.account.siloIsReferralEnabled
 });
 
 const mapDispatchToProps = {

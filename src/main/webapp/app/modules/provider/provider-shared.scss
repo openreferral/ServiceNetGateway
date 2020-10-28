@@ -177,6 +177,22 @@
       }
     }
 
+    .all-records-title {
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .search-bar {
+      padding-right: 0;
+      margin-bottom: 0.5rem;
+      margin-top: 0.25rem;
+
+      .search-from {
+        width: 100%;
+        background-color: white;
+      }
+    }
+
     .all-records-container-public {
       padding-top: 1rem !important;
     }
