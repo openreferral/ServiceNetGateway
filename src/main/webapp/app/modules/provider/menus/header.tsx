@@ -61,9 +61,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto header-item" navbar>
-              <li className="self-align-center">
-                <SearchBar />
-              </li>
               {/* d-none until implemented */}
               <li className="self-align-center d-none">
                 <Badge className="bell-bagde" color="info">

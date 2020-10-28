@@ -133,12 +133,22 @@
     display: flex;
   }
 
+  .all-records-title {
+    font-size: 24px;
+  }
+
   @media only screen and (min-width: 769px) {
     .flex-column-stretch {
       display: flex;
       align-items: stretch;
       flex-direction: column;
       flex: 1;
+    }
+
+    .all-records-title {
+      padding-top: 0.5rem;
+      padding-left: 1.5rem;
+      margin-bottom: -0.25rem;
     }
 
     .control-line-container-solid {
@@ -159,10 +169,18 @@
     }
   }
 
+  .search-from {
+    background-color: white;
+  }
+
   @media only screen and (max-width: 768px) {
     .app-container {
       height: calc(100vh - #{$marginTopMobile});
       margin-top: $marginTopMobile !important;
+    }
+
+    .all-records-title {
+      text-align: center;
     }
 
     .app-container-public {
@@ -177,11 +195,6 @@
       }
     }
 
-    .all-records-title {
-      text-align: center;
-      font-size: 24px;
-    }
-
     .search-bar {
       padding-right: 0;
       margin-bottom: 0.5rem;
@@ -189,7 +202,6 @@
 
       .search-from {
         width: 100%;
-        background-color: white;
       }
     }
 

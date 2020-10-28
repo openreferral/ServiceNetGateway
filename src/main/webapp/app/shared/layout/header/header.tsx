@@ -81,9 +81,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <FeedbackButton {...this.props} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
-              {isPublic ? <li className="self-align-center">
-                <SearchBar />
-              </li> : null}
               {(!isAuthenticated || !isSacramento) && <Home {...this.props} />}
               {isAuthenticated && !isSacramento && <DataStatus />}
               {isAuthenticated && isSacramento && <SacramentoMenu isShelterOwner={isShelterOwner} />}
