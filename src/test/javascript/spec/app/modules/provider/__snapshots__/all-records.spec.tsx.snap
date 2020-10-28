@@ -1420,6 +1420,9 @@ exports[`All records renders correctly 1`] = `
         <MediaQuery
           maxDeviceWidth={768}
         />
+        <MediaQuery
+          minDeviceWidth={769}
+        />
         <div
           className="control-line-container"
         >

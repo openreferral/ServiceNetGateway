@@ -556,7 +556,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   );
 
   onSearchBarSwitchFocus = (isSearchBarFocused: boolean) => {
-    if (isSearchBarFocused && this.controlLineContainerRef.current) {
+    if (isSearchBarFocused && !this.props.siloName && this.controlLineContainerRef.current) {
       this.controlLineContainerRef.current.scrollIntoView({
         behavior: 'instant',
         block: 'start'
@@ -585,22 +585,28 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           </Modal>
         </MediaQuery>
+        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+          {siloName ? null :
+            <div className="all-records-title">
+              <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
+            </div>
+          }
+        </MediaQuery>
         <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
           <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-            <div className="d-flex justify-content-between">
-              <b className="align-self-center">
-                <Translate contentKey="providerSite.allRecords" />
-              </b>
-              <this.progress />
-            </div>
+            <Row className="search">
+              <Col className="height-fluid">
+                <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
+              </Col>
+            </Row>
           </MediaQuery>
           <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+            {siloName ? null :
+              <div className="all-records-title">
+                <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
+              </div>
+            }
             <div className={isSearchBarFocused ? 'on-top' : ''}>
-              {siloName ? null :
-                <div className="all-records-title">
-                  <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
-                </div>
-              }
               <Row className="search">
                 <Col className="height-fluid">
                   <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
