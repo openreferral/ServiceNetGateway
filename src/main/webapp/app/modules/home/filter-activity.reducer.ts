@@ -249,7 +249,7 @@ export const getPartnerList = (userName = '', siloName = '') => {
 
 export const getTaxonomyMap = (userName = '', siloName = '', siloId = '') => {
   const baseUrl = siloName ? SERVICENET_PUBLIC_API_URL : SERVICENET_API_URL;
-  const requestUrl = `${baseUrl}/activity-filter/get-taxonomies${siloId ? `?siloId=${siloId}` : ''}`;
+  const requestUrl = `${baseUrl}/activity-filter/get-taxonomies${siloId ? `?siloId=${siloId}` : `?siloName=${siloName}`}`;
   return {
     type: ACTION_TYPES.FETCH_TAXONOMY_LIST,
     payload: axios.get<any>(requestUrl),
