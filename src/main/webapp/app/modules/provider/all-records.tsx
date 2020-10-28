@@ -71,6 +71,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   requestedBoundaries: any;
   searchArea: boolean;
   centeredAt: any;
+  isSearchBarFocused: boolean;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
@@ -96,6 +97,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       boundaries: null,
       searchArea: false,
       centeredAt: null,
+      isSearchBarFocused: false,
       ...providerSearchPreferences
     };
     this.controlLineContainerRef = React.createRef();
@@ -553,9 +555,21 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     </div>
   );
 
+  onSearchBarSwitchFocus = (isSearchBarFocused: boolean) => {
+    if (isSearchBarFocused && this.controlLineContainerRef.current) {
+      this.controlLineContainerRef.current.scrollIntoView({
+        behavior: 'instant',
+        block: 'start'
+      });
+    }
+    this.setState({
+      isSearchBarFocused
+    });
+  }
+
   render() {
     const { siloName, isMapView, isReferralEnabled } = this.props;
-    const { filterOpened, isSticky } = this.state;
+    const { filterOpened, isSticky, isSearchBarFocused } = this.state;
     return (
       <main className="all-records flex-column-stretch">
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
@@ -581,16 +595,19 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           </MediaQuery>
           <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-            {siloName ? null :
-              <div className="all-records-title">
-                <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
-              </div>
-            }
-            <Row className="search">
-              <Col className="height-fluid">
-                <SearchBar />
-              </Col>
-            </Row>
+            <div className={isSearchBarFocused ? 'on-top' : ''}>
+              {siloName ? null :
+                <div className="all-records-title">
+                  <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
+                </div>
+              }
+              <Row className="search">
+                <Col className="height-fluid">
+                  <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
+                </Col>
+              </Row>
+            </div>
+            {isSearchBarFocused ? <div className="darken-overlay" /> : null}
           </MediaQuery>
           {(!isMapView || !isSticky) && this.sortContainer()}
         </div>

@@ -5,7 +5,9 @@ import { translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { setText, resetText } from 'app/modules/provider/menus/search.reducer';
 
-export interface ISearchBarProp extends StateProps, DispatchProps {}
+export interface ISearchBarProp extends StateProps, DispatchProps {
+  onSwitchFocus?: any;
+}
 
 export interface ISearchBarState {
   text: string;
@@ -43,6 +45,22 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
     this.props.resetText();
   };
 
+  onFocus = e => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      if (this.props.onSwitchFocus) {
+        this.props.onSwitchFocus(true);
+      }
+    }
+  }
+
+  onBlur = e => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      if (this.props.onSwitchFocus) {
+        this.props.onSwitchFocus(false);
+      }
+    }
+  }
+
   render() {
     return (
       <div className="search-bar">
@@ -60,6 +78,8 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
               value={this.state.text}
               placeholder={translate('providerSite.searchPlaceholder')}
               onChange={this.updateText}
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
             />
             <label className="sr-only" htmlFor="search">
               {translate('providerSite.searchPlaceholder')}
