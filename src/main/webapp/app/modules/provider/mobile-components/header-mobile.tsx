@@ -77,11 +77,6 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
                 </div>
               </Col>
             </Row>
-            <Row className="search">
-              <Col className="height-fluid">
-                <SearchBar />
-              </Col>
-            </Row>
           </div>
         </Navbar>
       </div>
