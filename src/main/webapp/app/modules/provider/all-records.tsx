@@ -111,11 +111,15 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
-      if (this.props.isMapView) {
-        this.getRecordsForMap();
-      } else {
-        this.getRecords(true);
-      }
+      this.setState({
+        activePage: 0
+      }, () => {
+        if (this.props.isMapView) {
+          this.getRecordsForMap();
+        } else {
+          this.getRecords(true);
+        }
+      });
     }
 
     if (!prevProps.isMapView && this.props.isMapView) {
