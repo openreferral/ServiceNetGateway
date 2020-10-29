@@ -590,7 +590,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           </Modal>
         </MediaQuery>
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-          {siloName ? null :
+          {siloName || isMapView ? null :
             <div className="all-records-title">
               <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
             </div>
@@ -605,7 +605,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </Row>
           </MediaQuery>
           <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-            {siloName ? null :
+            {siloName || isMapView ? null :
               <div className="all-records-title">
                 <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
               </div>
