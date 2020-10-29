@@ -121,7 +121,7 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
         ref={mapRef => this.setMapRef(mapRef)}
         center={{ lat: this.state.lat, lng: this.state.lng }}
         zoom={this.state.zoom}
-        defaultOptions={{ mapTypeControl: false, streetViewControl: false, fullscreenControl: false }}
+        defaultOptions={{ mapTypeControl: false, streetViewControl: false, fullscreenControl: false, gestureHandling: 'greedy' }}
         onBoundsChanged={this.onBoundsChanged}
         onCenterChanged={this.onCenterChanged}
         onZoomChanged={this.onZoomChanged}
