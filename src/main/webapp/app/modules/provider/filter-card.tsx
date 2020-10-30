@@ -71,7 +71,7 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
         this.props.getCityList(userName, siloName);
       }
       if (hasUserOrSiloChanged || _.isEmpty(taxonomyOptions)) {
-        this.props.getTaxonomyMap(userName, siloName, siloId ? siloId : '');
+        this.props.getTaxonomyMap(userName, siloName, true);
       }
       this.setState({ ...filter });
     }
