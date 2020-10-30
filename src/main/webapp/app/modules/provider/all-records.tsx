@@ -37,6 +37,7 @@ const MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE = '24px';
 const MY_LOCATION_BUTTON_POSITION_RIGHT = '65px';
 const MY_LOCATION_BUTTON_POSITION_BOTTOM = '32px';
 export const MAX_PINS_ON_MAP = 50;
+const MAP_MARGIN_TOP = 65;
 
 declare global {
   // tslint:disable-next-line:interface-name
@@ -60,7 +61,6 @@ export interface IAllRecordsState extends IPaginationBaseState {
   activePage: number;
   sortingOpened: boolean;
   filterOpened: boolean;
-  isSticky: boolean;
   recordViewType: 'GRID' | 'LIST';
   isRecordHighlighted: boolean;
   selectedLat: number;
@@ -72,11 +72,13 @@ export interface IAllRecordsState extends IPaginationBaseState {
   searchArea: boolean;
   centeredAt: any;
   isSearchBarFocused: boolean;
+  mapHeight: any;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
   controlLineContainerRef: any;
   pageEndRef: any;
+  mapContainerRef: any;
 
   constructor(props) {
     super(props);
@@ -87,7 +89,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       sortingOpened: false,
       filterOpened: false,
       isMapView: false,
-      isSticky: false,
       isRecordHighlighted: false,
       selectedLat: null,
       selectedLng: null,
@@ -102,11 +103,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     };
     this.controlLineContainerRef = React.createRef();
     this.pageEndRef = React.createRef();
+    this.mapContainerRef = React.createRef();
   }
 
   componentDidMount() {
     this.getRecords(true);
-    window.addEventListener('scroll', _.debounce(this.handleScroll, 50), true);
+    window.addEventListener('scroll', _.debounce(this.getMapHeight, 50), true);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -121,21 +123,17 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         }
       });
     }
-
-    if (!prevProps.isMapView && this.props.isMapView) {
-      this.scrollToBottom();
-    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', () => this.handleScroll);
+    window.removeEventListener('scroll', () => this.getMapHeight);
   }
 
-  handleScroll = () => {
-    if (this.controlLineContainerRef.current) {
-      const rect = this.controlLineContainerRef.current.getBoundingClientRect();
+  getMapHeight = () => {
+    if (this.mapContainerRef.current) {
+      const mapContainerRect = this.mapContainerRef.current.getBoundingClientRect();
       this.setState({
-        isSticky: rect.top <= (this.state.isSticky ? rect.height : 0)
+        mapHeight: mapContainerRect.height - mapContainerRect.top + MAP_MARGIN_TOP
       });
     }
   };
@@ -212,15 +210,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   closeRecordCard = () => {
     this.setState({ isRecordHighlighted: false });
-  };
-
-  scrollToBottom = () => {
-    if (this.pageEndRef.current) {
-      this.pageEndRef.current.scrollIntoView({
-        behavior: 'instant',
-        block: 'start'
-      });
-    }
   };
 
   toggleMapView = () => {
@@ -365,27 +354,26 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   mapOverlay = () =>
     this.state.boundaries && (
-      <div className="d-flex flex-column align-items-center">
-        <div className={`map-overlay-top ${this.state.isSticky ? 'sticky' : ''}`}>
-          {this.props.isMapView && this.state.isSticky && this.sortContainer()}
-          <div className="d-flex flex-column align-items-center">
-            <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`}>
-              <FontAwesomeIcon icon="search" size="lg" />
-              <Translate contentKey="providerSite.searchThisArea" />
-            </ButtonPill>
-            {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP && (
-              <span className="small">
-                <Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} />
-              </span>
-            )}
-            {this.props.loading && (
-              <div className="spinner-border mt-1" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            )}
-          </div>
+      <>
+        <div className="d-flex flex-column align-items-center map-overlay-top">
+          {this.props.loading && (
+            <div className="spinner-border mt-1" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          )}
         </div>
-      </div>
+        <div className="d-flex flex-column align-items-center map-overlay-search">
+          <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`}>
+            <FontAwesomeIcon icon="search" size="lg" />
+            <Translate contentKey="providerSite.searchThisArea" />
+          </ButtonPill>
+          {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP && (
+            <span className="small">
+                  <Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} />
+                </span>
+          )}
+        </div>
+      </>
     );
 
   mapOverlayBottom = (isMobile = false) =>
@@ -403,9 +391,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       </div>
     );
 
+  setMapContainerRef = mapContainerRef => {
+    this.mapContainerRef.current = mapContainerRef;
+    this.getMapHeight();
+  }
+
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
+    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt, mapHeight } = this.state;
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
@@ -422,23 +415,25 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       <>
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Col md={12} className="px-0 mx-0 absolute-card-container">
-            <div style={{ height: `calc(100vh - 80px)` }}>
-              {this.mapOverlay()}
-              <PersistentMap {...mapProps} containerElement={<div style={{ height: `calc(100vh - 80px)` }} />} />
-              {this.mapOverlayBottom(true)}
-              {isRecordHighlighted && selectedRecord && !filterOpened ? (
-                <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
-                  <div className="px-2">
-                    <RecordCard
-                      record={selectedRecord}
-                      link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
-                      closeCard={this.closeRecordCard}
-                      coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
-                      referring={this.props.referring}
-                    />
-                  </div>
-                </Col>
-              ) : null}
+            <div style={{ height: `calc(100vh - ${MAP_MARGIN_TOP}px)` }} ref={this.setMapContainerRef}>
+              {mapHeight && <div style={{ height: mapHeight, position: 'relative' }}>
+                {this.mapOverlay()}
+                <PersistentMap {...mapProps} containerElement={<div style={{ height: '100%' }} />} />
+                {this.mapOverlayBottom(true)}
+                {isRecordHighlighted && selectedRecord && !filterOpened ? (
+                  <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
+                    <div className="px-2">
+                      <RecordCard
+                        record={selectedRecord}
+                        link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+                        closeCard={this.closeRecordCard}
+                        coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
+                        referring={this.props.referring}
+                      />
+                    </div>
+                  </Col>
+                ) : null}
+              </div>}
             </div>
           </Col>
         </MediaQuery>
@@ -573,7 +568,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   render() {
     const { siloName, isMapView, isReferralEnabled } = this.props;
-    const { filterOpened, isSticky, isSearchBarFocused } = this.state;
+    const { filterOpened, isSearchBarFocused } = this.state;
     return (
       <main className="all-records flex-column-stretch">
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
@@ -619,7 +614,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
             {isSearchBarFocused ? <div className="darken-overlay" /> : null}
           </MediaQuery>
-          {(!isMapView || !isSticky) && this.sortContainer()}
+          {this.sortContainer()}
         </div>
         {isMapView ? <this.mapView /> : <this.gridView />}
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
