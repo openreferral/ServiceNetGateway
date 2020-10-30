@@ -17,17 +17,13 @@ import ReactGA from 'react-ga';
 import ButtonPill from './shared/button-pill';
 import FilterCard from './filter-card';
 import MediaQuery from 'react-responsive';
-import { GOOGLE_API_KEY } from 'app/config/constants';
+import { DESKTOP_WIDTH_BREAKPOINT, GOOGLE_API_KEY, LARGE_WIDTH_BREAKPOINT, MEDIUM_WIDTH_BREAKPOINT, MOBILE_WIDTH_BREAKPOINT } from 'app/config/constants';
 // tslint:disable-next-line:no-submodule-imports
 import { uncheckFiltersChanged } from './provider-filter.reducer';
 import PersistentMap from 'app/modules/provider/map';
 import './all-records.scss';
 import SearchBar from 'app/modules/provider/menus/search-bar';
 
-const MEDIUM_WIDTH_BREAKPOINT = 991;
-const LARGE_WIDTH_BREAKPOINT = 992;
-const MOBILE_WIDTH_BREAKPOINT = 768;
-const DESKTOP_WIDTH_BREAKPOINT = 769;
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 const GRID_VIEW = 'GRID';
 const LIST_VIEW = 'LIST';

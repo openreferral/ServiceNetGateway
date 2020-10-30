@@ -86,7 +86,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
 
     return (
       <div className="col-12 col-md-4 offset-md-4">
-        <div className="content-title my-5">
+        <div className="content-title  my-3 my-md-5">
           <Translate contentKey="referral.title.check_in" />
         </div>
         {!checkedIn ? (
