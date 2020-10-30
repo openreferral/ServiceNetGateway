@@ -34,6 +34,11 @@ export const GOOGLE_API_KEY = _.get(window, '_env_.GOOGLE_API_KEY', '');
 export const MAX_PAGE_SIZE = 2147483647;
 export const MS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
+export const MEDIUM_WIDTH_BREAKPOINT = 991;
+export const LARGE_WIDTH_BREAKPOINT = 992;
+export const MOBILE_WIDTH_BREAKPOINT = 768;
+export const DESKTOP_WIDTH_BREAKPOINT = 769;
+
 // overridden component styles
 const PLACEHOLDER_TEXT_COLOR = '#8e8e8e';
 export const selectStyle = () => ({

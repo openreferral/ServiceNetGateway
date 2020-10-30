@@ -10,8 +10,10 @@ import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import Select from 'react-select';
-import { selectStyle } from 'app/config/constants';
+import { DESKTOP_WIDTH_BREAKPOINT, MOBILE_WIDTH_BREAKPOINT, selectStyle } from 'app/config/constants';
 import { toast } from 'react-toastify';
+import MediaQuery from 'react-responsive';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IReferralTabProps extends StateProps, DispatchProps {}
 
@@ -126,14 +128,19 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
           </td>
           <td>
             <ButtonPill className="button-pill-danger pull-right" onClick={() => this.props.unreferRecord(record, this.props.userName)}>
-              <Translate contentKey="referral.records.remove" />
+              <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+                <FontAwesomeIcon icon="trash" />
+              </MediaQuery>
+              <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+                <Translate contentKey="referral.records.remove" />
+              </MediaQuery>
             </ButtonPill>
           </td>
         </tr>
       );
     });
     return <>
-      <div className="d-flex flex-column justify-content-center align-items-center mb-2">
+      <div className="d-flex flex-column justify-content-center align-items-center mb-2 referral-table">
         <Table size="sm">
           <thead>
           <tr>
@@ -216,7 +223,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
   render() {
     return (
       <div className="col-12 col-md-6 offset-md-3">
-        <div className="content-title my-5">
+        <div className="content-title my-3 my-md-5">
           <Translate contentKey="referral.title.referrals" />
         </div>
         {!_.isEmpty(this.props.referredRecords) ? this.content() : this.contentEmpty()}
