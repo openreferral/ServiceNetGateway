@@ -364,6 +364,7 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                     <a
                       className="url-link"
                       href="https://www.example.org"
+                      rel="noopener noreferrer"
                       style={
                         Object {
                           "color": "rgba(0, 0, 0, 0.7)",
@@ -1717,6 +1718,7 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       <a
                         className="url-link"
                         href="https://www.example.org"
+                        rel="noopener noreferrer"
                         style={
                           Object {
                             "color": "rgba(0, 0, 0, 0.7)",
@@ -2700,6 +2702,7 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                     <a
                       className="url-link"
                       href="//www.example.org"
+                      rel="noopener noreferrer"
                       style={
                         Object {
                           "color": "rgba(0, 0, 0, 0.7)",
@@ -4295,6 +4298,7 @@ Community Housing Partnership does not maintain an open waitlist. All vacancies 
                       <a
                         className="url-link"
                         href="//www.example.org"
+                        rel="noopener noreferrer"
                         style={
                           Object {
                             "color": "rgba(0, 0, 0, 0.7)",
