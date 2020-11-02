@@ -456,6 +456,7 @@ exports[`Multiple record view renders correctly 1`] = `
                       <a
                         className="url-link"
                         href="//www.example.org"
+                        rel="noopener noreferrer"
                         style={
                           Object {
                             "color": "rgba(0, 0, 0, 0.7)",
@@ -1993,6 +1994,7 @@ exports[`Multiple record view renders correctly 1`] = `
                         <a
                           className="url-link"
                           href="//www.example.org"
+                          rel="noopener noreferrer"
                           style={
                             Object {
                               "color": "rgba(0, 0, 0, 0.7)",
@@ -3559,6 +3561,7 @@ exports[`Multiple record view renders correctly 1`] = `
                       <a
                         className="url-link"
                         href="//example.org"
+                        rel="noopener noreferrer"
                         style={
                           Object {
                             "color": "rgba(0, 0, 0, 0.7)",
@@ -5125,6 +5128,7 @@ Clients have the ability to choose all parts of their home care, including the t
                         <a
                           className="url-link"
                           href="//example.org"
+                          rel="noopener noreferrer"
                           style={
                             Object {
                               "color": "rgba(0, 0, 0, 0.7)",

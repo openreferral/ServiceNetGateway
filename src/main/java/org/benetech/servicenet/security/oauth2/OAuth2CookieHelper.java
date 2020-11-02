@@ -276,6 +276,7 @@ public class OAuth2CookieHelper {
         Cookie cookie = new Cookie(cookieName, "");
         setCookieProperties(cookie, httpServletRequest.isSecure(), domain);
         cookie.setMaxAge(0);
+        cookie.setSecure(true);
         httpServletResponse.addCookie(cookie);
         log.debug("clearing cookie {}", cookie.getName());
     }
