@@ -84,7 +84,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       activePage: 0,
       sortingOpened: false,
       filterOpened: false,
-      isMapView: false,
       isRecordHighlighted: false,
       selectedLat: null,
       selectedLng: null,
@@ -175,7 +174,16 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   toggleViewType = () => {
-    this.setState({ recordViewType: this.state.recordViewType === GRID_VIEW ? LIST_VIEW : GRID_VIEW });
+    const recordViewType = this.state.recordViewType;
+    if (this.props.isMapView) {
+      this.toggleMapView();
+    } else {
+      if (recordViewType === GRID_VIEW) {
+        this.setState({ recordViewType: LIST_VIEW });
+      } else {
+        this.toggleMapView();
+      }
+    }
   };
 
   toggleFilter = () => {
@@ -221,7 +229,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       selectedLat: null,
       selectedLng: null,
       showMyLocation: false,
-      boundaries: null
+      boundaries: null,
+      recordViewType: GRID_VIEW
     });
   };
 
@@ -517,36 +526,43 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   sortContainer = () => (
-    <div>
-      <div className={`sort-container`}>
-        <ButtonPill onClick={this.toggleMapView} className="mr-1">
-          <span>
-            <FontAwesomeIcon icon={this.props.isMapView ? 'th' : 'map'} />
-            &nbsp;
-            <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-              {translate(this.props.isMapView ? 'providerSite.gridView' : 'providerSite.mapView')}
-            </MediaQuery>
-          </span>
-        </ButtonPill>
-        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-          <ButtonPill onClick={this.toggleViewType} className="mr-1">
-            <span>
-              <FontAwesomeIcon color={this.state.recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
-              {' | '}
-              <FontAwesomeIcon color={this.state.recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR} icon="bars" />
-            </span>
-          </ButtonPill>
-        </MediaQuery>
-        <SortSection
-          dropdownOpen={this.state.sortingOpened}
-          toggleSort={() => this.toggleSorting()}
-          values={PROVIDER_SORT_ARRAY}
-          sort={this.state.sort}
-          order={this.state.order}
-          sortFunc={this.sort}
-        />
-        <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" />
+    <div className="flex-grow-1 d-inline-flex">
+      <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" className="mr-2" />
+      <div className="sort-container">
+          <SortSection
+            dropdownOpen={this.state.sortingOpened}
+            toggleSort={() => this.toggleSorting()}
+            values={PROVIDER_SORT_ARRAY}
+            sort={this.state.sort}
+            order={this.state.order}
+            sortFunc={this.sort}
+          />
       </div>
+    </div>
+  );
+
+  viewTypeButton = () => (
+    <div>
+      <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+        <ButtonPill onClick={this.toggleMapView} className="mr-1 view-type-button">
+            <span>
+              <FontAwesomeIcon color={!this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="bars" />
+              {' | '}
+              <FontAwesomeIcon color={this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="map" />
+            </span>
+        </ButtonPill>
+      </MediaQuery>
+      <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+        <ButtonPill onClick={this.toggleViewType} className="mr-1 view-type-button">
+            <span>
+              <FontAwesomeIcon color={!this.props.isMapView && this.state.recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
+              {' | '}
+              <FontAwesomeIcon color={!this.props.isMapView && this.state.recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR} icon="bars" />
+              {' | '}
+              <FontAwesomeIcon color={this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="map" />
+            </span>
+        </ButtonPill>
+      </MediaQuery>
     </div>
   );
 
@@ -610,7 +626,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
             {isSearchBarFocused ? <div className="darken-overlay" /> : null}
           </MediaQuery>
-          {this.sortContainer()}
+          <div className="d-flex flex-grow-1 justify-between mt-1">
+            {this.sortContainer()}
+            {this.viewTypeButton()}
+          </div>
         </div>
         {isMapView ? <this.mapView /> : <this.gridView />}
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>

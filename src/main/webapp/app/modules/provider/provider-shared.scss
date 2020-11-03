@@ -131,6 +131,10 @@
 
   .sort-container {
     display: flex;
+
+    .dropdown, .dropdown div:not(.dropdown-menu) {
+      height: 100%;
+    }
   }
 
   .all-records-title {
@@ -231,8 +235,6 @@
 
     .sort-container {
       display: flex;
-      justify-content: space-between;
-      margin-top: 0.5rem;
     }
 
     .mobile-invisible {

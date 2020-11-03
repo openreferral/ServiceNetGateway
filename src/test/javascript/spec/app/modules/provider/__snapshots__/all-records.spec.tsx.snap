@@ -1432,77 +1432,19 @@ exports[`All records renders correctly 1`] = `
           <MediaQuery
             maxDeviceWidth={768}
           />
-          <div>
+          <div
+            className="d-flex flex-grow-1 justify-between mt-1"
+          >
             <div
-              className="sort-container"
+              className="flex-grow-1 d-inline-flex"
             >
               <ButtonPill
-                className="mr-1"
-                onClick={[Function]}
-              >
-                <div
-                  className="button-pill mr-1"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  <span>
-                    <FontAwesomeIcon
-                      border={false}
-                      className=""
-                      fixedWidth={false}
-                      flip={null}
-                      icon="map"
-                      inverse={false}
-                      listItem={false}
-                      mask={null}
-                      pull={null}
-                      pulse={false}
-                      rotation={null}
-                      size={null}
-                      spin={false}
-                      swapOpacity={false}
-                      symbol={false}
-                      title=""
-                      transform={null}
-                    />
-                     
-                    <MediaQuery
-                      minDeviceWidth={769}
-                    />
-                  </span>
-                </div>
-              </ButtonPill>
-              <MediaQuery
-                minDeviceWidth={769}
-              />
-              <SortActivity
-                dropdownOpen={false}
-                order="desc"
-                sort="updatedAt"
-                sortFunc={[Function]}
-                toggleSort={[Function]}
-                values={
-                  Array [
-                    "updatedAt",
-                    "name",
-                  ]
-                }
-              >
-                <div>
-                  <MediaQuery
-                    maxDeviceWidth={768}
-                  />
-                  <MediaQuery
-                    minDeviceWidth={769}
-                  />
-                </div>
-              </SortActivity>
-              <ButtonPill
+                className="mr-2"
                 onClick={[Function]}
                 translate="providerSite.filter"
               >
                 <div
-                  className="button-pill "
+                  className="button-pill mr-2"
                   onClick={[Function]}
                   style={Object {}}
                 >
@@ -1516,6 +1458,40 @@ exports[`All records renders correctly 1`] = `
                   </b>
                 </div>
               </ButtonPill>
+              <div
+                className="sort-container"
+              >
+                <SortActivity
+                  dropdownOpen={false}
+                  order="desc"
+                  sort="updatedAt"
+                  sortFunc={[Function]}
+                  toggleSort={[Function]}
+                  values={
+                    Array [
+                      "updatedAt",
+                      "name",
+                    ]
+                  }
+                >
+                  <div>
+                    <MediaQuery
+                      maxDeviceWidth={768}
+                    />
+                    <MediaQuery
+                      minDeviceWidth={769}
+                    />
+                  </div>
+                </SortActivity>
+              </div>
+            </div>
+            <div>
+              <MediaQuery
+                maxDeviceWidth={768}
+              />
+              <MediaQuery
+                minDeviceWidth={769}
+              />
             </div>
           </div>
         </div>
