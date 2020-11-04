@@ -1497,42 +1497,38 @@ exports[`All records renders correctly 1`] = `
         </div>
         <Component>
           <div>
-            <Row
-              noGutters={true}
-              tag="div"
+            <InfiniteScroll
+              element="div"
+              getScrollParent={[Function]}
+              hasMore={true}
+              initialLoad={false}
+              isReverse={false}
+              loadMore={[Function]}
+              loader={null}
+              pageStart={0}
+              ref={null}
+              threshold={0}
+              useCapture={false}
+              useWindow={false}
             >
-              <div
-                className="no-gutters row"
-              >
-                <MediaQuery
-                  maxDeviceWidth={768}
-                />
-                <MediaQuery
-                  minDeviceWidth={769}
-                />
-              </div>
-            </Row>
-            <div
-              className="mb-4 text-center d-flex justify-content-center"
-            >
-              <ButtonPill
-                className="d-inline "
-                onClick={[Function]}
-              >
-                <div
-                  className="button-pill d-inline "
-                  onClick={[Function]}
-                  style={Object {}}
+              <div>
+                <Row
+                  noGutters={true}
+                  tag="div"
                 >
-                  <Translate
-                    component="span"
-                    contentKey="providerSite.loadMore"
+                  <div
+                    className="no-gutters row"
                   >
-                    <span />
-                  </Translate>
-                </div>
-              </ButtonPill>
-            </div>
+                    <MediaQuery
+                      maxDeviceWidth={768}
+                    />
+                    <MediaQuery
+                      minDeviceWidth={769}
+                    />
+                  </div>
+                </Row>
+              </div>
+            </InfiniteScroll>
           </div>
         </Component>
         <MediaQuery
