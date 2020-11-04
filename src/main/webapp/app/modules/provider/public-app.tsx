@@ -53,9 +53,14 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
     const { match } = this.props;
     return (
       <div className="provider-shared public-app" id="provider-home-view-container">
-        <SideMenu menuOpen={this.state.menuOpen} toggleMenu={this.toggleMenu}
-                  match={match} isPublic isAuthenticated={this.props.isAuthenticated} />
-        <div className="app-container-public">
+        <SideMenu
+          menuOpen={this.state.menuOpen}
+          toggleMenu={this.toggleMenu}
+          match={match}
+          isPublic
+          isAuthenticated={this.props.isAuthenticated}
+        />
+        <div className="app-container-public" id="app-container">
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}
             className="toastify-container"

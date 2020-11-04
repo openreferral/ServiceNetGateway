@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  getAllProviderRecords,
-  getProviderRecordsForMap,
-  selectRecord,
-  getAllProviderRecordsPublic
-} from './provider-record.reducer';
+import { getAllProviderRecords, getProviderRecordsForMap, selectRecord, getAllProviderRecordsPublic } from './provider-record.reducer';
 import { connect } from 'react-redux';
-import { Col, Row, Progress, Modal, Button } from 'reactstrap';
+import { Col, Row, Progress, Modal, Button, Spinner } from 'reactstrap';
 import _ from 'lodash';
 import RecordCard from 'app/modules/provider/record/record-card';
 import { IPaginationBaseState, Translate, translate } from 'react-jhipster';
@@ -17,12 +12,19 @@ import ReactGA from 'react-ga';
 import ButtonPill from './shared/button-pill';
 import FilterCard from './filter-card';
 import MediaQuery from 'react-responsive';
-import { DESKTOP_WIDTH_BREAKPOINT, GOOGLE_API_KEY, LARGE_WIDTH_BREAKPOINT, MEDIUM_WIDTH_BREAKPOINT, MOBILE_WIDTH_BREAKPOINT } from 'app/config/constants';
+import {
+  DESKTOP_WIDTH_BREAKPOINT,
+  GOOGLE_API_KEY,
+  LARGE_WIDTH_BREAKPOINT,
+  MEDIUM_WIDTH_BREAKPOINT,
+  MOBILE_WIDTH_BREAKPOINT
+} from 'app/config/constants';
 // tslint:disable-next-line:no-submodule-imports
 import { uncheckFiltersChanged } from './provider-filter.reducer';
 import PersistentMap from 'app/modules/provider/map';
 import './all-records.scss';
 import SearchBar from 'app/modules/provider/menus/search-bar';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 const GRID_VIEW = 'GRID';
@@ -108,15 +110,18 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.providerFilter !== prevProps.providerFilter || prevProps.search !== this.props.search) {
-      this.setState({
-        activePage: 0
-      }, () => {
-        if (this.props.isMapView) {
-          this.getRecordsForMap();
-        } else {
-          this.getRecords(true);
+      this.setState(
+        {
+          activePage: 0
+        },
+        () => {
+          if (this.props.isMapView) {
+            this.getRecordsForMap();
+          } else {
+            this.getRecords(true);
+          }
         }
-      });
+      );
     }
   }
 
@@ -164,7 +169,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   handleLoadMore = hasReachedMaxItems => {
-    if (!hasReachedMaxItems) {
+    const { loading } = this.props;
+    if (!hasReachedMaxItems && !loading) {
       this.setState({ activePage: this.state.activePage + 1 }, () => this.getAllRecords());
     }
   };
@@ -374,8 +380,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           </ButtonPill>
           {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP && (
             <span className="small">
-                  <Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} />
-                </span>
+              <Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} />
+            </span>
           )}
         </div>
       </>
@@ -399,7 +405,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   setMapContainerRef = mapContainerRef => {
     this.mapContainerRef.current = mapContainerRef;
     this.getMapHeight();
-  }
+  };
 
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
@@ -421,24 +427,26 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <Col md={12} className="px-0 mx-0 absolute-card-container">
             <div style={{ height: `calc(100vh - ${MAP_MARGIN_TOP}px)` }} ref={this.setMapContainerRef}>
-              {mapHeight && <div style={{ height: mapHeight, position: 'relative' }}>
-                {this.mapOverlay()}
-                <PersistentMap {...mapProps} containerElement={<div style={{ height: '100%' }} />} />
-                {this.mapOverlayBottom(true)}
-                {isRecordHighlighted && selectedRecord && !filterOpened ? (
-                  <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
-                    <div className="px-2">
-                      <RecordCard
-                        record={selectedRecord}
-                        link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
-                        closeCard={this.closeRecordCard}
-                        coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
-                        referring={this.props.referring}
-                      />
-                    </div>
-                  </Col>
-                ) : null}
-              </div>}
+              {mapHeight && (
+                <div style={{ height: mapHeight, position: 'relative' }}>
+                  {this.mapOverlay()}
+                  <PersistentMap {...mapProps} containerElement={<div style={{ height: '100%' }} />} />
+                  {this.mapOverlayBottom(true)}
+                  {isRecordHighlighted && selectedRecord && !filterOpened ? (
+                    <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
+                      <div className="px-2">
+                        <RecordCard
+                          record={selectedRecord}
+                          link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+                          closeCard={this.closeRecordCard}
+                          coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
+                          referring={this.props.referring}
+                        />
+                      </div>
+                    </Col>
+                  ) : null}
+                </div>
+              )}
             </div>
           </Col>
         </MediaQuery>
@@ -485,26 +493,28 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   gridView = () => {
-    const { allRecords, allRecordsTotal } = this.props;
-    const { filterOpened } = this.state;
+    const { allRecords, allRecordsTotal, loading } = this.props;
+    const { filterOpened, activePage } = this.state;
     const hasReachedMaxItems = allRecords.length === parseInt(allRecordsTotal, 10);
     return (
       <div>
-        <Row noGutters>
-          <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>{this.mapRecords({ records: allRecords })}</MediaQuery>
-          <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-            {filterOpened ? this.mapWithFilter(allRecords) : this.mapRecords({ records: allRecords, isInAllRecordSection: true })}
-          </MediaQuery>
-        </Row>
-
-        <div className="mb-4 text-center d-flex justify-content-center">
-          <ButtonPill
-            onClick={() => this.handleLoadMore(hasReachedMaxItems)}
-            className={`d-inline ${hasReachedMaxItems ? 'disabled' : ''}`}
-          >
-            <Translate contentKey="providerSite.loadMore" />
-          </ButtonPill>
-        </div>
+        <InfiniteScroll
+          pageStart={activePage}
+          loadMore={() => this.handleLoadMore(hasReachedMaxItems)}
+          hasMore={!hasReachedMaxItems}
+          loader={loading ? <Spinner key={0} color="primary" style={{ marginLeft: '50%', marginBottom: '5px' }} /> : null}
+          threshold={0}
+          initialLoad={false}
+          useWindow={false}
+          getScrollParent={() => document.getElementById('app-container')}
+        >
+          <Row noGutters>
+            <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>{this.mapRecords({ records: allRecords })}</MediaQuery>
+            <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+              {filterOpened ? this.mapWithFilter(allRecords) : this.mapRecords({ records: allRecords, isInAllRecordSection: true })}
+            </MediaQuery>
+          </Row>
+        </InfiniteScroll>
       </div>
     );
   };
@@ -529,14 +539,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     <div className="flex-grow-1 d-inline-flex">
       <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" className="mr-2" />
       <div className="sort-container">
-          <SortSection
-            dropdownOpen={this.state.sortingOpened}
-            toggleSort={() => this.toggleSorting()}
-            values={PROVIDER_SORT_ARRAY}
-            sort={this.state.sort}
-            order={this.state.order}
-            sortFunc={this.sort}
-          />
+        <SortSection
+          dropdownOpen={this.state.sortingOpened}
+          toggleSort={() => this.toggleSorting()}
+          values={PROVIDER_SORT_ARRAY}
+          sort={this.state.sort}
+          order={this.state.order}
+          sortFunc={this.sort}
+        />
       </div>
     </div>
   );
@@ -545,22 +555,28 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     <div>
       <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
         <ButtonPill onClick={this.toggleMapView} className="mr-1 view-type-button">
-            <span>
-              <FontAwesomeIcon color={!this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="bars" />
-              {' | '}
-              <FontAwesomeIcon color={this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="map" />
-            </span>
+          <span>
+            <FontAwesomeIcon color={!this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="bars" />
+            {' | '}
+            <FontAwesomeIcon color={this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="map" />
+          </span>
         </ButtonPill>
       </MediaQuery>
       <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
         <ButtonPill onClick={this.toggleViewType} className="mr-1 view-type-button">
-            <span>
-              <FontAwesomeIcon color={!this.props.isMapView && this.state.recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR} icon="th" />
-              {' | '}
-              <FontAwesomeIcon color={!this.props.isMapView && this.state.recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR} icon="bars" />
-              {' | '}
-              <FontAwesomeIcon color={this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="map" />
-            </span>
+          <span>
+            <FontAwesomeIcon
+              color={!this.props.isMapView && this.state.recordViewType === GRID_VIEW ? 'black' : INACTIVE_COLOR}
+              icon="th"
+            />
+            {' | '}
+            <FontAwesomeIcon
+              color={!this.props.isMapView && this.state.recordViewType === LIST_VIEW ? 'black' : INACTIVE_COLOR}
+              icon="bars"
+            />
+            {' | '}
+            <FontAwesomeIcon color={this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="map" />
+          </span>
         </ButtonPill>
       </MediaQuery>
     </div>
@@ -576,7 +592,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({
       isSearchBarFocused
     });
-  }
+  };
 
   render() {
     const { siloName, isMapView, isReferralEnabled } = this.props;
@@ -597,11 +613,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           </Modal>
         </MediaQuery>
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-          {siloName || isMapView ? null :
+          {siloName || isMapView ? null : (
             <div className="all-records-title">
               <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
             </div>
-          }
+          )}
         </MediaQuery>
         <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
           <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
@@ -612,11 +628,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </Row>
           </MediaQuery>
           <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-            {siloName || isMapView ? null :
+            {siloName || isMapView ? null : (
               <div className="all-records-title">
                 <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
               </div>
-            }
+            )}
             <div className={isSearchBarFocused ? 'on-top' : ''}>
               <Row className="search">
                 <Col className="height-fluid">
