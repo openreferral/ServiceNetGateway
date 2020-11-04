@@ -92,7 +92,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
     return (
       <div className="provider-shared provider-app" id="provider-home-view-container">
         <SideMenu menuOpen={menuOpen} toggleMenu={this.toggleMenu} isReferralEnabled={this.props.isReferralEnabled} />
-        <div className="app-container">
+        <div className="app-container" id="app-container">
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}
             className="toastify-container"
