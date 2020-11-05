@@ -28,12 +28,12 @@ class OAuth2Cookies {
      *
      * @param response the response to add them to.
      */
-    void addCookiesTo(HttpServletResponse response) {
+    void addCookiesTo(HttpServletResponse response, boolean isSecure) {
         Cookie accessTokenCookie = getAccessTokenCookie();
-        accessTokenCookie.setSecure(true);
+        accessTokenCookie.setSecure(isSecure);
         response.addCookie(accessTokenCookie);
         Cookie refreshTokenCookie = getRefreshTokenCookie();
-        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setSecure(isSecure);
         response.addCookie(refreshTokenCookie);
     }
 }

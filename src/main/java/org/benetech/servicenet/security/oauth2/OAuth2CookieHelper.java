@@ -264,19 +264,19 @@ public class OAuth2CookieHelper {
      * @param httpServletRequest  the request containing the Cookies.
      * @param httpServletResponse the response used to clear them.
      */
-    public void clearCookies(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void clearCookies(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, boolean isSecure) {
         String domain = getCookieDomain(httpServletRequest);
         for (String cookieName : COOKIE_NAMES) {
-            clearCookie(httpServletRequest, httpServletResponse, domain, cookieName);
+            clearCookie(httpServletRequest, httpServletResponse, domain, cookieName, isSecure);
         }
     }
 
     private void clearCookie(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                             String domain, String cookieName) {
+                             String domain, String cookieName, boolean isSecure) {
         Cookie cookie = new Cookie(cookieName, "");
         setCookieProperties(cookie, httpServletRequest.isSecure(), domain);
         cookie.setMaxAge(0);
-        cookie.setSecure(true);
+        cookie.setSecure(isSecure);
         httpServletResponse.addCookie(cookie);
         log.debug("clearing cookie {}", cookie.getName());
     }

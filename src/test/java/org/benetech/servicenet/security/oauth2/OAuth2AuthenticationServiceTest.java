@@ -67,7 +67,7 @@ public class OAuth2AuthenticationServiceTest {
         mockRefreshGrant();
 
         authorizationClient = new UaaTokenEndpointClient(restTemplate, jHipsterProperties, oAuth2Properties);
-        authenticationService = new OAuth2AuthenticationService(authorizationClient, cookieHelper);
+        authenticationService = new OAuth2AuthenticationService(authorizationClient, cookieHelper, false);
         when(tokenStore.readAccessToken(ACCESS_TOKEN_VALUE)).thenReturn(accessToken);
         refreshTokenFilter = new RefreshTokenFilter(authenticationService, tokenStore);
     }
