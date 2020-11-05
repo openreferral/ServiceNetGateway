@@ -196,6 +196,12 @@
       width: 100vw;
       &.map, &-public.map {
         padding-top: 1rem;
+        height: calc(100vh - #{$paddingTopMobile});
+        > .all-records {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
       }
     }
 

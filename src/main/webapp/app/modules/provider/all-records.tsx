@@ -70,7 +70,6 @@ export interface IAllRecordsState extends IPaginationBaseState {
   searchArea: boolean;
   centeredAt: any;
   isSearchBarFocused: boolean;
-  mapHeight: any;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
@@ -105,7 +104,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   componentDidMount() {
     this.getRecords(true);
-    window.addEventListener('scroll', _.debounce(this.getMapHeight, 50), true);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -124,19 +122,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       );
     }
   }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', () => this.getMapHeight);
-  }
-
-  getMapHeight = () => {
-    if (this.mapContainerRef.current) {
-      const mapContainerRect = this.mapContainerRef.current.getBoundingClientRect();
-      this.setState({
-        mapHeight: mapContainerRect.height - mapContainerRect.top + MAP_MARGIN_TOP
-      });
-    }
-  };
 
   getRecords(isInitLoading = false) {
     const { itemsPerPage, activePage, sort, order } = this.state;
@@ -404,12 +389,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   setMapContainerRef = mapContainerRef => {
     this.mapContainerRef.current = mapContainerRef;
-    this.getMapHeight();
   };
 
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt, mapHeight } = this.state;
+    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
@@ -425,28 +409,26 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     return (
       <>
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-          <Col md={12} className="px-0 mx-0 absolute-card-container">
-            <div style={{ height: `calc(100vh - ${MAP_MARGIN_TOP}px)` }} ref={this.setMapContainerRef}>
-              {mapHeight && (
-                <div style={{ height: mapHeight, position: 'relative' }}>
-                  {this.mapOverlay()}
-                  <PersistentMap {...mapProps} containerElement={<div style={{ height: '100%' }} />} />
-                  {this.mapOverlayBottom(true)}
-                  {isRecordHighlighted && selectedRecord && !filterOpened ? (
-                    <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
-                      <div className="px-2">
-                        <RecordCard
-                          record={selectedRecord}
-                          link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
-                          closeCard={this.closeRecordCard}
-                          coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
-                          referring={this.props.referring}
-                        />
-                      </div>
-                    </Col>
-                  ) : null}
-                </div>
-              )}
+          <Col md={12} className="px-0 mx-0 flex-grow-1">
+            <div className="h-100" ref={this.setMapContainerRef}>
+              <div className="h-100">
+                {this.mapOverlay()}
+                <PersistentMap {...mapProps} containerElement={<div className="h-100" />} />
+                {this.mapOverlayBottom(true)}
+                {isRecordHighlighted && selectedRecord && !filterOpened ? (
+                  <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
+                    <div className="px-2">
+                      <RecordCard
+                        record={selectedRecord}
+                        link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+                        closeCard={this.closeRecordCard}
+                        coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
+                        referring={this.props.referring}
+                      />
+                    </div>
+                  </Col>
+                ) : null}
+              </div>
             </div>
           </Col>
         </MediaQuery>
