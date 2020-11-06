@@ -202,7 +202,7 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
                 <th className="hand" onClick={this.sort('beneficiary.phoneNumber')}>
                   <Translate contentKey="referral.columns.beneficiaryPhoneNumber" /> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={this.sort('id')}>
+                <th className="hand" onClick={this.sort('beneficiary.identifier')}>
                   <Translate contentKey="referral.columns.id" /> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={this.sort('sentAt')}>
@@ -224,7 +224,7 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
               {referrals.map((referral, i) => (
                 <tr key={`entity-${i}`}>
                   <td>{referral.beneficiaryPhoneNumber}</td>
-                  <td>{referral.shortcode ? referral.shortcode : referral.id}</td>
+                  <td>{referral.beneficiaryIdentifier}</td>
                   <td>
                     <TextFormat value={referral.sentAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                   </td>
