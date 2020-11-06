@@ -5,7 +5,6 @@ import org.benetech.servicenet.security.oauth2.OAuth2AuthenticationService;
 import org.benetech.servicenet.security.oauth2.OAuth2CookieHelper;
 import org.benetech.servicenet.security.oauth2.OAuth2TokenEndpointClient;
 import org.benetech.servicenet.web.filter.RefreshTokenFilterConfigurer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -26,14 +25,11 @@ public class OAuth2AuthenticationConfiguration extends ResourceServerConfigurerA
     private final OAuth2Properties oAuth2Properties;
     private final OAuth2TokenEndpointClient tokenEndpointClient;
     private final TokenStore tokenStore;
-    private final String activeProfile;
 
-    public OAuth2AuthenticationConfiguration(OAuth2Properties oAuth2Properties, OAuth2TokenEndpointClient tokenEndpointClient, TokenStore tokenStore,
-    @Value("${spring.profiles.active:dev}") String activeProfile) {
+    public OAuth2AuthenticationConfiguration(OAuth2Properties oAuth2Properties, OAuth2TokenEndpointClient tokenEndpointClient, TokenStore tokenStore) {
         this.oAuth2Properties = oAuth2Properties;
         this.tokenEndpointClient = tokenEndpointClient;
         this.tokenStore = tokenStore;
-        this.activeProfile = activeProfile;
     }
 
     @Override
@@ -60,7 +56,7 @@ public class OAuth2AuthenticationConfiguration extends ResourceServerConfigurerA
 
     @Bean
     public OAuth2AuthenticationService uaaAuthenticationService() {
-        return new OAuth2AuthenticationService(tokenEndpointClient, cookieHelper(), !activeProfile.contains("dev"));
+        return new OAuth2AuthenticationService(tokenEndpointClient, cookieHelper());
     }
 
     /**

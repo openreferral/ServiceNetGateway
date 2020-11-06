@@ -43,13 +43,10 @@ public class OAuth2AuthenticationService {
      */
     private final PersistentTokenCache<OAuth2Cookies> recentlyRefreshed;
 
-    private final boolean cookiesSecure;
-
-    public OAuth2AuthenticationService(OAuth2TokenEndpointClient authorizationClient, OAuth2CookieHelper cookieHelper, boolean cookiesSecure) {
+    public OAuth2AuthenticationService(OAuth2TokenEndpointClient authorizationClient, OAuth2CookieHelper cookieHelper) {
         this.authorizationClient = authorizationClient;
         this.cookieHelper = cookieHelper;
         recentlyRefreshed = new PersistentTokenCache<>(REFRESH_TOKEN_VALIDITY_MILLIS);
-        this.cookiesSecure = cookiesSecure;
     }
 
     /**
@@ -70,7 +67,7 @@ public class OAuth2AuthenticationService {
             OAuth2AccessToken accessToken = authorizationClient.sendPasswordGrant(username, password);
             OAuth2Cookies cookies = new OAuth2Cookies();
             cookieHelper.createCookies(request, accessToken, rememberMe, cookies);
-            cookies.addCookiesTo(response, cookiesSecure);
+            cookies.addCookiesTo(response);
             if (log.isDebugEnabled()) {
                 log.debug("successfully authenticated user {}", params.get("username"));
             }
@@ -111,7 +108,7 @@ public class OAuth2AuthenticationService {
                 boolean rememberMe = OAuth2CookieHelper.isRememberMe(refreshCookie);
                 cookieHelper.createCookies(request, accessToken, rememberMe, cookies);
                 //add cookies to response to update browser
-                cookies.addCookiesTo(response, cookiesSecure);
+                cookies.addCookiesTo(response);
             } else {
                 log.debug("reusing cached refresh_token grant");
             }
@@ -148,7 +145,7 @@ public class OAuth2AuthenticationService {
      * @param httpServletResponse the response used to clear them.
      */
     public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        cookieHelper.clearCookies(httpServletRequest, httpServletResponse, cookiesSecure);
+        cookieHelper.clearCookies(httpServletRequest, httpServletResponse);
     }
 
     /**
