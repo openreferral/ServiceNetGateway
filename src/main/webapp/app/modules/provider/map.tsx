@@ -4,7 +4,7 @@ import _ from 'lodash';
 // tslint:disable-next-line:no-submodule-imports
 import { MAP } from 'react-google-maps/lib/constants';
 
-const DEFAULT_ZOOM = 2;
+const DEFAULT_ZOOM = 10;
 const MY_LOCATION_ZOOM = 12;
 const LOCATION_MARKER_SIZE = 22;
 const LOCATION_MARKER_URL = '/content/images/location-marker.png';
@@ -47,8 +47,8 @@ interface IPersistentMapProps {
 
 export default class PersistentMap extends React.Component<IPersistentMapProps> {
   state = {
-    lat: this.props.lat || 38.5816,
-    lng: this.props.lng || -121.4944,
+    lat: this.props.lat || 37.7799,
+    lng: this.props.lng || -122.2822,
     zoom: this.props.lat ? MY_LOCATION_ZOOM : DEFAULT_ZOOM
   };
   mapRef: any;
