@@ -11,7 +11,7 @@ import { getSearchPreferences, PROVIDER_SORT_ARRAY, setProviderSort } from 'app/
 import ReactGA from 'react-ga';
 import ButtonPill from './shared/button-pill';
 import FilterCard from './filter-card';
-import MediaQuery from 'react-responsive';
+import MediaQuery, { useMediaQuery } from 'react-responsive';
 import {
   DESKTOP_WIDTH_BREAKPOINT,
   GOOGLE_API_KEY,
@@ -35,7 +35,10 @@ const MY_LOCATION_BUTTON_POSITION_BOTTOM_MOBILE = '24px';
 const MY_LOCATION_BUTTON_POSITION_RIGHT = '65px';
 const MY_LOCATION_BUTTON_POSITION_BOTTOM = '32px';
 export const MAX_PINS_ON_MAP = 50;
-const MAP_MARGIN_TOP = 65;
+const RECORD_HEIGHT = 274;
+const TOP_HEIGHT_MOBILE = 115 + 274 + 21 + 141; // height of: hero-image + user-cards-container + slick-dots + control-line-container
+const TOP_HEIGHT_DESKTOP = 138 + 274 + 21 + 107; // height of: hero-image + user-cards-container + slick-dots + control-line-container (with title)
+const CTRL_LINE_HEIGHT = 121; // Height of control-line-container with top padding
 
 declare global {
   // tslint:disable-next-line:interface-name
@@ -70,17 +73,20 @@ export interface IAllRecordsState extends IPaginationBaseState {
   searchArea: boolean;
   centeredAt: any;
   isSearchBarFocused: boolean;
+  appContainerHeight: number;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
   controlLineContainerRef: any;
   pageEndRef: any;
   mapContainerRef: any;
+  gridViewRef: any;
 
   constructor(props) {
     super(props);
     const { providerSearchPreferences } = this.props.account ? getSearchPreferences(this.props.account.login) : null;
     this.state = {
+      appContainerHeight: 0,
       itemsPerPage: 6,
       activePage: 0,
       sortingOpened: false,
@@ -100,10 +106,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.controlLineContainerRef = React.createRef();
     this.pageEndRef = React.createRef();
     this.mapContainerRef = React.createRef();
+    this.gridViewRef = React.createRef();
   }
 
   componentDidMount() {
     this.getRecords(true);
+    window.addEventListener('resize', _.debounce(this.getAppContainerHeight, 50), true);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -123,15 +131,55 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', () => this.getAppContainerHeight);
+  }
+
+  isMobile = () => useMediaQuery({ maxWidth: MOBILE_WIDTH_BREAKPOINT });
+
+  getPaginationSize = height => {
+    const { siloName } = this.props;
+
+    const availableHeight =
+      height - (this.isMobile ? (siloName ? CTRL_LINE_HEIGHT : TOP_HEIGHT_MOBILE) : siloName ? CTRL_LINE_HEIGHT : TOP_HEIGHT_DESKTOP);
+    const size = Math.ceil(availableHeight / RECORD_HEIGHT) * 3;
+
+    return size >= 6 ? size : 6;
+  };
+
+  setGridViewRef = gridViewRef => {
+    this.gridViewRef.current = gridViewRef;
+    this.getAppContainerHeight();
+  };
+
+  getAppContainerHeight = () => {
+    const { appContainerHeight } = this.state;
+    const element = document.getElementById('app-container');
+    const newHeight = element ? element.clientHeight : 0;
+    if (this.gridViewRef.current && appContainerHeight && newHeight > appContainerHeight) {
+      const size = this.getPaginationSize(newHeight);
+      this.setState({ appContainerHeight: newHeight, itemsPerPage: size, activePage: 0 }, () => this.getRecords(true));
+    }
+  };
+
   getRecords(isInitLoading = false) {
     const { itemsPerPage, activePage, sort, order } = this.state;
     const { siloName } = this.props;
+
+    let newSize = itemsPerPage;
+    if (isInitLoading && this.gridViewRef.current) {
+      const element = document.getElementById('app-container');
+      const currentHeight = element ? element.clientHeight : 0;
+      const size = this.getPaginationSize(currentHeight);
+      this.setState({ appContainerHeight: currentHeight, itemsPerPage: size, activePage: 0 });
+      newSize = size;
+    }
 
     if (siloName) {
       this.props.getAllProviderRecordsPublic(
         siloName,
         activePage,
-        itemsPerPage,
+        newSize,
         `${sort},${order}`,
         this.props.providerFilter,
         this.props.search,
@@ -140,7 +188,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     } else {
       this.props.getAllProviderRecords(
         activePage,
-        itemsPerPage,
+        newSize,
         `${sort},${order}`,
         this.props.providerFilter,
         this.props.search,
@@ -479,7 +527,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     const { filterOpened, activePage } = this.state;
     const hasReachedMaxItems = allRecords.length === parseInt(allRecordsTotal, 10);
     return (
-      <div>
+      <div ref={this.setGridViewRef}>
         <InfiniteScroll
           pageStart={activePage}
           loadMore={() => this.handleLoadMore(hasReachedMaxItems)}
