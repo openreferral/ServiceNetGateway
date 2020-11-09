@@ -59,7 +59,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
-    const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled, isInProduction, isSacramento, isShelterOwner, isPublic } = this.props;
+    const {
+      currentLocale,
+      isAuthenticated,
+      isAdmin,
+      isSwaggerEnabled,
+      isInProduction,
+      isSacramento,
+      isShelterOwner,
+      isPublic
+    } = this.props;
 
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
@@ -81,7 +90,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <FeedbackButton {...this.props} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
-              {(!isAuthenticated || !isSacramento) && <Home {...this.props} />}
+              {!isPublic && (!isAuthenticated || !isSacramento) && <Home {...this.props} />}
               {isAuthenticated && !isSacramento && <DataStatus />}
               {isAuthenticated && isSacramento && <SacramentoMenu isShelterOwner={isShelterOwner} />}
               {isAuthenticated && isAdmin && <EntitiesMenu />}
