@@ -218,7 +218,7 @@ describe('Authentication reducer tests', () => {
           payload: resolvedObject
         }
       ];
-      await store.dispatch(login('test', 'test'));
+      await store.dispatch(login('test', 'test', 'test'));
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
