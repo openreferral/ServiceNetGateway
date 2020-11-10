@@ -53,7 +53,7 @@ export const Brand = props => {
 export const HomeButton = props =>
   (props.isSacramento || props.isPublic) && (
     <NavLink exact tag={Link} to={`${props.prependRoutesWithMatch ? props.match.url : ''}`} className="px-0">
-      <span className="navbar-label text-dark about-us-link mx-1">
+      <span className={`navbar-label text-dark mx-1 ${props.isPublic ? 'header-link' : ''}`}>
         <Translate contentKey="global.menu.home" />
       </span>
     </NavLink>
@@ -62,7 +62,7 @@ export const HomeButton = props =>
 export const FeedbackButton = props =>
   (props.isSacramento || props.isPublic) && (
     <NavLink exact tag={Link} to={`${props.prependRoutesWithMatch ? props.match.url : ''}/feedback`} className="px-0">
-      <span className="navbar-label text-dark about-us-link">
+      <span className={`navbar-label text-dark ${props.isPublic ? 'header-link' : ''}`}>
         <Translate contentKey="global.menu.feedback" />
       </span>
     </NavLink>
