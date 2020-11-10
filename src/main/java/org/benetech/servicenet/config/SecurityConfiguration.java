@@ -2,6 +2,8 @@ package org.benetech.servicenet.config;
 
 import org.benetech.servicenet.config.oauth2.OAuth2JwtAccessTokenConverter;
 import org.benetech.servicenet.config.oauth2.OAuth2Properties;
+import org.benetech.servicenet.security.CaptchaCaptureFilter;
+import org.benetech.servicenet.security.CaptchaVerifierFilter;
 import org.benetech.servicenet.security.oauth2.OAuth2SignatureVerifierClient;
 import org.benetech.servicenet.security.AuthoritiesConstants;
 
@@ -32,9 +34,16 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
 
     private final CorsFilter corsFilter;
 
-    public SecurityConfiguration(OAuth2Properties oAuth2Properties, CorsFilter corsFilter) {
+    private final CaptchaCaptureFilter captchaCaptureFilter;
+
+    private final CaptchaVerifierFilter captchaVerifierFilter;
+
+    public SecurityConfiguration(OAuth2Properties oAuth2Properties, CorsFilter corsFilter,
+        CaptchaCaptureFilter captchaCaptureFilter, CaptchaVerifierFilter captchaVerifierFilter) {
         this.oAuth2Properties = oAuth2Properties;
         this.corsFilter = corsFilter;
+        this.captchaCaptureFilter = captchaCaptureFilter;
+        this.captchaVerifierFilter = captchaVerifierFilter;
     }
 
     @Override
@@ -47,6 +56,8 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()
             .addFilterBefore(corsFilter, CsrfFilter.class)
+            .addFilterBefore(captchaCaptureFilter, CorsFilter.class)
+            .addFilterAfter(captchaVerifierFilter, CaptchaCaptureFilter.class)
             .headers()
             .frameOptions()
             .disable()

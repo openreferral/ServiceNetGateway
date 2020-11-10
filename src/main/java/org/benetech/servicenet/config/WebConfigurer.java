@@ -3,8 +3,11 @@ package org.benetech.servicenet.config;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
+import org.benetech.servicenet.security.CaptchaCaptureFilter;
+import org.benetech.servicenet.security.CaptchaVerifierFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.server.*;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -37,6 +40,11 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     private final Environment env;
 
     private final JHipsterProperties jHipsterProperties;
+
+    private static final String[] CAPTCHA_URLS = new String[]{"/services/servicenet/api/register", "/auth/login"};
+
+    @Value("#{systemEnvironment['RECAPTCHA_SECRET_KEY']}")
+    private String recaptchaSecretKey;
 
     public WebConfigurer(Environment env, JHipsterProperties jHipsterProperties) {
         this.env = env;
@@ -142,6 +150,26 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
             source.registerCorsConfiguration("/*/oauth/**", config);
         }
         return new CorsFilter(source);
+    }
+
+    @Bean
+    public CaptchaCaptureFilter captchaCaptureFilter() {
+        CaptchaCaptureFilter captchaCaptureFilter = new CaptchaCaptureFilter();
+        captchaCaptureFilter.setUrls(CAPTCHA_URLS);
+        return captchaCaptureFilter;
+    }
+
+    @Bean
+    public CaptchaVerifierFilter captchaVerifierFilter() {
+        if (recaptchaSecretKey == null) {
+            log.error("ReCaptcha secret key is empty. Please set the RECAPTCHA_SECRET_KEY environment variable.");
+        }
+        CaptchaVerifierFilter captchaVerifierFilter = new CaptchaVerifierFilter();
+        captchaVerifierFilter.setFailureUrl("/");
+        captchaVerifierFilter.setUrls(CAPTCHA_URLS);
+        captchaVerifierFilter.setPrivateKey(recaptchaSecretKey);
+        captchaVerifierFilter.setCaptchaCaptureFilter(captchaCaptureFilter());
+        return captchaVerifierFilter;
     }
 
 }
