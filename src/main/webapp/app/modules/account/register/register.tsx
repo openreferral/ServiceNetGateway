@@ -12,22 +12,44 @@ import PasswordStrengthBar from 'app/shared/layout/password/password-strength-ba
 import { IRootState } from 'app/shared/reducers';
 import { handleRegister, handleRegisterWithinSilo, reset } from './register.reducer';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import ReCAPTCHA from 'react-google-recaptcha';
+import {
+  getCaptcha,
+  ICaptchaComponent,
+  ICaptchaState
+} from 'app/shared/auth/captcha';
+import { RECAPTCHA_SITE_KEY } from 'app/config/constants';
 
 export interface IRegisterProps extends StateProps, DispatchProps, RouteComponentProps<{ siloName: any }> {}
 
-export interface IRegisterState {
+export interface IRegisterState extends ICaptchaState {
   password: string;
   phoneNumber: string;
 }
 
-export class RegisterPage extends React.Component<IRegisterProps, IRegisterState> {
+export class RegisterPage extends React.Component<IRegisterProps, IRegisterState> implements ICaptchaComponent {
   state: IRegisterState = {
     password: '',
-    phoneNumber: ''
+    phoneNumber: '',
+    captcha: null,
+    captchaError: ''
   };
+  recaptchaRef = React.createRef();
 
   componentWillUnmount() {
     this.props.reset();
+  }
+
+  onCaptchaChange = captcha => {
+    this.setState({
+      captcha
+    });
+  }
+
+  onCaptchaErrored = captchaError => {
+    this.setState({
+      captchaError
+    });
   }
 
   setPhoneNumber = phoneNumber => {
@@ -38,32 +60,36 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
     if (this.state.phoneNumber && !isPossiblePhoneNumber(this.state.phoneNumber)) {
       return;
     }
-    if (this.props.match.params.siloName) {
-      this.props.handleRegisterWithinSilo(
-        this.props.match.params.siloName,
-        values.username,
-        values.email,
-        values.firstPassword,
-        values.firstName,
-        values.lastName,
-        values.organizationName,
-        values.organizationUrl,
-        this.state.phoneNumber,
-        this.props.currentLocale
-      );
-    } else {
-      this.props.handleRegister(
-        values.username,
-        values.email,
-        values.firstPassword,
-        values.firstName,
-        values.lastName,
-        values.organizationName,
-        values.organizationUrl,
-        this.state.phoneNumber,
-        this.props.currentLocale
-      );
-    }
+    getCaptcha(this, captcha => {
+      if (this.props.match.params.siloName) {
+        this.props.handleRegisterWithinSilo(
+          this.props.match.params.siloName,
+          values.username,
+          values.email,
+          values.firstPassword,
+          values.firstName,
+          values.lastName,
+          values.organizationName,
+          values.organizationUrl,
+          this.state.phoneNumber,
+          captcha,
+          this.props.currentLocale
+        );
+      } else {
+        this.props.handleRegister(
+          values.username,
+          values.email,
+          values.firstPassword,
+          values.firstName,
+          values.lastName,
+          values.organizationName,
+          values.organizationUrl,
+          this.state.phoneNumber,
+          captcha,
+          this.props.currentLocale
+        );
+      }
+    });
     event.preventDefault();
   };
 
@@ -72,7 +98,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
   };
 
   render() {
-    const { phoneNumber } = this.state;
+    const { phoneNumber, captchaError } = this.state;
     return (
       <div>
         <Row className="justify-content-center">
@@ -83,6 +109,13 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
           </Col>
         </Row>
         <Row className="justify-content-center">
+          <Col md="8">
+            {captchaError ? (
+              <Alert color="danger" id="failed-login">
+                {captchaError}
+              </Alert>
+            ) : null}
+          </Col>
           <Col md="8">
             <AvForm id="register-form" onValidSubmit={this.handleValidSubmit}>
               <AvField
@@ -196,6 +229,13 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                   <Translate contentKey="register.form.button">Register</Translate>
                 </button>
               </ButtonPill>
+              <ReCAPTCHA
+                ref={this.recaptchaRef}
+                sitekey={RECAPTCHA_SITE_KEY}
+                onChange={this.onCaptchaChange}
+                onErrored={this.onCaptchaErrored}
+                size="invisible"
+              />
             </AvForm>
             <p>&nbsp;</p>
             <Alert color="warning">

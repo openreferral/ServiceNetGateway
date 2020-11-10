@@ -1,9 +1,16 @@
 import React from 'react';
 import { Translate, translate } from 'react-jhipster';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Alert, Row, Col } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Label, Alert, Row, Col } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import ReCAPTCHA from 'react-google-recaptcha';
+import {
+  ICaptchaComponent,
+  ICaptchaState,
+  getCaptcha
+} from 'app/shared/auth/captcha';
+import { RECAPTCHA_SITE_KEY } from 'app/config/constants';
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -12,14 +19,35 @@ export interface ILoginModalProps {
   handleClose: Function;
 }
 
-class LoginModal extends React.Component<ILoginModalProps> {
-  handleSubmit = (event, errors, { username, password, rememberMe }) => {
-    const { handleLogin } = this.props;
-    handleLogin(username, password, rememberMe);
+class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implements ICaptchaComponent {
+  state = {
+    captcha: null,
+    captchaError: ''
   };
+  recaptchaRef = React.createRef();
+
+  handleSubmit = async (event, errors, { username, password, rememberMe }) => {
+    const { handleLogin } = this.props;
+    getCaptcha(this, captcha => {
+      handleLogin(username, password, captcha, rememberMe);
+    });
+  };
+
+  onCaptchaChange = captcha => {
+    this.setState({
+      captcha
+    });
+  }
+
+  onCaptchaErrored = captchaError => {
+    this.setState({
+      captchaError
+    });
+  }
 
   render() {
     const { loginError, handleClose } = this.props;
+    const { captchaError } = this.state;
 
     return (
       <Modal isOpen={this.props.showModal} toggle={handleClose} backdrop="static" id="login-page" autoFocus={false}>
@@ -35,6 +63,11 @@ class LoginModal extends React.Component<ILoginModalProps> {
                     <Translate contentKey="login.messages.error.authentication">
                       <strong>Failed to sign in!</strong> Please check your credentials and try again.
                     </Translate>
+                  </Alert>
+                ) : null}
+                {captchaError ? (
+                  <Alert color="danger" id="failed-login">
+                    {captchaError}
                   </Alert>
                 ) : null}
               </Col>
@@ -83,12 +116,19 @@ class LoginModal extends React.Component<ILoginModalProps> {
             <ButtonPill className="button-pill-secondary" onClick={handleClose}>
               <Translate contentKey="entity.action.cancel">Cancel</Translate>
             </ButtonPill>{' '}
-            <ButtonPill className="button-pill-primary">
+            <ButtonPill className={`button-pill-primary`}>
               <button type="submit" id="submit-button">
                 <Translate contentKey="login.form.button">Sign in</Translate>
               </button>
             </ButtonPill>
           </ModalFooter>
+          <ReCAPTCHA
+            ref={this.recaptchaRef}
+            sitekey={RECAPTCHA_SITE_KEY}
+            onChange={this.onCaptchaChange}
+            onErrored={this.onCaptchaErrored}
+            size="invisible"
+          />
         </AvForm>
       </Modal>
     );

@@ -31,6 +31,7 @@ export const APP_LOCAL_DATETIME_FORMAT_Z = 'YYYY-MM-DDTHH:mm Z';
 export const APP_WHOLE_NUMBER_FORMAT = '0,0';
 export const APP_TWO_DIGITS_AFTER_POINT_NUMBER_FORMAT = '0,0.[00]';
 export const GOOGLE_API_KEY = _.get(window, '_env_.GOOGLE_API_KEY', '');
+export const RECAPTCHA_SITE_KEY = _.get(window, '_env_.RECAPTCHA_SITE_KEY', '');
 export const MAX_PAGE_SIZE = 2147483647;
 export const MS_IN_A_DAY = 24 * 60 * 60 * 1000;
 

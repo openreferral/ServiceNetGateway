@@ -125,10 +125,10 @@ export const getSession = () => async (dispatch, getState) => {
   }
 };
 
-export const login = (username, password, rememberMe = false) => async (dispatch, getState) => {
+export const login = (username, password, captcha, rememberMe = false) => async (dispatch, getState) => {
   const result = await dispatch({
     type: ACTION_TYPES.LOGIN,
-    payload: axios.post('auth/login', { username, password, rememberMe })
+    payload: axios.post('auth/login', { username, password, captcha, rememberMe })
   });
   await dispatch(getSession());
 };
