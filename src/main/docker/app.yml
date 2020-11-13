@@ -17,6 +17,11 @@ services:
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
     ports:
       - 8080:8080
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetgateway\\\" || exit 1" ]
+      interval: 1m
+      timeout: 10s
+      retries: 5
   servicenet-app:
     image: servicenet
     environment:
@@ -40,6 +45,11 @@ services:
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenet\\\" || exit 1" ]
+      interval: 1m
+      timeout: 10s
+      retries: 5
   servicenetauth-app:
     image: servicenetauth
     environment:
@@ -56,7 +66,11 @@ services:
       - SPRING_OAUTH2_ACCESS_TOKEN_VALIDITY=${SPRING_OAUTH2_SESSION_TIMEOUT:-3600}
       - SPRING_OAUTH2_REFRESH_TOKEN_VALIDITY=${SPRING_OAUTH2_SESSION_TIMEOUT:-604800}
       - JHIPSTER_SLEEP=10 # gives time for other services to boot before the application
-
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetauth\\\" || exit 1" ]
+      interval: 1m
+      timeout: 10s
+      retries: 5
   servicenet-postgresql:
     image: postgres:10.12
     volumes:
