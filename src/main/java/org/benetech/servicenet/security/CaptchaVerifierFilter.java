@@ -32,7 +32,6 @@ public class CaptchaVerifierFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest req, HttpServletResponse res,
         FilterChain chain) throws IOException, ServletException {
 
-        logger.debug(req.getRequestURI());
         // Assign values only when user has submitted a Captcha value
         if (privateKey != null && Arrays.stream(urls).anyMatch(
             url -> new AntPathRequestMatcher(url, "POST").matches(req))) {
