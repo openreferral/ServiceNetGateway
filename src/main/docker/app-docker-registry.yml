@@ -22,6 +22,11 @@ services:
       - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
     ports:
       - 8080:8080
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetgateway\\\" || exit 1" ]
+      interval: 1m
+      timeout: 10s
+      retries: 5
   servicenet-app:
     image: johnhbenetech/servicenet:${SN_VERSION_TAG:-dev}
     environment:
@@ -47,6 +52,11 @@ services:
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenet\\\" || exit 1" ]
+      interval: 1m
+      timeout: 10s
+      retries: 5
   servicenetauth-app:
     image: johnhbenetech/servicenetauth:${SN_VERSION_TAG:-dev}
     environment:
@@ -65,7 +75,11 @@ services:
       - JHIPSTER_SLEEP=10 # gives time for other services to boot before the application
       - SENTRY_DSN=${SENTRY_DSN}
       - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
-
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetauth\\\" || exit 1" ]
+      interval: 1m
+      timeout: 10s
+      retries: 5
   servicenet-mongo:
     image: mongo:4.0
     restart: always
