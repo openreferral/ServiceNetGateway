@@ -174,7 +174,7 @@
     "test": "TZ=UTC npm run lint && TZ=UTC jest --coverage --logHeapUsage -w=2 --config src/test/javascript/jest.conf.js",
     "coveralls": "jest --coverage --logHeapUsage -w=2 --config src/test/javascript/jest.conf.js && cat target/test-results/lcov.info | coveralls",
     "test:watch": "npm test -- --watch",
-    "webpack:dev": "npm run webpack-dev-server -- --config webpack/webpack.dev.js --inline --port=9060 --env.stats=minimal",
+    "webpack:dev": "./env-config.sh && npm run webpack-dev-server -- --config webpack/webpack.dev.js --inline --port=9060 --env.stats=minimal",
     "webpack:dev-verbose": "npm run webpack-dev-server -- --config webpack/webpack.dev.js --inline --port=9060 --profile --progress --env.stats=normal",
     "webpack:build:main": "npm run webpack -- --config webpack/webpack.dev.js --env.stats=minimal",
     "webpack:build": "npm run cleanup && npm run webpack:build:main",
