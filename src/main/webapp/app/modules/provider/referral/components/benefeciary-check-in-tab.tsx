@@ -42,7 +42,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
     const { phoneNumber, beneficiaryId, cbo, location } = this.state;
     const { referralOptions, organizations } = this.props;
     const orgId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
-    const organization = organizations.find(org => org.id === cbo);
+    const organization = organizations.find(org => org.id === orgId);
     const locId = organization.locations.length === 1 ? organization.locations[0].id : location;
     this.props.checkIn(phoneNumber, beneficiaryId, orgId, locId);
   };
@@ -63,21 +63,28 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
   canBeSent = () => {
     const { phoneNumber, beneficiaryId, cbo, location } = this.state;
     const { referralOptions } = this.props;
-    const selected = (cbo || referralOptions.length === 1)
-      && (location || this.locationOptions().length === 1);
+    const selected = (cbo || referralOptions.length === 1) && (location || this.locationOptions().length === 1);
 
     if (phoneNumber && isPossiblePhoneNumber(phoneNumber) && selected) {
       return true;
     } else return !!(!phoneNumber && beneficiaryId && selected);
   };
 
-  locationOptions = () => this.state.cbo ? _.map(
-    _.get(this.props.organizations.find(org => org.id === this.state.cbo), 'locations'),
-    loc => ({
-      value: loc.id,
-      label: loc.name
-    })
-  ) : [];
+  locationOptions = () => {
+    if (this.state.cbo) {
+      return _.map(_.get(this.props.organizations.find(org => org.id === this.state.cbo), 'locations'), loc => ({
+        value: loc.id,
+        label: loc.name
+      }));
+    } else if (this.props.referralOptions.length === 1) {
+      return _.map(this.props.organizations[0].locations, loc => ({
+        value: loc.id,
+        label: loc.name
+      }));
+    } else {
+      return [];
+    }
+  };
 
   render() {
     const { phoneNumber, cbo, location } = this.state;
