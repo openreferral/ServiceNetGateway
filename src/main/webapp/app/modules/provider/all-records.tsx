@@ -442,6 +442,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
     const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
+    const isMobile = this.isMobile();
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
@@ -456,7 +457,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     };
     return (
       <>
-        <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+        {isMobile ?
           <Col md={12} className="px-0 mx-0 flex-grow-1">
             <div className="h-100" ref={this.setMapContainerRef}>
               <div className="h-100">
@@ -479,10 +480,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </div>
             </div>
           </Col>
-        </MediaQuery>
-        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+        : null}
+        {!isMobile ?
           <Row className="mb-5 mx-3 flex-column-stretch">
-            <div className="d-flex flex-grow-1">
+            <div className="d-flex flex-grow-1 mw-100">
               <Col
                 md={isRecordHighlighted || filterOpened ? 8 : 12}
                 className="pb-2 pl-0 pr-1 map-view position-relative flex-column-stretch"
@@ -517,7 +518,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 )}
             </div>
           </Row>
-        </MediaQuery>
+        : null}
       </>
     );
   };
