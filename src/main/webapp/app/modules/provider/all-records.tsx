@@ -458,7 +458,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     return (
       <>
         {isMobile ?
-          <Col md={12} className="px-0 mx-0 flex-grow-1">
+          <Col md={12} className="px-0 mx-0 flex-grow-1 mobile-map-container">
             <div className="h-100" ref={this.setMapContainerRef}>
               <div className="h-100">
                 {this.mapOverlay()}
