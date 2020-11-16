@@ -281,7 +281,7 @@ export const resetCheckedIn = () => ({
 
 export const sendReferrals = (cboId: string, referrals: any, fromLocation: string, phone = '', beneficiaryId = '') => {
   const url = `${referUrl}?referringOrganizationId=${cboId ? cboId : ''}&referringLocationId=${fromLocation ? fromLocation : ''}`
-  + `&phoneNumber=${phone ? phone : ''}&beneficiaryId=${beneficiaryId ? beneficiaryId : ''}`;
+  + `&phoneNumber=${phone ? encodeURIComponent(phone) : ''}&beneficiaryId=${beneficiaryId ? beneficiaryId : ''}`;
   return {
     type: ACTION_TYPES.SEND_REFERRALS,
     payload: axios.post(url, referrals)
