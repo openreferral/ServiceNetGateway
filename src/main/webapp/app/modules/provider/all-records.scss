@@ -19,6 +19,8 @@
     &:hover:not(.disabled) {
       color: black;
     }
+    align-self: end;
+    margin-right: 0.75em;
   }
 
   .mobile-map-container {
