@@ -8,12 +8,11 @@ import { Link } from 'react-router-dom';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookmark } from '@fortawesome/free-regular-svg-icons';
-import { faBookmark as faBookmarkSolid, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { APP_DATE_12_HOUR_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { connect } from 'react-redux';
-import MediaQuery from 'react-responsive';
+import { useMediaQuery } from 'react-responsive';
 import { getUser } from 'app/modules/administration/user-management/user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
 import OwnerInfo from 'app/shared/layout/owner-info';
@@ -119,7 +118,9 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   };
 
   cardTitle = () => {
-    const { record, user, fullWidth } = this.props;
+    const { record, fullWidth } = this.props;
+    const shouldShowDirectionsLabelMobile = useMediaQuery({ minWidth: DIRECTIONS_BUTTON_MOBILE_WIDTH_BREAKPOINT, maxWidth: MOBILE_WIDTH_BREAKPOINT });
+    const shouldShowDirectionsLabelDesktop = useMediaQuery({ minWidth: EXTRA_LARGE_WIDTH_BREAKPOINT });
     if (_.isEmpty(record)) {
       return null;
     }
@@ -152,14 +153,12 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
                 style={{ color: 'white' }}
               >
                 <FontAwesomeIcon icon="directions" size="lg" />
-                <MediaQuery minDeviceWidth={EXTRA_LARGE_WIDTH_BREAKPOINT}>
-                  &nbsp;
-                  <Translate contentKey="providerSite.directions">Directions</Translate>
-                </MediaQuery>
-                <MediaQuery minDeviceWidth={DIRECTIONS_BUTTON_MOBILE_WIDTH_BREAKPOINT} maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-                  &nbsp;
-                  <Translate contentKey="providerSite.directions">Directions</Translate>
-                </MediaQuery>
+                {shouldShowDirectionsLabelMobile || shouldShowDirectionsLabelDesktop ?
+                  <span>
+                    &nbsp;
+                    <Translate contentKey="providerSite.directions">Directions</Translate>
+                  </span>
+                : null}
               </a>
             </ButtonPill>
           </div>
