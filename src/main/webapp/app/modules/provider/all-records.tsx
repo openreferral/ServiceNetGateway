@@ -399,18 +399,19 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   mapOverlay = () =>
     this.state.boundaries && (
       <>
-        <div className="d-flex flex-column align-items-center map-overlay-top">
+        <div className="d-flex justify-content-between map-overlay-top">
+          <div className="px-5" />
           {this.props.loading && (
             <div className="spinner-border mt-1" role="status">
               <span className="sr-only">Loading...</span>
             </div>
           )}
-        </div>
-        <div className="d-flex flex-column align-items-center map-overlay-search">
           <ButtonPill onClick={this.onSearchClick} className={`search-area-button ${this.canRedoSearch() ? '' : 'disabled'}`}>
-            <FontAwesomeIcon icon="search" size="lg" />
+            <FontAwesomeIcon icon="search" size="sm" className="mr-1" />
             <Translate contentKey="providerSite.searchThisArea" />
           </ButtonPill>
+        </div>
+        <div className="d-flex flex-column align-items-center map-overlay-search">
           {this.props.allRecordsForMap.length === MAX_PINS_ON_MAP && (
             <span className="small">
               <Translate contentKey="providerSite.recordLimit" interpolate={{ count: MAX_PINS_ON_MAP }} />
