@@ -1,8 +1,13 @@
 @import 'app-variables';
 @import 'filter-card';
 
+@media only screen and (min-width: 769px) {
+  .provider-shared {
+    min-height: 100vh;
+  }
+}
+
 .provider-shared {
-  min-height: 100vh;
   max-height: 100vh;
   position: inherit;
   overflow: auto;
@@ -20,7 +25,6 @@
 
   .background-public {
     @extend .background;
-    height: calc(100vh - #{$marginTopDesktop} - #{$footerSize});
   }
 
   > div > .footer {
@@ -33,7 +37,6 @@
 
   .app-container {
     margin-top: $marginTopDesktop !important;
-    height: calc(100vh - #{$marginTopDesktop} - #{$footerSize});
     width: 100vw;
     overflow-y: auto;
     overflow-x: hidden;
@@ -155,6 +158,14 @@
       margin-bottom: -0.25rem;
     }
 
+    .background, .background-public {
+      height: calc(100vh - #{$marginTopDesktop} - #{$footerSize});
+    }
+
+    .app-container {
+      height: calc(100vh - #{$marginTopDesktop} - #{$footerSize});
+    }
+
     .control-line-container-solid {
       display: flex;
       justify-content: space-between;
@@ -179,7 +190,6 @@
 
   @media only screen and (max-width: 768px) {
     .app-container {
-      height: calc(100vh - #{$marginTopMobile});
       margin-top: $marginTopMobile !important;
     }
 
@@ -188,7 +198,6 @@
     }
 
     .app-container-public {
-      height: calc(100vh - #{$marginTopDesktop});
       margin-top: $marginTopMobile !important;
     }
 
@@ -196,7 +205,7 @@
       width: 100vw;
       &.map, &-public.map {
         padding-top: 1rem;
-        height: calc(100vh - #{$paddingTopMobile});
+        height: 100%;
         > .all-records {
           height: 100%;
           display: flex;
@@ -233,10 +242,16 @@
       box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
     }
 
+    .background {
+      width: 100vw;
+      height: calc(100vh - #{$marginTopMobile});
+      &.iOS {
+        height: 100%;
+      }
+    }
+
     .background-public {
       @extend .background;
-      width: 100vw;
-      height: calc(100vh - #{$paddingTopMobile});
     }
 
     .sort-container {
