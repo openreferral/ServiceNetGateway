@@ -25,6 +25,7 @@ import PersistentMap from 'app/modules/provider/map';
 import './all-records.scss';
 import SearchBar from 'app/modules/provider/menus/search-bar';
 import InfiniteScroll from 'react-infinite-scroller';
+import { isIOS } from 'react-device-detect';
 
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 const GRID_VIEW = 'GRID';
@@ -74,6 +75,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   centeredAt: any;
   isSearchBarFocused: boolean;
   appContainerHeight: number;
+  iOSMapHeight: any;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
@@ -101,6 +103,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       searchArea: false,
       centeredAt: null,
       isSearchBarFocused: false,
+      iOSMapHeight: '100%',
       ...providerSearchPreferences
     };
     this.controlLineContainerRef = React.createRef();
@@ -438,19 +441,27 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   setMapContainerRef = mapContainerRef => {
     this.mapContainerRef.current = mapContainerRef;
+    if (this.mapContainerRef.current) {
+      const mapTop = mapContainerRef.getBoundingClientRect().top;
+      const mapHeight = (document.documentElement ? document.documentElement.clientHeight : window.innerHeight) - mapTop;
+      this.setState({
+        iOSMapHeight: mapHeight
+      });
+    }
   };
 
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
     const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const isMobile = this.isMobile();
+    const mapHeight = isIOS ? this.state.iOSMapHeight : '100%';
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
       lat: selectedLat,
       lng: selectedLng,
-      loadingElement: <div style={{ height: '100%' }} />,
-      mapElement: <div style={{ height: '100%' }} />,
+      loadingElement: <div style={{ height: mapHeight }} />,
+      mapElement: <div style={{ height: mapHeight }} />,
       onMarkerClick: this.selectRecord,
       showMyLocation,
       centeredAt,
@@ -459,11 +470,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     return (
       <>
         {isMobile ?
-          <Col md={12} className="px-0 mx-0 flex-grow-1 mobile-map-container">
-            <div className="h-100" ref={this.setMapContainerRef}>
-              <div className="h-100">
+          <Col md={12} className="px-0 mx-0 flex-grow-1 mobile-map-container" style={{ maxHeight: mapHeight }}>
+            <div ref={this.setMapContainerRef} style={{ height: mapHeight }}>
+              <div style={{ height: mapHeight }}>
                 {this.mapOverlay()}
-                <PersistentMap {...mapProps} containerElement={<div className="h-100" />} />
+                <PersistentMap {...mapProps} containerElement={<div style={{ height: mapHeight }} />} />
                 {this.mapOverlayBottom(true)}
                 {isRecordHighlighted && selectedRecord && !filterOpened ? (
                   <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
