@@ -64,8 +64,17 @@
     }
   }
 
-  .to-location.required > div {
+  .to-location.required > div,
+  .refer-to.required > div,
+  .from-location.required > div,
+  .refer-from.required > div {
     border-color: red;
     box-shadow: none !important;
+  }
+
+  .beneficiary-data.required {
+    border: 1px solid red;
+    border-radius: 4px;
+    padding: 0 5px;
   }
 }
