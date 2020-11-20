@@ -36,6 +36,18 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     validationErrors: []
   };
 
+  componentDidMount() {
+    if (this.props.referredRecords) {
+      const orgLocations = {};
+      this.props.referredRecords.forEach((record, id) => {
+        if (record.locations.length === 1) {
+          orgLocations[id] = record.locations[0].id;
+        }
+      });
+      this.setState({ orgLocations });
+    }
+  }
+
   componentDidUpdate(prevProps: Readonly<IReferralTabProps>, prevState: Readonly<IReferralTabState>, snapshot?: any) {
     const { referSuccess, error } = this.props;
     if (prevProps.referSuccess !== this.props.referSuccess) {
@@ -135,6 +147,8 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     const referralTableBody = [];
     const locationOptions = this.locationOptions();
     this.props.referredRecords.forEach((record, id) => {
+      const recordLocationOptions = this.recordLocationOptions(record);
+      const toLocationValue = orgLocations[id] ? _.find(recordLocationOptions, opt => opt.value === orgLocations[id]) : null;
       referralTableBody.push(
         <tr key={`org-${id}`}>
           <td>
@@ -143,8 +157,8 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
           <td className="d-flex">
             <Select
               className={`full-width to-location ${validationErrors.indexOf(id) >= 0 ? 'required' : ''}`}
-              value={orgLocations[id] ? orgLocations[id].id : null}
-              options={this.recordLocationOptions(record)}
+              value={toLocationValue}
+              options={recordLocationOptions}
               onChange={this.onToLocationSelect(id)}
               styles={selectStyle()}
             />
