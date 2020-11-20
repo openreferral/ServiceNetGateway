@@ -63,4 +63,9 @@
       }
     }
   }
+
+  .to-location.required > div {
+    border-color: red;
+    box-shadow: none !important;
+  }
 }

@@ -23,6 +23,7 @@ export interface IReferralTabState {
   cbo: any;
   fromLocation: any;
   orgLocations: any;
+  validationErrors: any;
 }
 
 class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> {
@@ -31,7 +32,8 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     beneficiaryId: '',
     cbo: null,
     fromLocation: null,
-    orgLocations: {}
+    orgLocations: {},
+    validationErrors: []
   };
 
   componentDidUpdate(prevProps: Readonly<IReferralTabProps>, prevState: Readonly<IReferralTabState>, snapshot?: any) {
@@ -58,18 +60,20 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
   };
 
   sendReferrals = () => {
-    const { phoneNumber, beneficiaryId, cbo, fromLocation, orgLocations } = this.state;
-    const { referredRecords, referralOptions, organizations } = this.props;
-    // from
-    const cboId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
-    const fromOrganization = organizations.find(org => org.id === cboId);
-    const fromLocationId = fromOrganization.locations.length === 1 ? fromOrganization.locations[0].id : fromLocation;
-    // to
-    const orgLocationMap = {};
-    referredRecords.forEach((record, id) => {
-      orgLocationMap[id] = orgLocations[id] || record.locations[0].id;
-    });
-    this.props.sendReferrals(cboId, orgLocationMap, fromLocationId, phoneNumber, beneficiaryId);
+    if (this.validateLocations()) {
+      const { phoneNumber, beneficiaryId, cbo, fromLocation, orgLocations } = this.state;
+      const { referredRecords, referralOptions, organizations } = this.props;
+      // from
+      const cboId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
+      const fromOrganization = organizations.find(org => org.id === cboId);
+      const fromLocationId = fromOrganization.locations.length === 1 ? fromOrganization.locations[0].id : fromLocation;
+      // to
+      const orgLocationMap = {};
+      referredRecords.forEach((record, id) => {
+        orgLocationMap[id] = orgLocations[id] || record.locations[0].id;
+      });
+      this.props.sendReferrals(cboId, orgLocationMap, fromLocationId, phoneNumber, beneficiaryId);
+    }
   };
 
   validate = () => {
@@ -79,6 +83,23 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     if (phoneNumber && isPossiblePhoneNumber(phoneNumber) && (cbo || referralOptions.length === 1)) {
       return true;
     } else return !!(!phoneNumber && beneficiaryId && (cbo || referralOptions.length === 1));
+  };
+
+  validateLocations = () => {
+    const { orgLocations } = this.state;
+    const { referredRecords } = this.props;
+
+    const validationErrors = [];
+    referredRecords.forEach((record, id) => {
+      if (!orgLocations[id]) {
+        validationErrors.push(id);
+      }
+    });
+    if (validationErrors.length > 0) {
+      this.setState({ validationErrors });
+      return false;
+    }
+    return true;
   };
 
   locationOptions = () =>
@@ -100,13 +121,16 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     }));
 
   onToLocationSelect = id => evt => {
-    const orgLocations = this.state;
+    const { orgLocations, validationErrors } = this.state;
     orgLocations[id] = evt.value;
-    this.setState({ orgLocations });
+    if (validationErrors.indexOf(id) >= 0) {
+      _.remove(validationErrors, orgId => orgId === id);
+    }
+    this.setState({ orgLocations, validationErrors });
   };
 
   content = () => {
-    const { phoneNumber, cbo, fromLocation, orgLocations } = this.state;
+    const { phoneNumber, cbo, fromLocation, orgLocations, validationErrors } = this.state;
     const { referralOptions } = this.props;
     const referralTableBody = [];
     const locationOptions = this.locationOptions();
@@ -118,7 +142,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
           </td>
           <td className="d-flex">
             <Select
-              className="full-width"
+              className={`full-width to-location ${validationErrors.indexOf(id) >= 0 ? 'required' : ''}`}
               value={orgLocations[id] ? orgLocations[id].id : null}
               options={this.recordLocationOptions(record)}
               onChange={this.onToLocationSelect(id)}
