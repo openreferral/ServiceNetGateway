@@ -11,6 +11,7 @@ import {
   getCaptcha
 } from 'app/shared/auth/captcha';
 import { RECAPTCHA_SITE_KEY } from 'app/config/constants';
+import './login-modal.scss';
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -96,43 +97,41 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
                       <AvInput type="checkbox" name="rememberMe" /> <Translate contentKey="login.form.rememberme">Remember me</Translate>
                     </Label>
                   </AvGroup>
+                  <Link className="forgot-password auth-label" to="/reset/request">
+                    <Translate contentKey="login.password.forgot">Forgot password</Translate>
+                  </Link>
                 </Col>
               </Row>
-              <div className="mt-1">&nbsp;</div>
-              <Alert color="warning">
-                <Link className="auth-label" to="/reset/request">
-                  <Translate contentKey="login.password.forgot">Did you forget your password?</Translate>
-                </Link>
-              </Alert>
-              <Alert color="warning">
+              <Alert color="warning mt-3 register-alert">
                 <span className="auth-label">
                   <Translate contentKey="global.messages.info.register.noaccount">You don't have an account yet?</Translate>
                 </span>{' '}
-                <Link className="auth-label" to="/register">
+                <Link className="auth-label register-label" to="/register">
                   <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
                 </Link>
               </Alert>
+              <div className="login-footer">
+                <div />
+                <div>
+                  <ButtonPill className={`button-pill-primary sign-in`}>
+                    <button type="submit" id="submit-button">
+                      <Translate contentKey="login.form.button">Sign in</Translate>
+                    </button>
+                  </ButtonPill>
+                </div>
+                <div />
+              </div>
             </ModalBody>
-            <ModalFooter>
-              <ButtonPill className="button-pill-secondary" onClick={handleClose}>
-                <Translate contentKey="entity.action.cancel">Cancel</Translate>
-              </ButtonPill>{' '}
-              <ButtonPill className={`button-pill-primary`}>
-                <button type="submit" id="submit-button">
-                  <Translate contentKey="login.form.button">Sign in</Translate>
-                </button>
-              </ButtonPill>
-            </ModalFooter>
+            <ReCAPTCHA
+              ref={this.recaptchaRef}
+              sitekey={RECAPTCHA_SITE_KEY}
+              onChange={this.onCaptchaChange}
+              onErrored={this.onCaptchaErrored}
+              size="invisible"
+              badge="bottomright"
+            />
           </AvForm>
         </Modal>
-        <ReCAPTCHA
-          ref={this.recaptchaRef}
-          sitekey={RECAPTCHA_SITE_KEY}
-          onChange={this.onCaptchaChange}
-          onErrored={this.onCaptchaErrored}
-          size="invisible"
-          badge="bottomright"
-        />
       </>
     );
   }
