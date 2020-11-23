@@ -26,7 +26,7 @@
       "sent": "Beneficiary checked in successfully!"
     },
     "placeholder": {
-      "beneficiary": "Enter Unique Identifier",
+      "beneficiary": "Enter Service Net ID",
       "cbo": "Select Organization to Check In",
       "phone": "Enter Phone Number",
       "referFrom": "Select Organization to Refer from",
@@ -60,7 +60,7 @@
     },
     "columns": {
       "beneficiaryPhoneNumber": "Beneficiary Phone Number",
-      "id": "Unique Identifier",
+      "id": "Service Net ID",
       "dateStamp": "Date Stamp",
       "referredFrom": "Referred From",
       "referredTo": "Referred To",
