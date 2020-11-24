@@ -19,9 +19,12 @@
   },
   "referral": {
     "labels": {
+      "beneficiaryInformation": "Beneficiary Information",
       "close": "Close",
       "homePage": "Go to Home Page",
+      "location": "Location",
       "or": "OR",
+      "organization": "Organization",
       "send": "Send",
       "sent": "Beneficiary checked in successfully!"
     },
