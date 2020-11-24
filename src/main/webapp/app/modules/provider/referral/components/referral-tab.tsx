@@ -74,7 +74,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
   };
 
   onSelect = cbo => {
-    this.setState({ cbo: cbo.value, isReferFromValid: true, fromLocation: null, isFromLocationValid: false });
+    this.setState({ cbo: cbo.value, isReferFromValid: true, fromLocation: null });
   };
 
   sendReferrals = () => {

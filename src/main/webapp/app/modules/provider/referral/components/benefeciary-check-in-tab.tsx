@@ -61,7 +61,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
   };
 
   onSelect = evt => {
-    this.setState({ cbo: evt.value, isCboValid: true, location: null, isLocationValid: false });
+    this.setState({ cbo: evt.value, isCboValid: true, location: null });
   };
 
   onLocationSelect = evt => {
