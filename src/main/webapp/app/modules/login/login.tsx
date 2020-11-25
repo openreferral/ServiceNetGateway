@@ -37,7 +37,12 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   };
 
   handleClose = () => {
-    this.setState({ showModal: false });
+    this.setState({
+      showModal: false
+    });
+    this.props.history.push(location.hash
+    .replace('/login', '')
+    .replace('#', ''));
   };
 
   render() {
