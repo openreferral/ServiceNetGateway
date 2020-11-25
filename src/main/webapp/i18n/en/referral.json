@@ -30,8 +30,10 @@
     },
     "placeholder": {
       "beneficiary": "Enter Service Net ID",
+      "beneficiaryMobile": "Service Net ID",
       "cbo": "Select Organization to Check In",
       "phone": "Enter Phone Number",
+      "phoneMobile": "Phone Number",
       "referFrom": "Select Organization to Refer from",
       "location": "Select Location to Check In",
       "fromLocation": "Select Location to Refer from"
