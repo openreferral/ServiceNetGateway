@@ -4,7 +4,7 @@ import { Translate, translate } from 'react-jhipster';
 import Input from 'react-phone-number-input/input';
 import { Table, Input as StrapInput } from 'reactstrap';
 import ButtonPill from '../../shared/button-pill';
-import { getProviderOptions, sendReferrals, unreferRecord } from 'app/modules/provider/provider-record.reducer';
+import { sendReferrals, unreferRecord } from 'app/modules/provider/provider-record.reducer';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
@@ -14,8 +14,11 @@ import { DESKTOP_WIDTH_BREAKPOINT, MOBILE_WIDTH_BREAKPOINT, selectStyle } from '
 import { toast } from 'react-toastify';
 import MediaQuery from 'react-responsive';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 
-export interface IReferralTabProps extends StateProps, DispatchProps {}
+export interface IReferralTabProps extends StateProps, DispatchProps {
+  isMobile: boolean;
+}
 
 export interface IReferralTabState {
   phoneNumber: string;
@@ -159,7 +162,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
       missingLocations,
       isFromLocationValid
     } = this.state;
-    const { referralOptions } = this.props;
+    const { referralOptions, isMobile } = this.props;
     const commonClass = 'd-flex justify-content-center align-items-center';
     const referralTableBody = [];
     const locationOptions = this.locationOptions();
@@ -221,7 +224,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
               type="text"
               name="phone"
               id="phone"
-              placeholder={translate('referral.placeholder.phone')}
+              placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
               onChange={this.setPhone}
               value={phoneNumber}
               country="US"
@@ -234,7 +237,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
               type="text"
               name="beneficiaryId"
               id="beneficiaryId"
-              placeholder={translate('referral.placeholder.beneficiary')}
+              placeholder={isMobile ? translate('referral.placeholder.beneficiaryMobile') : translate('referral.placeholder.beneficiary')}
               onChange={this.setBeneficiary}
             />
           </div>
@@ -323,4 +326,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ReferralTab);
+)(mediaQueryWrapper(ReferralTab));

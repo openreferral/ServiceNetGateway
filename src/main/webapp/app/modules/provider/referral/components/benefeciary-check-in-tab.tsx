@@ -12,6 +12,7 @@ import Select from 'react-select';
 import { checkIn, resetCheckedIn } from '../../provider-record.reducer';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { selectStyle } from 'app/config/constants';
+import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 
 export interface IBeneficiaryCheckInTabState {
   phoneNumber: String;
@@ -23,7 +24,9 @@ export interface IBeneficiaryCheckInTabState {
   isLocationValid: boolean;
 }
 
-export interface IBeneficiaryCheckInTabProps extends StateProps, DispatchProps {}
+export interface IBeneficiaryCheckInTabProps extends StateProps, DispatchProps {
+  isMobile: boolean;
+}
 
 class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps, IBeneficiaryCheckInTabState> {
   state: IBeneficiaryCheckInTabState = {
@@ -100,12 +103,12 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
 
   render() {
     const { phoneNumber, cbo, location, isBeneficiaryValid, isCboValid, isLocationValid } = this.state;
-    const { checkedIn, referralOptions } = this.props;
+    const { checkedIn, referralOptions, isMobile } = this.props;
     const locationOptions = this.locationOptions();
     const commonClass = 'd-flex justify-content-center align-items-center';
 
     return (
-      <div className="col-12 col-md-4 offset-md-4">
+      <div className="col-12 col-md-6 offset-md-3">
         <div className="content-title  my-3 my-md-5">
           <Translate contentKey="referral.title.check_in" />
         </div>
@@ -120,7 +123,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
                 type="text"
                 name="phone"
                 id="phone"
-                placeholder={translate('referral.placeholder.phone')}
+                placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
                 onChange={this.setPhone}
                 value={phoneNumber}
                 country="US"
@@ -133,7 +136,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
                 type="text"
                 name="beneficiary"
                 id="beneficiary"
-                placeholder={translate('referral.placeholder.beneficiary')}
+                placeholder={isMobile ? translate('referral.placeholder.beneficiaryMobile') : translate('referral.placeholder.beneficiary')}
                 onChange={this.setBeneficiary}
               />
             </div>
@@ -221,4 +224,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BeneficiaryCheckInTab);
+)(mediaQueryWrapper(BeneficiaryCheckInTab));
