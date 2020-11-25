@@ -31,6 +31,11 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
     const { handleLogin } = this.props;
     getCaptcha(this, captcha => {
       handleLogin(username, password, captcha, rememberMe);
+      this.setState({
+        captcha: null
+      });
+      // @ts-ignore
+      this.recaptchaRef.current.reset();
     });
   };
 
