@@ -662,32 +662,34 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           )}
         </MediaQuery>
-        <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
-          <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-            <Row className="search">
-              <Col className="height-fluid">
-                <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
-              </Col>
-            </Row>
-          </MediaQuery>
-          <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-            {siloName || isMapView ? null : (
-              <div className="all-records-title">
-                <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
-              </div>
-            )}
-            <div className={isSearchBarFocused ? 'on-top' : ''}>
+        <div>
+          <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
+            <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
               <Row className="search">
                 <Col className="height-fluid">
                   <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
                 </Col>
               </Row>
+            </MediaQuery>
+            <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+              {siloName || isMapView ? null : (
+                <div className="all-records-title">
+                  <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
+                </div>
+              )}
+              <div className={isSearchBarFocused ? 'on-top' : ''}>
+                <Row className="search">
+                  <Col className="height-fluid">
+                    <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
+                  </Col>
+                </Row>
+              </div>
+              {isSearchBarFocused ? <div className="darken-overlay" /> : null}
+            </MediaQuery>
+            <div className="d-flex flex-grow-1 justify-between mt-1">
+              {this.sortContainer()}
+              {this.viewTypeButton()}
             </div>
-            {isSearchBarFocused ? <div className="darken-overlay" /> : null}
-          </MediaQuery>
-          <div className="d-flex flex-grow-1 justify-between mt-1">
-            {this.sortContainer()}
-            {this.viewTypeButton()}
           </div>
         </div>
         {isMapView ? <this.mapView /> : <this.gridView />}
