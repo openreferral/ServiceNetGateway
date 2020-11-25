@@ -44,7 +44,6 @@ export const Brand = props => {
         <MediaQuery minDeviceWidth={769}>
           <BrandIcon />
         </MediaQuery>
-        {!isPublic && <span className="navbar-version mt-1">{appConfig.VERSION}</span>}
       </NavbarBrand>
     </div>
   );
