@@ -21,7 +21,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
     className="loading-bar"
   />
   <Navbar
-    className="navbar-light bg-white"
+    className="navbar-light bg-white "
     expand="sm"
     fixed="top"
     tag="nav"
@@ -63,34 +63,6 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
       ribbonEnv="dev"
       userLogin="user"
     />
-    <Component
-      currentLocale="en"
-      isAdmin={true}
-      isAuthenticated={true}
-      isInProduction={false}
-      isPublic={false}
-      isSacramento={false}
-      isShelterOwner={false}
-      isStaging={false}
-      isSwaggerEnabled={true}
-      onLocaleChange={[Function]}
-      ribbonEnv="dev"
-      userLogin="user"
-    />
-    <Component
-      currentLocale="en"
-      isAdmin={true}
-      isAuthenticated={true}
-      isInProduction={false}
-      isPublic={false}
-      isSacramento={false}
-      isShelterOwner={false}
-      isStaging={false}
-      isSwaggerEnabled={true}
-      onLocaleChange={[Function]}
-      ribbonEnv="dev"
-      userLogin="user"
-    />
     <Collapse
       appear={false}
       enter={true}
@@ -116,20 +88,6 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
         tag="ul"
         vertical={false}
       >
-        <Component
-          currentLocale="en"
-          isAdmin={true}
-          isAuthenticated={true}
-          isInProduction={false}
-          isPublic={false}
-          isSacramento={false}
-          isShelterOwner={false}
-          isStaging={false}
-          isSwaggerEnabled={true}
-          onLocaleChange={[Function]}
-          ribbonEnv="dev"
-          userLogin="user"
-        />
         <Component />
         <Component />
         <Component />
@@ -170,7 +128,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
     className="loading-bar"
   />
   <Navbar
-    className="navbar-light bg-white"
+    className="navbar-light bg-white "
     expand="sm"
     fixed="top"
     tag="nav"
@@ -212,34 +170,6 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       ribbonEnv="prod"
       userLogin="user"
     />
-    <Component
-      currentLocale="en"
-      isAdmin={true}
-      isAuthenticated={true}
-      isInProduction={true}
-      isPublic={false}
-      isSacramento={false}
-      isShelterOwner={false}
-      isStaging={false}
-      isSwaggerEnabled={false}
-      onLocaleChange={[Function]}
-      ribbonEnv="prod"
-      userLogin="user"
-    />
-    <Component
-      currentLocale="en"
-      isAdmin={true}
-      isAuthenticated={true}
-      isInProduction={true}
-      isPublic={false}
-      isSacramento={false}
-      isShelterOwner={false}
-      isStaging={false}
-      isSwaggerEnabled={false}
-      onLocaleChange={[Function]}
-      ribbonEnv="prod"
-      userLogin="user"
-    />
     <Collapse
       appear={false}
       enter={true}
@@ -265,20 +195,6 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
         tag="ul"
         vertical={false}
       >
-        <Component
-          currentLocale="en"
-          isAdmin={true}
-          isAuthenticated={true}
-          isInProduction={true}
-          isPublic={false}
-          isSacramento={false}
-          isShelterOwner={false}
-          isStaging={false}
-          isSwaggerEnabled={false}
-          onLocaleChange={[Function]}
-          ribbonEnv="prod"
-          userLogin="user"
-        />
         <Component />
         <Component />
         <Component />

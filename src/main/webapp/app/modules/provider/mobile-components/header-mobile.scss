@@ -7,7 +7,8 @@ $header-color-hover: darken($header-color, 20%);
 $avatar-width: 25px;
 $avatar-height: 25px;
 
-.provider-app, .public-app {
+.provider-app,
+.public-app {
   @media only screen and (max-width: 768px) {
     .navbar-version {
       font-size: 10px;
@@ -63,7 +64,7 @@ $avatar-height: 25px;
     }
 
     .header-bar-mobile {
-      height: $paddingTop;
+      height: $paddingTopMobile;
       flex-direction: column !important;
     }
 
@@ -108,10 +109,6 @@ $avatar-height: 25px;
       position: absolute;
       width: 100%;
       height: 100%;
-    }
-
-    .header-bar-mobile {
-      height: $paddingTopMobile;
     }
 
     .navbar-version {

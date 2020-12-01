@@ -225,7 +225,7 @@ import dailyUpdate, {
 } from 'app/entities/daily-update/daily-update.reducer';
 
 // prettier-ignore
-import search, { SearchState } from 'app/modules/provider/menus/search.reducer';
+import search, { SearchState } from 'app/modules/provider/shared/search.reducer';
 
 // prettier-ignore
 import silo, {

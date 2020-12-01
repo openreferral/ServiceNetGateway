@@ -8,7 +8,7 @@ import LoginModal from './login-modal';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 import { resetActivityFilter } from 'app/modules/home/filter-activity.reducer';
-import { resetText } from 'app/modules/provider/menus/search.reducer';
+import { resetText } from 'app/modules/provider/shared/search.reducer';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -40,9 +40,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     this.setState({
       showModal: false
     });
-    this.props.history.push(location.hash
-    .replace('/login', '')
-    .replace('#', ''));
+    this.props.history.push(location.hash.replace('/login', '').replace('#', ''));
   };
 
   render() {

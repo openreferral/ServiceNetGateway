@@ -1,4 +1,3 @@
-
 export const ACTION_TYPES = {
   SET_TEXT: 'search/SET_TEXT',
   RESET_TEXT: 'search/RESET_TEXT'
