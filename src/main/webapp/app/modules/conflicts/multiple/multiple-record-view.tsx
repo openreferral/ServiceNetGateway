@@ -66,21 +66,37 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
   componentDidMount() {
     this.props.getBaseRecord(this.props.orgId);
     this.props.getSettings();
+    this.getMatches(0, this.props.partnerId);
+  }
+
+  getMatches(matchNumberOffset: number, initialPartnerId?: string) {
     Promise.all([this.props.getNotHiddenMatchesByOrg(this.props.orgId)]).then(() => {
-      if (this.props.matches.length >= this.state.matchNumber + 1) {
-        const partnerId = this.props.partnerId;
-        if (partnerId) {
-          const partnerIdx = this.props.matches.findIndex(match => match.partnerVersionId === partnerId);
-          const matchNumber = partnerIdx > 0 ? partnerIdx : 0;
-          this.setState({
-            matchNumber
-          });
-          this.props.getPartnerRecord(partnerIdx > 0 ? partnerId : this.props.matches[matchNumber].partnerVersionId);
-        } else {
-          this.props.getPartnerRecord(this.props.matches[this.state.matchNumber].partnerVersionId);
+      if (this.props.matches.length > 0) {
+        const { matches } = this.props;
+        let matchNumber = this.getMatchNumber(matchNumberOffset);
+        if (initialPartnerId) {
+          const partnerIdx = matches.findIndex(match => match.partnerVersionId === initialPartnerId);
+          if (partnerIdx >= 0) {
+            matchNumber = partnerIdx;
+            this.setState({
+              matchNumber
+            });
+          }
         }
+        const id = matches[matchNumber].partnerVersionId;
+        this.replacePartnerId(id);
+        this.props.getPartnerRecord(id);
+      } else {
+        this.props.history.push(`/single-record-view/${this.props.orgId}`);
       }
     });
+  }
+
+  replacePartnerId = id => {
+    this.props.history.push(location.hash
+      .replace(this.props.partnerId, '')
+      .replace('#', '')
+      + id);
   }
 
   componentDidUpdate(prevProps) {
@@ -115,7 +131,9 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
         this.setState({ showDismissModal: false, showSuccessModal: true, matchNumber: 0 });
         Promise.all([this.props.getNotHiddenMatchesByOrg(this.props.orgId)]).then(() => {
           if (this.props.matches.length > 0) {
-            this.props.getPartnerRecord(this.props.matches[0].partnerVersionId);
+            const id = this.props.matches[0].partnerVersionId;
+            this.props.getPartnerRecord(id);
+            this.replacePartnerId(id);
           } else {
             this.props.history.push(`/single-record-view/${orgId}`);
           }
@@ -131,18 +149,25 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
   };
 
   changeRecord = offset => () => {
-    let matchNumber = 0;
+    const matchNumber = this.getMatchNumber(offset);
+    this.setState({ matchNumber });
+
+    ReactGA.event({ category: 'UserActions', action: 'Clicking "See Another Match" on side by side view' });
+    const id = this.props.matches[matchNumber].partnerVersionId;
+    this.props.getPartnerRecord(id);
+    this.replacePartnerId(id);
+  };
+
+  getMatchNumber = offset => {
     const offsetMatchNumber = this.state.matchNumber + offset;
+    let matchNumber = 0;
     if (offsetMatchNumber < 0) {
       matchNumber = this.props.matches.length - 1;
     } else if (offsetMatchNumber < this.props.matches.length) {
       matchNumber = offsetMatchNumber;
     }
-    this.setState({ matchNumber });
-
-    ReactGA.event({ category: 'UserActions', action: 'Clicking "See Another Match" on side by side view' });
-    this.props.getPartnerRecord(this.props.matches[matchNumber].partnerVersionId);
-  };
+    return matchNumber;
+  }
 
   denyMatch = () => {
     ReactGA.event({ category: 'UserActions', action: 'Deny Match Button' });
@@ -161,7 +186,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
         if (matches.length === 1) {
           this.props.history.replace(`/single-record-view/${orgId}`);
         } else if (matches.length > 1) {
-          window.location.reload();
+          this.getMatches(this.state.matchNumber > 0 ? -1 : 0);
         } else {
           this.props.history.push(`/`);
         }
