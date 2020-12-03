@@ -15,6 +15,11 @@
   }
 }
 
+.spinner-border {
+  margin-left: 50%;
+  margin-bottom: 5px;
+}
+
 .app {
   .break {
     white-space: normal;
@@ -27,11 +32,21 @@
   }
 
   .app-container {
-    padding-top: $paddingTop;
+    width: 100vw;
+    height: calc(100vh - #{$headerSize} - #{$footerSize});
+    margin-top: $headerSize;
+    overflow: auto;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .app-container {
+      height: calc(100vh - #{$headerSize});
+    }
   }
 
   #app-view-container {
     min-height: calc(100vh - #{$footerSize} - #{$paddingTop} - #{$marginTop} - #{$goBackButtonHeight});
+    margin-bottom: 10px;
   }
 
   .btn-black {
