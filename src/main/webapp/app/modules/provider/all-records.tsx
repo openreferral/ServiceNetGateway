@@ -545,7 +545,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           pageStart={activePage}
           loadMore={() => this.handleLoadMore(hasReachedMaxItems)}
           hasMore={!hasReachedMaxItems}
-          loader={loading ? <Spinner key={0} color="primary" style={{ marginLeft: '50%', marginBottom: '5px' }} /> : null}
+          loader={loading ? <Spinner key={0} color="primary" /> : null}
           threshold={0}
           initialLoad={false}
           useWindow={false}
