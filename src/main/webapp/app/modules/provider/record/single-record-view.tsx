@@ -504,7 +504,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         <b className="mb-1">
                           <Translate contentKey="record.singleRecordView.srvTypes" />
                         </b>
-                        {organization.services[currentServiceIdx].taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
+                        {organization.services[currentServiceIdx].taxonomyIds.length > 0 &&
+                        taxonomyOptions &&
+                        taxonomyOptions.length > 0 ? (
                           organization.services[currentServiceIdx].taxonomyIds.map(srvTaxonomy => (
                             <div key={`tax-${srvTaxonomy}`} className="pill mb-1">
                               <span className="ml-1">

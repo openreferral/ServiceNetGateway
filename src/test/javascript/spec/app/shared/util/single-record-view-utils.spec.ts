@@ -6,50 +6,34 @@ describe('Single Record View utils', () => {
 
   describe('getTextField', () => {
     it('should return correct type', () => {
-      expect(getTextField(null, null).type).toEqual(
-        'text'
-      );
+      expect(getTextField(null, null).type).toEqual('text');
     });
     it('should include field name', () => {
-      expect(getTextField(null, FIELD_NAME).fieldName).toEqual(
-        FIELD_NAME
-      );
+      expect(getTextField(null, FIELD_NAME).fieldName).toEqual(FIELD_NAME);
     });
     it('default value should equal to the selected field', () => {
       const obj = {};
       obj[FIELD_NAME] = VALUE;
-      expect(getTextField(obj, FIELD_NAME).defaultValue).toEqual(
-        VALUE
-      );
+      expect(getTextField(obj, FIELD_NAME).defaultValue).toEqual(VALUE);
     });
     it('default value should be empty if there is no object', () => {
-      expect(getTextField(null, FIELD_NAME).defaultValue).toEqual(
-        ''
-      );
+      expect(getTextField(null, FIELD_NAME).defaultValue).toEqual('');
     });
   });
   describe('getTextAreaField', () => {
     it('should return correct type', () => {
-      expect(getTextAreaField(null, null).type).toEqual(
-        'textarea'
-      );
+      expect(getTextAreaField(null, null).type).toEqual('textarea');
     });
     it('should include field name', () => {
-      expect(getTextAreaField(null, FIELD_NAME).fieldName).toEqual(
-        FIELD_NAME
-      );
+      expect(getTextAreaField(null, FIELD_NAME).fieldName).toEqual(FIELD_NAME);
     });
     it('default value should equal to the selected field', () => {
       const obj = {};
       obj[FIELD_NAME] = VALUE;
-      expect(getTextAreaField(obj, FIELD_NAME).defaultValue).toEqual(
-        VALUE
-      );
+      expect(getTextAreaField(obj, FIELD_NAME).defaultValue).toEqual(VALUE);
     });
     it('default value should be empty if there is no object', () => {
-      expect(getTextAreaField(null, FIELD_NAME).defaultValue).toEqual(
-        ''
-      );
+      expect(getTextAreaField(null, FIELD_NAME).defaultValue).toEqual('');
     });
   });
 });

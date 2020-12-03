@@ -1,5 +1,6 @@
 .tooltip {
-  .tooltip-inner, .tooltip-inner-top {
+  .tooltip-inner,
+  .tooltip-inner-top {
     color: $tooltip-text-secondary;
     background-color: $tooltip-bg;
     box-shadow: 2px 2px 2px $tooltip-text-secondary;

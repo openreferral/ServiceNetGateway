@@ -8,5 +8,5 @@ export const convertDateTimeToServer = date => (date ? moment(date, APP_LOCAL_DA
 
 export const displayDefaultDateTime = () =>
   moment()
-  .startOf('day')
-  .format(APP_LOCAL_DATETIME_FORMAT);
+    .startOf('day')
+    .format(APP_LOCAL_DATETIME_FORMAT);

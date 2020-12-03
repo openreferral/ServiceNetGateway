@@ -13,5 +13,4 @@ export interface ISimpleOrganization {
   accountName?: string;
 }
 
-export const defaultSimpleOrganization: ISimpleOrganization = {
-};
+export const defaultSimpleOrganization: ISimpleOrganization = {};

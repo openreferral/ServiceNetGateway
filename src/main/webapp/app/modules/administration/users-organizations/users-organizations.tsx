@@ -9,7 +9,8 @@ import {
   JhiPagination,
   getPaginationItemsNumber,
   getSortState,
-  IPaginationBaseState, translate
+  IPaginationBaseState,
+  translate
 } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageSizeSelector from '../../../entities/page-size-selector';
@@ -145,12 +146,15 @@ export class UsersOrganizations extends React.Component<IOrganizationProps, IOrg
 
   clearSearchBar = () => {
     if (this.state.name !== '') {
-      this.setState({
-        activePage: 1,
-        name: ''
-      }, () => {
-        this.getEntities();
-      });
+      this.setState(
+        {
+          activePage: 1,
+          name: ''
+        },
+        () => {
+          this.getEntities();
+        }
+      );
     }
   };
 

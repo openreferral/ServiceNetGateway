@@ -13,11 +13,7 @@ import { IRootState } from 'app/shared/reducers';
 import { handleRegister, handleRegisterWithinSilo, reset } from './register.reducer';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import ReCAPTCHA from 'react-google-recaptcha';
-import {
-  getCaptcha,
-  ICaptchaComponent,
-  ICaptchaState
-} from 'app/shared/auth/captcha';
+import { getCaptcha, ICaptchaComponent, ICaptchaState } from 'app/shared/auth/captcha';
 import { RECAPTCHA_SITE_KEY } from 'app/config/constants';
 
 export interface IRegisterProps extends StateProps, DispatchProps, RouteComponentProps<{ siloName: any }> {}
@@ -44,13 +40,13 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
     this.setState({
       captcha
     });
-  }
+  };
 
   onCaptchaErrored = captchaError => {
     this.setState({
       captchaError
     });
-  }
+  };
 
   setPhoneNumber = phoneNumber => {
     this.setState({ phoneNumber });

@@ -5,11 +5,7 @@ import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validatio
 import { Link } from 'react-router-dom';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import ReCAPTCHA from 'react-google-recaptcha';
-import {
-  ICaptchaComponent,
-  ICaptchaState,
-  getCaptcha
-} from 'app/shared/auth/captcha';
+import { ICaptchaComponent, ICaptchaState, getCaptcha } from 'app/shared/auth/captcha';
 import { RECAPTCHA_SITE_KEY } from 'app/config/constants';
 import './login-modal.scss';
 
@@ -43,13 +39,13 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
     this.setState({
       captcha
     });
-  }
+  };
 
   onCaptchaErrored = captchaError => {
     this.setState({
       captchaError
     });
-  }
+  };
 
   render() {
     const { loginError, handleClose } = this.props;
@@ -57,7 +53,14 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
 
     return (
       <>
-        <Modal isOpen={this.props.showModal} toggle={handleClose} backdrop="static" id="login-page" autoFocus={false} className="login-modal">
+        <Modal
+          isOpen={this.props.showModal}
+          toggle={handleClose}
+          backdrop="static"
+          id="login-page"
+          autoFocus={false}
+          className="login-modal"
+        >
           <AvForm onSubmit={this.handleSubmit}>
             <ModalHeader id="login-title" toggle={handleClose}>
               <Translate contentKey="login.title">Sign in</Translate>
@@ -123,14 +126,16 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
                 </ButtonPill>
               </div>
             </ModalBody>
-            {this.props.showModal ? <ReCAPTCHA
-              ref={this.recaptchaRef}
-              sitekey={RECAPTCHA_SITE_KEY}
-              onChange={this.onCaptchaChange}
-              onErrored={this.onCaptchaErrored}
-              size="invisible"
-              badge="bottomright"
-            /> : null}
+            {this.props.showModal ? (
+              <ReCAPTCHA
+                ref={this.recaptchaRef}
+                sitekey={RECAPTCHA_SITE_KEY}
+                onChange={this.onCaptchaChange}
+                onErrored={this.onCaptchaErrored}
+                size="invisible"
+                badge="bottomright"
+              />
+            ) : null}
           </AvForm>
         </Modal>
       </>

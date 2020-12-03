@@ -155,10 +155,13 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
                 inputId="serviceType"
                 components={{ MultiValueContainer }}
                 isMulti
-                options={taxonomyOptions && _.uniqBy(
-                  _.get(taxonomyOptions, 'ServiceProvider', []).concat(
-                    _.get(taxonomyOptions, 'silo', [])),
-                  option => option['value'])}
+                options={
+                  taxonomyOptions &&
+                  _.uniqBy(
+                    _.get(taxonomyOptions, 'ServiceProvider', []).concat(_.get(taxonomyOptions, 'silo', [])),
+                    option => option['value']
+                  )
+                }
                 value={serviceTypes}
                 onChange={this.handleServiceTypeChanged}
                 styles={{

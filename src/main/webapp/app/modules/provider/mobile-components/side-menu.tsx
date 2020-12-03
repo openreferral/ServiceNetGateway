@@ -13,7 +13,7 @@ const ProviderHomeLinks = props => (
     <Link to={`/feedback`} onClick={() => props.toggleMenu()}>
       <Translate contentKey="global.menu.feedback" />
     </Link>
-    {props.isReferralEnabled ?
+    {props.isReferralEnabled ? (
       <>
         <Link to={`/referral`} onClick={() => props.toggleMenu()}>
           <Translate contentKey="global.menu.referral">Referral</Translate>
@@ -21,7 +21,8 @@ const ProviderHomeLinks = props => (
         <Link to={`/referral-history`} onClick={() => props.toggleMenu()}>
           <Translate contentKey="providerSite.menu.beneficiaryHistory">Beneficiary History</Translate>
         </Link>
-      </> : null}
+      </>
+    ) : null}
     <Link to={`/deactivated-records`} onClick={() => props.toggleMenu()}>
       <Translate contentKey="providerSite.menu.deactivatedRecords">Deactivated Records</Translate>
     </Link>

@@ -102,8 +102,11 @@ const userApiUrl = SERVICENET_API_URL + '/users';
 // Actions
 
 export const searchOrganizations = (name, systemAccount, page, size, sort) => {
-  const requestUrl = `${orgApiUrl}/search/${sort ? `?name=${name}&systemAccount=${systemAccount}&page=${page}&size=${size}&sort=${sort}`
-    : `?name=${name}&systemAccount=${systemAccount}`}`;
+  const requestUrl = `${orgApiUrl}/search/${
+    sort
+      ? `?name=${name}&systemAccount=${systemAccount}&page=${page}&size=${size}&sort=${sort}`
+      : `?name=${name}&systemAccount=${systemAccount}`
+  }`;
   return {
     type: ACTION_TYPES.SEARCH_ORGANIZATIONS,
     payload: axios.get<IOrganization>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
@@ -126,7 +129,8 @@ export const searchUsers = systemAccount => {
   };
 };
 
-export const updateOrganization: ICrudPutAction<IOrganization> = entity => async dispatch => dispatch({
-  type: ACTION_TYPES.UPDATE_ORGANIZATION,
-  payload: axios.put(`${orgApiUrl}`, cleanEntity(entity))
-});
+export const updateOrganization: ICrudPutAction<IOrganization> = entity => async dispatch =>
+  dispatch({
+    type: ACTION_TYPES.UPDATE_ORGANIZATION,
+    payload: axios.put(`${orgApiUrl}`, cleanEntity(entity))
+  });

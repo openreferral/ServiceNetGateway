@@ -242,7 +242,13 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
     if (fieldName === 'url' && defaultValue) {
       const url = this.props.activity.organization.url;
       urlButton = url && (
-        <a target="_blank" className="url-link" style={{ color: 'rgba(0, 0, 0, 0.7)' }} href={url.startsWith('http') ? url : `//${url}`} rel="noopener noreferrer">
+        <a
+          target="_blank"
+          className="url-link"
+          style={{ color: 'rgba(0, 0, 0, 0.7)' }}
+          href={url.startsWith('http') ? url : `//${url}`}
+          rel="noopener noreferrer"
+        >
           <FontAwesomeIcon icon="external-link-alt" className="url-icon" />
           {url.length < 100 ? `${url}` : <Translate contentKey="multiRecordView.goToWebsite" />}
         </a>

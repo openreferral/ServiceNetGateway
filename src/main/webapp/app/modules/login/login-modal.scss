@@ -30,6 +30,8 @@
   }
 
   @keyframes visibleAnim {
-    to { visibility: visible; }
+    to {
+      visibility: visible;
+    }
   }
 }

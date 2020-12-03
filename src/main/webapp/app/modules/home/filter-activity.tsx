@@ -74,8 +74,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
   state: IFilterActivityState = INITIAL_STATE;
 
   componentDidMount() {
-    const { isLoggingOut, previousUserName, userName,
-      postalCodeList, regionList, cityList, partnerList, taxonomyOptions } = this.props;
+    const { isLoggingOut, previousUserName, userName, postalCodeList, regionList, cityList, partnerList, taxonomyOptions } = this.props;
     if (!isLoggingOut) {
       const hasUserChanged = previousUserName !== userName;
       if (_.isEmpty(postalCodeList)) {

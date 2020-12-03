@@ -119,7 +119,10 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
 
   cardTitle = () => {
     const { record, fullWidth } = this.props;
-    const shouldShowDirectionsLabelMobile = useMediaQuery({ minWidth: DIRECTIONS_BUTTON_MOBILE_WIDTH_BREAKPOINT, maxWidth: MOBILE_WIDTH_BREAKPOINT });
+    const shouldShowDirectionsLabelMobile = useMediaQuery({
+      minWidth: DIRECTIONS_BUTTON_MOBILE_WIDTH_BREAKPOINT,
+      maxWidth: MOBILE_WIDTH_BREAKPOINT
+    });
     const shouldShowDirectionsLabelDesktop = useMediaQuery({ minWidth: EXTRA_LARGE_WIDTH_BREAKPOINT });
     if (_.isEmpty(record)) {
       return null;
@@ -153,12 +156,12 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
                 style={{ color: 'white' }}
               >
                 <FontAwesomeIcon icon="directions" size="lg" />
-                {shouldShowDirectionsLabelMobile || shouldShowDirectionsLabelDesktop ?
+                {shouldShowDirectionsLabelMobile || shouldShowDirectionsLabelDesktop ? (
                   <span>
                     &nbsp;
                     <Translate contentKey="providerSite.directions">Directions</Translate>
                   </span>
-                : null}
+                ) : null}
               </a>
             </ButtonPill>
           </div>

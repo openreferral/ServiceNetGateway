@@ -1,230 +1,253 @@
 {
-  "organization" : {
-    "id" : "e2bcea3d-f608-4dc2-8068-949339929592",
-    "name" : "COMMUNITY HOUSING PARTNERSHIP",
-    "alternateName" : null,
-    "description" : "Nonprofit organization helping homeless people secure housing and become self-sufficient.",
-    "email" : "info@example.org",
-    "url" : "www.example.org",
-    "taxStatus" : null,
-    "taxId" : null,
-    "yearIncorporated" : null,
-    "legalStatus" : "Nonprofit - Incorporated",
-    "active" : true,
-    "updatedAt" : "2020-02-05T14:21:47.578651Z",
-    "lastVerifiedOn" : "2020-01-28T08:00:00Z",
-    "replacedById" : null,
-    "sourceDocumentId" : null,
-    "sourceDocumentDateUploaded" : null,
-    "accountId" : "5cea9aaa-4dc8-4325-ab76-a15ce981d99e",
-    "accountName" : "UWBA",
-    "externalDbId" : "10600415",
-    "userProfiles" : [ ]
+  "organization": {
+    "id": "e2bcea3d-f608-4dc2-8068-949339929592",
+    "name": "COMMUNITY HOUSING PARTNERSHIP",
+    "alternateName": null,
+    "description": "Nonprofit organization helping homeless people secure housing and become self-sufficient.",
+    "email": "info@example.org",
+    "url": "www.example.org",
+    "taxStatus": null,
+    "taxId": null,
+    "yearIncorporated": null,
+    "legalStatus": "Nonprofit - Incorporated",
+    "active": true,
+    "updatedAt": "2020-02-05T14:21:47.578651Z",
+    "lastVerifiedOn": "2020-01-28T08:00:00Z",
+    "replacedById": null,
+    "sourceDocumentId": null,
+    "sourceDocumentDateUploaded": null,
+    "accountId": "5cea9aaa-4dc8-4325-ab76-a15ce981d99e",
+    "accountName": "UWBA",
+    "externalDbId": "10600415",
+    "userProfiles": []
   },
-  "lastUpdated" : "2020-02-05T14:21:47.578651Z",
-  "locations" : [ {
-    "location" : {
-      "id" : "b464b9a5-d8f9-467e-baf6-80cc329c3e4e",
-      "name" : "11 Example Street - San Francisco (CA)",
-      "alternateName" : null,
-      "description" : null,
-      "transportation" : null,
-      "latitude" : 36.6611223,
-      "longitude" : -121.113992,
-      "externalDbId" : "10600416",
-      "providerName" : "UWBA",
-      "organizationId" : "e2bcea3d-f608-4dc2-8068-949339929592",
-      "organizationName" : "COMMUNITY HOUSING PARTNERSHIP",
-      "updatedAt" : "2020-01-29T17:43:42.691503Z",
-      "lastVerifiedOn" : "2020-01-28T08:00:00Z",
-      "geocodingResults" : [ {
-        "id" : "5cda287f-f0b6-40eb-a6c9-5f375b267c96",
-        "address" : "11 Example Street, San Francisco, United States, 94101, San Francisco, CA",
-        "latitude" : 36.6611223,
-        "longitude" : -121.113992
-      } ]
+  "lastUpdated": "2020-02-05T14:21:47.578651Z",
+  "locations": [
+    {
+      "location": {
+        "id": "b464b9a5-d8f9-467e-baf6-80cc329c3e4e",
+        "name": "11 Example Street - San Francisco (CA)",
+        "alternateName": null,
+        "description": null,
+        "transportation": null,
+        "latitude": 36.6611223,
+        "longitude": -121.113992,
+        "externalDbId": "10600416",
+        "providerName": "UWBA",
+        "organizationId": "e2bcea3d-f608-4dc2-8068-949339929592",
+        "organizationName": "COMMUNITY HOUSING PARTNERSHIP",
+        "updatedAt": "2020-01-29T17:43:42.691503Z",
+        "lastVerifiedOn": "2020-01-28T08:00:00Z",
+        "geocodingResults": [
+          {
+            "id": "5cda287f-f0b6-40eb-a6c9-5f375b267c96",
+            "address": "11 Example Street, San Francisco, United States, 94101, San Francisco, CA",
+            "latitude": 36.6611223,
+            "longitude": -121.113992
+          }
+        ]
+      },
+      "physicalAddress": {
+        "id": "8abd6754-a12e-427f-ab50-64ce3e01872e",
+        "attention": null,
+        "address1": "11 Example Street",
+        "address2": "",
+        "city": "San Francisco",
+        "region": "San Francisco",
+        "stateProvince": "CA",
+        "postalCode": "94101",
+        "country": "United States",
+        "locationId": null,
+        "locationName": null
+      },
+      "postalAddress": {
+        "id": "3bce607d-ca14-474c-94e6-3181db0bc27a",
+        "attention": null,
+        "address1": "11 Example Street",
+        "address2": "",
+        "city": "San Francisco",
+        "region": "San Francisco",
+        "stateProvince": "CA",
+        "postalCode": "94101",
+        "country": "United States",
+        "locationId": null,
+        "locationName": null
+      },
+      "regularScheduleOpeningHours": null,
+      "holidaySchedules": [],
+      "langs": [],
+      "accessibilities": [
+        {
+          "id": "a0f3c1b4-40e8-4191-bfd5-9a411bc0a275",
+          "accessibility": "ADA accessible",
+          "details": null,
+          "locationId": null,
+          "locationName": null
+        }
+      ],
+      "regularScheduleNotes": null
+    }
+  ],
+  "services": [
+    {
+      "service": {
+        "id": "3b313eea-742b-49a6-8a8b-9151fabb585f",
+        "name": "Transitional Job Placement",
+        "alternateName": null,
+        "description": "Prepares formerly homeless adults to return to and succeed in the job market. Provides pre-employment counseling, instruction, job training, job search assistance, and post-placement retention support. Operates an in-house temp agency. Connects participants with on-call positions in the hospitality and property management industries.",
+        "url": "www.example.org",
+        "email": "info@example.org",
+        "status": "Active",
+        "interpretationServices": null,
+        "applicationProcess": "Attend an orientation meeting, held every Monday from 9:45am to noon. Required items: Government-issued photo ID and Social Security card are required at orientation.",
+        "waitTime": null,
+        "fees": "No fee",
+        "accreditations": null,
+        "licenses": null,
+        "type": "Program",
+        "updatedAt": "2020-02-05T14:21:47.547657Z",
+        "lastVerifiedOn": "2020-01-28T08:00:00Z",
+        "organizationId": "e2bcea3d-f608-4dc2-8068-949339929592",
+        "organizationName": "COMMUNITY HOUSING PARTNERSHIP",
+        "programId": null,
+        "programName": null,
+        "externalDbId": "10609650",
+        "providerName": "UWBA"
+      },
+      "regularScheduleOpeningHours": [
+        {
+          "id": "bc781868-d723-4964-85b6-d4c7c3d8e389",
+          "weekday": 2,
+          "opensAt": "09:30",
+          "closesAt": "16:00",
+          "regularScheduleId": null
+        },
+        {
+          "id": "f8f69bf4-4d11-4983-b7b0-4ec84013de33",
+          "weekday": 4,
+          "opensAt": "09:30",
+          "closesAt": "16:00",
+          "regularScheduleId": null
+        },
+        {
+          "id": "eb24610d-350f-41db-8924-3e34a5653921",
+          "weekday": 1,
+          "opensAt": "09:30",
+          "closesAt": "16:00",
+          "regularScheduleId": null
+        },
+        {
+          "id": "08b0bda3-207f-4c14-a11d-0281ae96715d",
+          "weekday": 3,
+          "opensAt": "09:30",
+          "closesAt": "16:00",
+          "regularScheduleId": null
+        }
+      ],
+      "holidaySchedules": [],
+      "funding": null,
+      "eligibility": {
+        "id": "c4f47e7e-938f-4bf6-862f-cd2ffda45fd8",
+        "eligibility": "Open to adults (age 18 and over) that are residents of a supportive housing site (including residences not owned or managed by CHP) or otherwise housed.",
+        "srvcId": null,
+        "srvcName": null
+      },
+      "docs": [],
+      "paymentsAccepteds": [],
+      "langs": [
+        {
+          "id": "1a455b9b-c43e-4f07-b6fe-0bf52f6b492e",
+          "language": "English",
+          "srvcId": null,
+          "srvcName": null,
+          "locationId": null,
+          "locationName": null
+        }
+      ],
+      "taxonomies": [
+        {
+          "id": "3f5cbb02-3ad2-4bce-ae26-80dfb3e666e9",
+          "taxonomyDetails": null,
+          "srvcId": "3b313eea-742b-49a6-8a8b-9151fabb585f",
+          "srvcName": "Transitional Job Placement",
+          "taxonomyId": "42ab4465-5e4e-4b8c-96dc-5b1c3b15976b",
+          "taxonomyName": "Employment Preparation",
+          "externalDbId": "10609650ND-2000",
+          "providerName": "UWBA"
+        },
+        {
+          "id": "13b52573-b8e8-42df-bea1-045a9146db58",
+          "taxonomyDetails": null,
+          "srvcId": "3b313eea-742b-49a6-8a8b-9151fabb585f",
+          "srvcName": "Transitional Job Placement",
+          "taxonomyId": "44d70bd6-47de-4d54-87e6-c6b3c7093782",
+          "taxonomyName": "Job Finding Assistance",
+          "externalDbId": "10609650ND-3500",
+          "providerName": "UWBA"
+        }
+      ],
+      "phones": [
+        {
+          "id": "d700779a-48e9-4e62-866f-fa0931826763",
+          "number": "415-852-5300",
+          "extension": null,
+          "type": "Phone",
+          "language": null,
+          "description": "Main Program Phone",
+          "locationId": null,
+          "locationName": null,
+          "srvcId": null,
+          "srvcName": null,
+          "organizationId": null,
+          "organizationName": null,
+          "contactId": null,
+          "contactName": null
+        }
+      ],
+      "contacts": []
+    }
+  ],
+  "contacts": [],
+  "exclusions": [],
+  "conflicts": [
+    {
+      "id": "fd5552e6-c461-44c4-85ac-c052f10592da",
+      "currentValue": "COMMUNITY HOUSING PARTNERSHIP",
+      "currentValueDate": "2019-02-28T23:51:34.650893Z",
+      "offeredValue": "Community Housing Partnership (CHP)",
+      "offeredValueDate": "2019-02-28T23:28:39.436205Z",
+      "fieldName": "name",
+      "entityPath": "org.benetech.servicenet.domain.Organization",
+      "state": "PENDING",
+      "stateDate": "2019-03-01T16:11:24.789728Z",
+      "createdDate": "2019-03-01T16:11:24.789729Z",
+      "resourceId": "e2bcea3d-f608-4dc2-8068-949339929592",
+      "partnerResourceId": "3cd806f9-0118-444b-9873-497fbdcef732",
+      "ownerId": "5cea9aaa-4dc8-4325-ab76-a15ce981d99e",
+      "ownerName": "UWBA",
+      "partnerId": "ab7018c5-b3cc-4a5d-97fb-50e7ba8262c1",
+      "partnerName": "ShelterTech",
+      "owner": null
     },
-    "physicalAddress" : {
-      "id" : "8abd6754-a12e-427f-ab50-64ce3e01872e",
-      "attention" : null,
-      "address1" : "11 Example Street",
-      "address2" : "",
-      "city" : "San Francisco",
-      "region" : "San Francisco",
-      "stateProvince" : "CA",
-      "postalCode" : "94101",
-      "country" : "United States",
-      "locationId" : null,
-      "locationName" : null
-    },
-    "postalAddress" : {
-      "id" : "3bce607d-ca14-474c-94e6-3181db0bc27a",
-      "attention" : null,
-      "address1" : "11 Example Street",
-      "address2" : "",
-      "city" : "San Francisco",
-      "region" : "San Francisco",
-      "stateProvince" : "CA",
-      "postalCode" : "94101",
-      "country" : "United States",
-      "locationId" : null,
-      "locationName" : null
-    },
-    "regularScheduleOpeningHours" : null,
-    "holidaySchedules" : [ ],
-    "langs" : [ ],
-    "accessibilities" : [ {
-      "id" : "a0f3c1b4-40e8-4191-bfd5-9a411bc0a275",
-      "accessibility" : "ADA accessible",
-      "details" : null,
-      "locationId" : null,
-      "locationName" : null
-    } ],
-    "regularScheduleNotes" : null
-  } ],
-  "services" : [ {
-    "service" : {
-      "id" : "3b313eea-742b-49a6-8a8b-9151fabb585f",
-      "name" : "Transitional Job Placement",
-      "alternateName" : null,
-      "description" : "Prepares formerly homeless adults to return to and succeed in the job market. Provides pre-employment counseling, instruction, job training, job search assistance, and post-placement retention support. Operates an in-house temp agency. Connects participants with on-call positions in the hospitality and property management industries.",
-      "url" : "www.example.org",
-      "email" : "info@example.org",
-      "status" : "Active",
-      "interpretationServices" : null,
-      "applicationProcess" : "Attend an orientation meeting, held every Monday from 9:45am to noon. Required items: Government-issued photo ID and Social Security card are required at orientation.",
-      "waitTime" : null,
-      "fees" : "No fee",
-      "accreditations" : null,
-      "licenses" : null,
-      "type" : "Program",
-      "updatedAt" : "2020-02-05T14:21:47.547657Z",
-      "lastVerifiedOn" : "2020-01-28T08:00:00Z",
-      "organizationId" : "e2bcea3d-f608-4dc2-8068-949339929592",
-      "organizationName" : "COMMUNITY HOUSING PARTNERSHIP",
-      "programId" : null,
-      "programName" : null,
-      "externalDbId" : "10609650",
-      "providerName" : "UWBA"
-    },
-    "regularScheduleOpeningHours" : [ {
-      "id" : "bc781868-d723-4964-85b6-d4c7c3d8e389",
-      "weekday" : 2,
-      "opensAt" : "09:30",
-      "closesAt" : "16:00",
-      "regularScheduleId" : null
-    }, {
-      "id" : "f8f69bf4-4d11-4983-b7b0-4ec84013de33",
-      "weekday" : 4,
-      "opensAt" : "09:30",
-      "closesAt" : "16:00",
-      "regularScheduleId" : null
-    }, {
-      "id" : "eb24610d-350f-41db-8924-3e34a5653921",
-      "weekday" : 1,
-      "opensAt" : "09:30",
-      "closesAt" : "16:00",
-      "regularScheduleId" : null
-    }, {
-      "id" : "08b0bda3-207f-4c14-a11d-0281ae96715d",
-      "weekday" : 3,
-      "opensAt" : "09:30",
-      "closesAt" : "16:00",
-      "regularScheduleId" : null
-    } ],
-    "holidaySchedules" : [ ],
-    "funding" : null,
-    "eligibility" : {
-      "id" : "c4f47e7e-938f-4bf6-862f-cd2ffda45fd8",
-      "eligibility" : "Open to adults (age 18 and over) that are residents of a supportive housing site (including residences not owned or managed by CHP) or otherwise housed.",
-      "srvcId" : null,
-      "srvcName" : null
-    },
-    "docs" : [ ],
-    "paymentsAccepteds" : [ ],
-    "langs" : [ {
-      "id" : "1a455b9b-c43e-4f07-b6fe-0bf52f6b492e",
-      "language" : "English",
-      "srvcId" : null,
-      "srvcName" : null,
-      "locationId" : null,
-      "locationName" : null
-    } ],
-    "taxonomies" : [ {
-      "id" : "3f5cbb02-3ad2-4bce-ae26-80dfb3e666e9",
-      "taxonomyDetails" : null,
-      "srvcId" : "3b313eea-742b-49a6-8a8b-9151fabb585f",
-      "srvcName" : "Transitional Job Placement",
-      "taxonomyId" : "42ab4465-5e4e-4b8c-96dc-5b1c3b15976b",
-      "taxonomyName" : "Employment Preparation",
-      "externalDbId" : "10609650ND-2000",
-      "providerName" : "UWBA"
-    }, {
-      "id" : "13b52573-b8e8-42df-bea1-045a9146db58",
-      "taxonomyDetails" : null,
-      "srvcId" : "3b313eea-742b-49a6-8a8b-9151fabb585f",
-      "srvcName" : "Transitional Job Placement",
-      "taxonomyId" : "44d70bd6-47de-4d54-87e6-c6b3c7093782",
-      "taxonomyName" : "Job Finding Assistance",
-      "externalDbId" : "10609650ND-3500",
-      "providerName" : "UWBA"
-    } ],
-    "phones" : [ {
-      "id" : "d700779a-48e9-4e62-866f-fa0931826763",
-      "number" : "415-852-5300",
-      "extension" : null,
-      "type" : "Phone",
-      "language" : null,
-      "description" : "Main Program Phone",
-      "locationId" : null,
-      "locationName" : null,
-      "srvcId" : null,
-      "srvcName" : null,
-      "organizationId" : null,
-      "organizationName" : null,
-      "contactId" : null,
-      "contactName" : null
-    } ],
-    "contacts" : [ ]
-  } ],
-  "contacts" : [ ],
-  "exclusions" : [ ],
-  "conflicts" : [ {
-    "id" : "fd5552e6-c461-44c4-85ac-c052f10592da",
-    "currentValue" : "COMMUNITY HOUSING PARTNERSHIP",
-    "currentValueDate" : "2019-02-28T23:51:34.650893Z",
-    "offeredValue" : "Community Housing Partnership (CHP)",
-    "offeredValueDate" : "2019-02-28T23:28:39.436205Z",
-    "fieldName" : "name",
-    "entityPath" : "org.benetech.servicenet.domain.Organization",
-    "state" : "PENDING",
-    "stateDate" : "2019-03-01T16:11:24.789728Z",
-    "createdDate" : "2019-03-01T16:11:24.789729Z",
-    "resourceId" : "e2bcea3d-f608-4dc2-8068-949339929592",
-    "partnerResourceId" : "3cd806f9-0118-444b-9873-497fbdcef732",
-    "ownerId" : "5cea9aaa-4dc8-4325-ab76-a15ce981d99e",
-    "ownerName" : "UWBA",
-    "partnerId" : "ab7018c5-b3cc-4a5d-97fb-50e7ba8262c1",
-    "partnerName" : "ShelterTech",
-    "owner" : null
-  }, {
-    "id" : "e5db64e1-b181-4c84-a95c-eea5a1e7cb3d",
-    "currentValue" : "Nonprofit organization helping homeless people secure housing and become self-sufficient.",
-    "currentValueDate" : "2020-01-29T17:43:42.622941Z",
-    "offeredValue" : "Community Housing Partnership is an outcomes-focused nonprofit that fulfills its mission by developing and managing high-quality supportive housing and providing services to homeless individuals, seniors, and families.\n\nCommunity Housing Partnership does not maintain an open waitlist. All vacancies are filled through referrals. Information about referral-based housing can be found at: http://example.org/services/continuum-of-care-adult-coordinated-entry/\n\n If you have any questions, please call 111-111-1111 x123 or x116, or email CHP staff at housingopportunities@example.org\n\n",
-    "offeredValueDate" : "2019-05-15T18:55:51.139389Z",
-    "fieldName" : "description",
-    "entityPath" : "org.benetech.servicenet.domain.Organization",
-    "state" : "PENDING",
-    "stateDate" : "2020-01-29T18:21:36.311095Z",
-    "createdDate" : "2020-01-29T18:21:36.311095Z",
-    "resourceId" : "e2bcea3d-f608-4dc2-8068-949339929592",
-    "partnerResourceId" : "3cd806f9-0118-444b-9873-497fbdcef732",
-    "ownerId" : "5cea9aaa-4dc8-4325-ab76-a15ce981d99e",
-    "ownerName" : "UWBA",
-    "partnerId" : "ab7018c5-b3cc-4a5d-97fb-50e7ba8262c1",
-    "partnerName" : "ShelterTech",
-    "owner" : null
-  } ],
-  "owner" : null
+    {
+      "id": "e5db64e1-b181-4c84-a95c-eea5a1e7cb3d",
+      "currentValue": "Nonprofit organization helping homeless people secure housing and become self-sufficient.",
+      "currentValueDate": "2020-01-29T17:43:42.622941Z",
+      "offeredValue": "Community Housing Partnership is an outcomes-focused nonprofit that fulfills its mission by developing and managing high-quality supportive housing and providing services to homeless individuals, seniors, and families.\n\nCommunity Housing Partnership does not maintain an open waitlist. All vacancies are filled through referrals. Information about referral-based housing can be found at: http://example.org/services/continuum-of-care-adult-coordinated-entry/\n\n If you have any questions, please call 111-111-1111 x123 or x116, or email CHP staff at housingopportunities@example.org\n\n",
+      "offeredValueDate": "2019-05-15T18:55:51.139389Z",
+      "fieldName": "description",
+      "entityPath": "org.benetech.servicenet.domain.Organization",
+      "state": "PENDING",
+      "stateDate": "2020-01-29T18:21:36.311095Z",
+      "createdDate": "2020-01-29T18:21:36.311095Z",
+      "resourceId": "e2bcea3d-f608-4dc2-8068-949339929592",
+      "partnerResourceId": "3cd806f9-0118-444b-9873-497fbdcef732",
+      "ownerId": "5cea9aaa-4dc8-4325-ab76-a15ce981d99e",
+      "ownerName": "UWBA",
+      "partnerId": "ab7018c5-b3cc-4a5d-97fb-50e7ba8262c1",
+      "partnerName": "ShelterTech",
+      "owner": null
+    }
+  ],
+  "owner": null
 }
