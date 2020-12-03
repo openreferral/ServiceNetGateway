@@ -20,11 +20,14 @@ export const DailyUpdateDeleteDialog = (props: IDailyUpdateDeleteDialogProps) =>
     props.history.push('entity/daily-update' + props.location.search);
   };
 
-  useEffect(() => {
-    if (props.updateSuccess) {
-      handleClose();
-    }
-  }, [props.updateSuccess]);
+  useEffect(
+    () => {
+      if (props.updateSuccess) {
+        handleClose();
+      }
+    },
+    [props.updateSuccess]
+  );
 
   const confirmDelete = () => {
     props.deleteEntity(props.dailyUpdateEntity.id);
@@ -61,4 +64,7 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(DailyUpdateDeleteDialog);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DailyUpdateDeleteDialog);

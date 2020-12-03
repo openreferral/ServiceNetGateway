@@ -183,7 +183,7 @@ div.card.record-card {
   .last-updated-indicator {
     height: 1.5em;
     width: 1.5em;
-    background-color: #F9AB7E;
+    background-color: #f9ab7e;
     border-radius: 50%;
     display: inline-block;
 
@@ -191,7 +191,7 @@ div.card.record-card {
       background-color: $new-record-color;
     }
     &.old {
-      background-color: #E1DEDC;
+      background-color: #e1dedc;
     }
   }
 }

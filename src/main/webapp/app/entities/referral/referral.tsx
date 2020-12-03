@@ -32,15 +32,21 @@ export const Referral = (props: IReferralProps) => {
     props.getEntities();
   };
 
-  useEffect(() => {
-    if (props.updateSuccess) {
-      resetAll();
-    }
-  }, [props.updateSuccess]);
+  useEffect(
+    () => {
+      if (props.updateSuccess) {
+        resetAll();
+      }
+    },
+    [props.updateSuccess]
+  );
 
-  useEffect(() => {
-    getAllEntities();
-  }, [paginationState.activePage]);
+  useEffect(
+    () => {
+      getAllEntities();
+    },
+    [paginationState.activePage]
+  );
 
   const handleLoadMore = () => {
     if ((window as any).pageYOffset > 0) {
@@ -51,12 +57,15 @@ export const Referral = (props: IReferralProps) => {
     }
   };
 
-  useEffect(() => {
-    if (sorting) {
-      getAllEntities();
-      setSorting(false);
-    }
-  }, [sorting]);
+  useEffect(
+    () => {
+      if (sorting) {
+        getAllEntities();
+        setSorting(false);
+      }
+    },
+    [sorting]
+  );
 
   const sort = p => () => {
     props.reset();
@@ -136,9 +145,13 @@ export const Referral = (props: IReferralProps) => {
                       {referral.fulfilledAt ? <TextFormat type="date" value={referral.fulfilledAt} format={APP_DATE_FORMAT} /> : null}
                     </td>
                     <td>{referral.fromName ? <Link to={`organization/${referral.fromId}`}>{referral.fromName}</Link> : ''}</td>
-                    <td>{referral.fromLocationName ? <Link to={`location/${referral.fromLocationId}`}>{referral.fromLocationName}</Link> : ''}</td>
+                    <td>
+                      {referral.fromLocationName ? <Link to={`location/${referral.fromLocationId}`}>{referral.fromLocationName}</Link> : ''}
+                    </td>
                     <td>{referral.toName ? <Link to={`organization/${referral.toId}`}>{referral.toName}</Link> : ''}</td>
-                    <td>{referral.toLocationName ? <Link to={`location/${referral.toLocationId}`}>{referral.toLocationName}</Link> : ''}</td>
+                    <td>
+                      {referral.toLocationName ? <Link to={`location/${referral.toLocationId}`}>{referral.toLocationName}</Link> : ''}
+                    </td>
                     <td>
                       {referral.beneficiaryId ? <Link to={`beneficiary/${referral.beneficiaryId}`}>{referral.beneficiaryId}</Link> : ''}
                     </td>
@@ -185,4 +198,7 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Referral);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Referral);

@@ -58,14 +58,16 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.lat !== nextState.lat
-      || this.state.lng !== nextState.lng
-      || this.state.zoom !== nextState.zoom
-      || this.props.centeredAt !== nextProps.centeredAt
-      || this.props.lng !== nextProps.lng
-      || this.props.googleMapURL !== nextProps.googleMapURL
-      || !_.isEqual(this.props.records, nextProps.records)
-      || this.props.showMyLocation !== nextProps.showMyLocation;
+    return (
+      this.state.lat !== nextState.lat ||
+      this.state.lng !== nextState.lng ||
+      this.state.zoom !== nextState.zoom ||
+      this.props.centeredAt !== nextProps.centeredAt ||
+      this.props.lng !== nextProps.lng ||
+      this.props.googleMapURL !== nextProps.googleMapURL ||
+      !_.isEqual(this.props.records, nextProps.records) ||
+      this.props.showMyLocation !== nextProps.showMyLocation
+    );
   }
 
   componentDidUpdate(prevProps: Readonly<IPersistentMapProps>, prevState: Readonly<{}>, snapshot?: any) {
@@ -88,7 +90,7 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
   onBoundsChanged = () => {
     const boundaries = this.mapRef.getBounds();
     this.props.onBoundariesChanged(boundaries);
-  }
+  };
 
   onCenterChanged = () => {
     const center = this.mapRef.getCenter();
@@ -96,54 +98,56 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
       lat: center.lat(),
       lng: center.lng()
     });
-  }
+  };
 
   onZoomChanged = () => {
     const zoom = this.mapRef.getZoom();
     this.setState({
       zoom
     });
-  }
+  };
 
   setMapRef = mapRef => {
     if (!_.isEqual(mapRef, this.mapRef)) {
       this.mapRef = mapRef;
       this.onMapLoad(this.mapRef);
     }
-  }
+  };
 
   render() {
     const markerLocations = extractMarkerLocations(this.props);
     const props = this.props;
 
-    return <MapWrapper {...this.props} mapElement={<div className="flex-column-stretch" style={{ height: `100%` }} />} >
-      <GoogleMap
-        ref={mapRef => this.setMapRef(mapRef)}
-        center={{ lat: this.state.lat, lng: this.state.lng }}
-        zoom={this.state.zoom}
-        defaultOptions={{ mapTypeControl: false, streetViewControl: false, fullscreenControl: false, gestureHandling: 'greedy' }}
-        onBoundsChanged={this.onBoundsChanged}
-        onCenterChanged={this.onCenterChanged}
-        onZoomChanged={this.onZoomChanged}
-      >
-        {markerLocations.map((marker, idx) => (
-          <Marker
-            key={`${marker.lat}-${marker.lng}-${idx}`}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            onClick={() => props.onMarkerClick(marker)}
-          />
-        ))}
-        {props.showMyLocation && (
-          <Marker
-            position={{ lat: props.lat, lng: props.lng }}
-            icon={{
-              url: LOCATION_MARKER_URL,
-              scaledSize: new google.maps.Size(LOCATION_MARKER_SIZE, LOCATION_MARKER_SIZE),
-              anchor: new google.maps.Point(LOCATION_MARKER_SIZE / 2, LOCATION_MARKER_SIZE / 2)
-            }}
-          />
-        )}
-      </GoogleMap>
-    </MapWrapper>;
+    return (
+      <MapWrapper {...this.props} mapElement={<div className="flex-column-stretch" style={{ height: `100%` }} />}>
+        <GoogleMap
+          ref={mapRef => this.setMapRef(mapRef)}
+          center={{ lat: this.state.lat, lng: this.state.lng }}
+          zoom={this.state.zoom}
+          defaultOptions={{ mapTypeControl: false, streetViewControl: false, fullscreenControl: false, gestureHandling: 'greedy' }}
+          onBoundsChanged={this.onBoundsChanged}
+          onCenterChanged={this.onCenterChanged}
+          onZoomChanged={this.onZoomChanged}
+        >
+          {markerLocations.map((marker, idx) => (
+            <Marker
+              key={`${marker.lat}-${marker.lng}-${idx}`}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              onClick={() => props.onMarkerClick(marker)}
+            />
+          ))}
+          {props.showMyLocation && (
+            <Marker
+              position={{ lat: props.lat, lng: props.lng }}
+              icon={{
+                url: LOCATION_MARKER_URL,
+                scaledSize: new google.maps.Size(LOCATION_MARKER_SIZE, LOCATION_MARKER_SIZE),
+                anchor: new google.maps.Point(LOCATION_MARKER_SIZE / 2, LOCATION_MARKER_SIZE / 2)
+              }}
+            />
+          )}
+        </GoogleMap>
+      </MapWrapper>
+    );
   }
 }

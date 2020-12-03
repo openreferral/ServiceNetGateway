@@ -29,11 +29,14 @@ export const BeneficiaryUpdate = (props: IBeneficiaryUpdateProps) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (props.updateSuccess) {
-      handleClose();
-    }
-  }, [props.updateSuccess]);
+  useEffect(
+    () => {
+      if (props.updateSuccess) {
+        handleClose();
+      }
+    },
+    [props.updateSuccess]
+  );
 
   const saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
@@ -110,4 +113,7 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(BeneficiaryUpdate);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BeneficiaryUpdate);

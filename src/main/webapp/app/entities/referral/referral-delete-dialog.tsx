@@ -20,11 +20,14 @@ export const ReferralDeleteDialog = (props: IReferralDeleteDialogProps) => {
     props.history.push('/entity/referral');
   };
 
-  useEffect(() => {
-    if (props.updateSuccess) {
-      handleClose();
-    }
-  }, [props.updateSuccess]);
+  useEffect(
+    () => {
+      if (props.updateSuccess) {
+        handleClose();
+      }
+    },
+    [props.updateSuccess]
+  );
 
   const confirmDelete = () => {
     props.deleteEntity(props.referralEntity.id);
@@ -59,4 +62,7 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReferralDeleteDialog);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReferralDeleteDialog);

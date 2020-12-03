@@ -39,11 +39,14 @@ export const ReferralUpdate = (props: IReferralUpdateProps) => {
     props.getBeneficiaries();
   }, []);
 
-  useEffect(() => {
-    if (props.updateSuccess) {
-      handleClose();
-    }
-  }, [props.updateSuccess]);
+  useEffect(
+    () => {
+      if (props.updateSuccess) {
+        handleClose();
+      }
+    },
+    [props.updateSuccess]
+  );
 
   const saveEntity = (event, errors, values) => {
     values.sentAt = convertDateTimeToServer(values.sentAt);
@@ -210,4 +213,7 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReferralUpdate);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReferralUpdate);

@@ -20,11 +20,14 @@ export const BeneficiaryDeleteDialog = (props: IBeneficiaryDeleteDialogProps) =>
     props.history.push('/entity/beneficiary');
   };
 
-  useEffect(() => {
-    if (props.updateSuccess) {
-      handleClose();
-    }
-  }, [props.updateSuccess]);
+  useEffect(
+    () => {
+      if (props.updateSuccess) {
+        handleClose();
+      }
+    },
+    [props.updateSuccess]
+  );
 
   const confirmDelete = () => {
     props.deleteEntity(props.beneficiaryEntity.id);
@@ -34,9 +37,7 @@ export const BeneficiaryDeleteDialog = (props: IBeneficiaryDeleteDialogProps) =>
   return (
     <Modal isOpen toggle={handleClose}>
       <ModalHeader toggle={handleClose}>Confirm delete operation</ModalHeader>
-      <ModalBody id="serviceNetGatewayApp.beneficiary.delete.question">
-        Are you sure you want to delete this Beneficiary?
-      </ModalBody>
+      <ModalBody id="serviceNetGatewayApp.beneficiary.delete.question">Are you sure you want to delete this Beneficiary?</ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban" />
@@ -61,4 +62,7 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(BeneficiaryDeleteDialog);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BeneficiaryDeleteDialog);
