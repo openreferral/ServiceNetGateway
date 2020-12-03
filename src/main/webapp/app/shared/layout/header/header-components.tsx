@@ -7,13 +7,18 @@ import MediaQuery from 'react-responsive';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
-
-import appConfig from 'app/config/constants';
+import { Avatar } from './avatar';
 
 export const NavDropdown = props => (
   <UncontrolledDropdown nav inNavbar id={props.id}>
     <DropdownToggle nav caret className="d-flex align-items-center">
-      <FontAwesomeIcon icon={props.icon} />
+      {props.isAuthenticated ? (
+        <div className="self-align-center">
+          <Avatar size="small" name={`${props.name.charAt(0).toUpperCase()}`} />
+        </div>
+      ) : (
+        <FontAwesomeIcon icon={props.icon} />
+      )}
       <span className="navbar-label">{props.name}</span>
     </DropdownToggle>
     <DropdownMenu right style={props.style}>
@@ -28,23 +33,56 @@ export const BrandIcon = props => (
   </div>
 );
 
-export const Brand = props => {
-  const { isSacramento, prependRoutesWithMatch, match, isPublic } = props;
-  let url = `/`;
-
-  if (isSacramento) {
-    url = '/shelters';
-  } else if (prependRoutesWithMatch) {
-    url = match.url;
+export const BrandMenu = props => {
+  let homeUrl = '/';
+  let nabBrandUrl = '/';
+  if (props.isSacramento) {
+    homeUrl = '/shelters';
+    nabBrandUrl = '/shelters';
+  } else if (props.isServiceProvider) {
+    homeUrl = '/provider-home';
+    nabBrandUrl = '/provider-home';
+  } else if (props.isPublic && !props.isAuthenticated) {
+    homeUrl = props.match.url;
+    nabBrandUrl = props.match.url;
   }
 
   return (
-    <div className="d-flex align-items-center">
-      <NavbarBrand tag={Link} to={url} className="brand-logo d-flex align-items-center mr-1">
+    <div className="d-flex align-items-center brand-menu">
+      <NavbarBrand tag={Link} to={nabBrandUrl} className="brand-logo d-flex align-items-center mr-1">
         <MediaQuery minDeviceWidth={769}>
           <BrandIcon />
         </MediaQuery>
       </NavbarBrand>
+      <NavLink exact tag={Link} to={homeUrl} className="pl-0">
+        <span className="navbar-label text-dark header-link">
+          <Translate contentKey="global.menu.home" />
+        </span>
+      </NavLink>
+      <NavLink exact tag={Link} to="/feedback" className="pl-0">
+        <span className="navbar-label text-dark header-link">
+          <Translate contentKey="global.menu.feedback" />
+        </span>
+      </NavLink>
+      {props.isServiceProvider && props.isReferralEnabled && !props.isAdmin ? (
+        <NavLink exact tag={Link} to="/referral" className="pl-0">
+          <div className="navbar-label text-dark header-link d-flex">
+            <Translate contentKey="global.menu.referral" />
+            {props.referralCount && props.referralCount > 0 ? (
+              <div className="" style={{ position: 'relative' }}>
+                &nbsp;
+                <FontAwesomeIcon icon="layer-group" />
+                <div className={`referrals-counter ${props.referralCount > 99 ? 'referral-counter-big' : ''}`}>{props.referralCount}</div>
+              </div>
+            ) : (
+              <div>
+                &nbsp;
+                <FontAwesomeIcon icon="layer-group" />
+              </div>
+            )}
+          </div>
+        </NavLink>
+      ) : null}
     </div>
   );
 };

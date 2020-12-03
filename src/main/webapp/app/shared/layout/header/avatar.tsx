@@ -1,4 +1,4 @@
-import './provider-shared.scss';
+import './header.scss';
 import React from 'react';
 
 export interface IAvatar {

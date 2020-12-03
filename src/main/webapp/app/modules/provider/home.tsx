@@ -1,4 +1,4 @@
-import { Avatar } from 'app/modules/provider/avatar';
+import { Avatar } from 'app/shared/layout/header/avatar';
 import { Translate, translate } from 'react-jhipster';
 import UserRecords from 'app/modules/provider/user-records';
 import React from 'react';

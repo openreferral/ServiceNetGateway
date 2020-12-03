@@ -86,7 +86,7 @@ const Routes = ({ isAdmin, isSacramento }) => (
       />
       <PrivateRoute path="/hidden-matches/" isAdmin={isAdmin} component={HiddenMatches} hasAnyAuthorities={[AUTHORITIES.USER]} />
       <ErrorBoundaryRoute path="/about-us" component={AboutUs} />
-      <PrivateRoute path="/feedback" component={Feedback} hasAnyAuthorities={[AUTHORITIES.SACRAMENTO]} isAdmin={isAdmin} />
+      <PrivateRoute path="/feedback" component={Feedback} isAdmin={isAdmin} />
       <PrivateRoute
         path="/data-status"
         component={DataStatus}

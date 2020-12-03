@@ -9,9 +9,8 @@ import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 import LoadingBar from 'react-redux-loading-bar';
 
-import { Home, Brand, Upload, HomeButton, FeedbackButton, DataStatus } from './header-components';
+import { BrandMenu, Upload, DataStatus } from './header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu, SacramentoMenu } from './menus';
-import SearchBar from 'app/modules/provider/menus/search-bar';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -28,6 +27,9 @@ export interface IHeaderProps {
   isPublic?: boolean;
   match?: any;
   prependRoutesWithMatch?: boolean;
+  referralCount?: number;
+  isReferralEnabled?: boolean;
+  isServiceProvider?: boolean;
 }
 
 export interface IHeaderState {
@@ -67,7 +69,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       isInProduction,
       isSacramento,
       isShelterOwner,
-      isPublic
+      isPublic,
+      isServiceProvider
     } = this.props;
 
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
@@ -76,7 +79,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       <div id="app-header" className="header">
         {this.renderDevRibbon()}
         <LoadingBar className="loading-bar" />
-        <Navbar expand="sm" fixed="top" className="navbar-light bg-white">
+        <Navbar expand="sm" fixed="top" className={`navbar-light bg-white ${isServiceProvider ? 'header-bar' : ''}`}>
           <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
           <MediaQuery maxDeviceWidth={768}>
             <div className="brand-logo">
@@ -85,17 +88,18 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
               </div>
             </div>
           </MediaQuery>
-          <Brand {...this.props} />
-          <HomeButton {...this.props} />
-          <FeedbackButton {...this.props} />
+          <BrandMenu {...this.props} />
           <Collapse isOpen={this.state.menuOpen} navbar>
             <Nav id="header-tabs" className="ml-auto" navbar>
-              {!isPublic && (!isAuthenticated || !isSacramento) && <Home {...this.props} />}
-              {isAuthenticated && !isSacramento && <DataStatus />}
-              {isAuthenticated && isSacramento && <SacramentoMenu isShelterOwner={isShelterOwner} />}
-              {isAuthenticated && isAdmin && <EntitiesMenu />}
-              {isAuthenticated && isAdmin && <Upload />}
-              {isAuthenticated && isAdmin && <AdminMenu showSwagger={isSwaggerEnabled} showDatabase={!isInProduction} />}
+              {isAuthenticated && !isPublic ? (
+                <>
+                  {!isSacramento && !isServiceProvider && <DataStatus />}
+                  {isSacramento && <SacramentoMenu isShelterOwner={isShelterOwner} />}
+                  {isAdmin && <EntitiesMenu />}
+                  {isAdmin && <Upload />}
+                  {isAdmin && <AdminMenu showSwagger={isSwaggerEnabled} showDatabase={!isInProduction} />}
+                </>
+              ) : null}
               <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
               <AccountMenu {...this.props} />
             </Nav>

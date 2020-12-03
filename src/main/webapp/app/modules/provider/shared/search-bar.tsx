@@ -3,7 +3,7 @@ import '../provider-shared.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { translate } from 'react-jhipster';
 import { connect } from 'react-redux';
-import { setText, resetText } from 'app/modules/provider/menus/search.reducer';
+import { setText, resetText } from 'app/modules/provider/shared/search.reducer';
 
 export interface ISearchBarProp extends StateProps, DispatchProps {
   onSwitchFocus?: any;
@@ -51,7 +51,7 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
         this.props.onSwitchFocus(true);
       }
     }
-  }
+  };
 
   onBlur = e => {
     if (!e.currentTarget.contains(e.relatedTarget)) {
@@ -59,7 +59,7 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
         this.props.onSwitchFocus(false);
       }
     }
-  }
+  };
 
   render() {
     return (

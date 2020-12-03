@@ -23,7 +23,7 @@ import {
 import { uncheckFiltersChanged } from './provider-filter.reducer';
 import PersistentMap from 'app/modules/provider/map';
 import './all-records.scss';
-import SearchBar from 'app/modules/provider/menus/search-bar';
+import SearchBar from 'app/modules/provider/shared/search-bar';
 import InfiniteScroll from 'react-infinite-scroller';
 import { isIOS } from 'react-device-detect';
 
@@ -469,7 +469,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     };
     return (
       <>
-        {isMobile ?
+        {isMobile ? (
           <Col md={12} className="px-0 mx-0 flex-grow-1 mobile-map-container" style={{ maxHeight: mapHeight }}>
             <div ref={this.setMapContainerRef} style={{ height: mapHeight }}>
               <div style={{ height: mapHeight }}>
@@ -492,8 +492,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </div>
             </div>
           </Col>
-        : null}
-        {!isMobile ?
+        ) : null}
+        {!isMobile ? (
           <Row className="mb-5 mx-3 flex-column-stretch">
             <div className="d-flex flex-grow-1 mw-100">
               <Col
@@ -530,7 +530,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 )}
             </div>
           </Row>
-        : null}
+        ) : null}
       </>
     );
   };

@@ -10,10 +10,10 @@ import { getSession } from 'app/shared/reducers/authentication';
 import { getProfile } from 'app/shared/reducers/application-profile';
 import { setLocale } from 'app/shared/reducers/locale';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
-import { AUTHORITIES } from 'app/config/constants';
+import { AUTHORITIES, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import { toast, ToastContainer, ToastPosition } from 'react-toastify';
 import ErrorBoundary from 'app/shared/error/error-boundary';
-import Header from './menus/header';
+import Header from 'app/shared/layout/header/header';
 import HeaderMobile from 'app/modules/provider/mobile-components/header-mobile';
 import { Home as MainHome } from 'app/modules/home/home';
 import { RouteComponentProps } from 'react-router-dom';
@@ -81,9 +81,9 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             userLogin={this.props.userLogin}
             isSacramento={this.props.isSacramento}
             isShelterOwner={this.props.isShelterOwner}
-            toggleMenu={this.toggleMenu}
             referralCount={this.props.referralCount}
             isReferralEnabled={this.props.isReferralEnabled}
+            isServiceProvider={this.props.isServiceProvider}
           />
         </MediaQuery>
       </div>
@@ -126,7 +126,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, activity,
   isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
   loggingOut: authentication.loggingOut,
   referralCount: providerRecord.referredRecords.size,
-  isReferralEnabled: authentication.account.siloIsReferralEnabled
+  isReferralEnabled: authentication.account.siloIsReferralEnabled,
+  isServiceProvider: authentication.account.systemAccountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER
 });
 
 const mapDispatchToProps = {
