@@ -44,6 +44,7 @@ export interface IMultipleRecordViewState {
   fieldSettingsExpanded: boolean;
   tooltipOpen: boolean;
   selectedSettings: any;
+  loadingPartner: boolean;
 }
 
 export class MultipleRecordView extends React.Component<IMultipleRecordViewProp, IMultipleRecordViewState> {
@@ -59,7 +60,8 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     matchingLocation: null,
     fieldSettingsExpanded: false,
     tooltipOpen: false,
-    selectedSettings: {}
+    selectedSettings: {},
+    loadingPartner: false
   };
   private settingsBtnRef = React.createRef() as React.LegacyRef<HTMLDivElement>;
 
@@ -70,7 +72,13 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
   }
 
   getMatches(matchNumberOffset: number, initialPartnerId?: string) {
+    this.setState({
+      loadingPartner: true
+    });
     Promise.all([this.props.getNotHiddenMatchesByOrg(this.props.orgId)]).then(() => {
+      this.setState({
+        loadingPartner: false
+      });
       if (this.props.matches.length > 0) {
         const { matches } = this.props;
         let matchNumber = this.getMatchNumber(matchNumberOffset);
@@ -87,17 +95,19 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
         this.replacePartnerId(id);
         this.props.getPartnerRecord(id);
       } else {
-        this.props.history.push(`/single-record-view/${this.props.orgId}`);
+        this.props.history.replace(`/single-record-view/${this.props.orgId}`);
       }
     });
   }
 
   replacePartnerId = id => {
-    this.props.history.push(location.hash
-      .replace(this.props.partnerId, '')
-      .replace('#', '')
-      + id);
-  }
+    this.props.history.replace(
+      location.hash
+        .replace(this.props.partnerId, '')
+        .replace('#', '')
+        .replace(/\/$/, '') + `/${id}`
+    );
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.partnerId !== this.props.partnerId) {
@@ -112,6 +122,11 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
         }
       }
     }
+    if (prevProps.partnerRecord !== this.props.partnerRecord) {
+      this.setState({
+        loadingPartner: false
+      });
+    }
   }
 
   handleDismissModalClose = () => {
@@ -125,22 +140,28 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
   handleDismiss = dismissParams => {
     const { orgId } = this.props;
     const matchId = this.props.matches[this.state.matchNumber].id;
+    this.setState({
+      loadingPartner: true
+    });
     axios
       .post(`${SERVICENET_API_URL}/organization-matches/${matchId}/dismiss`, dismissParams)
       .then(() => {
         this.setState({ showDismissModal: false, showSuccessModal: true, matchNumber: 0 });
         Promise.all([this.props.getNotHiddenMatchesByOrg(this.props.orgId)]).then(() => {
+          this.setState({
+            loadingPartner: false
+          });
           if (this.props.matches.length > 0) {
             const id = this.props.matches[0].partnerVersionId;
             this.props.getPartnerRecord(id);
             this.replacePartnerId(id);
           } else {
-            this.props.history.push(`/single-record-view/${orgId}`);
+            this.props.history.replace(`/single-record-view/${orgId}`);
           }
         });
       })
       .catch(() => {
-        this.setState({ dismissError: true });
+        this.setState({ loadingPartner: false, dismissError: true });
       });
   };
 
@@ -150,7 +171,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
 
   changeRecord = offset => () => {
     const matchNumber = this.getMatchNumber(offset);
-    this.setState({ matchNumber });
+    this.setState({ matchNumber, loadingPartner: true });
 
     ReactGA.event({ category: 'UserActions', action: 'Clicking "See Another Match" on side by side view' });
     const id = this.props.matches[matchNumber].partnerVersionId;
@@ -167,7 +188,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
       matchNumber = offsetMatchNumber;
     }
     return matchNumber;
-  }
+  };
 
   denyMatch = () => {
     ReactGA.event({ category: 'UserActions', action: 'Deny Match Button' });
@@ -179,21 +200,32 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     const match = _.find(matches, m => m.partnerVersionId === partnerRecord.organization.id);
     const matchId = match && match.id ? match.id : '';
     event.preventDefault();
-    axios
-      .post(`${SERVICENET_API_URL}/organization-matches/${matchId}/hide`)
-      .then(() => {
-        toast.success(translate('hiddenMatches.hiddenSuccessfully'));
-        if (matches.length === 1) {
-          this.props.history.replace(`/single-record-view/${orgId}`);
-        } else if (matches.length > 1) {
-          this.getMatches(this.state.matchNumber > 0 ? -1 : 0);
-        } else {
-          this.props.history.push(`/`);
-        }
-      })
-      .catch(() => {
-        toast.error(translate('hiddenMatches.hidingError'));
+    if (matchId) {
+      this.setState({
+        loadingPartner: true
       });
+      axios
+        .post(`${SERVICENET_API_URL}/organization-matches/${matchId}/hide`)
+        .then(() => {
+          this.setState({
+            loadingPartner: false
+          });
+          toast.success(translate('hiddenMatches.hiddenSuccessfully'));
+          if (matches.length === 1) {
+            this.props.history.replace(`/single-record-view/${orgId}`);
+          } else if (matches.length > 1) {
+            this.getMatches(this.state.matchNumber > 0 ? -1 : 0);
+          } else {
+            this.props.history.replace(`/`);
+          }
+        })
+        .catch(() => {
+          this.setState({
+            loadingPartner: false
+          });
+          toast.error(translate('hiddenMatches.hidingError'));
+        });
+    }
   };
 
   selectLocation = location => {
@@ -257,10 +289,11 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
 
   render() {
     const { baseRecord, partnerRecord, systemAccountName, matches } = this.props;
+    const { loadingPartner, matchNumber } = this.state;
     const baseProviderName = baseRecord ? baseRecord.organization.accountName : null;
     const locationMatches = DetailClass.getLocationMatches(matches);
-    const match = matches[this.state.matchNumber];
-    const loading = (
+    const match = matches[matchNumber];
+    const loadingComponent = (
       <Col>
         <h2>Loading...</h2>
       </Col>
@@ -344,88 +377,99 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
               />
             </Col>
           ) : (
-            loading
+            loadingComponent
           )}
           {partnerRecord ? (
             <Col sm="6">
-              <Row>
-                <Col>
-                  <div className="mr-4">
-                    <IconSpan iconSize="1.5rem" visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
-                      <h2>{partnerRecord.organization.name}</h2>
-                    </IconSpan>
-                  </div>
-                  <h4 className="from">
-                    <Translate contentKey="multiRecordView.from" />
-                    {partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                      <OwnerInfo owner={partnerRecord.owner} direction="right" />
-                    ) : (
-                      partnerRecord.organization.accountName
-                    )}
-                  </h4>
-                  <h5>
-                    <Translate contentKey="multiRecordView.lastCompleteReview" />
-                    {partnerRecord.organization.lastVerifiedOn ? (
-                      <TextFormat value={partnerRecord.organization.lastVerifiedOn} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-                    ) : (
-                      <Translate contentKey="multiRecordView.unknown" />
-                    )}
-                  </h5>
-                  <h5>
-                    <Translate contentKey="multiRecordView.lastUpdated" />
-                    {partnerRecord.lastUpdated ? (
-                      <TextFormat value={partnerRecord.lastUpdated} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-                    ) : (
-                      <Translate contentKey="multiRecordView.unknown" />
-                    )}
-                  </h5>
-                </Col>
-                <div style={{ top: '-10px', right: '5px', position: 'absolute' }}>
-                  <HideRecordButton id={`hide-${partnerRecord.organization.id}`} handleHide={this.hideActivity} />
-                </div>
-                <div style={{ top: '-45px', right: '5px', position: 'absolute' }}>
-                  <h5>
-                    <Translate contentKey="multiRecordView.matchSimilarity" />
-                    {match ? (match.similarity * 100).toFixed(2) : 0}%
-                  </h5>
-                </div>
-                {seeAnotherMatch}
-              </Row>
-              <Details
-                activity={partnerRecord}
-                {...this.props}
-                exclusions={[]}
-                isBaseRecord={false}
-                showClipboard
-                selectLocation={this.selectLocation}
-                locationsHaveMatch={this.state.locationsHaveMatch}
-                matchingLocation={this.state.matchingLocation}
-                settings={this.props.selectedSettings}
-                serviceMatches={match && match.serviceMatches}
-                locationMatches={match && locationMatches}
-              />
-              <Jumbotron className="same-record-question-container">
-                <div className="same-record-question">
-                  <h4>
-                    <Translate contentKey="multiRecordView.sameRecord.question" />
-                  </h4>
-                </div>
-                <div className="same-record-question-buttons">
-                  <div>
-                    {!this.props.dismissedMatches.length ? null : (
-                      <Link to={`/dismissed-matches/${this.props.orgId}`}>
-                        <Translate contentKey="multiRecordView.sameRecord.viewDismissedMatches" />
-                      </Link>
-                    )}
-                  </div>
-                  <Button color="danger" size="lg" onClick={this.showDismissModal}>
-                    <Translate contentKey="multiRecordView.sameRecord.deny" />
-                  </Button>
-                </div>
-              </Jumbotron>
+              <div style={{ top: '-10px', right: '5px', position: 'absolute', zIndex: 5000 }}>
+                <HideRecordButton id={`hide-${partnerRecord.organization.id}`} handleHide={this.hideActivity} />
+              </div>
+              <div style={{ top: '-45px', right: '5px', position: 'absolute' }}>
+                <h5>
+                  <Translate contentKey="multiRecordView.matchSimilarity" />
+                  {match ? (match.similarity * 100).toFixed(2) : 0}%
+                </h5>
+              </div>
+              {seeAnotherMatch}
+              {loadingPartner ? (
+                loadingComponent
+              ) : (
+                <>
+                  <Row>
+                    <Col>
+                      <div className="mr-4">
+                        <IconSpan iconSize="1.5rem" visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+                          <h2>{partnerRecord.organization.name}</h2>
+                        </IconSpan>
+                      </div>
+                      <h4 className="from">
+                        <Translate contentKey="multiRecordView.from" />
+                        {partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
+                          <OwnerInfo owner={partnerRecord.owner} direction="right" />
+                        ) : (
+                          partnerRecord.organization.accountName
+                        )}
+                      </h4>
+                      <h5>
+                        <Translate contentKey="multiRecordView.lastCompleteReview" />
+                        {partnerRecord.organization.lastVerifiedOn ? (
+                          <TextFormat
+                            value={partnerRecord.organization.lastVerifiedOn}
+                            type="date"
+                            format={APP_DATE_FORMAT}
+                            blankOnInvalid
+                          />
+                        ) : (
+                          <Translate contentKey="multiRecordView.unknown" />
+                        )}
+                      </h5>
+                      <h5>
+                        <Translate contentKey="multiRecordView.lastUpdated" />
+                        {partnerRecord.lastUpdated ? (
+                          <TextFormat value={partnerRecord.lastUpdated} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                        ) : (
+                          <Translate contentKey="multiRecordView.unknown" />
+                        )}
+                      </h5>
+                    </Col>
+                  </Row>
+                  <Details
+                    activity={partnerRecord}
+                    {...this.props}
+                    exclusions={[]}
+                    isBaseRecord={false}
+                    showClipboard
+                    selectLocation={this.selectLocation}
+                    locationsHaveMatch={this.state.locationsHaveMatch}
+                    matchingLocation={this.state.matchingLocation}
+                    settings={this.props.selectedSettings}
+                    serviceMatches={match && match.serviceMatches}
+                    locationMatches={match && locationMatches}
+                  />
+                  <Jumbotron className="same-record-question-container">
+                    <div className="same-record-question">
+                      <h4>
+                        <Translate contentKey="multiRecordView.sameRecord.question" />
+                      </h4>
+                    </div>
+                    <div className="same-record-question-buttons">
+                      <div>
+                        {!this.props.dismissedMatches.length ? null : (
+                          <Link to={`/dismissed-matches/${this.props.orgId}`}>
+                            <Translate contentKey="multiRecordView.sameRecord.viewDismissedMatches" />
+                          </Link>
+                        )}
+                      </div>
+                      <Button color="danger" size="lg" onClick={this.showDismissModal}>
+                        <Translate contentKey="multiRecordView.sameRecord.deny" />
+                      </Button>
+                    </div>
+                  </Jumbotron>
+                </>
+              )}
             </Col>
           ) : (
-            loading
+            loadingComponent
           )}
         </Row>
       );
