@@ -50,6 +50,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
       </div>
     </MediaQuery>
     <Component
+      avatarBase64={null}
       currentLocale="en"
       isAdmin={true}
       isAuthenticated={true}
@@ -100,6 +101,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           onClick={[Function]}
         />
         <Component
+          avatarBase64={null}
           currentLocale="en"
           isAdmin={true}
           isAuthenticated={true}
@@ -157,6 +159,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       </div>
     </MediaQuery>
     <Component
+      avatarBase64={null}
       currentLocale="en"
       isAdmin={true}
       isAuthenticated={true}
@@ -207,6 +210,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           onClick={[Function]}
         />
         <Component
+          avatarBase64={null}
           currentLocale="en"
           isAdmin={true}
           isAuthenticated={true}

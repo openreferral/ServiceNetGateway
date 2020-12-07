@@ -14,7 +14,7 @@ export const NavDropdown = props => (
     <DropdownToggle nav caret className="d-flex align-items-center">
       {props.isAuthenticated ? (
         <div className="self-align-center">
-          <Avatar size="small" name={`${props.name.charAt(0).toUpperCase()}`} />
+          <Avatar size="small" name={`${props.name.charAt(0).toUpperCase()}`} avatarBase64={props.avatarBase64} />
         </div>
       ) : (
         <FontAwesomeIcon icon={props.icon} />

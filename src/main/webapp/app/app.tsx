@@ -59,6 +59,7 @@ export class App extends React.Component<IAppProps> {
             isShelterOwner={this.props.isShelterOwner}
             isPublic={false}
             isServiceProvider={this.props.isServiceProvider}
+            avatarBase64={this.props.avatarBase64}
           />
         </ErrorBoundary>
         <div className="app-container" id="app-container">
@@ -110,7 +111,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
   userLogin: authentication.account.login,
   isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
-  isServiceProvider: authentication.account.systemAccountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER
+  isServiceProvider: authentication.account.systemAccountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER,
+  avatarBase64: authentication.account.avatarBase64
 });
 
 const mapDispatchToProps = { setLocale, getSession, getProfile };

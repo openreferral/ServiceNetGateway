@@ -24,6 +24,7 @@ export interface IHeaderProps {
   userLogin: string;
   isShelterOwner: boolean;
   isStaging: boolean;
+  avatarBase64: string;
   isPublic?: boolean;
   match?: any;
   prependRoutesWithMatch?: boolean;

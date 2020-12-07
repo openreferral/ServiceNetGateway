@@ -59,7 +59,8 @@ export const AccountMenu = ({
   match = {},
   prependRoutesWithMatch = false,
   isReferralEnabled = false,
-  isServiceProvider = false
+  isServiceProvider = false,
+  avatarBase64 = null
 }) => (
   <NavDropdown
     icon="user"
@@ -67,6 +68,7 @@ export const AccountMenu = ({
     id="account-menu"
     style={{ fontWeight: 'bold' }}
     isAuthenticated={isAuthenticated}
+    avatarBase64={avatarBase64}
   >
     {isAuthenticated
       ? accountMenuItemsAuthenticated(isSacramento, isReferralEnabled, isServiceProvider)
