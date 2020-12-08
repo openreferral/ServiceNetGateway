@@ -21,7 +21,8 @@ describe('Multiple record view', () => {
     matchingLocation: null,
     selectedMatch: null,
     fieldSettingsExpanded: false,
-    tooltipOpen: false
+    tooltipOpen: false,
+    loadingPartner: false
   };
 
   it('renders correctly', () => {

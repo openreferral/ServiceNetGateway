@@ -26,7 +26,7 @@ services:
       test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetgateway\\\" || exit 1" ]
       interval: 1m
       timeout: 10s
-      retries: 5
+      retries: 3
   servicenet-app:
     image: johnhbenetech/servicenet:${SN_VERSION_TAG:-dev}
     environment:
@@ -56,7 +56,7 @@ services:
       test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenet\\\" || exit 1" ]
       interval: 1m
       timeout: 10s
-      retries: 5
+      retries: 3
   servicenetauth-app:
     image: johnhbenetech/servicenetauth:${SN_VERSION_TAG:-dev}
     environment:
@@ -79,7 +79,7 @@ services:
       test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetauth\\\" || exit 1" ]
       interval: 1m
       timeout: 10s
-      retries: 5
+      retries: 3
   servicenet-mongo:
     image: mongo:4.0
     restart: always

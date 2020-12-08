@@ -4,7 +4,7 @@ import React from 'react';
 import { Translate } from 'react-jhipster';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, NavLink, NavbarBrand } from 'reactstrap';
 import { NavLink as Link } from 'react-router-dom';
-import { Avatar } from '../avatar';
+import { Avatar } from '../../../shared/layout/header/avatar';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
@@ -14,7 +14,7 @@ export const NavDropdown = props => (
   <UncontrolledDropdown inNavbar id={props.id}>
     <DropdownToggle nav caret className="d-flex align-items-center">
       <div className="self-align-center">
-        <Avatar size="small" name={`${props.name.charAt(0).toUpperCase()}`} />
+        <Avatar size="small" name={`${props.name.charAt(0).toUpperCase()}`} avatarBase64={props.avatarBase64} />
       </div>
       <span className="navbar-label">{props.name}</span>
     </DropdownToggle>
@@ -45,22 +45,24 @@ export const Brand = props => (
         <Translate contentKey="global.menu.feedback" />
       </span>
     </NavLink>
-    {props.isReferralEnabled ? <NavLink exact tag={Link} to="/referral" className="pl-0">
-      <div className="navbar-label text-dark header-link d-flex">
-        <Translate contentKey="global.menu.referral" />
-        {props.referralCount && props.referralCount > 0 ? (
-          <div className="" style={{ position: 'relative' }}>
-            &nbsp;
-            <FontAwesomeIcon icon="layer-group" />
-            <div className={`referrals-counter ${props.referralCount > 99 ? 'referral-counter-big' : ''}`}>{props.referralCount}</div>
-          </div>
-        ) : (
-          <div>
-            &nbsp;
-            <FontAwesomeIcon icon="layer-group" />
-          </div>
-        )}
-      </div>
-    </NavLink> : null}
+    {props.isReferralEnabled ? (
+      <NavLink exact tag={Link} to="/referral" className="pl-0">
+        <div className="navbar-label text-dark header-link d-flex">
+          <Translate contentKey="global.menu.referral" />
+          {props.referralCount && props.referralCount > 0 ? (
+            <div className="" style={{ position: 'relative' }}>
+              &nbsp;
+              <FontAwesomeIcon icon="layer-group" />
+              <div className={`referrals-counter ${props.referralCount > 99 ? 'referral-counter-big' : ''}`}>{props.referralCount}</div>
+            </div>
+          ) : (
+            <div>
+              &nbsp;
+              <FontAwesomeIcon icon="layer-group" />
+            </div>
+          )}
+        </div>
+      </NavLink>
+    ) : null}
   </div>
 );

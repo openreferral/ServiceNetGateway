@@ -12,39 +12,50 @@ import Select from 'react-select';
 import { checkIn, resetCheckedIn } from '../../provider-record.reducer';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { selectStyle } from 'app/config/constants';
+import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 
 export interface IBeneficiaryCheckInTabState {
   phoneNumber: String;
   beneficiaryId: String;
   cbo: any;
   location: any;
+  isBeneficiaryValid: boolean;
+  isCboValid: boolean;
+  isLocationValid: boolean;
 }
 
-export interface IBeneficiaryCheckInTabProps extends StateProps, DispatchProps {}
+export interface IBeneficiaryCheckInTabProps extends StateProps, DispatchProps {
+  isMobile: boolean;
+}
 
 class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps, IBeneficiaryCheckInTabState> {
   state: IBeneficiaryCheckInTabState = {
     phoneNumber: '',
     beneficiaryId: '',
     cbo: null,
-    location: null
+    location: null,
+    isBeneficiaryValid: true,
+    isCboValid: true,
+    isLocationValid: true
   };
 
   setPhone = phoneNumber => {
-    this.setState({ phoneNumber });
+    this.setState({ phoneNumber, isBeneficiaryValid: isPossiblePhoneNumber(phoneNumber) });
   };
 
   setBeneficiary = evt => {
-    this.setState({ beneficiaryId: evt.target.value });
+    this.setState({ beneficiaryId: evt.target.value, isBeneficiaryValid: true });
   };
 
   checkIn = () => {
     const { phoneNumber, beneficiaryId, cbo, location } = this.state;
     const { referralOptions, organizations } = this.props;
-    const orgId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
-    const organization = organizations.find(org => org.id === orgId);
-    const locId = organization.locations.length === 1 ? organization.locations[0].id : location;
-    this.props.checkIn(phoneNumber, beneficiaryId, orgId, locId);
+    if (this.validate()) {
+      const orgId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
+      const organization = organizations.find(org => org.id === orgId);
+      const locId = organization.locations.length === 1 ? organization.locations[0].id : location;
+      this.props.checkIn(phoneNumber, beneficiaryId, orgId, locId);
+    }
   };
 
   close = () => {
@@ -53,21 +64,25 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
   };
 
   onSelect = evt => {
-    this.setState({ cbo: evt.value });
+    this.setState({ cbo: evt.value, isCboValid: true, location: null });
   };
 
   onLocationSelect = evt => {
-    this.setState({ location: evt.value });
+    this.setState({ location: evt.value, isLocationValid: true });
   };
 
-  canBeSent = () => {
+  validate = () => {
     const { phoneNumber, beneficiaryId, cbo, location } = this.state;
     const { referralOptions } = this.props;
     const selected = (cbo || referralOptions.length === 1) && (location || this.locationOptions().length === 1);
 
-    if (phoneNumber && isPossiblePhoneNumber(phoneNumber) && selected) {
-      return true;
-    } else return !!(!phoneNumber && beneficiaryId && selected);
+    const isPhoneValid = phoneNumber && isPossiblePhoneNumber(phoneNumber);
+    const isBeneficiaryValid = isPhoneValid || beneficiaryId;
+    const isCboValid = cbo || referralOptions.length === 1;
+    const isLocationValid = location || this.locationOptions().length === 1;
+
+    this.setState({ isBeneficiaryValid, isCboValid, isLocationValid });
+    return isBeneficiaryValid && isCboValid && isLocationValid;
   };
 
   locationOptions = () => {
@@ -87,76 +102,90 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
   };
 
   render() {
-    const { phoneNumber, cbo, location } = this.state;
-    const { checkedIn, referralOptions } = this.props;
+    const { phoneNumber, cbo, location, isBeneficiaryValid, isCboValid, isLocationValid } = this.state;
+    const { checkedIn, referralOptions, isMobile } = this.props;
     const locationOptions = this.locationOptions();
+    const commonClass = 'd-flex justify-content-center align-items-center';
 
     return (
-      <div className="col-12 col-md-4 offset-md-4">
+      <div className="col-12 col-md-6 offset-md-3">
         <div className="content-title  my-3 my-md-5">
           <Translate contentKey="referral.title.check_in" />
         </div>
         {!checkedIn ? (
-          <div className="d-flex flex-column justify-content-center align-items-center">
-            <Input
-              className="my-2 form-control"
-              type="text"
-              name="phone"
-              id="phone"
-              placeholder={translate('referral.placeholder.phone')}
-              onChange={this.setPhone}
-              value={phoneNumber}
-              country="US"
-            />
+          <div className={`${commonClass} flex-column`}>
+            <div className={`mt-2 w-100 referral-label ${isBeneficiaryValid ? '' : 'required'}`}>
+              <Translate contentKey="referral.labels.beneficiaryInformation" />
+            </div>
+            <div className={`${commonClass} w-100 beneficiary-data ${isBeneficiaryValid ? '' : 'required'}`}>
+              <Input
+                className="my-2 form-control"
+                type="text"
+                name="phone"
+                id="phone"
+                placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+                onChange={this.setPhone}
+                value={phoneNumber}
+                country="US"
+              />
+              &nbsp;
+              <Translate contentKey="referral.labels.or" />
+              &nbsp;
+              <StrapInput
+                className="my-2"
+                type="text"
+                name="beneficiary"
+                id="beneficiary"
+                placeholder={isMobile ? translate('referral.placeholder.beneficiaryMobile') : translate('referral.placeholder.beneficiary')}
+                onChange={this.setBeneficiary}
+              />
+            </div>
             {phoneNumber &&
               !isPossiblePhoneNumber(phoneNumber) && (
                 <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
               )}
-            <Translate contentKey="referral.labels.or" />
-            <StrapInput
-              className="my-2"
-              type="text"
-              name="beneficiary"
-              id="beneficiary"
-              placeholder={translate('referral.placeholder.beneficiary')}
-              onChange={this.setBeneficiary}
-            />
             {referralOptions.length > 1 ? (
-              <Select
-                className="my-2 full-width"
-                name="cbo"
-                id="cbo"
-                value={cbo ? cbo.id : null}
-                options={referralOptions}
-                onChange={this.onSelect}
-                inputId="cboSelect"
-                placeholder={translate('referral.placeholder.cbo')}
-                styles={selectStyle()}
-              />
+              <>
+                <div className={`mt-2 w-100 referral-label ${isCboValid ? '' : 'required'}`}>
+                  <Translate contentKey="referral.labels.organization" />
+                </div>
+                <Select
+                  className={`my-2 full-width refer-to ${isCboValid ? '' : 'required'}`}
+                  name="cbo"
+                  id="cbo"
+                  value={cbo ? cbo.id : null}
+                  options={referralOptions}
+                  onChange={this.onSelect}
+                  inputId="cboSelect"
+                  placeholder={translate('referral.placeholder.cbo')}
+                  styles={selectStyle()}
+                />
+              </>
             ) : null}
             {cbo != null && locationOptions.length > 1 ? (
-              <Select
-                className="my-2 full-width"
-                name="location"
-                id="location"
-                value={location ? location.id : null}
-                options={locationOptions}
-                onChange={this.onLocationSelect}
-                inputId="locationSelect"
-                placeholder={translate('referral.placeholder.location')}
-                styles={selectStyle()}
-              />
+              <>
+                <div className={`mt-2 w-100 referral-label ${isLocationValid ? '' : 'required'}`}>
+                  <Translate contentKey="referral.labels.location" />
+                </div>
+                <Select
+                  className={`my-2 full-width refer-to ${isLocationValid ? '' : 'required'}`}
+                  name="location"
+                  id="location"
+                  value={location ? location.id : null}
+                  options={locationOptions}
+                  onChange={this.onLocationSelect}
+                  inputId="locationSelect"
+                  placeholder={translate('referral.placeholder.location')}
+                  styles={selectStyle()}
+                />
+              </>
             ) : null}
-            <ButtonPill
-              className={`button-pill-green my-2 ${this.canBeSent() ? '' : 'disabled'}`}
-              style={{ width: '100px' }}
-              onClick={this.canBeSent() ? this.checkIn : null}
-            >
+            <ButtonPill className="button-pill-green my-2" style={{ width: '100px' }} onClick={this.checkIn}>
               <Translate contentKey="referral.labels.send" />
             </ButtonPill>
           </div>
         ) : (
-          <div className="d-flex flex-column justify-content-center align-items-center">
+          <div className={`${commonClass} flex-column`}>
             <div className="my-2">
               <Translate contentKey="referral.labels.sent" />
             </div>
@@ -195,4 +224,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BeneficiaryCheckInTab);
+)(mediaQueryWrapper(BeneficiaryCheckInTab));

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Label, Row } from 'reactstrap';
+import { Col, Label, Row } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Translate, translate } from 'react-jhipster';
 import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
@@ -13,18 +13,28 @@ import { getSession } from 'app/shared/reducers/authentication';
 import { saveAccountSettings, reset } from './settings.reducer';
 import { RouteComponentProps } from 'react-router-dom';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import { toBase64 } from 'app/shared/util/file-utils';
+import AvatarCropModal from 'app/modules/account/settings/avatar-crop-modal';
 
 export interface IUserSettingsProps extends StateProps, DispatchProps, RouteComponentProps {}
 
 export interface IUserSettingsState {
   account: any;
   phoneNumber: string;
+  image: any;
+  imageBase64: any;
+  avatarBase64: any;
+  showAvatarModal: boolean;
 }
 
 export class SettingsPage extends React.Component<IUserSettingsProps, IUserSettingsState> {
   state: IUserSettingsState = {
     account: this.props.account,
-    phoneNumber: this.props.account.phoneNumber
+    phoneNumber: this.props.account.phoneNumber,
+    image: null,
+    imageBase64: null,
+    avatarBase64: this.props.account.avatarBase64 || null,
+    showAvatarModal: false
   };
 
   componentDidMount() {
@@ -36,8 +46,13 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.account && prevProps.account && this.props.account.phoneNumber !== prevProps.account.phoneNumber) {
-      this.setState({ phoneNumber: this.props.account.phoneNumber });
+    if (this.props.account && prevProps.account) {
+      if (this.props.account.phoneNumber !== prevProps.account.phoneNumber) {
+        this.setState({ phoneNumber: this.props.account.phoneNumber });
+      }
+      if (this.props.account.avatarBase64 !== prevProps.account.avatarBase64) {
+        this.setState({ avatarBase64: this.props.account.avatarBase64 });
+      }
     }
   }
 
@@ -60,9 +75,33 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
     this.setState({ phoneNumber });
   };
 
+  handleImageFileRead = async e => {
+    const file = event.target['files'] && event.target['files'][0];
+    if (file) {
+      const imageBase64 = await toBase64(file);
+      this.setState({
+        imageBase64,
+        showAvatarModal: true
+      });
+    }
+  };
+
+  closeAvatarModal = () => {
+    this.setState({
+      showAvatarModal: false
+    });
+  };
+
+  onAvatarSubmit = avatarBase64 => {
+    this.setState({
+      avatarBase64,
+      showAvatarModal: false
+    });
+  };
+
   render() {
     const { account } = this.props;
-    const { phoneNumber } = this.state;
+    const { phoneNumber, imageBase64, avatarBase64, showAvatarModal } = this.state;
 
     return (
       <div className="m-3">
@@ -181,6 +220,20 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
                   </option>
                 ))}
               </AvField>
+              <Translate contentKey="userManagement.avatar.label" />
+              {avatarBase64 && (
+                <div className="mt-2">
+                  <AvField type="hidden" name="avatarBase64" value={avatarBase64} />
+                  <img alt="Avatar big preview" className="avatar-big" src={avatarBase64} />
+                </div>
+              )}
+              <AvField name="image" type="file" accept=".jpeg, .png, .jpg" onChange={this.handleImageFileRead} className="mt-2 mb-3" />
+              <AvatarCropModal
+                showModal={showAvatarModal}
+                handleClose={this.closeAvatarModal}
+                handleSubmit={this.onAvatarSubmit}
+                imageBase64={imageBase64}
+              />
               <ButtonPill className="button-pill-primary">
                 <button type="submit">
                   <Translate contentKey="settings.form.button">Save</Translate>

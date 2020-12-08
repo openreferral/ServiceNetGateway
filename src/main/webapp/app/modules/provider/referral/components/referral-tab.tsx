@@ -4,7 +4,7 @@ import { Translate, translate } from 'react-jhipster';
 import Input from 'react-phone-number-input/input';
 import { Table, Input as StrapInput } from 'reactstrap';
 import ButtonPill from '../../shared/button-pill';
-import { getProviderOptions, sendReferrals, unreferRecord } from 'app/modules/provider/provider-record.reducer';
+import { sendReferrals, unreferRecord } from 'app/modules/provider/provider-record.reducer';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
@@ -14,8 +14,11 @@ import { DESKTOP_WIDTH_BREAKPOINT, MOBILE_WIDTH_BREAKPOINT, selectStyle } from '
 import { toast } from 'react-toastify';
 import MediaQuery from 'react-responsive';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 
-export interface IReferralTabProps extends StateProps, DispatchProps {}
+export interface IReferralTabProps extends StateProps, DispatchProps {
+  isMobile: boolean;
+}
 
 export interface IReferralTabState {
   phoneNumber: string;
@@ -23,6 +26,10 @@ export interface IReferralTabState {
   cbo: any;
   fromLocation: any;
   orgLocations: any;
+  missingLocations: any;
+  isBeneficiaryValid: boolean;
+  isReferFromValid: boolean;
+  isFromLocationValid: boolean;
 }
 
 class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> {
@@ -31,8 +38,24 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     beneficiaryId: '',
     cbo: null,
     fromLocation: null,
-    orgLocations: {}
+    orgLocations: {},
+    missingLocations: [],
+    isBeneficiaryValid: true,
+    isReferFromValid: true,
+    isFromLocationValid: true
   };
+
+  componentDidMount() {
+    if (this.props.referredRecords) {
+      const orgLocations = {};
+      this.props.referredRecords.forEach((record, id) => {
+        if (record.locations.length === 1) {
+          orgLocations[id] = record.locations[0].id;
+        }
+      });
+      this.setState({ orgLocations });
+    }
+  }
 
   componentDidUpdate(prevProps: Readonly<IReferralTabProps>, prevState: Readonly<IReferralTabState>, snapshot?: any) {
     const { referSuccess, error } = this.props;
@@ -46,39 +69,59 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
   }
 
   setPhone = phoneNumber => {
-    this.setState({ phoneNumber });
+    this.setState({ phoneNumber, isBeneficiaryValid: isPossiblePhoneNumber(phoneNumber) });
   };
 
   setBeneficiary = e => {
-    this.setState({ beneficiaryId: e.target.value });
+    this.setState({ beneficiaryId: e.target.value, isBeneficiaryValid: true });
   };
 
   onSelect = cbo => {
-    this.setState({ cbo: cbo.value });
+    this.setState({ cbo: cbo.value, isReferFromValid: true, fromLocation: null });
   };
 
   sendReferrals = () => {
-    const { phoneNumber, beneficiaryId, cbo, fromLocation, orgLocations } = this.state;
-    const { referredRecords, referralOptions, organizations } = this.props;
-    // from
-    const cboId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
-    const fromOrganization = organizations.find(org => org.id === cboId);
-    const fromLocationId = fromOrganization.locations.length === 1 ? fromOrganization.locations[0].id : fromLocation;
-    // to
-    const orgLocationMap = {};
-    referredRecords.forEach((record, id) => {
-      orgLocationMap[id] = orgLocations[id] || record.locations[0].id;
-    });
-    this.props.sendReferrals(cboId, orgLocationMap, fromLocationId, phoneNumber, beneficiaryId);
+    if (this.validate()) {
+      const { phoneNumber, beneficiaryId, cbo, fromLocation, orgLocations } = this.state;
+      const { referredRecords, referralOptions, organizations } = this.props;
+      // from
+      const cboId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
+      const fromOrganization = organizations.find(org => org.id === cboId);
+      const fromLocationId = fromOrganization.locations.length === 1 ? fromOrganization.locations[0].id : fromLocation;
+      // to
+      const orgLocationMap = {};
+      referredRecords.forEach((record, id) => {
+        orgLocationMap[id] = orgLocations[id] || record.locations[0].id;
+      });
+      this.props.sendReferrals(cboId, orgLocationMap, fromLocationId, phoneNumber, beneficiaryId);
+    }
   };
 
   validate = () => {
-    const { phoneNumber, beneficiaryId, cbo } = this.state;
+    const { phoneNumber, beneficiaryId, cbo, fromLocation } = this.state;
     const { referralOptions } = this.props;
 
-    if (phoneNumber && isPossiblePhoneNumber(phoneNumber) && (cbo || referralOptions.length === 1)) {
-      return true;
-    } else return !!(!phoneNumber && beneficiaryId && (cbo || referralOptions.length === 1));
+    const isPhoneValid = phoneNumber && isPossiblePhoneNumber(phoneNumber);
+    const isBeneficiaryValid = isPhoneValid || beneficiaryId;
+    const isReferFromValid = cbo || referralOptions.length === 1;
+    const isFromLocationValid = fromLocation || this.locationOptions().length === 1;
+    const missingLocations = this.validateLocations();
+
+    this.setState({ isBeneficiaryValid, isReferFromValid, missingLocations, isFromLocationValid });
+    return isBeneficiaryValid && isReferFromValid && missingLocations.length === 0 && isFromLocationValid;
+  };
+
+  validateLocations = () => {
+    const { orgLocations } = this.state;
+    const { referredRecords } = this.props;
+
+    const missingLocations = [];
+    referredRecords.forEach((record, id) => {
+      if (!orgLocations[id]) {
+        missingLocations.push(id);
+      }
+    });
+    return missingLocations;
   };
 
   locationOptions = () =>
@@ -90,7 +133,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
       : [];
 
   onFromLocationSelect = evt => {
-    this.setState({ fromLocation: evt.value });
+    this.setState({ fromLocation: evt.value, isFromLocationValid: true });
   };
 
   recordLocationOptions = record =>
@@ -100,17 +143,32 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     }));
 
   onToLocationSelect = id => evt => {
-    const orgLocations = this.state;
+    const { orgLocations, missingLocations } = this.state;
     orgLocations[id] = evt.value;
-    this.setState({ orgLocations });
+    if (missingLocations.indexOf(id) >= 0) {
+      _.remove(missingLocations, orgId => orgId === id);
+    }
+    this.setState({ orgLocations, missingLocations });
   };
 
   content = () => {
-    const { phoneNumber, cbo, fromLocation, orgLocations } = this.state;
-    const { referralOptions } = this.props;
+    const {
+      phoneNumber,
+      cbo,
+      fromLocation,
+      orgLocations,
+      isBeneficiaryValid,
+      isReferFromValid,
+      missingLocations,
+      isFromLocationValid
+    } = this.state;
+    const { referralOptions, isMobile } = this.props;
+    const commonClass = 'd-flex justify-content-center align-items-center';
     const referralTableBody = [];
     const locationOptions = this.locationOptions();
     this.props.referredRecords.forEach((record, id) => {
+      const recordLocationOptions = this.recordLocationOptions(record);
+      const toLocationValue = orgLocations[id] ? _.find(recordLocationOptions, opt => opt.value === orgLocations[id]) : null;
       referralTableBody.push(
         <tr key={`org-${id}`}>
           <td>
@@ -118,9 +176,9 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
           </td>
           <td className="d-flex">
             <Select
-              className="full-width"
-              value={orgLocations[id] ? orgLocations[id].id : null}
-              options={this.recordLocationOptions(record)}
+              className={`full-width to-location ${missingLocations.indexOf(id) >= 0 ? 'required' : ''}`}
+              value={toLocationValue}
+              options={recordLocationOptions}
               onChange={this.onToLocationSelect(id)}
               styles={selectStyle()}
             />
@@ -140,7 +198,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     });
     return (
       <>
-        <div className="d-flex flex-column justify-content-center align-items-center mb-2 referral-table">
+        <div className={`${commonClass} flex-column mb-2 referral-table`}>
           <Table size="sm">
             <thead>
               <tr>
@@ -156,61 +214,74 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
             <tbody>{referralTableBody}</tbody>
           </Table>
         </div>
-        <div className="d-flex flex-column justify-content-center align-items-center">
-          <Input
-            className="my-2 form-control"
-            type="text"
-            name="phone"
-            id="phone"
-            placeholder={translate('referral.placeholder.phone')}
-            onChange={this.setPhone}
-            value={phoneNumber}
-            country="US"
-          />
+        <div className={`${commonClass}  flex-column`}>
+          <div className={`mt-2 w-100 referral-label ${isBeneficiaryValid ? '' : 'required'}`}>
+            <Translate contentKey="referral.labels.beneficiaryInformation" />
+          </div>
+          <div className={`${commonClass} w-100 beneficiary-data ${isBeneficiaryValid ? '' : 'required'}`}>
+            <Input
+              className="my-2 form-control"
+              type="text"
+              name="phone"
+              id="phone"
+              placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+              onChange={this.setPhone}
+              value={phoneNumber}
+              country="US"
+            />
+            &nbsp;
+            <Translate contentKey="referral.labels.or" />
+            &nbsp;
+            <StrapInput
+              className="my-2"
+              type="text"
+              name="beneficiaryId"
+              id="beneficiaryId"
+              placeholder={isMobile ? translate('referral.placeholder.beneficiaryMobile') : translate('referral.placeholder.beneficiary')}
+              onChange={this.setBeneficiary}
+            />
+          </div>
           {phoneNumber &&
             !isPossiblePhoneNumber(phoneNumber) && (
               <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
             )}
-          <Translate contentKey="referral.labels.or" />
-          <StrapInput
-            className="my-2"
-            type="text"
-            name="beneficiaryId"
-            id="beneficiaryId"
-            placeholder={translate('referral.placeholder.beneficiary')}
-            onChange={this.setBeneficiary}
-          />
           {referralOptions.length > 1 ? (
-            <Select
-              className="my-2 full-width"
-              name="cbo"
-              id="cbo"
-              value={cbo ? cbo.id : null}
-              options={referralOptions}
-              onChange={this.onSelect}
-              inputId="cbo"
-              placeholder={translate('referral.placeholder.referFrom')}
-              styles={selectStyle()}
-            />
+            <>
+              <div className={`mt-2 w-100 referral-label ${isReferFromValid ? '' : 'required'}`}>
+                <Translate contentKey="referral.labels.organization" />
+              </div>
+              <Select
+                className={`my-2 full-width refer-from ${isReferFromValid ? '' : 'required'}`}
+                name="cbo"
+                id="cbo"
+                value={cbo ? cbo.id : null}
+                options={referralOptions}
+                onChange={this.onSelect}
+                inputId="cbo"
+                placeholder={translate('referral.placeholder.referFrom')}
+                styles={selectStyle()}
+              />
+            </>
           ) : null}
           {cbo != null && locationOptions.length > 1 ? (
-            <Select
-              className="my-2 full-width"
-              name="fromLocation"
-              id="fromLocation"
-              value={fromLocation ? fromLocation.id : null}
-              options={locationOptions}
-              onChange={this.onFromLocationSelect}
-              inputId="fromLocationSelect"
-              placeholder={translate('referral.placeholder.fromLocation')}
-              styles={selectStyle()}
-            />
+            <>
+              <div className={`mt-2 w-100 referral-label ${isFromLocationValid ? '' : 'required'}`}>
+                <Translate contentKey="referral.labels.location" />
+              </div>
+              <Select
+                className={`my-2 full-width from-location ${isFromLocationValid ? '' : 'required'}`}
+                name="fromLocation"
+                id="fromLocation"
+                value={fromLocation ? fromLocation.id : null}
+                options={locationOptions}
+                onChange={this.onFromLocationSelect}
+                inputId="fromLocationSelect"
+                placeholder={translate('referral.placeholder.fromLocation')}
+                styles={selectStyle()}
+              />
+            </>
           ) : null}
-          <ButtonPill
-            className={`button-pill-green my-2 ${this.validate() ? '' : 'disabled'}`}
-            style={{ width: '100px' }}
-            onClick={this.validate() ? this.sendReferrals : null}
-          >
+          <ButtonPill className="button-pill-green my-2" style={{ width: '100px' }} onClick={this.sendReferrals}>
             <Translate contentKey="referral.labels.send" />
           </ButtonPill>
         </div>
@@ -255,4 +326,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ReferralTab);
+)(mediaQueryWrapper(ReferralTab));

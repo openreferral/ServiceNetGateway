@@ -1,4 +1,4 @@
-import { Avatar } from 'app/modules/provider/avatar';
+import { Avatar } from 'app/shared/layout/header/avatar';
 import { Translate, translate } from 'react-jhipster';
 import UserRecords from 'app/modules/provider/user-records';
 import React from 'react';
@@ -32,12 +32,12 @@ export class Home extends React.Component<IHomeProps, IHomeState> {
       isMapView: !this.state.isMapView
     });
 
-  header = (userLogin: string) => (
+  header = (userLogin: string, avatarBase64: string) => (
     <div>
       <div className="hero-image">
         <div className="hero-text py-2">
           <div className="hero-avatar">
-            <Avatar size="big" name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
+            <Avatar size="big" name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} avatarBase64={avatarBase64} />
           </div>
           <h5 className="hello-text">
             <b>{`${translate('providerSite.hello')}${userLogin}!`}</b>
@@ -51,11 +51,11 @@ export class Home extends React.Component<IHomeProps, IHomeState> {
   );
 
   render() {
-    const { userLogin } = this.props;
+    const { userLogin, avatarBase64 } = this.props;
     const { isMapView } = this.state;
     return (
       <div className="background">
-        {!isMapView && this.header(userLogin)}
+        {!isMapView && this.header(userLogin, avatarBase64)}
         {!isMapView && (
           <div className="user-cards-container">
             <UserRecords />
@@ -72,7 +72,8 @@ export class Home extends React.Component<IHomeProps, IHomeState> {
 const mapStateToProps = ({ authentication, providerRecord }: IRootState) => ({
   userLogin: authentication.account.login,
   userName: authentication.account.login,
-  previousUserName: providerRecord.userName
+  previousUserName: providerRecord.userName,
+  avatarBase64: authentication.account.avatarBase64
 });
 
 const mapDispatchToProps = {

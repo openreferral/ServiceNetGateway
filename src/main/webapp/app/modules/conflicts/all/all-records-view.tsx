@@ -43,6 +43,7 @@ export interface IAllRecordsViewState {
   fieldSettingsExpanded: boolean;
   tooltipOpen: boolean;
   selectedSettings: any;
+  loadingPartner: boolean;
 }
 
 export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRecordsViewState> {
@@ -59,16 +60,32 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
     selectedMatch: null,
     fieldSettingsExpanded: false,
     tooltipOpen: false,
-    selectedSettings: {}
+    selectedSettings: {},
+    loadingPartner: false
   };
   private settingsBtnRef = React.createRef() as React.LegacyRef<HTMLDivElement>;
 
   componentDidMount() {
     this.props.getBaseRecord(this.props.orgId);
     this.props.getSettings();
-    Promise.all([this.props.getNotHiddenMatchesByOrg(this.props.orgId)]).then(() => {
-      if (this.props.matches.length >= 0) {
-        this.props.getPartnerRecords(this.props.orgId);
+    this.getMatches();
+  }
+
+  getMatches() {
+    const { orgId, matches, history } = this.props;
+    this.setState({
+      loadingPartner: true
+    });
+    Promise.all([this.props.getNotHiddenMatchesByOrg(orgId)]).then(() => {
+      this.setState({
+        loadingPartner: false
+      });
+      if (matches.length === 1) {
+        history.replace(`/single-record-view/${orgId}`);
+      } else if (matches.length >= 0) {
+        this.props.getPartnerRecords(orgId);
+      } else {
+        history.push('/');
       }
     });
   }
@@ -127,12 +144,15 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
         if (matches.length === 1) {
           this.props.history.replace(`/single-record-view/${orgId}`);
         } else if (matches.length > 1) {
-          window.location.reload();
+          this.getMatches();
         } else {
           this.props.history.push(`/`);
         }
       })
       .catch(() => {
+        this.setState({
+          loadingPartner: false
+        });
         toast.error(translate('hiddenMatches.hidingError'));
       });
   };
@@ -202,7 +222,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
     const match = partnerRecords.length && _.find(matches, m => m.partnerVersionId === partnerRecords[0].organization.id);
     const baseProviderName = baseRecord ? baseRecord.organization.accountName : null;
     const isOneRecord = partnerRecords && partnerRecords.length === 1;
-    const loading = (
+    const loadingPartnerComponent = (
       <Col>
         <h2>Loading...</h2>
       </Col>
@@ -271,90 +291,97 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
               />
             </div>
           ) : (
-            loading
+            loadingPartnerComponent
           )}
           <Col className={`partner-records row flex-row flex-nowrap ${isOneRecord ? 'one-record m-0 w-50' : ''}`}>
-            {partnerRecords.map((partnerRecord, idx) => (
-              <div key={`partner-record-${idx}`} className={`record flex-grow-1 ${isOneRecord ? 'm-0' : ''}`}>
-                <Row>
-                  <Col>
-                    <div style={{ float: 'right' }}>
-                      <HideRecordButton
-                        id={`hide-${partnerRecord.organization.id}`}
-                        handleHide={this.hideActivity(partnerRecord.organization.id)}
-                      />
-                    </div>
-                    <div style={{ float: 'right', marginTop: '30px' }}>
-                      <h5>
-                        <Translate contentKey="multiRecordView.matchSimilarity" />
-                        {matches[idx] ? (matches[idx].similarity * 100).toFixed(2) : 0}%
-                      </h5>
-                    </div>
-                    <div className="mr-4">
-                      <IconSpan iconSize="1.5rem" visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
-                        <h2>{partnerRecord.organization.name}</h2>
-                      </IconSpan>
-                    </div>
-                    <h4 className="from">
-                      <Translate contentKey="multiRecordView.from" />
-                      {partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
-                        <OwnerInfo owner={partnerRecord.owner} direction="right" />
-                      ) : (
-                        partnerRecord.organization.accountName
-                      )}
-                    </h4>
-                    <h5>
-                      <Translate contentKey="multiRecordView.lastCompleteReview" />
-                      {partnerRecord.organization.lastVerifiedOn ? (
-                        <TextFormat value={partnerRecord.organization.lastVerifiedOn} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-                      ) : (
-                        <Translate contentKey="multiRecordView.unknown" />
-                      )}
-                    </h5>
-                    <h5>
-                      <Translate contentKey="multiRecordView.lastUpdated" />
-                      {partnerRecord.lastUpdated ? (
-                        <TextFormat value={partnerRecord.lastUpdated} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-                      ) : (
-                        <Translate contentKey="multiRecordView.unknown" />
-                      )}
-                    </h5>
-                  </Col>
-                </Row>
-                <Details
-                  activity={partnerRecord}
-                  {...this.props}
-                  exclusions={[]}
-                  isBaseRecord={false}
-                  showClipboard
-                  selectLocation={this.selectLocation}
-                  locationsHaveMatch={this.state.locationsHaveMatch}
-                  matchingLocation={this.state.matchingLocation}
-                  settings={this.props.selectedSettings}
-                  serviceMatches={match && match.serviceMatches}
-                  locationMatches={match && locationMatches}
-                />
-                <Jumbotron className="same-record-question-container">
-                  <div className="text-center">
-                    <h4>
-                      <Translate contentKey="multiRecordView.sameRecord.question" />
-                    </h4>
+            {this.state.loadingPartner
+              ? loadingPartnerComponent
+              : partnerRecords.map((partnerRecord, idx) => (
+                  <div key={`partner-record-${idx}`} className={`record flex-grow-1 ${isOneRecord ? 'm-0' : ''}`}>
+                    <Row>
+                      <Col>
+                        <div style={{ float: 'right' }}>
+                          <HideRecordButton
+                            id={`hide-${partnerRecord.organization.id}`}
+                            handleHide={this.hideActivity(partnerRecord.organization.id)}
+                          />
+                        </div>
+                        <div style={{ float: 'right', marginTop: '30px' }}>
+                          <h5>
+                            <Translate contentKey="multiRecordView.matchSimilarity" />
+                            {matches[idx] ? (matches[idx].similarity * 100).toFixed(2) : 0}%
+                          </h5>
+                        </div>
+                        <div className="mr-4">
+                          <IconSpan iconSize="1.5rem" visible={partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER}>
+                            <h2>{partnerRecord.organization.name}</h2>
+                          </IconSpan>
+                        </div>
+                        <h4 className="from">
+                          <Translate contentKey="multiRecordView.from" />
+                          {partnerRecord.organization.accountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER ? (
+                            <OwnerInfo owner={partnerRecord.owner} direction="right" />
+                          ) : (
+                            partnerRecord.organization.accountName
+                          )}
+                        </h4>
+                        <h5>
+                          <Translate contentKey="multiRecordView.lastCompleteReview" />
+                          {partnerRecord.organization.lastVerifiedOn ? (
+                            <TextFormat
+                              value={partnerRecord.organization.lastVerifiedOn}
+                              type="date"
+                              format={APP_DATE_FORMAT}
+                              blankOnInvalid
+                            />
+                          ) : (
+                            <Translate contentKey="multiRecordView.unknown" />
+                          )}
+                        </h5>
+                        <h5>
+                          <Translate contentKey="multiRecordView.lastUpdated" />
+                          {partnerRecord.lastUpdated ? (
+                            <TextFormat value={partnerRecord.lastUpdated} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                          ) : (
+                            <Translate contentKey="multiRecordView.unknown" />
+                          )}
+                        </h5>
+                      </Col>
+                    </Row>
+                    <Details
+                      activity={partnerRecord}
+                      {...this.props}
+                      exclusions={[]}
+                      isBaseRecord={false}
+                      showClipboard
+                      selectLocation={this.selectLocation}
+                      locationsHaveMatch={this.state.locationsHaveMatch}
+                      matchingLocation={this.state.matchingLocation}
+                      settings={this.props.selectedSettings}
+                      serviceMatches={match && match.serviceMatches}
+                      locationMatches={match && locationMatches}
+                    />
+                    <Jumbotron className="same-record-question-container">
+                      <div className="text-center">
+                        <h4>
+                          <Translate contentKey="multiRecordView.sameRecord.question" />
+                        </h4>
+                      </div>
+                      <div className="d-flex justify-content-around">
+                        <div>
+                          {!this.props.dismissedMatches.length ? null : (
+                            <Link to={`/dismissed-matches/${this.props.orgId}`}>
+                              <Translate contentKey="multiRecordView.sameRecord.viewDismissedMatches" />
+                            </Link>
+                          )}
+                        </div>
+                        <Button color="danger" size="lg" onClick={this.showDismissModal(partnerRecord.organization.id)}>
+                          <Translate contentKey="multiRecordView.sameRecord.deny" />
+                        </Button>
+                      </div>
+                    </Jumbotron>
                   </div>
-                  <div className="d-flex justify-content-around">
-                    <div>
-                      {!this.props.dismissedMatches.length ? null : (
-                        <Link to={`/dismissed-matches/${this.props.orgId}`}>
-                          <Translate contentKey="multiRecordView.sameRecord.viewDismissedMatches" />
-                        </Link>
-                      )}
-                    </div>
-                    <Button color="danger" size="lg" onClick={this.showDismissModal(partnerRecord.organization.id)}>
-                      <Translate contentKey="multiRecordView.sameRecord.deny" />
-                    </Button>
-                  </div>
-                </Jumbotron>
-              </div>
-            ))}
+                ))}
           </Col>
         </Row>
       );

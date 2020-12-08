@@ -1,4 +1,5 @@
 @import '../../../bootstrap-variables';
+@import '../../../app-variables';
 $header-color: #fff;
 $header-color-secondary: #bbb;
 $header-color-hover: darken($header-color, 20%);
@@ -49,6 +50,10 @@ $header-color-hover: darken($header-color, 20%);
       height: 40px;
       width: 40px;
       border-radius: 50%;
+    }
+
+    .dropdown-item {
+      font-weight: bold;
     }
 
     .dropdown-item.active,
@@ -145,5 +150,17 @@ $header-color-hover: darken($header-color, 20%);
     .navbar-version {
       display: none;
     }
+  }
+
+  .header-bar {
+    height: $headerBarHeight;
+  }
+
+  #header-tabs {
+    font-weight: bold;
+  }
+
+  #header-tabs > li > a {
+    height: 100%;
   }
 }

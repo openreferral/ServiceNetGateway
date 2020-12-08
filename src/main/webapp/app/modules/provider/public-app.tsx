@@ -83,6 +83,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
                 toggleMenu={this.toggleMenu}
                 isPublic
                 match={match}
+                avatarBase64={this.props.account.avatarBase64}
                 prependRoutesWithMatch
               />
             </MediaQuery>
@@ -101,6 +102,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
                 isShelterOwner={this.props.isShelterOwner}
                 isPublic
                 match={match}
+                avatarBase64={this.props.account.avatarBase64}
                 prependRoutesWithMatch
               />
             </MediaQuery>

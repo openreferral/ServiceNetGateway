@@ -6,7 +6,7 @@ import sinon from 'sinon';
 import LoadingBar from 'react-redux-loading-bar';
 import { Navbar, Nav } from 'reactstrap';
 
-import { Home, Brand } from 'app/shared/layout/header/header-components';
+import { BrandMenu } from 'app/shared/layout/header/header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from 'app/shared/layout/header/menus';
 import Header from 'app/shared/layout/header/header';
 
@@ -27,7 +27,8 @@ describe('Header', () => {
     isSacramento: false,
     isShelterOwner: false,
     isStaging: false,
-    isPublic: false
+    isPublic: false,
+    avatarBase64: null
   };
   const prodProps = {
     ...devProps,
@@ -64,10 +65,9 @@ describe('Header', () => {
     expect(component.find(LoadingBar).length).toEqual(1);
     const navbar = component.find(Navbar);
     expect(navbar.length).toEqual(1);
-    expect(navbar.find(Brand).length).toEqual(1);
+    expect(navbar.find(BrandMenu).length).toEqual(1);
     const nav = component.find(Nav);
     expect(nav.length).toEqual(1);
-    expect(nav.find(Home).length).toEqual(1);
     expect(nav.find(AdminMenu).length).toEqual(1);
     expect(nav.find(EntitiesMenu).length).toEqual(1);
     expect(nav.find(LocaleMenu).length).toEqual(1);
@@ -83,10 +83,9 @@ describe('Header', () => {
     expect(component).toMatchSnapshot();
     const navbar = component.find(Navbar);
     expect(navbar.length).toEqual(1);
-    expect(navbar.find(Brand).length).toEqual(1);
+    expect(navbar.find(BrandMenu).length).toEqual(1);
     const nav = component.find(Nav);
     expect(nav.length).toEqual(1);
-    expect(nav.find(Home).length).toEqual(1);
     expect(nav.find(AdminMenu).length).toEqual(1);
     expect(nav.find(EntitiesMenu).length).toEqual(1);
     expect(nav.find(LocaleMenu).length).toEqual(1);

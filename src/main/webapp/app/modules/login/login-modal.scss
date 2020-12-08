@@ -1,0 +1,37 @@
+.login-modal {
+  #login-title > .modal-title {
+    text-align: center;
+    width: 100%;
+  }
+
+  .forgot-password {
+    float: right;
+  }
+
+  .register-alert {
+    font-size: 0.825rem;
+
+    .register-label {
+      color: black;
+    }
+  }
+
+  .login-footer {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .grecaptcha-badge {
+    animation: visibleAnim 0s 1s forwards;
+    visibility: hidden;
+  }
+
+  @keyframes visibleAnim {
+    to {
+      visibility: visible;
+    }
+  }
+}

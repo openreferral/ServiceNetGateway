@@ -52,5 +52,6 @@ export const commonProps = {
   updateSelectedSettings: MOCK_CALLBACK,
   history: null,
   location: null,
-  match: null
+  match: null,
+  loadingPartner: false
 };

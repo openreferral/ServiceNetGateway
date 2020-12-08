@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
-import { login } from 'app/shared/reducers/authentication';
+import { getSession, login } from 'app/shared/reducers/authentication';
 import LoginModal from './login-modal';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 import { resetActivityFilter } from 'app/modules/home/filter-activity.reducer';
-import { resetText } from 'app/modules/provider/menus/search.reducer';
+import { resetText } from 'app/modules/provider/shared/search.reducer';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -23,6 +23,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
 
   componentDidUpdate(prevProps: ILoginProps, prevState) {
     if (this.props !== prevProps) {
+      if (this.props.loginSuccess && !prevProps.loginSuccess) {
+        this.props.getSession();
+      }
       this.setState({ showModal: this.props.showModal });
     }
   }
@@ -34,7 +37,10 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   };
 
   handleClose = () => {
-    this.setState({ showModal: false });
+    this.setState({
+      showModal: false
+    });
+    this.props.history.push(location.hash.replace('/login', '').replace('#', ''));
   };
 
   render() {
@@ -57,10 +63,11 @@ const mapStateToProps = ({ authentication }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
   account: authentication.account,
   loginError: authentication.loginError,
+  loginSuccess: authentication.loginSuccess,
   showModal: authentication.showModalLogin
 });
 
-const mapDispatchToProps = { login, resetActivityFilter, resetText };
+const mapDispatchToProps = { login, getSession, resetActivityFilter, resetText };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

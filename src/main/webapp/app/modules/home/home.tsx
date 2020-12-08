@@ -147,8 +147,8 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
     }
   };
 
-  handleLoadMore = () => {
-    if (window.pageYOffset > 0 && this.props.totalItems > this.props.activityList.length) {
+  handleLoadMore = hasMoreItems => {
+    if (!this.props.loading && hasMoreItems) {
       this.setState({ activePage: this.state.activePage + 1 }, () => this.getEntities(null));
     }
   };
@@ -251,7 +251,8 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
   };
 
   render() {
-    const { account, activityList, autosuggestOptions } = this.props;
+    const { account, activityList, autosuggestOptions, loading, totalItems } = this.props;
+    const hasMoreItems = activityList.length < totalItems;
     return (
       <div className="home">
         {account && account.login ? null : (
@@ -320,11 +321,13 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
           <Container>
             <InfiniteScroll
               pageStart={this.state.activePage}
-              loadMore={this.handleLoadMore}
-              hasMore={this.state.activePage - 1 < this.props.links.next}
-              loader={<Spinner key={0} color="primary" />}
+              loadMore={() => this.handleLoadMore(hasMoreItems)}
+              hasMore={hasMoreItems}
+              loader={loading ? <Spinner key={0} color="primary" /> : null}
               threshold={0}
               initialLoad={false}
+              useWindow={false}
+              getScrollParent={() => document.getElementById('app-container')}
             >
               <Container>
                 <Row>
@@ -447,7 +450,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   links: storeState.activity.links,
   entity: storeState.activity.entity,
   updateSuccess: storeState.activity.updateSuccess,
-  activityFilter: storeState.filterActivity.activityFilter
+  activityFilter: storeState.filterActivity.activityFilter,
+  loading: storeState.activity.loading
 });
 
 const mapDispatchToProps = {

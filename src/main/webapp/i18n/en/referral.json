@@ -19,16 +19,21 @@
   },
   "referral": {
     "labels": {
+      "beneficiaryInformation": "Beneficiary Information",
       "close": "Close",
       "homePage": "Go to Home Page",
+      "location": "Location",
       "or": "OR",
+      "organization": "Organization",
       "send": "Send",
       "sent": "Beneficiary checked in successfully!"
     },
     "placeholder": {
-      "beneficiary": "Enter Unique Identifier",
+      "beneficiary": "Enter Service Net ID",
+      "beneficiaryMobile": "Service Net ID",
       "cbo": "Select Organization to Check In",
       "phone": "Enter Phone Number",
+      "phoneMobile": "Phone Number",
       "referFrom": "Select Organization to Refer from",
       "location": "Select Location to Check In",
       "fromLocation": "Select Location to Refer from"
@@ -60,7 +65,7 @@
     },
     "columns": {
       "beneficiaryPhoneNumber": "Beneficiary Phone Number",
-      "id": "Unique Identifier",
+      "id": "Service Net ID",
       "dateStamp": "Date Stamp",
       "referredFrom": "Referred From",
       "referredTo": "Referred To",

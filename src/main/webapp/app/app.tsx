@@ -44,29 +44,31 @@ export class App extends React.Component<IAppProps> {
     const padding = '10px';
     const app = (
       <div className="app">
-        <div className="app-container">
+        <ErrorBoundary>
+          <Header
+            isAuthenticated={this.props.isAuthenticated}
+            isAdmin={this.props.isAdmin}
+            currentLocale={this.props.currentLocale}
+            onLocaleChange={this.props.setLocale}
+            ribbonEnv={this.props.ribbonEnv}
+            isStaging={this.props.isStaging}
+            isInProduction={this.props.isInProduction}
+            isSwaggerEnabled={this.props.isSwaggerEnabled}
+            userLogin={this.props.userLogin}
+            isSacramento={this.props.isSacramento}
+            isShelterOwner={this.props.isShelterOwner}
+            isPublic={false}
+            isServiceProvider={this.props.isServiceProvider}
+            avatarBase64={this.props.avatarBase64}
+          />
+        </ErrorBoundary>
+        <div className="app-container" id="app-container">
           <GoBackButton />
           <ToastContainer
             position={toast.POSITION.TOP_LEFT as ToastPosition}
             className="toastify-container"
             toastClassName="toastify-toast"
           />
-          <ErrorBoundary>
-            <Header
-              isAuthenticated={this.props.isAuthenticated}
-              isAdmin={this.props.isAdmin}
-              currentLocale={this.props.currentLocale}
-              onLocaleChange={this.props.setLocale}
-              ribbonEnv={this.props.ribbonEnv}
-              isStaging={this.props.isStaging}
-              isInProduction={this.props.isInProduction}
-              isSwaggerEnabled={this.props.isSwaggerEnabled}
-              userLogin={this.props.userLogin}
-              isSacramento={this.props.isSacramento}
-              isShelterOwner={this.props.isShelterOwner}
-              isPublic={false}
-            />
-          </ErrorBoundary>
           <div className="container-fluid view-container" id="app-view-container">
             <Card className="jh-card" style={{ padding }}>
               <ErrorBoundary>
@@ -74,9 +76,9 @@ export class App extends React.Component<IAppProps> {
               </ErrorBoundary>
             </Card>
           </div>
-          <div className="d-none d-md-inline">
-            <Footer />
-          </div>
+        </div>
+        <div className="d-none d-md-inline">
+          <Footer />
         </div>
       </div>
     );
@@ -109,7 +111,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
   userLogin: authentication.account.login,
   isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
-  isServiceProvider: authentication.account.systemAccountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER
+  isServiceProvider: authentication.account.systemAccountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER,
+  avatarBase64: authentication.account.avatarBase64
 });
 
 const mapDispatchToProps = { setLocale, getSession, getProfile };

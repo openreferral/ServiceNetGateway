@@ -164,8 +164,8 @@ describe('Filter activity reducer', () => {
           type: SUCCESS(ACTION_TYPES.FETCH_PARTNER_LIST),
           payload,
           meta: {
-            'siloName': '',
-            'userName': ''
+            siloName: '',
+            userName: ''
           }
         })
       ).toEqual({
@@ -201,8 +201,8 @@ describe('Filter activity reducer', () => {
           type: SUCCESS(ACTION_TYPES.FETCH_TAXONOMY_LIST),
           payload,
           meta: {
-            'siloName': '',
-            'userName': ''
+            siloName: '',
+            userName: ''
           }
         })
       ).toEqual({
@@ -312,8 +312,8 @@ describe('Filter activity reducer', () => {
 
     it('dispatches ACTION_TYPES.FETCH_PARTNER_LIST actions', async () => {
       const meta = {
-        'siloName': '',
-        'userName': ''
+        siloName: '',
+        userName: ''
       };
       const expectedActions = [
         {
@@ -331,8 +331,8 @@ describe('Filter activity reducer', () => {
 
     it('dispatches ACTION_TYPES.FETCH_TAXONOMY_LIST actions', async () => {
       const meta = {
-        'siloName': '',
-        'userName': ''
+        siloName: '',
+        userName: ''
       };
       const expectedActions = [
         {

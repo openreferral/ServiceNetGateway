@@ -29,7 +29,12 @@ describe('Date utils', () => {
   describe('displayDefaultDateTime', () => {
     it('should return start of the day', () => {
       const defaultDateTime = displayDefaultDateTime();
-      expect(defaultDateTime === moment().startOf('day').format(APP_LOCAL_DATETIME_FORMAT)).toEqual(true);
+      expect(
+        defaultDateTime ===
+          moment()
+            .startOf('day')
+            .format(APP_LOCAL_DATETIME_FORMAT)
+      ).toEqual(true);
     });
 
     it('should format the date to APP_LOCAL_DATETIME_FORMAT', () => {

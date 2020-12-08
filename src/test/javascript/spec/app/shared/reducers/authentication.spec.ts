@@ -199,7 +199,7 @@ describe('Authentication reducer tests', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('dispatches LOGIN, GET_SESSION and SET_LOCALE success and request actions', async () => {
+    it('dispatches LOGIN success and request actions', async () => {
       const loginResponse = { value: 'any' };
       axios.post = sinon.stub().returns(Promise.resolve(loginResponse));
       const expectedActions = [
@@ -209,13 +209,6 @@ describe('Authentication reducer tests', () => {
         {
           type: SUCCESS(ACTION_TYPES.LOGIN),
           payload: loginResponse
-        },
-        {
-          type: REQUEST(ACTION_TYPES.GET_SESSION)
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.GET_SESSION),
-          payload: resolvedObject
         }
       ];
       await store.dispatch(login('test', 'test', 'test'));

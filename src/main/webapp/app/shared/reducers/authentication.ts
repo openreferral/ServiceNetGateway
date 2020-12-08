@@ -130,7 +130,6 @@ export const login = (username, password, captcha, rememberMe = false) => async 
     type: ACTION_TYPES.LOGIN,
     payload: axios.post('auth/login', { username, password, captcha, rememberMe })
   });
-  await dispatch(getSession());
 };
 
 export const logout = () => async dispatch => {

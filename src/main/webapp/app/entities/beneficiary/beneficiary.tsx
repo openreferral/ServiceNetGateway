@@ -36,15 +36,21 @@ export const Beneficiary = (props: IBeneficiaryProps) => {
     resetAll();
   }, []);
 
-  useEffect(() => {
-    if (props.updateSuccess) {
-      resetAll();
-    }
-  }, [props.updateSuccess]);
+  useEffect(
+    () => {
+      if (props.updateSuccess) {
+        resetAll();
+      }
+    },
+    [props.updateSuccess]
+  );
 
-  useEffect(() => {
-    getAllEntities();
-  }, [paginationState.activePage]);
+  useEffect(
+    () => {
+      getAllEntities();
+    },
+    [paginationState.activePage]
+  );
 
   const handleLoadMore = () => {
     if ((window as any).pageYOffset > 0) {
@@ -55,12 +61,15 @@ export const Beneficiary = (props: IBeneficiaryProps) => {
     }
   };
 
-  useEffect(() => {
-    if (sorting) {
-      getAllEntities();
-      setSorting(false);
-    }
-  }, [sorting]);
+  useEffect(
+    () => {
+      if (sorting) {
+        getAllEntities();
+        setSorting(false);
+      }
+    },
+    [sorting]
+  );
 
   const sort = p => () => {
     props.reset();
@@ -157,4 +166,7 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Beneficiary);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Beneficiary);
