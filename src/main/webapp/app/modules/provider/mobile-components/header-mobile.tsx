@@ -22,6 +22,7 @@ export interface IHeaderMobileProps {
   isShelterOwner: boolean;
   isStaging: boolean;
   toggleMenu: Function;
+  avatarBase64: string;
   isPublic?: boolean;
   match?: any;
   prependRoutesWithMatch?: boolean;
@@ -46,7 +47,7 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
     ) : null;
 
   render() {
-    const { userLogin, isSacramento, match } = this.props;
+    const { userLogin, isSacramento, match, avatarBase64 } = this.props;
     const rootUrl = match ? match.url : '/';
     return (
       <div>
@@ -76,7 +77,7 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
                   {this.props.isPublic ? (
                     <FeedbackButton {...this.props} />
                   ) : (
-                    <Avatar size="small" mobile name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} />
+                    <Avatar size="small" mobile name={`${userLogin && userLogin.charAt(0).toUpperCase()} `} avatarBase64={avatarBase64} />
                   )}
                 </div>
               </Col>

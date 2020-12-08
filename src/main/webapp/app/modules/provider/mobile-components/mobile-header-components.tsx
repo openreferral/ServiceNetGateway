@@ -14,7 +14,7 @@ export const NavDropdown = props => (
   <UncontrolledDropdown inNavbar id={props.id}>
     <DropdownToggle nav caret className="d-flex align-items-center">
       <div className="self-align-center">
-        <Avatar size="small" name={`${props.name.charAt(0).toUpperCase()}`} />
+        <Avatar size="small" name={`${props.name.charAt(0).toUpperCase()}`} avatarBase64={props.avatarBase64} />
       </div>
       <span className="navbar-label">{props.name}</span>
     </DropdownToggle>

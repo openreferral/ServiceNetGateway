@@ -27,7 +27,8 @@ describe('Header', () => {
     isSacramento: false,
     isShelterOwner: false,
     isStaging: false,
-    isPublic: false
+    isPublic: false,
+    avatarBase64: null
   };
   const prodProps = {
     ...devProps,

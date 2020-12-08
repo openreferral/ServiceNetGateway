@@ -66,6 +66,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             isSacramento={this.props.isSacramento}
             isShelterOwner={this.props.isShelterOwner}
             toggleMenu={this.toggleMenu}
+            avatarBase64={this.props.account.avatarBase64}
           />
         </MediaQuery>
         <MediaQuery minDeviceWidth={769}>
@@ -84,6 +85,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             referralCount={this.props.referralCount}
             isReferralEnabled={this.props.isReferralEnabled}
             isServiceProvider={this.props.isServiceProvider}
+            avatarBase64={this.props.account.avatarBase64}
           />
         </MediaQuery>
       </div>
