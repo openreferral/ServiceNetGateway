@@ -23,7 +23,7 @@ services:
       test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetgateway\\\" || exit 1" ]
       interval: 1m
       timeout: 10s
-      retries: 5
+      retries: 3
   servicenet-app:
     image: servicenet
     environment:
@@ -51,7 +51,7 @@ services:
       test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenet\\\" || exit 1" ]
       interval: 1m
       timeout: 10s
-      retries: 5
+      retries: 3
   servicenetauth-app:
     image: servicenetauth
     environment:
@@ -72,7 +72,7 @@ services:
       test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetauth\\\" || exit 1" ]
       interval: 1m
       timeout: 10s
-      retries: 5
+      retries: 3
   servicenet-postgresql:
     image: postgres:10.12
     volumes:
