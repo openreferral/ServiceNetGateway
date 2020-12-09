@@ -23,10 +23,6 @@ import moment from 'moment';
 import { IUser } from 'app/shared/model/user.model';
 
 const REMAINDER_WIDTH = 25;
-const ONE_HOUR = 1000 * 60 * 60;
-const LESS_THAN_24_HOURS = '#6AB9A4';
-const LESS_THAN_48_HOURS = '#FAB28C';
-const MORE_THAN_48_HOURS = '#808080';
 
 const GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL = 'https://www.google.com/maps/dir//';
 
@@ -228,7 +224,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   };
 
   cardContent = () => {
-    const { record, fullWidth, referring } = this.props;
+    const { record, fullWidth, referring, account } = this.props;
     if (!record) {
       return (
         <div className="empty-record">
@@ -239,6 +235,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       );
     } else {
       const latestDailyUpdate = record.dailyUpdates && record.dailyUpdates.find(du => du.expiry === null);
+      const isLinked = record.organization.accountName !== account.systemAccountName;
       return (
         <>
           <div id={measureId(record.organization.id)} style={containerStyle} />
@@ -286,7 +283,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
                 ) : null}
               </div>
             </div>
-            {referring ? <ReferButton record={record} /> : null}
+            {referring && !isLinked ? <ReferButton record={record} /> : null}
           </section>
         </>
       );
