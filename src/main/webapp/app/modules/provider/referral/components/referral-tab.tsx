@@ -87,7 +87,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
       // from
       const cboId = referralOptions.length === 1 ? referralOptions[0].value : cbo;
       const fromOrganization = organizations.find(org => org.id === cboId);
-      const fromLocationId = fromOrganization.locations.length === 1 ? fromOrganization.locations[0].id : fromLocation;
+      const fromLocationId = fromOrganization && fromOrganization.locations.length === 1 ? fromOrganization.locations[0].id : fromLocation;
       // to
       const orgLocationMap = {};
       referredRecords.forEach((record, id) => {
@@ -103,8 +103,8 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
 
     const isPhoneValid = phoneNumber && isPossiblePhoneNumber(phoneNumber);
     const isBeneficiaryValid = isPhoneValid || beneficiaryId;
-    const isReferFromValid = cbo || referralOptions.length === 1;
-    const isFromLocationValid = fromLocation || this.locationOptions().length === 1;
+    const isReferFromValid = cbo || referralOptions.length <= 1;
+    const isFromLocationValid = fromLocation || this.locationOptions().length === 1 || referralOptions.length === 0;
     const missingLocations = this.validateLocations();
 
     this.setState({ isBeneficiaryValid, isReferFromValid, missingLocations, isFromLocationValid });
