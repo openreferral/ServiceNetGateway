@@ -92,6 +92,27 @@ $apply-button-color: #e78859;
   background-color: darken($color: #67bba4, $amount: 10%) !important;
 }
 
+.button-pill-refer {
+  background-color: #fab28d !important;
+  color: black;
+  border: 1px #fab28d solid;
+}
+
+.button-pill-refer:hover {
+  color: black;
+  background-color: darken($color: #fab28d, $amount: 5%) !important;
+}
+
+.button-pill-referred {
+  @extend .button-pill-success;
+  color: black;
+}
+
+.button-pill-referred:hover {
+  @extend .button-pill-success, :hover;
+  color: black;
+}
+
 .button-pill.disabled {
   background-color: #7b7b7b80 !important;
   color: white;
