@@ -104,7 +104,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     const isPhoneValid = phoneNumber && isPossiblePhoneNumber(phoneNumber);
     const isBeneficiaryValid = isPhoneValid || beneficiaryId;
     const isReferFromValid = cbo || referralOptions.length <= 1;
-    const isFromLocationValid = fromLocation || this.locationOptions().length === 1 || referralOptions.length === 0;
+    const isFromLocationValid = fromLocation || this.locationOptions().length === 1 || referralOptions.length <= 1;
     const missingLocations = this.validateLocations();
 
     this.setState({ isBeneficiaryValid, isReferFromValid, missingLocations, isFromLocationValid });
