@@ -21,7 +21,7 @@ export class ReferButton extends React.Component<IReferButtonProp, {}> {
     if (referredRecords.has(record.organization.id)) {
       return (
         <ButtonPill className="refer-button button-pill-referred" onClick={() => this.props.unreferRecord(record, userName)}>
-          <b className="d-flex align-items-center justify-content-center">
+          <b className="d-flex align-items-center justify-content-center h-100">
             <Translate contentKey="recordCard.referred" />
             &nbsp;
             <FontAwesomeIcon icon="check" />
@@ -31,7 +31,7 @@ export class ReferButton extends React.Component<IReferButtonProp, {}> {
     } else {
       return (
         <ButtonPill className="refer-button button-pill-refer" onClick={() => this.props.referRecord(record, userName)}>
-          <b className="d-flex align-items-center justify-content-center">
+          <b className="d-flex align-items-center justify-content-center h-100">
             <Translate contentKey="recordCard.refer" />
           </b>
         </ButtonPill>
