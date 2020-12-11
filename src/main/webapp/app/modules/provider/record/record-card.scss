@@ -139,6 +139,14 @@ div.card.record-card {
       height: 50px;
       padding-top: 10px;
     }
+
+    .locations-width {
+      width: 80%;
+
+      @media only screen and (max-width: 768px) {
+        width: 70%;
+      }
+    }
   }
 
   .services .remainder {

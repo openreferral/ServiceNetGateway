@@ -254,7 +254,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           )}
           {!fullWidth && <this.serviceSection />}
           <section className="d-flex justify-content-between">
-            <div style={referring ? { width: '75%' } : { width: '100%' }}>
+            <div className={referring ? 'locations-width' : 'w-100'}>
               <div className="locations">
                 {record.locations.length > 0 ? (
                   <AutoSizer disableHeight>
