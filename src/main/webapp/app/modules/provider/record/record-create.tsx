@@ -24,6 +24,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 import ServiceLogo from '../../../../static/images/service.svg';
 import _ from 'lodash';
 import ButtonPill from '../shared/button-pill';
+import { OpeningHours } from 'app/modules/provider/record/opening-hours';
 
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -36,6 +37,8 @@ export interface IRecordCreateViewState {
   serviceCount: number;
   invalidTabs: string[];
   leaving: boolean;
+  openingHoursByLocation: any;
+  datesClosedByLocation: any;
 }
 
 const ORGANIZATION_TAB = 'organization';
@@ -78,7 +81,9 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     locations: _.cloneDeep(initialLocations),
     services: _.cloneDeep(initialServices),
     invalidTabs: [],
-    leaving: false
+    leaving: false,
+    openingHoursByLocation: {},
+    datesClosedByLocation: {}
   };
 
   componentDidMount() {
@@ -105,12 +110,15 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   }
 
   saveRecord = (event, errors, values) => {
+    const { openingHoursByLocation, datesClosedByLocation } = this.state;
     values.updatedAt = new Date();
 
     const invalidTabs = [];
     if (errors.length === 0) {
       const entity = {
-        ...values
+        ...values,
+        openingHoursByLocation,
+        datesClosedByLocation
       };
       this.props.createUserOwnedEntity(entity);
     } else {
@@ -214,6 +222,16 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
       services[i].docs[0] = { ...services[i].docs[0], document: value };
     }
     this.setState({ services });
+  };
+
+  updateLocationData = idx => (openingHours, datesClosed) => {
+    const { openingHoursByLocation, datesClosedByLocation } = this.state;
+    openingHoursByLocation[idx] = openingHours;
+    datesClosedByLocation[idx] = datesClosed;
+    this.setState({
+      openingHoursByLocation,
+      datesClosedByLocation
+    });
   };
 
   render() {
@@ -436,6 +454,12 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                           />
                         </Col>
                       </Row>
+                      <OpeningHours
+                        location={location}
+                        openingHours={this.state.openingHoursByLocation[i] || [{}]}
+                        datesClosed={this.state.datesClosedByLocation[i] || [null]}
+                        updateLocationData={this.updateLocationData(i)}
+                      />
                     </Col>
                   </Row>
                 ))}

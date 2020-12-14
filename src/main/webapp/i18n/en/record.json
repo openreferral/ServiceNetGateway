@@ -1,5 +1,13 @@
 {
   "record": {
+    "openingHours": {
+      "title": "Tell us your opening hours",
+      "dates": "Tell us specific dates that you are closed",
+      "closedOn": "Closed on",
+      "remove": "Remove",
+      "add": "Add more",
+      "preview": "Format that others will see"
+    },
     "newCard": {
       "title": "Have more data to contribute?",
       "buttonLabel": "Add a new record"
