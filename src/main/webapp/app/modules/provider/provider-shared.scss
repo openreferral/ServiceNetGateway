@@ -486,4 +486,21 @@
       z-index: 5001;
     }
   }
+
+  .opening-hours {
+    > * {
+      margin-bottom: 0.5rem;
+    }
+    font-size: 12px;
+    .time-picker {
+      width: 6.25em;
+    }
+    input,
+    button {
+      font-size: 0.7rem;
+    }
+    .button-pill {
+      padding: 2px 1.25rem;
+    }
+  }
 }
