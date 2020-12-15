@@ -46,29 +46,32 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
   toggleDay = (rowNumber, weekdayNumber) => () => {
     const { datesClosed } = this.props;
     const openingHours = this.removeDayFromOtherRows(rowNumber, weekdayNumber);
-    const row = openingHours[rowNumber];
+    const row = openingHours[rowNumber] || {};
     row.activeDays = _.xor(row.activeDays || [], [weekdayNumber]);
+    openingHours[rowNumber] = row;
     this.props.updateLocationData(openingHours, datesClosed);
   };
 
   onFromTimeChange = rowNumber => date => {
     const { openingHours, datesClosed } = this.props;
-    const row = openingHours[rowNumber];
+    const row = openingHours[rowNumber] || {};
     row.from = getTimeString(date);
+    openingHours[rowNumber] = row;
     this.props.updateLocationData(openingHours, datesClosed);
   };
 
   onToTimeChange = rowNumber => date => {
     const { openingHours, datesClosed } = this.props;
-    const row = openingHours[rowNumber];
+    const row = openingHours[rowNumber] || {};
     row.to = getTimeString(date);
+    openingHours[rowNumber] = row;
     this.props.updateLocationData(openingHours, datesClosed);
   };
 
   getFromTime = rowNumber => {
     const { openingHours } = this.props;
     const row = openingHours[rowNumber];
-    return getDateWithTime(row.from);
+    return row ? getDateWithTime(row.from) : null;
   };
 
   onDateClosedChange = rowNumber => date => {
@@ -97,7 +100,7 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
   getToTime = rowNumber => {
     const { openingHours } = this.props;
     const row = openingHours[rowNumber];
-    return getDateWithTime(row.to);
+    return row ? getDateWithTime(row.to) : null;
   };
 
   hasWeekday = (openingHours, rowNumber, weekday) =>
