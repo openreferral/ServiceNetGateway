@@ -26,6 +26,7 @@ export interface IBeneficiaryCheckInTabState {
 
 export interface IBeneficiaryCheckInTabProps extends StateProps, DispatchProps {
   isMobile: boolean;
+  handleClose: any;
 }
 
 class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps, IBeneficiaryCheckInTabState> {
@@ -61,6 +62,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
   close = () => {
     this.setState({ phoneNumber: '', beneficiaryId: '', cbo: null, location: null });
     this.props.resetCheckedIn();
+    this.props.handleClose();
   };
 
   onSelect = evt => {
@@ -108,10 +110,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
     const commonClass = 'd-flex justify-content-center align-items-center';
 
     return (
-      <div className="col-12 col-md-6 offset-md-3">
-        <div className="content-title  my-3 my-md-5">
-          <Translate contentKey="referral.title.check_in" />
-        </div>
+      <div className="col-12">
         {!checkedIn ? (
           <div className={`${commonClass} flex-column`}>
             <div className={`mt-2 w-100 referral-label ${isBeneficiaryValid ? '' : 'required'}`}>
@@ -192,11 +191,6 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
             <ButtonPill className="button-pill-green my-2" style={{ width: '200px' }} onClick={this.close}>
               <Translate contentKey="referral.labels.close" />
             </ButtonPill>
-            <Link to="/">
-              <ButtonPill className="button-pill-green my-2" style={{ width: '200px' }}>
-                <Translate contentKey="referral.labels.homePage" />
-              </ButtonPill>
-            </Link>
           </div>
         )}
       </div>

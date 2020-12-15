@@ -38,6 +38,7 @@
     "mapView": "Map View",
     "gridView": "Grid View",
     "directions": "Directions",
+    "beneficiaryCheckIn": "Beneficiary Check In",
     "referElsewhere": "Refer Elsewhere"
   }
 }

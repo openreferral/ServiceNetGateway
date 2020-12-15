@@ -10,9 +10,9 @@ import Settings from 'app/modules/account/settings/settings';
 import Password from 'app/modules/account/password/password';
 import DeactivatedRecords from 'app/modules/provider/deactivated/deactivated-records';
 import NotConfiguredAccount from 'app/modules/provider/not-configured-account';
-import ReferralPage from 'app/modules/provider/referral/referral-page';
 import Feedback from 'app/modules/feedback/feedback';
 import ReferralHistory from 'app/modules/provider/referral/referral-history';
+import BulkUploadPage from 'app/modules/provider/referral/bulk-upload-page';
 
 const Routes = ({ isAdmin, match, location, account }) => {
   const hasUserSilo = account && account.siloId !== null;
@@ -31,7 +31,7 @@ const Routes = ({ isAdmin, match, location, account }) => {
         <ErrorBoundaryRoute path={`${match.url}single-record-view/:orgId`} component={SingleRecordView} />
         <ErrorBoundaryRoute path={`${match.url}record/:id/edit`} component={RecordEdit} />
         <ErrorBoundaryRoute path={`${match.url}deactivated-records`} component={DeactivatedRecords} />
-        {isReferralEnabled && <ErrorBoundaryRoute path={`${match.url}referral`} component={ReferralPage} />}
+        {isReferralEnabled && <ErrorBoundaryRoute path={`${match.url}bulk-upload`} component={BulkUploadPage} />}
         {isReferralEnabled && <ErrorBoundaryRoute path={`${match.url}referral-history`} component={ReferralHistory} />}
         <ErrorBoundaryRoute path={`${match.url}`} component={Home} />
       </Switch>

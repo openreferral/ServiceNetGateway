@@ -26,6 +26,7 @@ import './all-records.scss';
 import SearchBar from 'app/modules/provider/shared/search-bar';
 import InfiniteScroll from 'react-infinite-scroller';
 import { isIOS } from 'react-device-detect';
+import ReferralModal, { BENEFICIARY_CHECK_IN_TAB, REFERRAL_TAB } from 'app/modules/provider/referral/referral-modal';
 
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 const GRID_VIEW = 'GRID';
@@ -76,6 +77,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   isSearchBarFocused: boolean;
   appContainerHeight: number;
   iOSMapHeight: any;
+  referralModalTab: string;
 }
 
 export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsState> {
@@ -104,6 +106,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       centeredAt: null,
       isSearchBarFocused: false,
       iOSMapHeight: '100%',
+      referralModalTab: null,
       ...providerSearchPreferences
     };
     this.controlLineContainerRef = React.createRef();
@@ -535,6 +538,27 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
+  title = isReferralEnabled => (
+    <div className="all-records-title">
+      {isReferralEnabled ? (
+        <div className="d-inline-flex position-relative mt-1">
+          <ButtonPill onClick={this.openCheckInModal} className="mr-2">
+            {translate('providerSite.beneficiaryCheckIn')}
+          </ButtonPill>
+          <ButtonPill onClick={this.openReferralModal}>
+            {translate('providerSite.referElsewhere')}
+            <div className={`referrals-counter ${this.props.referralCount > 99 ? 'referral-counter-big' : ''}`}>
+              {this.props.referralCount}
+            </div>
+          </ButtonPill>
+          <ReferralModal openTab={this.state.referralModalTab} handleClose={this.closeModal} />
+        </div>
+      ) : (
+        <Translate contentKey={'providerSite.allRecords'} />
+      )}
+    </div>
+  );
+
   gridView = () => {
     const { allRecords, allRecordsTotal, loading } = this.props;
     const { filterOpened, activePage } = this.state;
@@ -637,6 +661,24 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     });
   };
 
+  openCheckInModal = () => {
+    this.setState({
+      referralModalTab: BENEFICIARY_CHECK_IN_TAB
+    });
+  };
+
+  openReferralModal = () => {
+    this.setState({
+      referralModalTab: REFERRAL_TAB
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      referralModalTab: null
+    });
+  };
+
   render() {
     const { siloName, isMapView, isReferralEnabled } = this.props;
     const { filterOpened, isSearchBarFocused } = this.state;
@@ -655,13 +697,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             </div>
           </Modal>
         </MediaQuery>
-        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-          {siloName || isMapView ? null : (
-            <div className="all-records-title">
-              <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
-            </div>
-          )}
-        </MediaQuery>
+        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>{siloName || isMapView ? null : this.title(isReferralEnabled)}</MediaQuery>
         <div>
           <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
             <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
@@ -672,11 +708,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </Row>
             </MediaQuery>
             <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-              {siloName || isMapView ? null : (
-                <div className="all-records-title">
-                  <Translate contentKey={isReferralEnabled ? 'providerSite.referElsewhere' : 'providerSite.allRecords'} />
-                </div>
-              )}
+              {siloName || isMapView ? null : this.title(isReferralEnabled)}
               <div className={isSearchBarFocused ? 'on-top' : ''}>
                 <Row className="search">
                   <Col className="height-fluid">
@@ -711,6 +743,7 @@ const mapStateToProps = state => ({
   selectedRecord: state.providerRecord.selectedRecord,
   filtersChanged: state.providerFilter.filtersChanged,
   loading: state.providerRecord.loading,
+  referralCount: state.providerRecord.referredRecords ? state.providerRecord.referredRecords.size : 0,
   isReferralEnabled: state.authentication.account.siloIsReferralEnabled
 });
 

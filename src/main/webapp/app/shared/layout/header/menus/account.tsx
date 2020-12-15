@@ -12,9 +12,14 @@ const accountMenuItemsAuthenticated = (isSacramento, isReferralEnabled, isServic
       <FontAwesomeIcon icon="wrench" /> <Translate contentKey="global.menu.account.settings">Settings</Translate>
     </DropdownItem>
     {isServiceProvider && isReferralEnabled ? (
-      <DropdownItem tag={Link} to="/referral-history">
-        <FontAwesomeIcon icon="edit" /> <Translate contentKey="providerSite.menu.beneficiaryHistory">Beneficiary History</Translate>
-      </DropdownItem>
+      <>
+        <DropdownItem tag={Link} to="/referral-history">
+          <FontAwesomeIcon icon="edit" /> <Translate contentKey="providerSite.menu.beneficiaryHistory">Beneficiary History</Translate>
+        </DropdownItem>
+        <DropdownItem tag={Link} to="/bulk-upload">
+          <FontAwesomeIcon icon="layer-group" /> <Translate contentKey="global.menu.bulkUpload" />
+        </DropdownItem>
+      </>
     ) : null}
     <DropdownItem tag={Link} to="/account/password">
       <FontAwesomeIcon icon="clock" /> <Translate contentKey="global.menu.account.password">Password</Translate>

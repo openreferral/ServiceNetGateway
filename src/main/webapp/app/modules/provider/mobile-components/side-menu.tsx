@@ -15,8 +15,8 @@ const ProviderHomeLinks = props => (
     </Link>
     {props.isReferralEnabled ? (
       <>
-        <Link to={`/referral`} onClick={() => props.toggleMenu()}>
-          <Translate contentKey="global.menu.referral">Referral</Translate>
+        <Link to={'/bulk-upload'} onClick={() => props.toggleMenu()}>
+          <Translate contentKey="global.menu.bulkUpload" />
         </Link>
         <Link to={`/referral-history`} onClick={() => props.toggleMenu()}>
           <Translate contentKey="providerSite.menu.beneficiaryHistory">Beneficiary History</Translate>

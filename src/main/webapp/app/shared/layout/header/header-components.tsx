@@ -64,25 +64,6 @@ export const BrandMenu = props => {
           <Translate contentKey="global.menu.feedback" />
         </span>
       </NavLink>
-      {props.isServiceProvider && props.isReferralEnabled && !props.isAdmin ? (
-        <NavLink exact tag={Link} to="/referral" className="pl-0">
-          <div className="navbar-label text-dark header-link d-flex">
-            <Translate contentKey="global.menu.referral" />
-            {props.referralCount && props.referralCount > 0 ? (
-              <div className="" style={{ position: 'relative' }}>
-                &nbsp;
-                <FontAwesomeIcon icon="layer-group" />
-                <div className={`referrals-counter ${props.referralCount > 99 ? 'referral-counter-big' : ''}`}>{props.referralCount}</div>
-              </div>
-            ) : (
-              <div>
-                &nbsp;
-                <FontAwesomeIcon icon="layer-group" />
-              </div>
-            )}
-          </div>
-        </NavLink>
-      ) : null}
     </div>
   );
 };
