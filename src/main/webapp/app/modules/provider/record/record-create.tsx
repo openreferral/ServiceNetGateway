@@ -53,6 +53,13 @@ const locationModel = {
   zipcode: ''
 };
 const initialLocations = [{ ...locationModel }];
+const DEFAULT_OPENING_HOURS = [
+  {
+    from: '09:00 AM',
+    to: '05:00 PM',
+    activeDays: [1, 2, 3, 4, 5]
+  }
+];
 
 const serviceModel = {
   name: '',
@@ -459,6 +466,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         openingHours={this.state.openingHoursByLocation[i] || [{}]}
                         datesClosed={this.state.datesClosedByLocation[i] || [null]}
                         updateLocationData={this.updateLocationData(i)}
+                        defaultOpeningHours={DEFAULT_OPENING_HOURS}
                       />
                     </Col>
                   </Row>

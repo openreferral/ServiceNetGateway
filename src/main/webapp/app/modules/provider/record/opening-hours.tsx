@@ -14,6 +14,7 @@ export interface IOpeningHoursProp extends StateProps, DispatchProps {
   updateLocationData: any;
   openingHours: any;
   datesClosed: any;
+  defaultOpeningHours?: any[];
 }
 
 const DAYS_IN_A_WEEK = 7;
@@ -136,7 +137,7 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
         )
         .value();
     }
-    return [{}];
+    return this.props.defaultOpeningHours || [{}];
   };
 
   parseDatesClosed = location => {
@@ -155,17 +156,23 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
 
   preview = () => {
     const { openingHours, datesClosed } = this.props;
-    const rows = [];
+    const ohByDay = [];
     openingHours.forEach(oh => {
       if (oh.activeDays && oh.from && oh.to) {
         oh.activeDays.forEach(day => {
-          rows.push(getWeekday(day, 'long') + ': ' + oh.from + '-' + oh.to);
+          ohByDay.push({
+            day,
+            label: getWeekday(day, 'long') + ': ' + oh.from + '-' + oh.to
+          });
         });
       }
     });
-    datesClosed.forEach(dc => {
+    ohByDay.sort((a, b) => a.day - b.day);
+    const rows = ohByDay.map(day => day.label);
+    const sortedDates = [...datesClosed].sort().reverse();
+    sortedDates.forEach(dc => {
       if (dc) {
-        rows.push('Closed: ' + dc.toLocaleDateString());
+        rows.push('Closed: ' + dc.toLocaleDateString('en', { day: '2-digit', month: '2-digit', year: 'numeric' }));
       }
     });
     return rows;
@@ -183,7 +190,7 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
               <label>{translate('record.openingHours.title')}</label>
             </div>
             {Array.apply(null, { length: noOhRows }).map((x, rowNumber) => (
-              <div className="d-flex align-items-baseline opening-hours flex-column flex-md-row">
+              <div className="d-flex align-items-baseline opening-hours flex-row flex-wrap">
                 <div className="btn-group mr-2" role="group">
                   {Array.apply(null, { length: DAYS_IN_A_WEEK }).map((y, weekday) => (
                     <button
@@ -202,7 +209,7 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
                     showTimeSelect
                     showTimeSelectOnly
                     selected={this.getFromTime(rowNumber)}
-                    dateFormat="h:mm aa"
+                    dateFormat="hh:mm aa"
                   />
                   <span className="mx-1">to</span>
                   <DatePicker
@@ -211,19 +218,17 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
                     showTimeSelect
                     showTimeSelectOnly
                     selected={this.getToTime(rowNumber)}
-                    dateFormat="h:mm aa"
+                    dateFormat="hh:mm aa"
                   />
                 </div>
-                <div className="d-flex">
-                  <ButtonPill className="button-pill-secondary mr-1" onClick={this.removeOpeningHoursRow(rowNumber)}>
-                    {translate('record.openingHours.remove')}
+                <ButtonPill className="button-pill-secondary mr-1" onClick={this.removeOpeningHoursRow(rowNumber)}>
+                  {translate('record.openingHours.remove')}
+                </ButtonPill>
+                {rowNumber >= openingHours.length - 1 && (
+                  <ButtonPill className="button-pill-secondary" onClick={this.addOpeningHoursRow}>
+                    {translate('record.openingHours.add')}
                   </ButtonPill>
-                  {rowNumber >= openingHours.length - 1 && (
-                    <ButtonPill className="button-pill-secondary" onClick={this.addOpeningHoursRow}>
-                      {translate('record.openingHours.add')}
-                    </ButtonPill>
-                  )}
-                </div>
+                )}
               </div>
             ))}
           </Col>
@@ -234,25 +239,23 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
               <label>{translate('record.openingHours.dates')}</label>
             </div>
             {Array.apply(null, { length: noDcRows }).map((x, rowNumber) => (
-              <div className="d-flex align-items-baseline opening-hours flex-column flex-md-row">
+              <div className="d-flex align-items-baseline opening-hours flex-row flex-wrap">
                 <div className="d-flex mr-2 align-items-baseline">
                   <span className="mx-1">{translate('record.openingHours.closedOn')}:</span>
                   <DatePicker
-                    className={'form-control'}
+                    className={'form-control date-closed'}
                     onChange={this.onDateClosedChange(rowNumber)}
                     selected={this.getDateClosed(rowNumber)}
                   />
                 </div>
-                <div className="d-flex">
-                  <ButtonPill className="button-pill-secondary mr-1" onClick={this.removeDateClosedRow(rowNumber)}>
-                    {translate('record.openingHours.remove')}
+                <ButtonPill className="button-pill-secondary mr-1" onClick={this.removeDateClosedRow(rowNumber)}>
+                  {translate('record.openingHours.remove')}
+                </ButtonPill>
+                {rowNumber >= datesClosed.length - 1 && (
+                  <ButtonPill className="button-pill-secondary" onClick={this.addDateClosedRow}>
+                    {translate('record.openingHours.add')}
                   </ButtonPill>
-                  {rowNumber >= datesClosed.length - 1 && (
-                    <ButtonPill className="button-pill-secondary" onClick={this.addDateClosedRow}>
-                      {translate('record.openingHours.add')}
-                    </ButtonPill>
-                  )}
-                </div>
+                )}
               </div>
             ))}
           </Col>

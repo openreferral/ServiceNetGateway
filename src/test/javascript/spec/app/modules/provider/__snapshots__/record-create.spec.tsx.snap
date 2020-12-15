@@ -707,7 +707,7 @@ Array [
                         <label />
                       </div>
                       <div
-                        className="d-flex align-items-baseline opening-hours flex-column flex-md-row"
+                        className="d-flex align-items-baseline opening-hours flex-row flex-wrap"
                       >
                         <div
                           className="btn-group mr-2"
@@ -721,35 +721,35 @@ Array [
                             Sun
                           </button>
                           <button
-                            className="btn btn-secondary "
+                            className="btn btn-secondary  active"
                             onClick={[Function]}
                             type="button"
                           >
                             Mon
                           </button>
                           <button
-                            className="btn btn-secondary "
+                            className="btn btn-secondary  active"
                             onClick={[Function]}
                             type="button"
                           >
                             Tue
                           </button>
                           <button
-                            className="btn btn-secondary "
+                            className="btn btn-secondary  active"
                             onClick={[Function]}
                             type="button"
                           >
                             Wed
                           </button>
                           <button
-                            className="btn btn-secondary "
+                            className="btn btn-secondary  active"
                             onClick={[Function]}
                             type="button"
                           >
                             Thu
                           </button>
                           <button
-                            className="btn btn-secondary "
+                            className="btn btn-secondary  active"
                             onClick={[Function]}
                             type="button"
                           >
@@ -782,7 +782,7 @@ Array [
                                 onKeyDown={[Function]}
                                 readOnly={false}
                                 type="text"
-                                value=""
+                                value="09:00 AM"
                               />
                             </div>
                           </div>
@@ -807,25 +807,21 @@ Array [
                                 onKeyDown={[Function]}
                                 readOnly={false}
                                 type="text"
-                                value=""
+                                value="05:00 PM"
                               />
                             </div>
                           </div>
                         </div>
                         <div
-                          className="d-flex"
-                        >
-                          <div
-                            className="button-pill button-pill-secondary mr-1"
-                            onClick={[Function]}
-                            style={Object {}}
-                          />
-                          <div
-                            className="button-pill button-pill-secondary"
-                            onClick={[Function]}
-                            style={Object {}}
-                          />
-                        </div>
+                          className="button-pill button-pill-secondary mr-1"
+                          onClick={[Function]}
+                          style={Object {}}
+                        />
+                        <div
+                          className="button-pill button-pill-secondary"
+                          onClick={[Function]}
+                          style={Object {}}
+                        />
                       </div>
                     </div>
                   </div>
@@ -839,7 +835,7 @@ Array [
                         <label />
                       </div>
                       <div
-                        className="d-flex align-items-baseline opening-hours flex-column flex-md-row"
+                        className="d-flex align-items-baseline opening-hours flex-row flex-wrap"
                       >
                         <div
                           className="d-flex mr-2 align-items-baseline"
@@ -856,7 +852,7 @@ Array [
                               className="react-datepicker__input-container"
                             >
                               <input
-                                className="form-control"
+                                className="form-control date-closed"
                                 disabled={false}
                                 onBlur={[Function]}
                                 onChange={[Function]}
@@ -871,19 +867,15 @@ Array [
                           </div>
                         </div>
                         <div
-                          className="d-flex"
-                        >
-                          <div
-                            className="button-pill button-pill-secondary mr-1"
-                            onClick={[Function]}
-                            style={Object {}}
-                          />
-                          <div
-                            className="button-pill button-pill-secondary"
-                            onClick={[Function]}
-                            style={Object {}}
-                          />
-                        </div>
+                          className="button-pill button-pill-secondary mr-1"
+                          onClick={[Function]}
+                          style={Object {}}
+                        />
+                        <div
+                          className="button-pill button-pill-secondary"
+                          onClick={[Function]}
+                          style={Object {}}
+                        />
                       </div>
                     </div>
                   </div>
@@ -898,7 +890,23 @@ Array [
                       </div>
                       <div
                         className="preview"
-                      />
+                      >
+                        <div>
+                          Monday: 09:00 AM-05:00 PM
+                        </div>
+                        <div>
+                          Tuesday: 09:00 AM-05:00 PM
+                        </div>
+                        <div>
+                          Wednesday: 09:00 AM-05:00 PM
+                        </div>
+                        <div>
+                          Thursday: 09:00 AM-05:00 PM
+                        </div>
+                        <div>
+                          Friday: 09:00 AM-05:00 PM
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

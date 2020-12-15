@@ -493,7 +493,10 @@
     }
     font-size: 12px;
     .time-picker {
-      width: 6.25em;
+      width: 6.75em;
+    }
+    .date-closed {
+      width: 8.5em;
     }
     input,
     button {
@@ -501,6 +504,11 @@
     }
     .button-pill {
       padding: 2px 1.25rem;
+    }
+    .btn-group {
+      @media only screen and (max-width: 385px) {
+        margin-left: -20px;
+      }
     }
   }
 }
