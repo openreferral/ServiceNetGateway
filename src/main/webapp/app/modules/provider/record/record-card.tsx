@@ -17,6 +17,7 @@ import { getUser } from 'app/modules/administration/user-management/user-managem
 import { IRootState } from 'app/shared/reducers';
 import OwnerInfo from 'app/shared/layout/owner-info';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import ClaimButton from 'app/modules/provider/record/claim-button';
 import ReferButton from 'app/modules/provider/record/refer-button';
 import _ from 'lodash';
 import moment from 'moment';
@@ -38,6 +39,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   coordinates?: string;
   owner?: IUser;
   referring: boolean;
+  claiming?: boolean;
 }
 
 export interface IRecordCardState {
@@ -141,6 +143,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
             <OwnerInfo owner={record.owner || this.props.owner || {}} organization={record.organization} direction="top" />
           </div>
         </div>
+        {this.props.claiming && <ClaimButton record={record} />}
         {this.props.coordinates && (
           <div>
             <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">

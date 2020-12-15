@@ -61,7 +61,8 @@
       "submit": "I'm Finished",
       "deactivate": "Deactivate Record",
       "discard": "Discard Changes",
-      "done": "Done"
+      "done": "Done",
+      "unclaim": "Unclaim Record"
     },
     "heading": {
       "organization": "Tell us a bit about your organization!",
@@ -94,6 +95,7 @@
       "lastUpdated": "Last updated"
     },
     "deactivateQuestion": "Are you sure you want to deactivate this record?",
-    "discardQuestion": "Are you sure you want to discard your changes?"
+    "discardQuestion": "Are you sure you want to discard your changes?",
+    "unclaimQuestion": "Are you sure you want to unclaim this record?"
   }
 }

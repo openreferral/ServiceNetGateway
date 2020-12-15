@@ -19,7 +19,9 @@ export const ACTION_TYPES = {
   DELETE_ORGANIZATION: 'organization/DELETE_ORGANIZATION',
   DEACTIVATE_ORGANIZATION: 'organization/DEACTIVATE_ORGANIZATION',
   SET_BLOB: 'organization/SET_BLOB',
-  RESET: 'organization/RESET'
+  RESET: 'organization/RESET',
+  CLAIM_RECORDS: 'organization/CLAIM_RECORDS',
+  UNCLAIM_RECORDS: 'organization/UNCLAIM_RECORDS'
 };
 
 const initialState = {
@@ -31,7 +33,8 @@ const initialState = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
-  options: [] as ReadonlyArray<IOrganizationOption>
+  options: [] as ReadonlyArray<IOrganizationOption>,
+  claimSuccess: false
 };
 
 export type OrganizationState = Readonly<typeof initialState>;
@@ -52,11 +55,14 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case REQUEST(ACTION_TYPES.UPDATE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.DELETE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
+    case REQUEST(ACTION_TYPES.CLAIM_RECORDS):
+    case REQUEST(ACTION_TYPES.UNCLAIM_RECORDS):
       return {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
+        claimSuccess: false
       };
     case FAILURE(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
     case FAILURE(ACTION_TYPES.FETCH_ORGANIZATION):
@@ -65,12 +71,15 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case FAILURE(ACTION_TYPES.UPDATE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.DELETE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
+    case FAILURE(ACTION_TYPES.CLAIM_RECORDS):
+    case FAILURE(ACTION_TYPES.UNCLAIM_RECORDS):
       return {
         ...state,
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
+        claimSuccess: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
       return {
@@ -117,6 +126,12 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         updating: false,
         updateSuccess: true,
         entity: {}
+      };
+    case SUCCESS(ACTION_TYPES.CLAIM_RECORDS):
+    case SUCCESS(ACTION_TYPES.UNCLAIM_RECORDS):
+      return {
+        ...state,
+        claimSuccess: true
       };
     case ACTION_TYPES.SET_BLOB:
       const { name, data, contentType } = action.payload;
@@ -240,3 +255,23 @@ export const setBlob = (name, data, contentType?) => ({
 export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
+
+export const claimEntities = listOfIds => async dispatch => {
+  const requestUrl = `${SERVICENET_API_URL}/claim-records`;
+  const result = await dispatch({
+    type: ACTION_TYPES.CLAIM_RECORDS,
+    payload: axios.post(requestUrl, listOfIds)
+  });
+  dispatch(getEntities());
+  return result;
+};
+
+export const unclaimEntity = recordId => async dispatch => {
+  const requestUrl = `${SERVICENET_API_URL}/unclaim-record?recordId=${recordId}`;
+  const result = await dispatch({
+    type: ACTION_TYPES.UNCLAIM_RECORDS,
+    payload: axios.post(requestUrl)
+  });
+  dispatch(getEntities());
+  return result;
+};

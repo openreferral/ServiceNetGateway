@@ -39,6 +39,11 @@
     "gridView": "Grid View",
     "directions": "Directions",
     "beneficiaryCheckIn": "Beneficiary Check In",
-    "referElsewhere": "Refer Elsewhere"
+    "referElsewhere": "Refer Elsewhere",
+    "claim": "Claim records",
+    "claimMore": "Would you like to claim more records?",
+    "succesfullClaim": "You successfully claimed {{count}} records.",
+    "claimTitle": "Welcome to Service Net",
+    "claimSubtitle": "Here are the records that you can claim"
   }
 }

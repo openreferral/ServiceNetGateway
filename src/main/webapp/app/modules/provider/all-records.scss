@@ -67,3 +67,41 @@
     @extend .referrals-counter;
   }
 }
+
+.claim-record-modal {
+  width: 80vw;
+  max-width: 80vw;
+  @media only screen and (max-width: 768px) {
+    width: auto;
+    max-width: none;
+  }
+}
+
+.claim-record-modal-container {
+  height: 80vh;
+  max-height: 80vh;
+  overflow: hidden;
+  background-color: lighten(#fab28d, 15%);
+  @media only screen and (max-width: 768px) {
+    height: 100%;
+    max-height: 95vh;
+  }
+}
+
+.claim-modal-title {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.claim-modal-subtitle {
+  font-weight: bold;
+}
+
+.claim-record-modal-body {
+  max-height: 80%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
+}
