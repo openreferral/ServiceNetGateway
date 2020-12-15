@@ -137,7 +137,7 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
         )
         .value();
     }
-    return this.props.defaultOpeningHours || [{}];
+    return [...this.props.defaultOpeningHours] || [{}];
   };
 
   parseDatesClosed = location => {
