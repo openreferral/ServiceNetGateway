@@ -176,14 +176,16 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
           <td>
             <div>{record.organization.name}</div>
           </td>
-          <td className="d-flex">
-            <Select
-              className={`full-width to-location ${missingLocations.indexOf(id) >= 0 ? 'required' : ''}`}
-              value={toLocationValue}
-              options={recordLocationOptions}
-              onChange={this.onToLocationSelect(id)}
-              styles={selectStyle()}
-            />
+          <td>
+            <div className="d-flex">
+              <Select
+                className={`full-width to-location ${missingLocations.indexOf(id) >= 0 ? 'required' : ''}`}
+                value={toLocationValue}
+                options={recordLocationOptions}
+                onChange={this.onToLocationSelect(id)}
+                styles={selectStyle()}
+              />
+            </div>
           </td>
           <td>
             <ButtonPill className="button-pill-danger pull-right" onClick={() => this.props.unreferRecord(record, this.props.userName)}>

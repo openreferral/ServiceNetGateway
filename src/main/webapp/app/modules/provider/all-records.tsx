@@ -541,7 +541,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   title = isReferralEnabled => (
     <div className="all-records-title">
       {isReferralEnabled ? (
-        <div className="d-inline-flex position-relative mt-1">
+        <div className="button-container position-relative mt-1 mb-1">
           <ButtonPill onClick={this.openCheckInModal} className="mr-2">
             {translate('providerSite.beneficiaryCheckIn')}
           </ButtonPill>

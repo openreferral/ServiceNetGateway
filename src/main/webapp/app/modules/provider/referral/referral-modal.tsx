@@ -57,6 +57,7 @@ class ReferralModal extends React.Component<IReferralModalProp, IReferralModalSt
     return (
       <Modal
         isOpen={openTab != null}
+        centered
         backdrop="static"
         id="referral-modal"
         autoFocus={false}
