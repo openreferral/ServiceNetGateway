@@ -36,7 +36,7 @@ const SortActivity = props => {
   return (
     <div>
       <MediaQuery maxDeviceWidth={768}>
-        <ButtonPill onClick={toggleSort} translate="providerSite.sort" className="mr-1" />
+        <ButtonPill onClick={toggleSort} translate="providerSite.sort" />
         <Modal isOpen={dropdownOpen} centered toggle={toggleSort}>
           <ModalHeader>
             <Translate contentKey="providerSite.sort" />
@@ -50,7 +50,7 @@ const SortActivity = props => {
       <MediaQuery minDeviceWidth={769}>
         <Dropdown isOpen={dropdownOpen} toggle={toggleSort}>
           <DropdownToggle tag="div">
-            <ButtonPill translate="providerSite.sort" className="mr-1" />
+            <ButtonPill translate="providerSite.sort" />
           </DropdownToggle>
           <DropdownMenu right={false}>{menuContent}</DropdownMenu>
         </Dropdown>

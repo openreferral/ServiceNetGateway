@@ -4,6 +4,11 @@
     "unknown": "Unknown",
     "by": "by: ",
     "refer": "Refer",
-    "referred": "Referred"
+    "referred": "Referred",
+    "claim": "Claim",
+    "claimed": "Claimed",
+    "yes": "Yes",
+    "no": "No",
+    "done": "Done"
   }
 }

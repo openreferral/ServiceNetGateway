@@ -5,7 +5,7 @@ import { Badge, Card, CardBody, CardTitle, Col, Collapse, Label, Progress, Row }
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
-import { deactivateEntity, getProviderEntity, updateUserOwnedEntity } from 'app/entities/organization/organization.reducer';
+import { deactivateEntity, getProviderEntity, updateUserOwnedEntity, unclaimEntity } from 'app/entities/organization/organization.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -194,6 +194,18 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   handleConfirmDeactivate = () => {
     this.props.deactivateEntity(this.props.match.params.id);
+  };
+
+  handleConfirmUnclaim = () => {
+    this.setState(
+      {
+        leaving: true
+      },
+      () => {
+        this.props.unclaimEntity(this.props.match.params.id);
+        this.props.history.goBack();
+      }
+    );
   };
 
   handleConfirmDiscard = () => {
@@ -783,9 +795,22 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                 handleConfirm={this.handleConfirmDeactivate}
               />
             )}
-            <ButtonPill className="button-pill-secondary deactivate mb-1 mb-md-0" onClick={this.openDialog('deactivate')}>
+            <ButtonPill className="button-pill-secondary deactivate mb-1 mb-md-0 mr-0 mr-md-1" onClick={this.openDialog('deactivate')}>
               <Translate contentKey="record.navigation.deactivate" />
             </ButtonPill>
+            {organization.replacedById &&
+              this.state.openDialogs.indexOf('unclaim') !== -1 && (
+                <ConfirmationDialog
+                  question={translate('record.unclaimQuestion')}
+                  handleClose={this.closeDialog('unclaim')}
+                  handleConfirm={this.handleConfirmUnclaim}
+                />
+              )}
+            {organization.replacedById && (
+              <ButtonPill className="button-pill-secondary deactivate mb-1 mb-md-0" onClick={this.openDialog('unclaim')}>
+                <Translate contentKey="record.navigation.unclaim" />
+              </ButtonPill>
+            )}
             <div className="d-flex flex-column flex-md-row float-md-right ml-md-auto">
               {this.state.openDialogs.indexOf('discard') !== -1 && (
                 <ConfirmationDialog
@@ -826,7 +851,8 @@ const mapDispatchToProps = {
   getProviderTaxonomies,
   updateUserOwnedEntity,
   getProviderEntity,
-  deactivateEntity
+  deactivateEntity,
+  unclaimEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

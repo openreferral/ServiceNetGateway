@@ -39,6 +39,12 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
     this.props.getProviderRecords(0, PAGE_SIZE);
   }
 
+  componentDidUpdate(prevPros) {
+    if (!prevPros.claimSuccess && this.props.claimSuccess) {
+      this.props.getProviderRecords(0, PAGE_SIZE);
+    }
+  }
+
   next = () => {
     this.slider.slickNext();
   };
@@ -145,7 +151,8 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
 const mapStateToProps = state => ({
   records: state.providerRecord.recordsByIndex,
   recordsTotal: state.providerRecord.recordsTotal,
-  currentUser: state.authentication.account
+  currentUser: state.authentication.account,
+  claimSuccess: state.organization.claimSuccess
 });
 
 const mapDispatchToProps = {

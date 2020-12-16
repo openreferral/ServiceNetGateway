@@ -11,6 +11,7 @@
       "created": "A new Organization is created with identifier {{ param }}",
       "updated": "A Organization is updated with identifier {{ param }}",
       "deleted": "A Organization is deleted with identifier {{ param }}",
+      "unclaimed": "Record successfully unclaimed",
       "delete": {
         "question": "Are you sure you want to delete Organization {{ id }}?"
       },

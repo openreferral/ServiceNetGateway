@@ -11,6 +11,7 @@ export interface ISimpleOrganization {
   services?: any[];
   dailyUpdates?: any[];
   accountName?: string;
+  replacedById?: string;
 }
 
 export const defaultSimpleOrganization: ISimpleOrganization = {};
