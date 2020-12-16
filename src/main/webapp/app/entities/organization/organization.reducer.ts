@@ -131,6 +131,7 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case SUCCESS(ACTION_TYPES.UNCLAIM_RECORDS):
       return {
         ...state,
+        updating: false,
         claimSuccess: true
       };
     case ACTION_TYPES.SET_BLOB:
