@@ -604,6 +604,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         <div id={measureId(this.props.match.params.id)} style={containerStyle} />
         <main className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
           <AvField name="id" value={organization.id} className="d-none" />
+          <AvField name="replacedById" value={organization.replacedById} className="d-none" />
           <Card className="section">
             <CardTitle>
               <Translate contentKey="record.edit.title" />
