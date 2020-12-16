@@ -130,7 +130,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   }
 
   componentDidMount() {
-    if (!this.state.claimRecordsOpened && this.props.account && !this.props.account.claimedRecords) {
+    if (!this.state.claimRecordsOpened && this.props.account && !this.props.account.hasClaimedRecords) {
       setTimeout(() => this.toggleClaimRecordsOpened(), 5000);
     }
     this.getRecords(true);
