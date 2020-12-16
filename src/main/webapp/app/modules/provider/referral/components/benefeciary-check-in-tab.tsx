@@ -13,6 +13,8 @@ import { checkIn, resetCheckedIn } from '../../provider-record.reducer';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { selectStyle } from 'app/config/constants';
 import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
+import { toast } from 'react-toastify';
+import { IReferralTabProps, IReferralTabState } from 'app/modules/provider/referral/components/referral-tab';
 
 export interface IBeneficiaryCheckInTabState {
   phoneNumber: String;
@@ -39,6 +41,13 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
     isCboValid: true,
     isLocationValid: true
   };
+  componentDidUpdate(prevProps, prevState) {
+    const { checkedIn } = this.props;
+    if (prevProps.checkedIn !== this.props.checkedIn && this.props.checkedIn) {
+      toast.success(translate('referral.labels.sent'));
+      this.props.handleClose();
+    }
+  }
 
   setPhone = phoneNumber => {
     this.setState({ phoneNumber, isBeneficiaryValid: isPossiblePhoneNumber(phoneNumber) });
@@ -111,88 +120,77 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
 
     return (
       <div className="col-12">
-        {!checkedIn ? (
-          <div className={`${commonClass} flex-column`}>
-            <div className={`mt-2 w-100 referral-label ${isBeneficiaryValid ? '' : 'required'}`}>
-              <Translate contentKey="referral.labels.beneficiaryInformation" />
-            </div>
-            <div className={`${commonClass} w-100 beneficiary-data ${isBeneficiaryValid ? '' : 'required'}`}>
-              <Input
-                className="my-2 form-control"
-                type="text"
-                name="phone"
-                id="phone"
-                placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
-                onChange={this.setPhone}
-                value={phoneNumber}
-                country="US"
-              />
-              &nbsp;
-              <Translate contentKey="referral.labels.or" />
-              &nbsp;
-              <StrapInput
-                className="my-2"
-                type="text"
-                name="beneficiary"
-                id="beneficiary"
-                placeholder={isMobile ? translate('referral.placeholder.beneficiaryMobile') : translate('referral.placeholder.beneficiary')}
-                onChange={this.setBeneficiary}
-              />
-            </div>
-            {phoneNumber &&
-              !isPossiblePhoneNumber(phoneNumber) && (
-                <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
-              )}
-            {referralOptions.length > 1 ? (
-              <>
-                <div className={`mt-2 w-100 referral-label ${isCboValid ? '' : 'required'}`}>
-                  <Translate contentKey="referral.labels.organization" />
-                </div>
-                <Select
-                  className={`my-2 full-width refer-to ${isCboValid ? '' : 'required'}`}
-                  name="cbo"
-                  id="cbo"
-                  value={cbo ? cbo.id : null}
-                  options={referralOptions}
-                  onChange={this.onSelect}
-                  inputId="cboSelect"
-                  placeholder={translate('referral.placeholder.cbo')}
-                  styles={selectStyle()}
-                />
-              </>
-            ) : null}
-            {cbo != null && locationOptions.length > 1 ? (
-              <>
-                <div className={`mt-2 w-100 referral-label ${isLocationValid ? '' : 'required'}`}>
-                  <Translate contentKey="referral.labels.location" />
-                </div>
-                <Select
-                  className={`my-2 full-width refer-to ${isLocationValid ? '' : 'required'}`}
-                  name="location"
-                  id="location"
-                  value={location ? location.id : null}
-                  options={locationOptions}
-                  onChange={this.onLocationSelect}
-                  inputId="locationSelect"
-                  placeholder={translate('referral.placeholder.location')}
-                  styles={selectStyle()}
-                />
-              </>
-            ) : null}
-            <ButtonPill className="button-pill-green my-2" style={{ width: '100px' }} onClick={this.checkIn}>
-              <Translate contentKey="referral.labels.send" />
-            </ButtonPill>
+        <div className={`${commonClass} flex-column`}>
+          <div className={`mt-2 w-100 referral-label ${isBeneficiaryValid ? '' : 'required'}`}>
+            <Translate contentKey="referral.labels.beneficiaryInformation" />
           </div>
-        ) : (
-          <div className={`${commonClass} flex-column`}>
-            <div className="my-2">
-              <Translate contentKey="referral.labels.sent" />
-            </div>
-            <ButtonPill className="button-pill-green my-2" style={{ width: '200px' }} onClick={this.close}>
-              <Translate contentKey="referral.labels.close" />
-            </ButtonPill>
+          <div className={`${commonClass} w-100 beneficiary-data ${isBeneficiaryValid ? '' : 'required'}`}>
+            <Input
+              className="my-2 form-control"
+              type="text"
+              name="phone"
+              id="phone"
+              placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+              onChange={this.setPhone}
+              value={phoneNumber}
+              country="US"
+            />
+            &nbsp;
+            <Translate contentKey="referral.labels.or" />
+            &nbsp;
+            <StrapInput
+              className="my-2"
+              type="text"
+              name="beneficiary"
+              id="beneficiary"
+              placeholder={isMobile ? translate('referral.placeholder.beneficiaryMobile') : translate('referral.placeholder.beneficiary')}
+              onChange={this.setBeneficiary}
+            />
           </div>
-        )}
+          {phoneNumber &&
+            !isPossiblePhoneNumber(phoneNumber) && (
+              <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+            )}
+          {referralOptions.length > 1 ? (
+            <>
+              <div className={`mt-2 w-100 referral-label ${isCboValid ? '' : 'required'}`}>
+                <Translate contentKey="referral.labels.organization" />
+              </div>
+              <Select
+                className={`my-2 full-width refer-to ${isCboValid ? '' : 'required'}`}
+                name="cbo"
+                id="cbo"
+                value={cbo ? cbo.id : null}
+                options={referralOptions}
+                onChange={this.onSelect}
+                inputId="cboSelect"
+                placeholder={translate('referral.placeholder.cbo')}
+                styles={selectStyle()}
+              />
+            </>
+          ) : null}
+          {cbo != null && locationOptions.length > 1 ? (
+            <>
+              <div className={`mt-2 w-100 referral-label ${isLocationValid ? '' : 'required'}`}>
+                <Translate contentKey="referral.labels.location" />
+              </div>
+              <Select
+                className={`my-2 full-width refer-to ${isLocationValid ? '' : 'required'}`}
+                name="location"
+                id="location"
+                value={location ? location.id : null}
+                options={locationOptions}
+                onChange={this.onLocationSelect}
+                inputId="locationSelect"
+                placeholder={translate('referral.placeholder.location')}
+                styles={selectStyle()}
+              />
+            </>
+          ) : null}
+          <ButtonPill className="button-pill-green my-2" style={{ width: '100px' }} onClick={this.checkIn}>
+            <Translate contentKey="referral.labels.send" />
+          </ButtonPill>
+        </div>
       </div>
     );
   }
