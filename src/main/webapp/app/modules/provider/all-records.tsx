@@ -130,7 +130,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   }
 
   componentDidMount() {
-    if (!this.state.claimRecordsOpened && this.props.account && !this.props.account.hasClaimedRecords) {
+    const { account, isAuthenticated } = this.props;
+    if (!this.state.claimRecordsOpened && isAuthenticated && account && !account.hasClaimedRecords) {
       setTimeout(() => this.toggleClaimRecordsOpened(), 5000);
     }
     this.getRecords(true);
@@ -895,7 +896,8 @@ const mapStateToProps = state => ({
   isReferralEnabled: state.authentication.account.siloIsReferralEnabled,
   availableRecordsToClaim: state.providerRecord.recordsAvailableToClaim,
   recordsAvailableToClaimTotal: state.providerRecord.recordsAvailableToClaimTotal,
-  recordsToClaim: state.providerRecord.recordsToClaim
+  recordsToClaim: state.providerRecord.recordsToClaim,
+  isAuthenticated: state.authentication.isAuthenticated
 });
 
 const mapDispatchToProps = {
