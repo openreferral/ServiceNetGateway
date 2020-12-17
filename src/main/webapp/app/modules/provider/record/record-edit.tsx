@@ -328,33 +328,31 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   locationDetails = (locations, openLocation, invalidLocations) =>
     locations.map((location, i) => (
-      <div key={`location-${i}`}>
-        <div className={`col-lg-4 col-md-6 col-xs-12 p-0 ${openLocation === -1 ? 'd-inline-block' : 'd-block'}`}>
-          <Card
-            className={
-              openLocation === -1
-                ? invalidLocations.includes(i)
-                  ? 'invalid clickable card-sm record-card details-card'
-                  : 'clickable card-sm record-card details-card'
-                : 'd-none'
-            }
-          >
-            <CardBody onClick={this.openLocation(i)} className={'locations d-flex flex-row w-100 h-100'}>
-              <div className="card-left">
-                <FontAwesomeIcon icon="pencil-alt" />
-              </div>
-              <div className="card-right">
-                <div>
-                  <div className="text-ellipsis font-weight-bold">
-                    <FontAwesomeIcon icon={faCircle} className="edit" /> {location['city']}, {location['ca']}
-                  </div>
-                  <div className="text-ellipsis">{location['address1']}</div>
-                  <div className="text-ellipsis">{location['address2']}</div>
+      <div key={`location-${i}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
+        <Card
+          className={
+            openLocation === -1
+              ? invalidLocations.includes(i)
+                ? 'invalid clickable card-sm record-card details-card'
+                : 'clickable card-sm record-card details-card'
+              : 'd-none'
+          }
+        >
+          <CardBody onClick={this.openLocation(i)} className={'locations d-flex flex-row w-100 h-100'}>
+            <div className="card-left">
+              <FontAwesomeIcon icon="pencil-alt" />
+            </div>
+            <div className="card-right">
+              <div>
+                <div className="text-ellipsis font-weight-bold">
+                  <FontAwesomeIcon icon={faCircle} className="edit" /> {location['city']}, {location['ca']}
                 </div>
+                <div className="text-ellipsis">{location['address1']}</div>
+                <div className="text-ellipsis">{location['address2']}</div>
               </div>
-            </CardBody>
-          </Card>
-        </div>
+            </div>
+          </CardBody>
+        </Card>
         <div className={openLocation === i ? 'location-details' : 'd-none'}>
           {location['id'] ? <AvField name={'locations[' + i + '].id'} value={location['id']} className="d-none" /> : ''}
           <AvGroup>
@@ -443,32 +441,30 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   serviceDetails = (services, openService, invalidServices, taxonomyOptions) =>
     services.map((service, i) => (
-      <div key={`service-${i}`}>
-        <div className={`col-lg-4 col-md-6 col-xs-12 p-0 ${openService === -1 ? 'd-inline-block' : 'd-block'}`}>
-          <Card
-            className={
-              openService === -1
-                ? invalidServices.includes(i)
-                  ? 'invalid clickable card-sm record-card details-card'
-                  : 'clickable card-sm record-card details-card'
-                : 'd-none'
-            }
-          >
-            <CardBody onClick={this.openService(i)} className={'service d-flex flex-row w-100 h-100'}>
-              <div className="card-left">
-                <FontAwesomeIcon icon="pencil-alt" />
-              </div>
-              <div className="card-right">
-                <div>
-                  <div className="text-ellipsis font-weight-bold">
-                    <FontAwesomeIcon icon={faCircle} className="edit" /> {service['name']}
-                  </div>
-                  {this.taxonomyPills(service)}
+      <div key={`service-${i}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
+        <Card
+          className={
+            openService === -1
+              ? invalidServices.includes(i)
+                ? 'invalid clickable card-sm record-card details-card'
+                : 'clickable card-sm record-card details-card'
+              : 'd-none'
+          }
+        >
+          <CardBody onClick={this.openService(i)} className={'service d-flex flex-row w-100 h-100'}>
+            <div className="card-left">
+              <FontAwesomeIcon icon="pencil-alt" />
+            </div>
+            <div className="card-right">
+              <div>
+                <div className="text-ellipsis font-weight-bold">
+                  <FontAwesomeIcon icon={faCircle} className="edit" /> {service['name']}
                 </div>
+                {this.taxonomyPills(service)}
               </div>
-            </CardBody>
-          </Card>
-        </div>
+            </div>
+          </CardBody>
+        </Card>
         <div className={openService === i ? 'service-details' : 'd-none'}>
           {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
           <AvGroup>
