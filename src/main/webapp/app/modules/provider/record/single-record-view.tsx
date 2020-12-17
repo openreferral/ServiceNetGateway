@@ -190,6 +190,223 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     return null;
   };
 
+  locationSection = (locationsCount, isLocationsOpen, organization) => (
+    <Card className="section">
+      <CardTitle onClick={this.toggleLocations} className="clickable">
+        <div className="d-flex justify-content-center align-items-center details-section-title">
+          <img data-src={BuildingLogo} height={25} className="lazyload" alt="Location" />
+          &nbsp;
+          <Translate contentKey="record.singleRecordView.locDetails" />
+          &nbsp;
+          <span className="badge badge-light badge-pill">{locationsCount}</span>
+        </div>
+        {isLocationsOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
+      </CardTitle>
+      <Collapse isOpen={isLocationsOpen}>
+        <CardBody className="details p-0">
+          <section>
+            {locationsCount > 0 ? (
+              organization.locations.map(loc => (
+                <div key={`loc-${loc.id}`} className="d-inline-block col-xl-4 col-md-6 col-xs-12 p-0">
+                  <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3">
+                    <CardTitle>
+                      <span className="text-ellipsis font-weight-bold">
+                        <FontAwesomeIcon icon="circle" className="blue" size="xs" />{' '}
+                        <b>
+                          {loc.city}, {loc.ca}
+                        </b>
+                      </span>
+                    </CardTitle>
+                    <CardBody>
+                      <div>
+                        <p className="m-0 text-ellipsis">{loc.address1}</p>
+                        <p className="m-0">{loc.zipcode}</p>
+                      </div>
+                      <div className="d-flex justify-content-end my-1">
+                        <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
+                          <a
+                            href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${loc.address1},${loc.city},${loc.ca} ${
+                              loc.zipcode ? loc.zipcode : ''
+                            }`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="alert-link w-100 h-100 d-flex align-items-center px-2"
+                            style={{ color: 'white' }}
+                          >
+                            <FontAwesomeIcon icon="directions" size="lg" />
+                            &nbsp;
+                            <Translate contentKey="providerSite.directions">Directions</Translate>
+                          </a>
+                        </ButtonPill>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </div>
+              ))
+            ) : (
+              <Translate contentKey="record.singleRecordView.noLocations" />
+            )}
+          </section>
+        </CardBody>
+      </Collapse>
+    </Card>
+  );
+
+  serviceSection = (servicesCount, isServicesOpen, detailsView, organization, taxonomyOptions, openService, currentServiceIdx) => (
+    <Card className="section services mb-5">
+      <CardTitle onClick={this.toggleServices} className="clickable">
+        <div className="d-flex justify-content-center align-items-center details-section-title">
+          <img data-src={ServiceLogo} height={25} className="lazyload" alt="Service" />
+          &nbsp;
+          <Translate contentKey="record.singleRecordView.srvDetails" />
+          &nbsp;
+          <span className="badge badge-light badge-pill">{servicesCount}</span>
+        </div>
+        {isServicesOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
+      </CardTitle>
+      <Collapse isOpen={isServicesOpen}>
+        <CardBody className="details p-0">
+          <section className={detailsView ? 'd-none' : ''}>
+            {servicesCount > 0 ? (
+              organization.services.map((srv, idx) => (
+                <div key={`srv-${srv.id}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
+                  <Card className="record-card clickable details-card ml-0 mb-3 mr-0 mr-md-3" onClick={() => this.showServiceDetails(idx)}>
+                    <CardTitle>
+                      <span className="text-ellipsis font-weight-bold">
+                        <FontAwesomeIcon icon="circle" className="orange" size="xs" />{' '}
+                        <b>{srv.name ? srv.name : translate('record.singleRecordView.noServiceName')}</b>
+                      </span>
+                    </CardTitle>
+                    <CardBody>
+                      <div className="services pl-2">
+                        {srv.taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
+                          this.taxonomyPills(srv)
+                        ) : (
+                          <span>{translate('record.singleRecordView.untyped')}</span>
+                        )}
+                      </div>
+                    </CardBody>
+                  </Card>
+                </div>
+              ))
+            ) : (
+              <Translate contentKey="record.singleRecordView.noServices" />
+            )}
+          </section>
+          {servicesCount > 0 && openService ? (
+            <div className={`service p-0 ${detailsView ? '' : 'd-none'}`}>
+              <section className="d-flex top-bar">
+                <div className="d-inline-block w-100 d-md-flex justify-content-between">
+                  <div className="d-inline-flex align-items-center service-name">
+                    <FontAwesomeIcon icon="circle" className="orange" />
+                    &nbsp;
+                    <h5 className="mb-0">
+                      <b>{openService.name ? openService.name : translate('record.singleRecordView.noServiceName')}</b>
+                    </h5>
+                  </div>
+                  <div className="d-inline-flex align-items-center pull-right">
+                    <div className="p-2 mr-1 clickable" onClick={() => this.prevService(servicesCount)}>
+                      <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
+                    </div>
+                    <div className="d-flex justify-content-center mr-1">
+                      <div className="align-self-cente">{currentServiceIdx + 1}</div>
+                      <div className="align-self-center mx-2">
+                        <Progress value={((currentServiceIdx + 1) / servicesCount) * 100} />
+                      </div>
+                      <div className="align-self-center">{servicesCount}</div>
+                    </div>
+                    <div className="p-2 clickable" onClick={() => this.nextService(servicesCount)}>
+                      <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
+                    </div>
+                    <div className="p-2 clickable" onClick={this.closeServiceDetails}>
+                      <FontAwesomeIcon icon={['fas', 'times']} />
+                    </div>
+                  </div>
+                </div>
+              </section>
+              {openService.taxonomyIds && openService.taxonomyIds.length > 0 ? (
+                <section>
+                  <h6 className="d-flex align-items-center flex-wrap">
+                    <b className="mb-1">
+                      <Translate contentKey="record.singleRecordView.srvTypes" />
+                    </b>
+                    {openService.taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
+                      openService.taxonomyIds.map(srvTaxonomy => (
+                        <div key={`tax-${srvTaxonomy}`} className="pill mb-1">
+                          <span className="ml-1">{_.get(taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy), 'label')}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <span>{translate('record.singleRecordView.untyped')}</span>
+                    )}
+                  </h6>
+                </section>
+              ) : null}
+              {openService.description ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.singleRecordView.srvDescr" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.description}</span>
+                </section>
+              ) : null}
+              {openService.applicationProcess ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.singleRecordView.srvApplication" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.applicationProcess}</span>
+                </section>
+              ) : null}
+              {openService.eligibilityCriteria ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.singleRecordView.srvEligibility" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.eligibilityCriteria}</span>
+                </section>
+              ) : null}
+              {openService.docs && openService.docs.length > 0 ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.requiredDocuments" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.docs.length > 0 ? openService.docs[0].document : ''}</span>
+                </section>
+              ) : null}
+              {openService.locationIndexes && openService.locationIndexes.length ? (
+                <section>
+                  <h6 className="d-flex align-items-center flex-wrap">
+                    <b className="mb-1">
+                      <Translate contentKey="record.singleRecordView.srvLocations" />
+                    </b>
+                    {openService.locationIndexes.map(locIdx => (
+                      <div key={`srvLoc-${organization.locations[locIdx].id}`} className="pill mb-1">
+                        <span className="ml-1">
+                          <FontAwesomeIcon icon="circle" className="blue" size="xs" />
+                          &nbsp;
+                          {organization.locations[locIdx].city}, {organization.locations[locIdx].ca}
+                        </span>
+                      </div>
+                    ))}
+                  </h6>
+                </section>
+              ) : null}
+            </div>
+          ) : null}
+        </CardBody>
+      </Collapse>
+    </Card>
+  );
+
   render() {
     const {
       isOrganizationOpen,
@@ -205,6 +422,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     const servicesCount = organization && organization.services ? organization.services.length : 0;
     const latestDailyUpdate = organization && organization.services ? organization.dailyUpdates.find(du => du.expiry === null) || {} : null;
     const siloName = this.getSiloName();
+    const openService = servicesCount > 0 && currentServiceIdx <= servicesCount ? organization.services[currentServiceIdx] : {};
     return (
       <div className="record-shared single-record-view background">
         <div id={measureId(this.props.match.params.orgId)} style={containerStyle} />
@@ -286,33 +504,35 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             </CardBody>
           </Card>
 
-          <Card className="section">
-            <CardTitle className="card-title flex-wrap">
-              <Translate contentKey="record.singleRecordView.dailyUpdates" />
-              &nbsp;
-              {latestDailyUpdate && latestDailyUpdate.update ? (
-                <span>
-                  ({translate('record.singleRecordView.lastUpdated')}
-                  :&nbsp;
-                  {latestDailyUpdate.createdAt ? (
-                    <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
-                  ) : (
-                    <Translate contentKey="recordCard.unknown" />
-                  )}
-                  )
-                </span>
-              ) : null}
-            </CardTitle>
-            <CardBody className="p-2 border-top-0">
-              {latestDailyUpdate && latestDailyUpdate.update ? (
-                <span className="p-0 break">{latestDailyUpdate.update}</span>
-              ) : (
-                <div className="w-100 text-center p-2">
-                  <Translate contentKey="record.singleRecordView.noNewUpdates" />
-                </div>
-              )}
-            </CardBody>
-          </Card>
+          {latestDailyUpdate && latestDailyUpdate.update ? (
+            <Card className="section">
+              <CardTitle className="card-title flex-wrap">
+                <Translate contentKey="record.singleRecordView.dailyUpdates" />
+                &nbsp;
+                {latestDailyUpdate && latestDailyUpdate.update ? (
+                  <span>
+                    ({translate('record.singleRecordView.lastUpdated')}
+                    :&nbsp;
+                    {latestDailyUpdate.createdAt ? (
+                      <TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
+                    ) : (
+                      <Translate contentKey="recordCard.unknown" />
+                    )}
+                    )
+                  </span>
+                ) : null}
+              </CardTitle>
+              <CardBody className="p-2 border-top-0">
+                {latestDailyUpdate && latestDailyUpdate.update ? (
+                  <span className="p-0 break">{latestDailyUpdate.update}</span>
+                ) : (
+                  <div className="w-100 text-center p-2">
+                    <Translate contentKey="record.singleRecordView.noNewUpdates" />
+                  </div>
+                )}
+              </CardBody>
+            </Card>
+          ) : null}
 
           <Card className="section">
             <CardTitle onClick={this.toggleOrganization} className="clickable">
@@ -333,249 +553,43 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   </h6>
                   <span className="break">{organization.name}</span>
                 </section>
-                <section>
-                  <h6>
-                    <b>
-                      <Translate contentKey="record.singleRecordView.orgDescr" />
-                    </b>
-                  </h6>
-                  <span className="break">{organization.description}</span>
-                </section>
-                <section>
-                  <h6>
-                    <b>
-                      <Translate contentKey="record.singleRecordView.orgWebsite" />
-                    </b>
-                  </h6>
-                  <span className="text-break">{organization.url}</span>
-                </section>
-                <section>
-                  <h6>
-                    <b>
-                      <Translate contentKey="record.singleRecordView.orgEmail" />
-                    </b>
-                  </h6>
-                  <span>{organization.email}</span>
-                </section>
-              </CardBody>
-            </Collapse>
-          </Card>
-
-          <Card className="section">
-            <CardTitle onClick={this.toggleLocations} className="clickable">
-              <div className="d-flex justify-content-center align-items-center details-section-title">
-                <img data-src={BuildingLogo} height={25} className="lazyload" alt="Location" />
-                &nbsp;
-                <Translate contentKey="record.singleRecordView.locDetails" />
-                &nbsp;
-                <span className="badge badge-light badge-pill">{locationsCount}</span>
-              </div>
-              {isLocationsOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
-            </CardTitle>
-            <Collapse isOpen={isLocationsOpen}>
-              <CardBody className="details p-0">
-                <section>
-                  {locationsCount > 0 ? (
-                    organization.locations.map(loc => (
-                      <div key={`loc-${loc.id}`} className="d-inline-block col-xl-4 col-md-6 col-xs-12 p-0">
-                        <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3">
-                          <CardTitle>
-                            <span className="text-ellipsis font-weight-bold">
-                              <FontAwesomeIcon icon="circle" className="blue" size="xs" />{' '}
-                              <b>
-                                {loc.city}, {loc.ca}
-                              </b>
-                            </span>
-                          </CardTitle>
-                          <CardBody>
-                            <div>
-                              <p className="m-0 text-ellipsis">{loc.address1}</p>
-                              <p className="m-0">{loc.zipcode}</p>
-                            </div>
-                            <div className="d-flex justify-content-end my-1">
-                              <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
-                                <a
-                                  href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${loc.address1},${loc.city},${loc.ca} ${
-                                    loc.zipcode ? loc.zipcode : ''
-                                  }`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="alert-link w-100 h-100 d-flex align-items-center px-2"
-                                  style={{ color: 'white' }}
-                                >
-                                  <FontAwesomeIcon icon="directions" size="lg" />
-                                  &nbsp;
-                                  <Translate contentKey="providerSite.directions">Directions</Translate>
-                                </a>
-                              </ButtonPill>
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </div>
-                    ))
-                  ) : (
-                    <Translate contentKey="record.singleRecordView.noLocations" />
-                  )}
-                </section>
-              </CardBody>
-            </Collapse>
-          </Card>
-
-          <Card className="section services mb-5">
-            <CardTitle onClick={this.toggleServices} className="clickable">
-              <div className="d-flex justify-content-center align-items-center details-section-title">
-                <img data-src={ServiceLogo} height={25} className="lazyload" alt="Service" />
-                &nbsp;
-                <Translate contentKey="record.singleRecordView.srvDetails" />
-                &nbsp;
-                <span className="badge badge-light badge-pill">{servicesCount}</span>
-              </div>
-              {isServicesOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
-            </CardTitle>
-            <Collapse isOpen={isServicesOpen}>
-              <CardBody className="details p-0">
-                <section className={detailsView ? 'd-none' : ''}>
-                  {servicesCount > 0 ? (
-                    organization.services.map((srv, idx) => (
-                      <div key={`srv-${srv.id}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
-                        <Card
-                          className="record-card clickable details-card ml-0 mb-3 mr-0 mr-md-3"
-                          onClick={() => this.showServiceDetails(idx)}
-                        >
-                          <CardTitle>
-                            <span className="text-ellipsis font-weight-bold">
-                              <FontAwesomeIcon icon="circle" className="orange" size="xs" />{' '}
-                              <b>{srv.name ? srv.name : translate('record.singleRecordView.noServiceName')}</b>
-                            </span>
-                          </CardTitle>
-                          <CardBody>
-                            <div className="services pl-2">
-                              {srv.taxonomyIds.length > 0 && taxonomyOptions && taxonomyOptions.length > 0 ? (
-                                this.taxonomyPills(srv)
-                              ) : (
-                                <span>{translate('record.singleRecordView.untyped')}</span>
-                              )}
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </div>
-                    ))
-                  ) : (
-                    <Translate contentKey="record.singleRecordView.noServices" />
-                  )}
-                </section>
-                {servicesCount > 0 ? (
-                  <div className={`service p-0 ${detailsView ? '' : 'd-none'}`}>
-                    <section className="d-flex top-bar">
-                      <div className="d-inline-block w-100 d-md-flex justify-content-between">
-                        <div className="d-inline-flex align-items-center service-name">
-                          <FontAwesomeIcon icon="circle" className="orange" />
-                          &nbsp;
-                          <h5 className="mb-0">
-                            <b>
-                              {organization.services[currentServiceIdx].name
-                                ? organization.services[currentServiceIdx].name
-                                : translate('record.singleRecordView.noServiceName')}
-                            </b>
-                          </h5>
-                        </div>
-                        <div className="d-inline-flex align-items-center pull-right">
-                          <div className="p-2 mr-1 clickable" onClick={() => this.prevService(servicesCount)}>
-                            <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
-                          </div>
-                          <div className="d-flex justify-content-center mr-1">
-                            <div className="align-self-cente">{currentServiceIdx + 1}</div>
-                            <div className="align-self-center mx-2">
-                              <Progress value={((currentServiceIdx + 1) / servicesCount) * 100} />
-                            </div>
-                            <div className="align-self-center">{servicesCount}</div>
-                          </div>
-                          <div className="p-2 clickable" onClick={() => this.nextService(servicesCount)}>
-                            <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
-                          </div>
-                          <div className="p-2 clickable" onClick={this.closeServiceDetails}>
-                            <FontAwesomeIcon icon={['fas', 'times']} />
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                    <section>
-                      <h6 className="d-flex align-items-center flex-wrap">
-                        <b className="mb-1">
-                          <Translate contentKey="record.singleRecordView.srvTypes" />
-                        </b>
-                        {organization.services[currentServiceIdx].taxonomyIds.length > 0 &&
-                        taxonomyOptions &&
-                        taxonomyOptions.length > 0 ? (
-                          organization.services[currentServiceIdx].taxonomyIds.map(srvTaxonomy => (
-                            <div key={`tax-${srvTaxonomy}`} className="pill mb-1">
-                              <span className="ml-1">
-                                {_.get(taxonomyOptions.find(taxonomy => taxonomy.value === srvTaxonomy), 'label')}
-                              </span>
-                            </div>
-                          ))
-                        ) : (
-                          <span>{translate('record.singleRecordView.untyped')}</span>
-                        )}
-                      </h6>
-                    </section>
-                    <section>
-                      <h6>
-                        <b>
-                          <Translate contentKey="record.singleRecordView.srvDescr" />
-                        </b>
-                      </h6>
-                      <span className="break">{organization.services[currentServiceIdx].description}</span>
-                    </section>
-                    <section>
-                      <h6>
-                        <b>
-                          <Translate contentKey="record.singleRecordView.srvApplication" />
-                        </b>
-                      </h6>
-                      <span className="break">{organization.services[currentServiceIdx].applicationProcess}</span>
-                    </section>
-                    <section>
-                      <h6>
-                        <b>
-                          <Translate contentKey="record.singleRecordView.srvEligibility" />
-                        </b>
-                      </h6>
-                      <span className="break">{organization.services[currentServiceIdx].eligibilityCriteria}</span>
-                    </section>
-                    <section>
-                      <h6>
-                        <b>
-                          <Translate contentKey="record.service.requiredDocuments" />
-                        </b>
-                      </h6>
-                      <span className="break">
-                        {organization.services[currentServiceIdx].docs.length > 0
-                          ? organization.services[currentServiceIdx].docs[0].document
-                          : ''}
-                      </span>
-                    </section>
-                    <section>
-                      <h6 className="d-flex align-items-center flex-wrap">
-                        <b className="mb-1">
-                          <Translate contentKey="record.singleRecordView.srvLocations" />
-                        </b>
-                        {organization.services[currentServiceIdx].locationIndexes.map(locIdx => (
-                          <div key={`srvLoc-${organization.locations[locIdx].id}`} className="pill mb-1">
-                            <span className="ml-1">
-                              <FontAwesomeIcon icon="circle" className="blue" size="xs" />
-                              &nbsp;
-                              {organization.locations[locIdx].city}, {organization.locations[locIdx].ca}
-                            </span>
-                          </div>
-                        ))}
-                      </h6>
-                    </section>
-                  </div>
+                {organization.description ? (
+                  <section>
+                    <h6>
+                      <b>
+                        <Translate contentKey="record.singleRecordView.orgDescr" />
+                      </b>
+                    </h6>
+                    <span className="break">{organization.description}</span>
+                  </section>
+                ) : null}
+                {organization.url ? (
+                  <section>
+                    <h6>
+                      <b>
+                        <Translate contentKey="record.singleRecordView.orgWebsite" />
+                      </b>
+                    </h6>
+                    <span className="text-break">{organization.url}</span>
+                  </section>
+                ) : null}
+                {organization.email ? (
+                  <section>
+                    <h6>
+                      <b>
+                        <Translate contentKey="record.singleRecordView.orgEmail" />
+                      </b>
+                    </h6>
+                    <span>{organization.email}</span>
+                  </section>
                 ) : null}
               </CardBody>
             </Collapse>
           </Card>
+          {locationsCount > 0 ? this.locationSection(locationsCount, isLocationsOpen, organization) : null}
+          {servicesCount > 0
+            ? this.serviceSection(servicesCount, isServicesOpen, detailsView, organization, taxonomyOptions, openService, currentServiceIdx)
+            : null}
         </div>
       </div>
     );
