@@ -139,18 +139,6 @@ Array [
               <span
                 className="break"
               >
-                fakeName
-              </span>
-            </section>
-            <section>
-              <h6>
-                <b>
-                  <span />
-                </b>
-              </h6>
-              <span
-                className="break"
-              >
                 fakeDesc
               </span>
             </section>

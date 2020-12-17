@@ -539,20 +539,12 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               <div className="d-flex justify-content-center align-items-center details-section-title">
                 <img data-src={PeopleLogo} height={25} className="lazyload" alt="Organization" />
                 &nbsp;
-                <Translate contentKey="record.singleRecordView.orgDetails" />
+                <Translate contentKey="record.singleRecordView.orgInfo" />
               </div>
               {isOrganizationOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
             </CardTitle>
             <Collapse isOpen={isOrganizationOpen}>
               <CardBody className="details organization p-0">
-                <section>
-                  <h6>
-                    <b>
-                      <Translate contentKey="record.singleRecordView.orgName" />
-                    </b>
-                  </h6>
-                  <span className="break">{organization.name}</span>
-                </section>
                 {organization.description ? (
                   <section>
                     <h6>
