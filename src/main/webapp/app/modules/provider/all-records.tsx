@@ -605,35 +605,37 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   title = isReferralEnabled => (
-    <div className="all-records-title">
-      {!isReferralEnabled && (
-        <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-          <ButtonPill onClick={this.toggleClaimRecordsOpened} translate="providerSite.claim" />
-        </MediaQuery>
-      )}
-      <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-        <ButtonPill onClick={this.toggleClaimRecordsOpened} translate="providerSite.claim" />
-      </MediaQuery>
+    <>
       {isReferralEnabled ? (
-        <div className="button-container position-relative mt-1 mb-1">
-          <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-            <ButtonPill onClick={this.toggleClaimRecordsOpened} className="mr-2" translate="providerSite.claim" />
+        <div className="all-records-title">
+          <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+            <ButtonPill onClick={this.toggleClaimRecordsOpened} translate="providerSite.claim" />
           </MediaQuery>
-          <ButtonPill onClick={this.openCheckInModal} className="mr-2">
-            {translate('providerSite.beneficiaryCheckIn')}
-          </ButtonPill>
-          <ButtonPill onClick={this.openReferralModal}>
-            {translate('providerSite.referElsewhere')}
-            <div className={`referrals-counter ${this.props.referralCount > 99 ? 'referral-counter-big' : ''}`}>
-              {this.props.referralCount}
-            </div>
-          </ButtonPill>
-          <ReferralModal openTab={this.state.referralModalTab} handleClose={this.closeModal} />
+          <div className="button-container position-relative mt-1 mb-1">
+            <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+              <ButtonPill onClick={this.toggleClaimRecordsOpened} className="mr-2" translate="providerSite.claim" />
+            </MediaQuery>
+            <ButtonPill onClick={this.openCheckInModal} className="mr-2">
+              {translate('providerSite.beneficiaryCheckIn')}
+            </ButtonPill>
+            <ButtonPill onClick={this.openReferralModal}>
+              {translate('providerSite.referElsewhere')}
+              <div className={`referrals-counter ${this.props.referralCount > 99 ? 'referral-counter-big' : ''}`}>
+                {this.props.referralCount}
+              </div>
+            </ButtonPill>
+            <ReferralModal openTab={this.state.referralModalTab} handleClose={this.closeModal} />
+          </div>
         </div>
       ) : (
-        <Translate contentKey={'providerSite.allRecords'} />
+        <div className="all-records-title referring-disabled">
+          <Translate contentKey={'providerSite.allRecords'} />
+          <div className="button-container position-relative">
+            <ButtonPill onClick={this.toggleClaimRecordsOpened} translate="providerSite.claim" />
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 
   gridView = () => {
