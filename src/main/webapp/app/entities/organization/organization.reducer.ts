@@ -155,6 +155,7 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
 
 const apiUrl = SERVICENET_API_URL + '/organizations';
 const optionApiUrl = SERVICENET_API_URL + '/organization-options';
+const providerOptionApiUrl = SERVICENET_PUBLIC_API_URL + '/provider-organization-options';
 
 // Actions
 
@@ -169,6 +170,11 @@ export const getEntities: ICrudGetAllAction<IOrganization> = (page, size, sort) 
 export const getOrganizationOptions: ICrudGetAllAction<IOrganizationOption> = () => ({
   type: ACTION_TYPES.FETCH_ORGANIZATION_OPTIONS,
   payload: axios.get<IOrganizationOption>(optionApiUrl)
+});
+
+export const getProviderOrganizationOptions: ICrudGetAllAction<IOrganizationOption> = () => ({
+  type: ACTION_TYPES.FETCH_ORGANIZATION_OPTIONS,
+  payload: axios.get<IOrganizationOption>(providerOptionApiUrl)
 });
 
 export const getEntity: ICrudGetAction<IOrganization> = id => {
