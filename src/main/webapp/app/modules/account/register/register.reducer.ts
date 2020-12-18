@@ -57,6 +57,10 @@ export const handleRegister = (
   organizationUrl,
   phoneNumber,
   captcha,
+  organizations,
+  contactFirstName,
+  contactLastName,
+  contactEmail,
   langKey = 'en'
 ) => ({
   type: ACTION_TYPES.CREATE_ACCOUNT,
@@ -70,6 +74,10 @@ export const handleRegister = (
     organizationUrl,
     phoneNumber,
     captcha,
+    organizations,
+    contactFirstName,
+    contactLastName,
+    contactEmail,
     langKey
   }),
   meta: {
@@ -89,6 +97,10 @@ export const handleRegisterWithinSilo = (
   organizationUrl,
   phoneNumber,
   captcha,
+  organizations,
+  contactFirstName,
+  contactLastName,
+  contactEmail,
   langKey = 'en'
 ) => ({
   type: ACTION_TYPES.CREATE_ACCOUNT,
@@ -102,6 +114,10 @@ export const handleRegisterWithinSilo = (
     organizationUrl,
     phoneNumber,
     captcha,
+    organizations,
+    contactFirstName,
+    contactLastName,
+    contactEmail,
     langKey
   }),
   meta: {
