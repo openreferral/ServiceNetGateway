@@ -66,6 +66,22 @@
   .referral-counter-big {
     @extend .referrals-counter;
   }
+
+  &.referring-disabled {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .button-container {
+      margin-left: 5px;
+    }
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+      .button-container {
+        width: 100%;
+        margin: 0.25rem 0;
+      }
+    }
+  }
 }
 
 .claim-record-modal {
