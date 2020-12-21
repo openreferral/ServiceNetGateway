@@ -93,15 +93,20 @@
   }
 }
 
-.claim-record-modal-container {
+.modal-content {
   height: 80vh;
-  max-height: 80vh;
+  @media only screen and (max-width: 768px) {
+    height: 95vh;
+  }
+  &.ios {
+    height: 100% !important;
+  }
+}
+
+.claim-record-modal-container {
+  height: 100%;
   overflow: hidden;
   background-color: lighten(#fab28d, 15%);
-  @media only screen and (max-width: 768px) {
-    height: 100%;
-    max-height: 95vh;
-  }
 }
 
 .claim-modal-title {
@@ -111,6 +116,9 @@
 
 .claim-modal-subtitle {
   font-weight: bold;
+  @media only screen and (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 }
 
 .claim-record-modal-body {

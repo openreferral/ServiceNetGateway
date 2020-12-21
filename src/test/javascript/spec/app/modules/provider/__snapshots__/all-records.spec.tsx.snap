@@ -1433,6 +1433,7 @@ exports[`All records renders correctly 1`] = `
             }
             centered={true}
             className="claim-record-modal"
+            contentClassName="modal-content"
             fade={true}
             isOpen={false}
             keyboard={true}
@@ -1446,6 +1447,7 @@ exports[`All records renders correctly 1`] = `
             returnFocusAfterClose={true}
             role="dialog"
             scrollable={false}
+            style={Object {}}
             toggle={[Function]}
             unmountOnClose={true}
             zIndex={1050}
