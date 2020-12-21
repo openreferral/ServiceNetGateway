@@ -49,6 +49,7 @@ const RECORD_HEIGHT = 274;
 const TOP_HEIGHT_MOBILE = 115 + 274 + 21 + 141; // height of: hero-image + user-cards-container + slick-dots + control-line-container
 const TOP_HEIGHT_DESKTOP = 138 + 274 + 21 + 107; // height of: hero-image + user-cards-container + slick-dots + control-line-container (with title)
 const CTRL_LINE_HEIGHT = 121; // Height of control-line-container with top padding
+const IOS_MODAL_MARGIN = 15;
 
 declare global {
   // tslint:disable-next-line:interface-name
@@ -771,6 +772,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     const { filterOpened, isSearchBarFocused, claimRecordsOpened, claimModalActivePage, doneClaiming } = this.state;
     const hasReachedMaxItemsClaimModal =
       availableRecordsToClaim && availableRecordsToClaim.length === parseInt(recordsAvailableToClaimTotal, 10);
+    const modalHeight = document.documentElement ? document.documentElement.clientHeight : window.innerHeight;
     return (
       <main className="all-records flex-column-stretch">
         <div>
@@ -779,6 +781,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             centered
             toggle={this.toggleClaimRecordsOpened}
             className={doneClaiming ? '' : 'claim-record-modal'}
+            style={isIOS ? { height: modalHeight - IOS_MODAL_MARGIN, minHeight: modalHeight - IOS_MODAL_MARGIN } : {}}
+            contentClassName={isIOS ? 'ios modal-content' : 'modal-content'}
           >
             {doneClaiming ? (
               <div className="d-flex flex-column justify-content-between align-items-center">
@@ -801,7 +805,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </div>
             ) : (
               <div className="d-flex flex-column justify-content-between align-items-center claim-record-modal-container p-1">
-                <div className="d-flex flex-column justify-content-between align-items-center w-100 pt-4">
+                <div className="d-flex flex-column justify-content-between align-items-center w-100 pt-4 pt-sm-3 pb-2">
                   <span className="claim-modal-title">
                     <Translate contentKey="providerSite.claimTitle" />
                   </span>
