@@ -14,9 +14,6 @@ export const ACTION_TYPES = {
   SELECT_RECORD: 'records/SELECT_RECORD',
   REFER_RECORD: 'records/REFER_RECORD',
   UNREFER_RECORD: 'records/UNREFER_RECORD',
-  MARK_RECORD_TO_CLAIM: 'records/MARK_RECORD_TO_CLAIM',
-  UNMARK_RECORD_TO_CLAIM: 'records/UNMARK_RECORD_TO_CLAIM',
-  RESET_RECORDS_TO_CLAIM: 'records/RESET_RECORDS_TO_CLAIM',
   CLEAN_REFERRED_RECORDS: 'records/CLEAN_REFERRED_RECORDS',
   CHECK_IN: 'records/CHECK_IN',
   RESET_CHECKED_IN: 'records/RESET_CHECKED_IN',
@@ -43,8 +40,7 @@ const initialState = {
   providerOptions: [] as ReadonlyArray<IOrganizationOption>,
   madeToOptions: [] as ReadonlyArray<IOrganizationOption>,
   recordsAvailableToClaim: [] as any[],
-  recordsAvailableToClaimTotal: 0,
-  recordsToClaim: [] as any[]
+  recordsAvailableToClaimTotal: 0
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -61,7 +57,6 @@ const addPage = (records, page) => {
 // Reducer
 export default (state: ProviderRecordsState = initialState, action): ProviderRecordsState => {
   const referredRecords = new Map(state.referredRecords);
-  const { recordsToClaim } = state;
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_RECORDS):
     case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS):
@@ -189,18 +184,6 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         referredRecords,
         userName: action.meta.userName
       };
-    case ACTION_TYPES.MARK_RECORD_TO_CLAIM:
-      recordsToClaim.push(action.payload);
-      return {
-        ...state,
-        recordsToClaim: [...recordsToClaim]
-      };
-    case ACTION_TYPES.UNMARK_RECORD_TO_CLAIM:
-      _.remove(recordsToClaim, r => r === action.payload);
-      return {
-        ...state,
-        recordsToClaim: [...recordsToClaim]
-      };
     case ACTION_TYPES.CLEAN_REFERRED_RECORDS:
       return {
         ...state,
@@ -211,11 +194,6 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
       return {
         ...state,
         checkedIn: false
-      };
-    case ACTION_TYPES.RESET_RECORDS_TO_CLAIM:
-      return {
-        ...state,
-        recordsToClaim: []
       };
     default:
       return state;
@@ -344,17 +322,3 @@ export const getRecordsAvailableToClaim = (page, itemsPerPage, isInitLoading = f
     }
   };
 };
-
-export const markRecordToClaim = recordId => ({
-  type: ACTION_TYPES.MARK_RECORD_TO_CLAIM,
-  payload: recordId
-});
-
-export const unmarkRecordToClaim = recordId => ({
-  type: ACTION_TYPES.UNMARK_RECORD_TO_CLAIM,
-  payload: recordId
-});
-
-export const resetRecordsToClaim = () => ({
-  type: ACTION_TYPES.RESET_RECORDS_TO_CLAIM
-});

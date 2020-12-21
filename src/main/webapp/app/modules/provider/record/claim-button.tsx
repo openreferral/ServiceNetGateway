@@ -3,7 +3,7 @@ import './claim-button.scss';
 import React from 'react';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { markRecordToClaim, unmarkRecordToClaim } from '../provider-record.reducer';
+import { markRecordToClaim, unmarkRecordToClaim } from 'app/entities/organization/organization.reducer';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import ButtonPill from '../shared/button-pill';
@@ -37,8 +37,8 @@ export class ClaimButton extends React.Component<IClaimButtonProp, {}> {
   }
 }
 
-const mapStateToProps = ({ providerRecord }: IRootState) => ({
-  recordsToClaim: providerRecord.recordsToClaim
+const mapStateToProps = ({ organization }: IRootState) => ({
+  recordsToClaim: organization.recordsToClaim
 });
 
 const mapDispatchToProps = {

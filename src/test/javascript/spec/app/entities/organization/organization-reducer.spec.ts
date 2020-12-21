@@ -39,7 +39,10 @@ describe('Entities reducer tests', () => {
     totalItems: 0,
     updateSuccess: false,
     options: [] as ReadonlyArray<IOrganizationOption>,
-    claimSuccess: false
+    claimSuccess: false,
+    leftToClaim: [],
+    recordsToClaim: [],
+    claimingProgress: '0'
   };
 
   function testInitialState(state) {
