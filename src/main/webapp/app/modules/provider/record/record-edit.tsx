@@ -326,7 +326,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
-  locationDetails = (locations, openLocation, invalidLocations) =>
+  locationCards = (locations, openLocation, invalidLocations) =>
     locations.map((location, i) => (
       <div key={`location-${i}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
         <Card
@@ -353,93 +353,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             </div>
           </CardBody>
         </Card>
-        <div className={openLocation === i ? 'location-details' : 'd-none'}>
-          {location['id'] ? <AvField name={'locations[' + i + '].id'} value={location['id']} className="d-none" /> : ''}
-          <AvGroup>
-            <div className="flex">
-              <div className="required" />
-              <Label>{translate('record.location.address1')}</Label>
-            </div>
-            <AvInput
-              type="textarea"
-              name={'locations[' + i + '].address1'}
-              validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
-              }}
-              onChange={this.onLocationChange(i, 'address1')}
-            />
-          </AvGroup>
-          <AvGroup>
-            <Label>{translate('record.location.address2')}</Label>
-            <AvInput type="textarea" name={'locations[' + i + '].address2'} onChange={this.onLocationChange(i, 'address2')} />
-          </AvGroup>
-          <Row>
-            <Col md={7} className="flex mb-3">
-              <div className="required" />
-              <AvInput
-                type="text"
-                name={'locations[' + i + '].city'}
-                onChange={this.onLocationChange(i, 'city')}
-                placeholder={translate('record.location.city')}
-                validate={{
-                  required: { value: true, errorMessage: translate('entity.validation.required') }
-                }}
-              />
-            </Col>
-            <Col md={2} className="flex mb-3">
-              <div className="required" />
-              <AvField
-                type="select"
-                name={'locations[' + i + '].ca'}
-                onChange={this.onLocationChange(i, 'ca')}
-                placeholder={translate('record.location.ca')}
-                value={location['ca'] || locationModel['ca']}
-                validate={{
-                  required: { value: true, errorMessage: translate('entity.validation.required') }
-                }}
-                style={{ minWidth: '5em' }}
-              >
-                {US_STATES.map(state => (
-                  <option value={state} key={state}>
-                    {state}
-                  </option>
-                ))}
-              </AvField>
-            </Col>
-            <Col md={3} className="flex mb-3">
-              <div className="required" />
-              <AvInput
-                type="text"
-                name={'locations[' + i + '].zipcode'}
-                onChange={this.onLocationChange(i, 'zipcode')}
-                placeholder={translate('record.location.zipcode')}
-                validate={{
-                  required: { value: true, errorMessage: translate('entity.validation.required') }
-                }}
-              />
-            </Col>
-          </Row>
-          <OpeningHours
-            location={location}
-            openingHours={this.state.openingHoursByLocation[i] || [{}]}
-            datesClosed={this.state.datesClosedByLocation[i] || [null]}
-            updateLocationData={this.updateLocationData(i)}
-          />
-          <div className="buttons d-flex justify-content-between flex-column flex-md-row">
-            <ButtonPill className="button-pill-secondary mb-1 mb-md-0" onClick={this.removeLocation(i)}>
-              <FontAwesomeIcon icon="trash" />
-              &nbsp;
-              <Translate contentKey="record.location.remove" />
-            </ButtonPill>
-            <ButtonPill className="button-pill-secondary float-md-right ml-md-auto" onClick={this.openLocation(-1)}>
-              <Translate contentKey="record.navigation.done" />
-            </ButtonPill>
-          </div>
-        </div>
       </div>
     ));
 
-  serviceDetails = (services, openService, invalidServices, taxonomyOptions) =>
+  serviceCards = (services, openService, invalidServices) =>
     services.map((service, i) => (
       <div key={`service-${i}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
         <Card
@@ -465,99 +382,194 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             </div>
           </CardBody>
         </Card>
-        <div className={openService === i ? 'service-details' : 'd-none'}>
-          {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
-          <AvGroup>
-            <div className="flex">
-              <div className="required" />
-              <Label>{translate('record.service.name')}</Label>
-            </div>
-            <AvInput
-              type="text"
-              name={'services[' + i + '].name'}
-              validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
-              }}
-              onChange={this.onServiceChange(i, 'name')}
-            />
-          </AvGroup>
-          <AvGroup>
-            <div className="flex">
-              <div className="required" />
-              <Label>{translate('record.service.type')}</Label>
-            </div>
-            <AvSelect
-              name={'services[' + i + '].taxonomyIds'}
-              validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
-              }}
-              options={taxonomyOptions}
-              onChange={this.onServiceChange(i, 'taxonomyIds')}
-              // @ts-ignore
-              isMulti
-            />
-          </AvGroup>
-          <AvGroup>
-            <div className="flex">
-              <div className="required" />
-              <Label>{translate('record.service.description')}</Label>
-            </div>
-            <AvInput
-              type="textarea"
-              name={'services[' + i + '].description'}
-              validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
-              }}
-              onChange={this.onServiceChange(i, 'description')}
-            />
-          </AvGroup>
-          <AvGroup>
-            <Label>{translate('record.service.applicationProcess')}</Label>
-            <AvInput
-              type="textarea"
-              name={'services[' + i + '].applicationProcess'}
-              onChange={this.onServiceChange(i, 'applicationProcess')}
-            />
-          </AvGroup>
-          <AvGroup>
-            <Label>{translate('record.service.eligibilityCriteria')}</Label>
-            <AvInput
-              type="textarea"
-              name={'services[' + i + '].eligibilityCriteria'}
-              onChange={this.onServiceChange(i, 'eligibilityCriteria')}
-            />
-          </AvGroup>
-          <AvGroup>
-            <AvField name={'services[' + i + '].docs[0].id'} value={service.docs.length ? service.docs[0].id : null} className="d-none" />
-          </AvGroup>
-          <AvGroup>
-            <Label>{translate('record.service.requiredDocuments')}</Label>
-            <AvInput type="textarea" name={'services[' + i + '].docs[0].document'} onChange={this.onServiceDocsChange(i)} />
-          </AvGroup>
-          <AvGroup>
-            <Label>{translate('record.service.locations')}</Label>
-            <AvSelect
-              name={'services[' + i + '].locationIndexes'}
-              value={services.length > i ? services[i]['locationIndexes'] : []}
-              onChange={this.onServiceChange(i, 'locationIndexes', [])}
-              options={this.getLocations()}
-              // @ts-ignore
-              isMulti
-            />
-          </AvGroup>
-          <div className="buttons d-flex justify-content-between flex-column flex-md-row">
-            <ButtonPill className="button-pill-secondary mb-1 mb-md-0" onClick={this.removeService(i)}>
-              <FontAwesomeIcon icon="trash" />
-              &nbsp;
-              <Translate contentKey="record.service.remove" />
-            </ButtonPill>
-            <ButtonPill className="button-pill-secondary float-md-right ml-md-auto" onClick={this.openService(-1)}>
-              <Translate contentKey="record.navigation.done" />
-            </ButtonPill>
-          </div>
-        </div>
       </div>
     ));
+
+  locationDetails = (locations, i) => {
+    const location = locations[i];
+    return (
+      <div className="location-details">
+        {location['id'] ? <AvField name={'locations[' + i + '].id'} value={location['id']} className="d-none" /> : ''}
+        <AvGroup>
+          <div className="flex">
+            <div className="required" />
+            <Label>{translate('record.location.address1')}</Label>
+          </div>
+          <AvInput
+            type="textarea"
+            name={'locations[' + i + '].address1'}
+            validate={{
+              required: { value: true, errorMessage: translate('entity.validation.required') }
+            }}
+            onChange={this.onLocationChange(i, 'address1')}
+          />
+        </AvGroup>
+        <AvGroup>
+          <Label>{translate('record.location.address2')}</Label>
+          <AvInput type="textarea" name={'locations[' + i + '].address2'} onChange={this.onLocationChange(i, 'address2')} />
+        </AvGroup>
+        <Row>
+          <Col md={7} className="flex mb-3">
+            <div className="required" />
+            <AvInput
+              type="text"
+              name={'locations[' + i + '].city'}
+              onChange={this.onLocationChange(i, 'city')}
+              placeholder={translate('record.location.city')}
+              validate={{
+                required: { value: true, errorMessage: translate('entity.validation.required') }
+              }}
+            />
+          </Col>
+          <Col md={2} className="flex mb-3">
+            <div className="required" />
+            <AvField
+              type="select"
+              name={'locations[' + i + '].ca'}
+              onChange={this.onLocationChange(i, 'ca')}
+              placeholder={translate('record.location.ca')}
+              value={location['ca'] || locationModel['ca']}
+              validate={{
+                required: { value: true, errorMessage: translate('entity.validation.required') }
+              }}
+              style={{ minWidth: '5em' }}
+            >
+              {US_STATES.map(state => (
+                <option value={state} key={state}>
+                  {state}
+                </option>
+              ))}
+            </AvField>
+          </Col>
+          <Col md={3} className="flex mb-3">
+            <div className="required" />
+            <AvInput
+              type="text"
+              name={'locations[' + i + '].zipcode'}
+              onChange={this.onLocationChange(i, 'zipcode')}
+              placeholder={translate('record.location.zipcode')}
+              validate={{
+                required: { value: true, errorMessage: translate('entity.validation.required') }
+              }}
+            />
+          </Col>
+        </Row>
+        <OpeningHours
+          location={location}
+          openingHours={this.state.openingHoursByLocation[i] || [{}]}
+          datesClosed={this.state.datesClosedByLocation[i] || [null]}
+          updateLocationData={this.updateLocationData(i)}
+        />
+        <div className="buttons d-flex justify-content-between flex-column flex-md-row">
+          <ButtonPill className="button-pill-secondary mb-1 mb-md-0" onClick={this.removeLocation(i)}>
+            <FontAwesomeIcon icon="trash" />
+            &nbsp;
+            <Translate contentKey="record.location.remove" />
+          </ButtonPill>
+          <ButtonPill className="button-pill-secondary float-md-right ml-md-auto" onClick={this.openLocation(-1)}>
+            <Translate contentKey="record.navigation.done" />
+          </ButtonPill>
+        </div>
+      </div>
+    );
+  };
+
+  serviceDetails = (services, i, taxonomyOptions) => {
+    const service = services[i];
+    return (
+      <div className="service-details">
+        {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
+        <AvGroup>
+          <div className="flex">
+            <div className="required" />
+            <Label>{translate('record.service.name')}</Label>
+          </div>
+          <AvInput
+            type="text"
+            name={'services[' + i + '].name'}
+            validate={{
+              required: { value: true, errorMessage: translate('entity.validation.required') }
+            }}
+            onChange={this.onServiceChange(i, 'name')}
+          />
+        </AvGroup>
+        <AvGroup>
+          <div className="flex">
+            <div className="required" />
+            <Label>{translate('record.service.type')}</Label>
+          </div>
+          <AvSelect
+            name={'services[' + i + '].taxonomyIds'}
+            validate={{
+              required: { value: true, errorMessage: translate('entity.validation.required') }
+            }}
+            options={taxonomyOptions}
+            onChange={this.onServiceChange(i, 'taxonomyIds')}
+            // @ts-ignore
+            isMulti
+          />
+        </AvGroup>
+        <AvGroup>
+          <div className="flex">
+            <div className="required" />
+            <Label>{translate('record.service.description')}</Label>
+          </div>
+          <AvInput
+            type="textarea"
+            name={'services[' + i + '].description'}
+            validate={{
+              required: { value: true, errorMessage: translate('entity.validation.required') }
+            }}
+            onChange={this.onServiceChange(i, 'description')}
+          />
+        </AvGroup>
+        <AvGroup>
+          <Label>{translate('record.service.applicationProcess')}</Label>
+          <AvInput
+            type="textarea"
+            name={'services[' + i + '].applicationProcess'}
+            onChange={this.onServiceChange(i, 'applicationProcess')}
+          />
+        </AvGroup>
+        <AvGroup>
+          <Label>{translate('record.service.eligibilityCriteria')}</Label>
+          <AvInput
+            type="textarea"
+            name={'services[' + i + '].eligibilityCriteria'}
+            onChange={this.onServiceChange(i, 'eligibilityCriteria')}
+          />
+        </AvGroup>
+        <AvGroup>
+          <AvField name={'services[' + i + '].docs[0].id'} value={service.docs.length ? service.docs[0].id : null} className="d-none" />
+        </AvGroup>
+        <AvGroup>
+          <Label>{translate('record.service.requiredDocuments')}</Label>
+          <AvInput type="textarea" name={'services[' + i + '].docs[0].document'} onChange={this.onServiceDocsChange(i)} />
+        </AvGroup>
+        <AvGroup>
+          <Label>{translate('record.service.locations')}</Label>
+          <AvSelect
+            name={'services[' + i + '].locationIndexes'}
+            value={services.length > i ? services[i]['locationIndexes'] : []}
+            onChange={this.onServiceChange(i, 'locationIndexes', [])}
+            options={this.getLocations()}
+            // @ts-ignore
+            isMulti
+          />
+        </AvGroup>
+        <div className="buttons d-flex justify-content-between flex-column flex-md-row">
+          <ButtonPill className="button-pill-secondary mb-1 mb-md-0" onClick={this.removeService(i)}>
+            <FontAwesomeIcon icon="trash" />
+            &nbsp;
+            <Translate contentKey="record.service.remove" />
+          </ButtonPill>
+          <ButtonPill className="button-pill-secondary float-md-right ml-md-auto" onClick={this.openService(-1)}>
+            <Translate contentKey="record.navigation.done" />
+          </ButtonPill>
+        </div>
+      </div>
+    );
+  };
 
   taxonomyPills = service => {
     const taxonomyOptions = this.props.taxonomyOptions.filter(
@@ -725,7 +737,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   </div>
                 </div>
                 <CardBody className="details">
-                  {locations && this.locationDetails(locations, openLocation, invalidLocations)}
+                  {locations && this.locationCards(locations, openLocation, invalidLocations)}
+                  {locations && openLocation >= 0 && this.locationDetails(locations, openLocation)}
                   <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
                     <ButtonPill className="button-pill-secondary col-12 col-md-auto" onClick={this.addAnotherLocation}>
                       <FontAwesomeIcon icon="plus" />
@@ -772,7 +785,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   </div>
                 </div>
                 <CardBody className="details">
-                  {services && this.serviceDetails(services, openService, invalidServices, taxonomyOptions)}
+                  {services && this.serviceCards(services, openService, invalidServices)}
+                  {services && openService >= 0 && this.serviceDetails(services, openService, taxonomyOptions)}
                   <div className={openService === -1 ? 'buttons list-buttons' : 'd-none'}>
                     <ButtonPill className="button-pill-secondary col-12 col-md-auto" onClick={this.addAnotherService}>
                       <FontAwesomeIcon icon="plus" />
