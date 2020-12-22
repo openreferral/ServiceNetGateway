@@ -1424,7 +1424,7 @@ exports[`All records renders correctly 1`] = `
         <div>
           <Modal
             autoFocus={true}
-            backdrop={true}
+            backdrop="static"
             backdropTransition={
               Object {
                 "mountOnEnter": true,
@@ -1432,11 +1432,11 @@ exports[`All records renders correctly 1`] = `
               }
             }
             centered={true}
-            className="claim-record-modal"
+            className="claiming claim-record-modal"
             contentClassName="modal-content"
             fade={true}
             isOpen={false}
-            keyboard={true}
+            keyboard={false}
             modalTransition={
               Object {
                 "timeout": 300,
