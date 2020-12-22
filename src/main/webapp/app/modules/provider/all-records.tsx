@@ -787,7 +787,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             isOpen={claimRecordsOpened}
             centered
             toggle={this.toggleClaimRecordsOpened}
-            className="claim-record-modal"
+            className={doneClaiming ? 'done' : 'claiming' + ' claim-record-modal'}
             backdrop="static"
             keyboard={false}
             style={isIOS ? { height: modalHeight - IOS_MODAL_MARGIN, minHeight: modalHeight - IOS_MODAL_MARGIN } : {}}

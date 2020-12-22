@@ -91,15 +91,18 @@
     width: auto;
     max-width: none;
   }
-}
 
-.modal-content {
-  height: 80vh;
-  @media only screen and (max-width: 768px) {
-    height: 95vh;
-  }
-  &.ios {
-    height: 100% !important;
+  &.claiming {
+    .modal-content {
+      height: 80vh;
+      @media only screen and (max-width: 768px) {
+        height: 95vh;
+      }
+
+      &.ios {
+        height: 100% !important;
+      }
+    }
   }
 }
 
