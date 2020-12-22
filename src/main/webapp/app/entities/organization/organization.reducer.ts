@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import _ from 'lodash';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -21,7 +22,10 @@ export const ACTION_TYPES = {
   SET_BLOB: 'organization/SET_BLOB',
   RESET: 'organization/RESET',
   CLAIM_RECORDS: 'organization/CLAIM_RECORDS',
-  UNCLAIM_RECORDS: 'organization/UNCLAIM_RECORDS'
+  UNCLAIM_RECORDS: 'organization/UNCLAIM_RECORDS',
+  MARK_RECORD_TO_CLAIM: 'records/MARK_RECORD_TO_CLAIM',
+  UNMARK_RECORD_TO_CLAIM: 'records/UNMARK_RECORD_TO_CLAIM',
+  RESET_RECORDS_TO_CLAIM: 'records/RESET_RECORDS_TO_CLAIM'
 };
 
 const initialState = {
@@ -34,13 +38,17 @@ const initialState = {
   totalItems: 0,
   updateSuccess: false,
   options: [] as ReadonlyArray<IOrganizationOption>,
-  claimSuccess: false
+  claimSuccess: false,
+  leftToClaim: [],
+  recordsToClaim: [],
+  claimingProgress: '0'
 };
 
 export type OrganizationState = Readonly<typeof initialState>;
 // Reducer
 
 export default (state: OrganizationState = initialState, action): OrganizationState => {
+  const { recordsToClaim } = state;
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION):
@@ -55,7 +63,6 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case REQUEST(ACTION_TYPES.UPDATE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.DELETE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
-    case REQUEST(ACTION_TYPES.CLAIM_RECORDS):
     case REQUEST(ACTION_TYPES.UNCLAIM_RECORDS):
       return {
         ...state,
@@ -64,6 +71,15 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         updating: true,
         claimSuccess: false
       };
+    case REQUEST(ACTION_TYPES.CLAIM_RECORDS):
+      return {
+        ...state,
+        errorMessage: null,
+        updateSuccess: false,
+        updating: true,
+        claimSuccess: false,
+        leftToClaim: action.meta.leftToClaim
+      };
     case FAILURE(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
     case FAILURE(ACTION_TYPES.FETCH_ORGANIZATION):
     case FAILURE(ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION):
@@ -71,7 +87,6 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case FAILURE(ACTION_TYPES.UPDATE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.DELETE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
-    case FAILURE(ACTION_TYPES.CLAIM_RECORDS):
     case FAILURE(ACTION_TYPES.UNCLAIM_RECORDS):
       return {
         ...state,
@@ -80,6 +95,18 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         updateSuccess: false,
         errorMessage: action.payload,
         claimSuccess: false
+      };
+    case FAILURE(ACTION_TYPES.CLAIM_RECORDS):
+      return {
+        ...state,
+        loading: false,
+        updating: false,
+        errorMessage: action.payload,
+        claimSuccess: false,
+        claimingProgress:
+          recordsToClaim.length > 0
+            ? (((recordsToClaim.length - state.leftToClaim.length) / recordsToClaim.length) * 100).toFixed(0)
+            : '100'
       };
     case SUCCESS(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
       return {
@@ -127,12 +154,20 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         updateSuccess: true,
         entity: {}
       };
-    case SUCCESS(ACTION_TYPES.CLAIM_RECORDS):
     case SUCCESS(ACTION_TYPES.UNCLAIM_RECORDS):
       return {
         ...state,
+        updating: false
+      };
+    case SUCCESS(ACTION_TYPES.CLAIM_RECORDS):
+      return {
+        ...state,
         updating: false,
-        claimSuccess: true
+        claimSuccess: true,
+        claimingProgress:
+          recordsToClaim.length > 0
+            ? (((recordsToClaim.length - state.leftToClaim.length) / recordsToClaim.length) * 100).toFixed(0)
+            : '100'
       };
     case ACTION_TYPES.SET_BLOB:
       const { name, data, contentType } = action.payload;
@@ -144,9 +179,27 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
           [name + 'ContentType']: contentType
         }
       };
+    case ACTION_TYPES.MARK_RECORD_TO_CLAIM:
+      recordsToClaim.push(action.payload);
+      return {
+        ...state,
+        recordsToClaim: [...recordsToClaim]
+      };
+    case ACTION_TYPES.UNMARK_RECORD_TO_CLAIM:
+      _.remove(recordsToClaim, r => r === action.payload);
+      return {
+        ...state,
+        recordsToClaim: [...recordsToClaim]
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
+      };
+    case ACTION_TYPES.RESET_RECORDS_TO_CLAIM:
+      return {
+        ...state,
+        recordsToClaim: [],
+        claimingProgress: '0'
       };
     default:
       return state;
@@ -257,13 +310,18 @@ export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
 
-export const claimEntities = listOfIds => async dispatch => {
+export const claimEntities = leftToClaim => async dispatch => {
   const requestUrl = `${SERVICENET_API_URL}/claim-records`;
   const result = await dispatch({
     type: ACTION_TYPES.CLAIM_RECORDS,
-    payload: axios.post(requestUrl, listOfIds)
+    payload: axios.post(requestUrl, leftToClaim.length > 0 ? [leftToClaim.pop()] : []),
+    meta: {
+      leftToClaim
+    }
   });
-  dispatch(getEntities());
+  if (leftToClaim.length > 0) {
+    dispatch(claimEntities(leftToClaim));
+  }
   return result;
 };
 
@@ -276,3 +334,17 @@ export const unclaimEntity = recordId => async dispatch => {
   dispatch(getEntities());
   return result;
 };
+
+export const markRecordToClaim = recordId => ({
+  type: ACTION_TYPES.MARK_RECORD_TO_CLAIM,
+  payload: recordId
+});
+
+export const unmarkRecordToClaim = recordId => ({
+  type: ACTION_TYPES.UNMARK_RECORD_TO_CLAIM,
+  payload: recordId
+});
+
+export const resetRecordsToClaim = () => ({
+  type: ACTION_TYPES.RESET_RECORDS_TO_CLAIM
+});

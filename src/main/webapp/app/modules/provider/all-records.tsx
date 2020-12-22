@@ -4,10 +4,9 @@ import {
   getProviderRecordsForMap,
   selectRecord,
   getAllProviderRecordsPublic,
-  getRecordsAvailableToClaim,
-  resetRecordsToClaim
+  getRecordsAvailableToClaim
 } from './provider-record.reducer';
-import { claimEntities } from 'app/entities/organization/organization.reducer';
+import { claimEntities, resetRecordsToClaim } from 'app/entities/organization/organization.reducer';
 import { connect } from 'react-redux';
 import { Col, Row, Progress, Modal, Button, Spinner } from 'reactstrap';
 import _ from 'lodash';
@@ -271,7 +270,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   claimRecords = () => {
-    this.setState({ doneClaiming: true, claimModalActivePage: 0 }, () => this.props.claimEntities(this.props.recordsToClaim));
+    const { recordsToClaim } = this.props;
+    this.setState(
+      {
+        doneClaiming: true,
+        claimModalActivePage: 0
+      },
+      () => this.props.claimEntities([...recordsToClaim])
+    );
   };
 
   closeClaiminging = () => {
@@ -767,7 +773,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       availableRecordsToClaim,
       loading,
       recordsAvailableToClaimTotal,
-      recordsToClaim
+      recordsToClaim,
+      claimingProgress
     } = this.props;
     const { filterOpened, isSearchBarFocused, claimRecordsOpened, claimModalActivePage, doneClaiming } = this.state;
     const hasReachedMaxItemsClaimModal =
@@ -780,28 +787,43 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             isOpen={claimRecordsOpened}
             centered
             toggle={this.toggleClaimRecordsOpened}
-            className={doneClaiming ? '' : 'claim-record-modal'}
+            className="claim-record-modal"
+            backdrop="static"
+            keyboard={false}
             style={isIOS ? { height: modalHeight - IOS_MODAL_MARGIN, minHeight: modalHeight - IOS_MODAL_MARGIN } : {}}
             contentClassName={isIOS ? 'ios modal-content' : 'modal-content'}
           >
             {doneClaiming ? (
-              <div className="d-flex flex-column justify-content-between align-items-center">
-                <span className="pt-4 claim-modal-title">
-                  <Translate contentKey="providerSite.succesfullClaim" interpolate={{ count: recordsToClaim.length || 0 }} />
-                </span>
-                <br />
-                <span className="claim-modal-subtitle">
-                  <Translate contentKey="providerSite.claimMore" />
-                </span>
-                <div className="d-flex w-100 justify-content-center py-4">
-                  <ButtonPill onClick={() => this.claimMore()}>
-                    <Translate contentKey="recordCard.yes" />
-                  </ButtonPill>
-                  &nbsp;
-                  <ButtonPill onClick={() => this.closeClaiminging()}>
-                    <Translate contentKey="recordCard.no" />
-                  </ButtonPill>
-                </div>
+              <div className="d-flex flex-column justify-content-between align-items-center p-2 claim-modal-title">
+                {claimingProgress !== '100' &&
+                  recordsToClaim.length !== 0 && (
+                    <>
+                      <span className="m-3">
+                        <Translate contentKey="providerSite.claimingInfo" />
+                      </span>
+                      <Progress value={claimingProgress} max="100" min="0" style={{ width: '75%' }} className="m-3" />
+                    </>
+                  )}
+                {(claimingProgress === '100' || recordsToClaim.length === 0) && (
+                  <div className="d-flex flex-column justify-content-between align-items-center">
+                    <span className="pt-4 claim-modal-title">
+                      <Translate contentKey="providerSite.succesfullClaim" interpolate={{ count: recordsToClaim.length || 0 }} />
+                    </span>
+                    <br />
+                    <span className="claim-modal-subtitle">
+                      <Translate contentKey="providerSite.claimMore" />
+                    </span>
+                    <div className="d-flex w-100 justify-content-center py-4">
+                      <ButtonPill onClick={() => this.claimMore()}>
+                        <Translate contentKey="recordCard.yes" />
+                      </ButtonPill>
+                      &nbsp;
+                      <ButtonPill onClick={() => this.closeClaiminging()}>
+                        <Translate contentKey="recordCard.no" />
+                      </ButtonPill>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="d-flex flex-column justify-content-between align-items-center claim-record-modal-container p-1">
@@ -902,7 +924,9 @@ const mapStateToProps = state => ({
   isReferralEnabled: state.authentication.account.siloIsReferralEnabled,
   availableRecordsToClaim: state.providerRecord.recordsAvailableToClaim,
   recordsAvailableToClaimTotal: state.providerRecord.recordsAvailableToClaimTotal,
-  recordsToClaim: state.providerRecord.recordsToClaim,
+  recordsToClaim: state.organization.recordsToClaim,
+  leftToClaim: state.organization.leftToClaim,
+  claimingProgress: state.organization.claimingProgress,
   isAuthenticated: state.authentication.isAuthenticated
 });
 
