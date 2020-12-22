@@ -179,11 +179,13 @@ Array [
                   <span />
                 </b>
               </h6>
-              <span
+              <a
                 className="text-break"
+                href="fakeUrl"
+                target="_blank"
               >
                 fakeUrl
-              </span>
+              </a>
             </section>
             <section>
               <h6>

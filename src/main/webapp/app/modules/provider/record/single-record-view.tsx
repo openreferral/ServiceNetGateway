@@ -347,7 +347,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <Translate contentKey="record.singleRecordView.orgWebsite" />
                     </b>
                   </h6>
-                  <span className="text-break">{organization.url}</span>
+                  <a className="text-break" target="_blank" href={organization.url}>
+                    {organization.url}
+                  </a>
                 </section>
                 <section>
                   <h6>
