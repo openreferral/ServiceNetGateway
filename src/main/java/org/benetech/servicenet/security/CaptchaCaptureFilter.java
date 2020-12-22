@@ -28,13 +28,12 @@ public class CaptchaCaptureFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain chain) throws IOException, ServletException {
-        CachedHttpServletRequest cachedRequest = new CachedHttpServletRequest(request);
-
         // Assign values only when user has submitted a Captcha value.
         // Without this condition the values will be reset due to redirection
         // and CaptchaVerifierFilter will enter an infinite loop
         if (Arrays.stream(urls).anyMatch(
-            url -> new AntPathRequestMatcher(url, "POST").matches(cachedRequest))) {
+            url -> new AntPathRequestMatcher(url, "POST").matches(request))) {
+            CachedHttpServletRequest cachedRequest = new CachedHttpServletRequest(request);
             logger.debug("Captcha capture filter");
             if (cachedRequest.getRemoteAddr() != null) {
                 remoteAddr = cachedRequest.getRemoteAddr();
@@ -56,10 +55,11 @@ public class CaptchaCaptureFilter extends OncePerRequestFilter {
             }
 
             logger.debug("captcha: " + captcha);
+            // Proceed with the remaining filters
+            chain.doFilter(cachedRequest, response);
+        } else {
+            chain.doFilter(request, response);
         }
-
-        // Proceed with the remaining filters
-        chain.doFilter(cachedRequest, response);
     }
 
     public String getCaptcha() {
