@@ -131,108 +131,86 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
     );
 
     return (
-      <div>
-        <div className="filter-header">
+      <>
+        <div className="flex-1 mr-2">
           <b>
-            <Translate contentKey="providerSite.filterRecords" />
+            <Translate contentKey="providerSite.serviceType" />
           </b>
-          <div className="mx-2" onClick={() => this.props.toggleFilter()}>
-            <FontAwesomeIcon icon="times" />
-          </div>
+          <Label className="sr-only" for="serviceType">
+            <Translate contentKey="providerSite.serviceType" />
+          </Label>
+          <Select
+            inputId="serviceType"
+            components={{ MultiValueContainer }}
+            isMulti
+            options={
+              taxonomyOptions &&
+              _.uniqBy(_.get(taxonomyOptions, 'ServiceProvider', []).concat(_.get(taxonomyOptions, 'silo', [])), option => option['value'])
+            }
+            value={serviceTypes}
+            onChange={this.handleServiceTypeChanged}
+            styles={{
+              ...this.selectStyle(),
+              control: base => ({
+                ...base
+              }),
+              multiValue: base => ({
+                ...base
+              })
+            }}
+          />
         </div>
-        <div className="filter-body">
+        <div className="flex-1 mr-2">
           <div>
-            <div>
-              <div className="my-2">
-                <b>
-                  <Translate contentKey="providerSite.serviceType" />
-                </b>
-              </div>
-              <Label className="sr-only" for="serviceType">
-                <Translate contentKey="providerSite.serviceType" />
-              </Label>
-              <Select
-                inputId="serviceType"
-                components={{ MultiValueContainer }}
-                isMulti
-                options={
-                  taxonomyOptions &&
-                  _.uniqBy(
-                    _.get(taxonomyOptions, 'ServiceProvider', []).concat(_.get(taxonomyOptions, 'silo', [])),
-                    option => option['value']
-                  )
-                }
-                value={serviceTypes}
-                onChange={this.handleServiceTypeChanged}
-                styles={{
-                  ...this.selectStyle(),
-                  control: base => ({
-                    ...base,
-                    minHeight: '6em'
-                  }),
-                  multiValue: base => ({
-                    ...base
-                  })
-                }}
-              />
-            </div>
-            <div className="my-2">
-              <div className="my-2">
-                <b>
-                  <Translate contentKey="providerSite.location" />
-                </b>
-              </div>
-              <Row>
-                <Col>
-                  <Label className="sr-only" for="filter-city">
-                    <Translate contentKey="providerSite.city" />
-                  </Label>
-                  <Select
-                    onChange={this.handleCityChanged}
-                    options={cityList}
-                    placeholder={translate('providerSite.city')}
-                    value={_.find(cityList, c => c.value === city)}
-                    inputId="filter-city"
-                    styles={this.selectStyle()}
-                  />
-                </Col>
-                <Col>
-                  <Label className="sr-only" for="filter-county">
-                    <Translate contentKey="providerSite.county" />
-                  </Label>
-                  <Select
-                    inputId="filter-county"
-                    onChange={this.handleRegionChanged}
-                    options={regionList}
-                    placeholder={translate('providerSite.county')}
-                    value={_.find(regionList, r => r.value === region)}
-                    styles={this.selectStyle()}
-                  />
-                </Col>
-              </Row>
-            </div>
-            <Row>
-              <Col xs="6">
-                <Label className="sr-only" for="filter-zipCode">
-                  <Translate contentKey="providerSite.zipCode" />
-                </Label>
-                <Select
-                  inputId="filter-zipCode"
-                  onChange={this.handleZipChanged}
-                  options={postalCodeList}
-                  placeholder={translate('providerSite.zipCode')}
-                  value={_.find(postalCodeList, c => c.value === zip)}
-                  styles={this.selectStyle()}
-                />
-              </Col>
-            </Row>
+            <b>
+              <Translate contentKey="providerSite.location" />
+            </b>
+          </div>
+          <div className="d-flex flex-row flex-fill">
+            <Label className="sr-only" for="filter-city">
+              <Translate contentKey="providerSite.city" />
+            </Label>
+            <Select
+              onChange={this.handleCityChanged}
+              options={cityList}
+              placeholder={translate('providerSite.city')}
+              value={_.find(cityList, c => c.value === city)}
+              inputId="filter-city"
+              className="flex-fill mr-1"
+              styles={this.selectStyle()}
+            />
+            <Label className="sr-only" for="filter-county">
+              <Translate contentKey="providerSite.county" />
+            </Label>
+            <Select
+              inputId="filter-county"
+              onChange={this.handleRegionChanged}
+              options={regionList}
+              placeholder={translate('providerSite.county')}
+              value={_.find(regionList, r => r.value === region)}
+              className="flex-fill mr-1"
+              styles={this.selectStyle()}
+            />
+            <Label className="sr-only" for="filter-zipCode">
+              <Translate contentKey="providerSite.zipCode" />
+            </Label>
+            <Select
+              inputId="filter-zipCode"
+              onChange={this.handleZipChanged}
+              options={postalCodeList}
+              placeholder={translate('providerSite.zipCode')}
+              value={_.find(postalCodeList, c => c.value === zip)}
+              className="flex-fill"
+              styles={this.selectStyle()}
+            />
           </div>
         </div>
-        <div className="filter-footer">
-          <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" className="mr-1" />
-          <ButtonPill className="button-pill-orange" onClick={this.applyFilter} translate="providerSite.apply" />
+        <div className="mt-1 d-inline-flex align-items-end flex-wrap">
+          {this.props.children}
+          <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" className="mx-1 d-inline" />
+          <ButtonPill className="button-pill-orange d-inline" onClick={this.applyFilter} translate="providerSite.apply" />
         </div>
-      </div>
+      </>
     );
   }
 }
