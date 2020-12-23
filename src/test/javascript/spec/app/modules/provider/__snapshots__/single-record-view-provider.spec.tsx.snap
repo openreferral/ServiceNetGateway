@@ -90,25 +90,6 @@ Array [
         className="section card"
       >
         <div
-          className="card-title flex-wrap card-title"
-        >
-          <span />
-           
-        </div>
-        <div
-          className="p-2 border-top-0 card-body"
-        >
-          <div
-            className="w-100 text-center p-2"
-          >
-            <span />
-          </div>
-        </div>
-      </div>
-      <div
-        className="section card"
-      >
-        <div
           className="clickable card-title"
           onClick={[Function]}
         >
@@ -158,18 +139,6 @@ Array [
               <span
                 className="break"
               >
-                fakeName
-              </span>
-            </section>
-            <section>
-              <h6>
-                <b>
-                  <span />
-                </b>
-              </h6>
-              <span
-                className="break"
-              >
                 fakeDesc
               </span>
             </section>
@@ -179,11 +148,13 @@ Array [
                   <span />
                 </b>
               </h6>
-              <span
+              <a
                 className="text-break"
+                href="fakeUrl"
+                target="_blank"
               >
                 fakeUrl
-              </span>
+              </a>
             </section>
             <section>
               <h6>
@@ -194,120 +165,6 @@ Array [
               <span>
                 fakeEmail
               </span>
-            </section>
-          </div>
-        </div>
-      </div>
-      <div
-        className="section card"
-      >
-        <div
-          className="clickable card-title"
-          onClick={[Function]}
-        >
-          <div
-            className="d-flex justify-content-center align-items-center details-section-title"
-          >
-            <img
-              alt="Location"
-              className="lazyload"
-              data-src={null}
-              height={25}
-            />
-             
-            <span />
-             
-            <span
-              className="badge badge-light badge-pill"
-            >
-              0
-            </span>
-          </div>
-          <svg
-            aria-hidden="true"
-            className="svg-inline--fa fa-angle-up fa-w-10 fa-lg "
-            data-icon="angle-up"
-            data-prefix="fas"
-            focusable="false"
-            role="img"
-            style={Object {}}
-            viewBox="0 0 320 512"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
-              fill="currentColor"
-              style={Object {}}
-            />
-          </svg>
-        </div>
-        <div
-          className="collapse show"
-          style={Object {}}
-        >
-          <div
-            className="details p-0 card-body"
-          >
-            <section>
-              <span />
-            </section>
-          </div>
-        </div>
-      </div>
-      <div
-        className="section services mb-5 card"
-      >
-        <div
-          className="clickable card-title"
-          onClick={[Function]}
-        >
-          <div
-            className="d-flex justify-content-center align-items-center details-section-title"
-          >
-            <img
-              alt="Service"
-              className="lazyload"
-              data-src={null}
-              height={25}
-            />
-             
-            <span />
-             
-            <span
-              className="badge badge-light badge-pill"
-            >
-              0
-            </span>
-          </div>
-          <svg
-            aria-hidden="true"
-            className="svg-inline--fa fa-angle-up fa-w-10 fa-lg "
-            data-icon="angle-up"
-            data-prefix="fas"
-            focusable="false"
-            role="img"
-            style={Object {}}
-            viewBox="0 0 320 512"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"
-              fill="currentColor"
-              style={Object {}}
-            />
-          </svg>
-        </div>
-        <div
-          className="collapse show"
-          style={Object {}}
-        >
-          <div
-            className="details p-0 card-body"
-          >
-            <section
-              className=""
-            >
-              <span />
             </section>
           </div>
         </div>
