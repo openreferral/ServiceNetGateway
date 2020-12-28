@@ -141,11 +141,7 @@ div.card.record-card {
     }
 
     .locations-width {
-      width: 80%;
-
-      @media only screen and (max-width: 768px) {
-        width: 70%;
-      }
+      flex-grow: 1;
     }
   }
 
