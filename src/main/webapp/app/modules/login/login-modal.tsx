@@ -89,7 +89,6 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
                     placeholder={translate('global.form.username.placeholder')}
                     required
                     errorMessage="Username cannot be empty!"
-                    autoFocus
                   />
                   <AvField
                     name="password"
