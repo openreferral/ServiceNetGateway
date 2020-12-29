@@ -40,7 +40,7 @@
     "directions": "Directions",
     "beneficiaryCheckIn": "Beneficiary Check In",
     "referElsewhere": "Refer Elsewhere",
-    "claim": "Claim records",
+    "claim": "Claim Record(s)",
     "claimMore": "Would you like to claim more records?",
     "succesfullClaim": "You successfully claimed {{count}} records.",
     "claimTitle": "Welcome to Service Net",
