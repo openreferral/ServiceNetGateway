@@ -202,8 +202,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         leaving: true
       },
       () => {
-        this.props.unclaimEntity(this.props.match.params.id);
-        this.props.history.goBack();
+        this.props.unclaimEntity(this.props.match.params.id, () => {
+          this.props.history.goBack();
+        });
       }
     );
   };

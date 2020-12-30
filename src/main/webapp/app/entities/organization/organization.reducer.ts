@@ -267,12 +267,15 @@ export const claimEntities = listOfIds => async dispatch => {
   return result;
 };
 
-export const unclaimEntity = recordId => async dispatch => {
+export const unclaimEntity = (recordId, callback) => async dispatch => {
   const requestUrl = `${SERVICENET_API_URL}/unclaim-record?recordId=${recordId}`;
   const result = await dispatch({
     type: ACTION_TYPES.UNCLAIM_RECORDS,
     payload: axios.post(requestUrl)
   });
   dispatch(getEntities());
+  if (callback) {
+    callback();
+  }
   return result;
 };
