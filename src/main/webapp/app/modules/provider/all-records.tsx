@@ -34,6 +34,7 @@ import SearchBar from 'app/modules/provider/shared/search-bar';
 import InfiniteScroll from 'react-infinite-scroller';
 import { isIOS } from 'react-device-detect';
 import ReferralModal, { BENEFICIARY_CHECK_IN_TAB, REFERRAL_TAB } from 'app/modules/provider/referral/referral-modal';
+import ClaimRecordsModal from 'app/modules/provider/claim-records-modal';
 
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 const GRID_VIEW = 'GRID';
@@ -70,11 +71,9 @@ export interface IAllRecordsProps extends StateProps, DispatchProps {
 export interface IAllRecordsState extends IPaginationBaseState {
   itemsPerPage: number;
   activePage: number;
-  claimModalActivePage: number;
   sortingOpened: boolean;
   filterOpened: boolean;
   claimRecordsOpened: boolean;
-  doneClaiming: boolean;
   recordViewType: 'GRID' | 'LIST';
   isRecordHighlighted: boolean;
   selectedLat: number;
@@ -104,11 +103,9 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       appContainerHeight: 0,
       itemsPerPage: 6,
       activePage: 0,
-      claimModalActivePage: 0,
       sortingOpened: false,
       filterOpened: false,
       claimRecordsOpened: false,
-      doneClaiming: false,
       isRecordHighlighted: false,
       selectedLat: null,
       selectedLng: null,
@@ -232,14 +229,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     }
   };
 
-  handleLoadMoreClaimModal = hasReachedMaxItems => {
-    if (!hasReachedMaxItems) {
-      this.setState({ claimModalActivePage: this.state.claimModalActivePage + 1 }, () =>
-        this.props.getRecordsAvailableToClaim(this.state.claimModalActivePage, 9, false)
-      );
-    }
-  };
-
   toggleSorting = () => {
     this.setState({ sortingOpened: !this.state.sortingOpened });
   };
@@ -262,33 +251,16 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   toggleClaimRecordsOpened = () => {
-    this.setState({ claimRecordsOpened: !this.state.claimRecordsOpened, claimModalActivePage: 0, doneClaiming: false }, () => {
+    this.setState({ claimRecordsOpened: !this.state.claimRecordsOpened }, () => {
       if (this.state.claimRecordsOpened) {
         this.props.getRecordsAvailableToClaim(0, 9, true);
       }
     });
   };
 
-  claimRecords = () => {
-    const { recordsToClaim } = this.props;
-    this.setState(
-      {
-        doneClaiming: true,
-        claimModalActivePage: 0
-      },
-      () => this.props.claimEntities([...recordsToClaim])
-    );
-  };
 
   closeClaiminging = () => {
     this.setState({ claimRecordsOpened: false }, () => this.props.resetRecordsToClaim());
-  };
-
-  claimMore = () => {
-    this.setState({ doneClaiming: false }, () => {
-      this.props.resetRecordsToClaim();
-      this.props.getRecordsAvailableToClaim(0, 9, true);
-    });
   };
 
   getRecordsForMap = () => {
@@ -379,23 +351,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             record={record}
             link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${record.organization.id}`}
             referring={this.props.referring}
-          />
-        </div>
-      </div>
-    ));
-  };
-
-  mapRecordsForClaimModal = ({ records }) => {
-    const { urlBase } = this.props;
-    return _.map(records, record => (
-      <div key={record.organization.id} className="col-12 col-lg-4 col-md-6">
-        <div className="mb-4">
-          <RecordCard
-            fullWidth={false}
-            record={record}
-            link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${record.organization.id}`}
-            referring={false}
-            claiming
           />
         </div>
       </div>
@@ -724,91 +679,30 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       recordsToClaim,
       claimingProgress
     } = this.props;
-    const { filterOpened, isSearchBarFocused, claimRecordsOpened, claimModalActivePage, doneClaiming } = this.state;
+    const { filterOpened, isSearchBarFocused, claimRecordsOpened } = this.state;
     const hasReachedMaxItemsClaimModal =
       availableRecordsToClaim && availableRecordsToClaim.length === parseInt(recordsAvailableToClaimTotal, 10);
     const modalHeight = document.documentElement ? document.documentElement.clientHeight : window.innerHeight;
     return (
       <main className="all-records flex-column-stretch">
-        <div>
-          <Modal
-            isOpen={claimRecordsOpened}
-            centered
-            toggle={this.toggleClaimRecordsOpened}
-            className={doneClaiming ? 'done' : 'claiming' + ' claim-record-modal'}
-            backdrop="static"
-            keyboard={false}
-            style={isIOS ? { height: modalHeight - IOS_MODAL_MARGIN, minHeight: modalHeight - IOS_MODAL_MARGIN } : {}}
-            contentClassName={isIOS ? 'ios modal-content' : 'modal-content'}
-          >
-            {doneClaiming ? (
-              <div className="d-flex flex-column justify-content-between align-items-center p-2 claim-modal-title">
-                {claimingProgress !== '100' &&
-                  recordsToClaim.length !== 0 && (
-                    <>
-                      <span className="m-3">
-                        <Translate contentKey="providerSite.claimingInfo" />
-                      </span>
-                      <Progress value={claimingProgress} max="100" min="0" style={{ width: '75%' }} className="m-3" />
-                    </>
-                  )}
-                {(claimingProgress === '100' || recordsToClaim.length === 0) && (
-                  <div className="d-flex flex-column justify-content-between align-items-center">
-                    <span className="pt-4 claim-modal-title">
-                      <Translate contentKey="providerSite.succesfullClaim" interpolate={{ count: recordsToClaim.length || 0 }} />
-                    </span>
-                    <br />
-                    <span className="claim-modal-subtitle">
-                      <Translate contentKey="providerSite.claimMore" />
-                    </span>
-                    <div className="d-flex w-100 justify-content-center py-4">
-                      <ButtonPill onClick={() => this.claimMore()}>
-                        <Translate contentKey="recordCard.yes" />
-                      </ButtonPill>
-                      &nbsp;
-                      <ButtonPill onClick={() => this.closeClaiminging()}>
-                        <Translate contentKey="recordCard.no" />
-                      </ButtonPill>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="d-flex flex-column justify-content-between align-items-center claim-record-modal-container p-1">
-                <div className="d-flex flex-column justify-content-between align-items-center w-100 pt-4 pt-sm-3 pb-2">
-                  <span className="claim-modal-title">
-                    <Translate contentKey="providerSite.claimTitle" />
-                  </span>
-                  <br />
-                  <span className="claim-modal-subtitle">
-                    <Translate contentKey="providerSite.claimSubtitle" />
-                  </span>
-                </div>
-                <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body">
-                  {claimRecordsOpened && (
-                    <InfiniteScroll
-                      pageStart={claimModalActivePage}
-                      loadMore={() => this.handleLoadMoreClaimModal(hasReachedMaxItemsClaimModal)}
-                      hasMore={!hasReachedMaxItemsClaimModal}
-                      loader={loading ? <Spinner key={0} color="primary" /> : null}
-                      threshold={0}
-                      initialLoad={false}
-                      useWindow={false}
-                      getScrollParent={() => document.getElementById('claim-record-modal-content')}
-                    >
-                      <Row noGutters>{this.mapRecordsForClaimModal({ records: availableRecordsToClaim })}</Row>
-                    </InfiniteScroll>
-                  )}
-                </div>
-                <div className="d-flex align-items-center justify-content-center">
-                  <ButtonPill className="button-pill-green my-2" style={{ width: '120px' }} onClick={this.claimRecords}>
-                    <Translate contentKey="recordCard.done" />
-                  </ButtonPill>
-                </div>
-              </div>
-            )}
+        <ClaimRecordsModal
+          claimRecordsOpened={claimRecordsOpened}
+          closeClaiminging={this.closeClaiminging}
+          toggleClaimRecordsOpened={this.toggleClaimRecordsOpened}
+        />
+        <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+          <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
+            <div className="filter-card mx-3 mb-4">
+              <FilterCard
+                siloName={siloName}
+                dropdownOpen={filterOpened}
+                toggleFilter={this.toggleFilter}
+                getFirstPage={this.getFirstPage}
+                isMapView={isMapView}
+              />
+            </div>
           </Modal>
-        </div>
+        </MediaQuery>
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>{siloName || isMapView ? null : this.title(isReferralEnabled)}</MediaQuery>
         <div>{this.topBar(siloName, filterOpened, isMapView, isReferralEnabled, isSearchBarFocused)}</div>
         {isMapView ? <this.mapView /> : <this.gridView />}
