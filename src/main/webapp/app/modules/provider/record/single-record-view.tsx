@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import { getProviderEntity } from 'app/entities/organization/organization.reducer';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
-import { FixedSizeList as List } from 'react-window';
+import { FixedSizeList as List, FixedSizeGrid as Grid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { APP_DATE_12_HOUR_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
@@ -76,6 +76,7 @@ export interface ISingleRecordViewState {
   currentServiceIdx: number;
   detailsView: boolean;
   initialLoad: boolean;
+  usedTaxonomyOptions: any[];
 }
 
 class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRecordViewState> {
@@ -87,7 +88,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     isLocationsOpen: true,
     currentServiceIdx: 0,
     detailsView: false,
-    initialLoad: true
+    initialLoad: true,
+    usedTaxonomyOptions: this.props.taxonomyOptions
   };
 
   toggleOrganization = () => this.setState({ isOrganizationOpen: !this.state.isOrganizationOpen });
@@ -122,6 +124,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
           (taxonomyWidths: any[]) => {
             usedTaxonomies.forEach((to, i) => {
               to['width'] = taxonomyWidths[i];
+            });
+            this.setState({
+              usedTaxonomyOptions: usedTaxonomies
             });
           }
         );
@@ -164,19 +169,53 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     });
 
   taxonomyPills = service => {
-    const taxonomyOptions = this.props.taxonomyOptions.filter(
+    const taxonomyOptions = this.state.usedTaxonomyOptions.filter(
       to => service['taxonomyIds'] && service['taxonomyIds'].indexOf(to.value) !== -1
     );
     const widths = taxonomyOptions.map(to => to['width'] || 200);
-    const itemCount = getColumnCount(widths, MAX_PILLS_WIDTH) || 0;
     return (
       <div>
-        {taxonomyOptions.slice(0, itemCount).map(to => (
-          <div className="pill mt-2" key={to.value}>
-            <span>{to.label}</span>
-          </div>
-        ))}
-        {itemCount < taxonomyOptions.length ? RemainderCount(taxonomyOptions.length - itemCount) : ''}
+        {taxonomyOptions.length > 0 ? (
+          <AutoSizer disableHeight>
+            {({ width }) => {
+              // first row
+              let itemCount = getColumnCount(widths, width);
+              // second row
+              itemCount += getColumnCount(widths.slice(itemCount), width, REMAINDER_WIDTH);
+              const overflow = itemCount < taxonomyOptions.length;
+              const totalItemCount = itemCount + (overflow ? 1 : 0);
+              const columnCount = totalItemCount;
+              return (
+                <Grid
+                  rowCount={1}
+                  rowHeight={25}
+                  height={70}
+                  columnCount={columnCount}
+                  columnWidth={width / totalItemCount}
+                  layout="horizontal"
+                  width={width}
+                  style={{ flex: 1 }}
+                  className="pl-0"
+                >
+                  {({ rowIndex, columnIndex }) => {
+                    const itemIndex = rowIndex * columnCount + columnIndex;
+                    if (itemIndex < itemCount) {
+                      return (
+                        <div className="pill mt-2" key={taxonomyOptions[itemIndex].value}>
+                          <span>{taxonomyOptions[itemIndex].label}</span>
+                        </div>
+                      );
+                    } else if (itemIndex === itemCount) {
+                      return RemainderCount(taxonomyOptions.length - itemCount);
+                    } else {
+                      return null;
+                    }
+                  }}
+                </Grid>
+              );
+            }}
+          </AutoSizer>
+        ) : null}
       </div>
     );
   };
