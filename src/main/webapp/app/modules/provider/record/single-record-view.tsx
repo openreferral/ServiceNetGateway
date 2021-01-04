@@ -3,7 +3,7 @@ import './record-shared.scss';
 import React from 'react';
 import { Collapse, Button, CardBody, Card, CardTitle, Progress } from 'reactstrap';
 import { TextFormat, Translate, translate } from 'react-jhipster';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
@@ -64,7 +64,7 @@ const REMAINDER_WIDTH = 25;
 const GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL = 'https://www.google.com/maps/dir//';
 
 export interface ISingleRecordViewProps extends StateProps, DispatchProps, RouteComponentProps<{ orgId: string }> {
-  record: any;
+  orgId?: string;
 }
 
 export interface ISingleRecordViewState {
@@ -98,7 +98,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
 
   componentDidMount() {
     const siloName = this.getSiloName();
-    this.props.getProviderEntity(this.props.match.params.orgId, siloName);
+    const orgId = this.props.orgId ? this.props.orgId : this.props.match.params.orgId;
+    this.props.getProviderEntity(orgId, siloName);
   }
 
   componentWillUpdate(nextProps) {
@@ -446,6 +447,18 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     </Card>
   );
 
+  backButton = () => {
+    const siloName = this.getSiloName();
+    const { orgId } = this.props;
+    return !orgId ? (
+      <Button tag={Link} to={siloName ? `/public/${siloName}` : '/'} color="" className="d-none d-sm-block position-fixed go-back">
+        <FontAwesomeIcon icon="angle-left" />
+        &nbsp;
+        <Translate contentKey="record.singleRecordView.back" />
+      </Button>
+    ) : null;
+  };
+
   render() {
     const {
       isOrganizationOpen,
@@ -456,22 +469,17 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
       locationWidths,
       serviceWidths
     } = this.state;
-    const { organization, taxonomyOptions } = this.props;
+    const { organization, taxonomyOptions, orgId } = this.props;
+    const contentStyle = orgId ? 'col-11 col-md-10 col-lg-9 within-modal' : 'col-md-10 offset-md-1 col-lg-8 offset-lg-2';
     const locationsCount = organization && organization.locations ? organization.locations.length : 0;
     const servicesCount = organization && organization.services ? organization.services.length : 0;
     const latestDailyUpdate = organization && organization.services ? organization.dailyUpdates.find(du => du.expiry === null) || {} : null;
-    const siloName = this.getSiloName();
     const openService = servicesCount > 0 && currentServiceIdx <= servicesCount ? organization.services[currentServiceIdx] : {};
     return (
-      <div className="record-shared single-record-view background">
+      <div className={`record-shared single-record-view background ${orgId ? 'pt-0' : ''}`}>
         <div id={measureId(this.props.match.params.orgId)} style={containerStyle} />
-        <Button tag={Link} to={siloName ? `/public/${siloName}` : '/'} color="" className="d-none d-sm-block position-fixed go-back">
-          <FontAwesomeIcon icon="angle-left" />
-          &nbsp;
-          <Translate contentKey="record.singleRecordView.back" />
-        </Button>
-
-        <div className="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <this.backButton />
+        <div className={contentStyle}>
           <Card className="section">
             <CardTitle>
               <div className="d-flex w-100 justify-content-between">
@@ -642,4 +650,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SingleRecordView);
+)(withRouter(SingleRecordView));

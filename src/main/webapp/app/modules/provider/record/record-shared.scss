@@ -128,7 +128,12 @@
   &.record-edit,
   &.single-record-view {
     padding-top: 10vh;
-    width: 100vw;
+
+    .within-modal {
+      margin-right: auto;
+      margin-left: auto;
+      padding: 0;
+    }
 
     .card-body {
       &.details {

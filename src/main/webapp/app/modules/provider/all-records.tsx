@@ -233,19 +233,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({ sortingOpened: !this.state.sortingOpened });
   };
 
-  toggleViewType = () => {
-    const recordViewType = this.state.recordViewType;
-    if (this.props.isMapView) {
-      this.toggleMapView();
-    } else {
-      if (recordViewType === GRID_VIEW) {
-        this.setState({ recordViewType: LIST_VIEW });
-      } else {
-        this.toggleMapView();
-      }
-    }
-  };
-
   toggleFilter = () => {
     this.setState({ filterOpened: !this.state.filterOpened, isRecordHighlighted: false });
   };
@@ -257,7 +244,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       }
     });
   };
-
 
   closeClaiminging = () => {
     this.setState({ claimRecordsOpened: false }, () => this.props.resetRecordsToClaim());
@@ -669,20 +655,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   render() {
-    const {
-      siloName,
-      isMapView,
-      isReferralEnabled,
-      availableRecordsToClaim,
-      loading,
-      recordsAvailableToClaimTotal,
-      recordsToClaim,
-      claimingProgress
-    } = this.props;
+    const { siloName, isMapView, isReferralEnabled } = this.props;
     const { filterOpened, isSearchBarFocused, claimRecordsOpened } = this.state;
-    const hasReachedMaxItemsClaimModal =
-      availableRecordsToClaim && availableRecordsToClaim.length === parseInt(recordsAvailableToClaimTotal, 10);
-    const modalHeight = document.documentElement ? document.documentElement.clientHeight : window.innerHeight;
     return (
       <main className="all-records flex-column-stretch">
         <ClaimRecordsModal
@@ -726,11 +700,6 @@ const mapStateToProps = state => ({
   loading: state.providerRecord.loading,
   referralCount: state.providerRecord.referredRecords ? state.providerRecord.referredRecords.size : 0,
   isReferralEnabled: state.authentication.account.siloIsReferralEnabled,
-  availableRecordsToClaim: state.providerRecord.recordsAvailableToClaim,
-  recordsAvailableToClaimTotal: state.providerRecord.recordsAvailableToClaimTotal,
-  recordsToClaim: state.organization.recordsToClaim,
-  leftToClaim: state.organization.leftToClaim,
-  claimingProgress: state.organization.claimingProgress,
   isAuthenticated: state.authentication.isAuthenticated
 });
 

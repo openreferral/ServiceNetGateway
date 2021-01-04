@@ -8,6 +8,7 @@
       "details": "Details"
     },
     "details": {
+      "recordDetails": "Records Details",
       "titleOrganization": "Organization details",
       "titleLocations": "Locations",
       "titlePhysicalAddress": "Physical address",
