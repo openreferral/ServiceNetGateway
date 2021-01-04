@@ -40,6 +40,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   owner?: IUser;
   referring: boolean;
   claiming?: boolean;
+  onNameClick?: Function;
 }
 
 export interface IRecordCardState {
@@ -206,12 +207,19 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     );
   };
 
+  organizationNameOnClick = event => {
+    if (this.props.onNameClick) {
+      event.preventDefault();
+      this.props.onNameClick();
+    }
+  };
+
   getHeader = () => {
     const { record, link, fullWidth } = this.props;
     return fullWidth ? (
       <div className="mb-2">
         <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', height: '2em' }}>
-          <Link className="organization-name-full-width" to={link}>
+          <Link className="organization-name-full-width" to={link} onClick={this.organizationNameOnClick}>
             {record.organization.name}
           </Link>
           <div style={{ flex: 1 }} className="ml-5">
@@ -221,7 +229,9 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       </div>
     ) : (
       <div className="organization-name">
-        <Link to={link}>{record.organization.name}</Link>
+        <Link to={link} onClick={this.organizationNameOnClick}>
+          {record.organization.name}
+        </Link>
       </div>
     );
   };
