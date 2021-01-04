@@ -110,6 +110,10 @@
     display: flex;
     justify-content: space-between;
     padding: 1rem;
+    flex-wrap: wrap;
+    .button-pill {
+      padding: 2px 1rem;
+    }
 
     &-solid {
       @extend .control-line-container;
@@ -232,6 +236,9 @@
       padding: 1rem;
       margin-left: 0.5rem;
       margin-right: 0.5rem;
+      .filter-body {
+        display: block;
+      }
     }
 
     .control-line-container-solid {
@@ -306,7 +313,7 @@
   }
 
   .search-from {
-    width: 35vw;
+    width: 20vw;
     height: 30px;
     display: flex;
     padding: 2px 4px;
@@ -510,5 +517,13 @@
         margin-left: -20px;
       }
     }
+  }
+
+  .flex-1 {
+    flex: 1 1 auto !important;
+  }
+
+  .flex-2 {
+    flex: 2 2 auto !important;
   }
 }

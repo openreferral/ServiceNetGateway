@@ -1,6 +1,7 @@
 {
   "providerSite": {
     "searchPlaceholder": "Search by organization name or keyword",
+    "searchLabel": "Search",
     "hello": "Hello ",
     "anyUpdates": "Any updates to your records?",
     "loadMore": "Load more",
