@@ -23,6 +23,7 @@ export const ACTION_TYPES = {
 
 const initialState = {
   loading: false,
+  loadingMap: false,
   errorMessage: null,
   updating: false,
   updateSuccess: false,
@@ -60,12 +61,17 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_RECORDS):
     case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS):
-    case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
     case REQUEST(ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM):
       return {
         ...state,
         selectedRecord: null,
         loading: true
+      };
+    case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
+      return {
+        ...state,
+        selectedRecord: null,
+        loadingMap: true
       };
     case REQUEST(ACTION_TYPES.SELECT_RECORD):
       return {
@@ -130,7 +136,7 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         updating: false,
         updateSuccess: true,
         allRecordsForMap: action.payload.data,
-        loading: false
+        loadingMap: false
       };
     case SUCCESS(ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM):
       const availableToClaimpayload = action.meta.isInitLoading

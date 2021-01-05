@@ -17,7 +17,7 @@ import SortSection from 'app/modules/provider/sort-section';
 import { getSearchPreferences, PROVIDER_SORT_ARRAY, setProviderSort } from 'app/shared/util/search-utils';
 import ReactGA from 'react-ga';
 import ButtonPill from './shared/button-pill';
-import FilterCard from './filter-card';
+import FilterBar from './filter-bar';
 import MediaQuery, { useMediaQuery } from 'react-responsive';
 import {
   DESKTOP_WIDTH_BREAKPOINT,
@@ -73,7 +73,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   itemsPerPage: number;
   activePage: number;
   sortingOpened: boolean;
-  filterOpened: boolean;
+  rightSectionOpened: boolean;
   claimRecordsOpened: boolean;
   recordViewType: 'GRID' | 'LIST';
   isRecordHighlighted: boolean;
@@ -105,7 +105,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       itemsPerPage: 6,
       activePage: 0,
       sortingOpened: false,
-      filterOpened: false,
+      rightSectionOpened: false,
       claimRecordsOpened: false,
       isRecordHighlighted: false,
       selectedLat: null,
@@ -147,6 +147,9 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             this.getRecordsForMap();
           } else {
             this.getRecords(true);
+            if (this.state.rightSectionOpened) {
+              this.getRecordsForMap();
+            }
           }
         }
       );
@@ -234,8 +237,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({ sortingOpened: !this.state.sortingOpened });
   };
 
-  toggleFilter = () => {
-    this.setState({ filterOpened: !this.state.filterOpened, isRecordHighlighted: false });
+  toggleRightSection = () => {
+    this.setState({ rightSectionOpened: !this.state.rightSectionOpened, isRecordHighlighted: false });
   };
 
   toggleClaimRecordsOpened = () => {
@@ -246,7 +249,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     });
   };
 
-  closeClaiminging = () => {
+  closeClaiming = () => {
     this.setState({ claimRecordsOpened: false }, () => this.props.resetRecordsToClaim());
   };
 
@@ -265,7 +268,6 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.props.selectRecord(orgId, siloName);
     this.setState({
       isRecordHighlighted: true,
-      filterOpened: false,
       selectedLat: lat,
       selectedLng: lng,
       showMyLocation: false
@@ -284,7 +286,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     }
     this.props.toggleMapView();
     this.setState({
-      filterOpened: false,
+      rightSectionOpened: false,
       isRecordHighlighted: false,
       selectedLat: null,
       selectedLng: null,
@@ -292,6 +294,16 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       boundaries: null,
       recordViewType: GRID_VIEW
     });
+  };
+
+  toggleViewType = isMobile => () => {
+    if (isMobile || this.props.isMapView) {
+      this.toggleMapView();
+    } else {
+      this.setState({
+        rightSectionOpened: !this.state.rightSectionOpened
+      });
+    }
   };
 
   getFirstPage = () => {
@@ -344,6 +356,50 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     ));
   };
 
+  mapRecordsWithRightSection = allRecords => {
+    const { rightSectionOpened } = this.state;
+    const { siloName, isMapView } = this.props;
+    const fourCardsBesideFilter = _.slice(allRecords, 0, 4);
+    const upperTwoCardsBesideFilter = _.slice(allRecords, 0, 2);
+    const lowerTwoCardsBesideFilter = _.slice(allRecords, 2, 4);
+    const elementsAfterFilter = _.slice(allRecords, 4);
+    return (
+      <div className="m-0 p-0 w-100">
+        <Row noGutters>
+          <Col md={12}>
+            <Row noGutters>
+              <div className="col-lg-8 col-md-6">
+                <MediaQuery minDeviceWidth={LARGE_WIDTH_BREAKPOINT}>
+                  <Row noGutters>
+                    {this.mapRecords({ isInAllRecordSection: false, records: fourCardsBesideFilter, isBesideFilter: true })}
+                  </Row>
+                </MediaQuery>
+                <MediaQuery maxDeviceWidth={MEDIUM_WIDTH_BREAKPOINT}>
+                  <Row noGutters>
+                    {this.mapRecords({ isInAllRecordSection: false, records: upperTwoCardsBesideFilter, isBesideFilter: true })}
+                  </Row>
+                </MediaQuery>
+              </div>
+              <div className="col-lg-4 col-md-6">
+                <div className="filter-card mx-3 mb-4">
+                  <this.mapCard />
+                </div>
+              </div>
+            </Row>
+          </Col>
+          <MediaQuery maxDeviceWidth={MEDIUM_WIDTH_BREAKPOINT}>
+            <Col md={12}>
+              <Row noGutters>{this.mapRecords({ isInAllRecordSection: true, records: lowerTwoCardsBesideFilter })}</Row>
+            </Col>
+          </MediaQuery>
+          <Col md={12}>
+            <Row noGutters>{this.mapRecords({ isInAllRecordSection: true, records: elementsAfterFilter })}</Row>
+          </Col>
+        </Row>
+      </div>
+    );
+  };
+
   onMapBoundariesChanged = boundaries => {
     const initialBoundaries = _.isEmpty(this.state.boundaries);
     const boundariesChanged = !_.isEqual(boundaries, this.state.requestedBoundaries);
@@ -359,7 +415,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
-  canRedoSearch = () => !this.props.loading && !_.isEqual(this.state.requestedBoundaries, this.state.boundaries);
+  canRedoSearch = () => !this.props.loadingMap && !_.isEqual(this.state.requestedBoundaries, this.state.boundaries);
 
   onSearchClick = () => {
     if (this.canRedoSearch()) {
@@ -372,7 +428,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       <>
         <div className="d-flex justify-content-between map-overlay-top">
           <div className="px-5" />
-          {this.props.loading && (
+          {this.props.loadingMap && (
             <div className="spinner-border mt-1" role="status">
               <span className="sr-only">Loading...</span>
             </div>
@@ -418,9 +474,50 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     }
   };
 
+  mapCard = () => {
+    const { allRecordsForMap, selectedRecord, urlBase } = this.props;
+    const { isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
+    const mapHeight = '100%';
+    const mapProps = {
+      googleMapURL: mapUrl,
+      records: allRecordsForMap,
+      lat: selectedLat,
+      lng: selectedLng,
+      loadingElement: <div style={{ height: mapHeight }} />,
+      mapElement: <div style={{ height: mapHeight }} />,
+      onMarkerClick: this.selectRecord,
+      showMyLocation,
+      centeredAt,
+      onBoundariesChanged: this.onMapBoundariesChanged
+    };
+    return (
+      <div className="map-view position-relative h-100 w-100">
+        {this.mapOverlay()}
+        <PersistentMap
+          {...mapProps}
+          containerElement={<div className="flex-column-stretch" style={{ minHeight: 400, height: '100%' }} />}
+        />
+        {this.mapOverlayBottom()}
+        {isRecordHighlighted && selectedRecord ? (
+          <div className={`selected-record absolute-card`}>
+            <div>
+              <RecordCard
+                record={selectedRecord}
+                link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
+                closeCard={this.closeRecordCard}
+                coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
+                referring={this.props.referring}
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
+    );
+  };
+
   mapView = () => {
     const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
-    const { filterOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
+    const { rightSectionOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const isMobile = this.isMobile();
     const mapHeight = isIOS ? this.state.iOSMapHeight : '100%';
     const mapProps = {
@@ -464,12 +561,15 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         {!isMobile ? (
           <Row className="mb-5 mx-3 flex-column-stretch">
             <div className="d-flex flex-grow-1 mw-100">
-              <Col md={isRecordHighlighted ? 8 : 12} className="pb-2 pl-0 pr-1 map-view position-relative flex-column-stretch">
+              <Col
+                md={isRecordHighlighted || rightSectionOpened ? 8 : 12}
+                className="pb-2 pl-0 pr-1 map-view position-relative flex-column-stretch"
+              >
                 {this.mapOverlay()}
                 <PersistentMap {...mapProps} containerElement={<div className="flex-column-stretch" style={{ minHeight: 400 }} />} />
                 {this.mapOverlayBottom()}
               </Col>
-              {isRecordHighlighted && selectedRecord ? (
+              {isRecordHighlighted && selectedRecord && !rightSectionOpened ? (
                 <Col md={4} className={`col-md-4 pr-0 selected-record`}>
                   <RecordCard
                     record={selectedRecord}
@@ -522,7 +622,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   gridView = () => {
     const { allRecords, allRecordsTotal, loading } = this.props;
-    const { filterOpened, activePage } = this.state;
+    const { rightSectionOpened, activePage } = this.state;
     const hasReachedMaxItems = allRecords.length === parseInt(allRecordsTotal, 10);
     return (
       <div ref={this.setGridViewRef}>
@@ -539,7 +639,9 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           <Row noGutters>
             <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>{this.mapRecords({ records: allRecords })}</MediaQuery>
             <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-              {this.mapRecords({ records: allRecords, isInAllRecordSection: true })}
+              {rightSectionOpened
+                ? this.mapRecordsWithRightSection(allRecords)
+                : this.mapRecords({ records: allRecords, isInAllRecordSection: true })}
             </MediaQuery>
           </Row>
         </InfiniteScroll>
@@ -563,68 +665,69 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     );
   };
 
-  topBar = (siloName, filterOpened, isMapView, isReferralEnabled, isSearchBarFocused) => (
-    <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
-      <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-        <Row className="search">
-          <Col className="height-fluid">
-            <div className="ml-2 mb-1">
-              <b>
-                <Translate contentKey="providerSite.searchLabel" />
-              </b>
+  topBar = () => {
+    const { siloName, isMapView, isReferralEnabled } = this.props;
+    const { isSearchBarFocused } = this.state;
+    const isMobile = this.isMobile();
+    return (
+      <div>
+        <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
+          <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
+            <Row className="search">
+              <Col className="height-fluid">
+                <div className="ml-2 mb-1">
+                  <b>
+                    <Translate contentKey="providerSite.searchLabel" />
+                  </b>
+                </div>
+                <SearchBar
+                  onSwitchFocus={this.onSearchBarSwitchFocus}
+                  onSearch={this.props.setText}
+                  onReset={this.props.resetText}
+                  width="20vw"
+                />
+              </Col>
+            </Row>
+          </MediaQuery>
+          <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+            {siloName || isMapView ? null : this.title(isReferralEnabled)}
+            <div className={isSearchBarFocused ? 'on-top' : ''}>
+              <Row className="search">
+                <Col className="height-fluid">
+                  <div className="ml-2 mb-1">
+                    <b>
+                      <Translate contentKey="providerSite.searchPlaceholder" />
+                    </b>
+                  </div>
+                  <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
+                </Col>
+              </Row>
             </div>
-            <SearchBar
-              onSwitchFocus={this.onSearchBarSwitchFocus}
-              onSearch={this.props.setText}
-              onReset={this.props.resetText}
-              width="20vw"
+            {isSearchBarFocused ? <div className="darken-overlay" /> : null}
+          </MediaQuery>
+          <FilterBar siloName={siloName} getFirstPage={this.getFirstPage} isMapView={isMapView}>
+            <SortSection
+              dropdownOpen={this.state.sortingOpened}
+              toggleSort={() => this.toggleSorting()}
+              values={PROVIDER_SORT_ARRAY}
+              sort={this.state.sort}
+              order={this.state.order}
+              sortFunc={this.sort}
             />
-          </Col>
-        </Row>
-      </MediaQuery>
-      <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-        {siloName || isMapView ? null : this.title(isReferralEnabled)}
-        <div className={isSearchBarFocused ? 'on-top' : ''}>
-          <Row className="search">
-            <Col className="height-fluid">
-              <div className="ml-2 mb-1">
-                <b>
-                  <Translate contentKey="providerSite.searchPlaceholder" />
-                </b>
-              </div>
-              <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} onSearch={this.props.setText} onReset={this.props.resetText} />
-            </Col>
-          </Row>
+            {this.viewTypeButton(isMobile)}
+          </FilterBar>
         </div>
-        {isSearchBarFocused ? <div className="darken-overlay" /> : null}
-      </MediaQuery>
-      <FilterCard
-        siloName={siloName}
-        dropdownOpen={filterOpened}
-        toggleFilter={this.toggleFilter}
-        getFirstPage={this.getFirstPage}
-        isMapView={isMapView}
-      >
-        <SortSection
-          dropdownOpen={this.state.sortingOpened}
-          toggleSort={() => this.toggleSorting()}
-          values={PROVIDER_SORT_ARRAY}
-          sort={this.state.sort}
-          order={this.state.order}
-          sortFunc={this.sort}
-        />
-        {this.viewTypeButton()}
-      </FilterCard>
-    </div>
-  );
+      </div>
+    );
+  };
 
-  viewTypeButton = () => (
+  viewTypeButton = isMobile => (
     <div>
-      <ButtonPill onClick={this.toggleMapView} className="ml-1 view-type-button">
+      <ButtonPill onClick={this.toggleViewType(isMobile)} className="ml-1 view-type-button">
         <span>
-          <FontAwesomeIcon color={!this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="bars" />
+          <FontAwesomeIcon color={!this.props.isMapView && !this.state.rightSectionOpened ? 'black' : INACTIVE_COLOR} icon="bars" />
           {' | '}
-          <FontAwesomeIcon color={this.props.isMapView ? 'black' : INACTIVE_COLOR} icon="map" />
+          <FontAwesomeIcon color={this.props.isMapView || this.state.rightSectionOpened ? 'black' : INACTIVE_COLOR} icon="map" />
         </span>
       </ButtonPill>
     </div>
@@ -662,29 +765,16 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   render() {
     const { siloName, isMapView, isReferralEnabled } = this.props;
-    const { filterOpened, isSearchBarFocused, claimRecordsOpened } = this.state;
+    const { claimRecordsOpened } = this.state;
     return (
       <main className="all-records flex-column-stretch">
         <ClaimRecordsModal
           claimRecordsOpened={claimRecordsOpened}
-          closeClaiminging={this.closeClaiminging}
+          closeClaiming={this.closeClaiming}
           toggleClaimRecordsOpened={this.toggleClaimRecordsOpened}
         />
-        <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
-          <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
-            <div className="filter-card mx-3 mb-4">
-              <FilterCard
-                siloName={siloName}
-                dropdownOpen={filterOpened}
-                toggleFilter={this.toggleFilter}
-                getFirstPage={this.getFirstPage}
-                isMapView={isMapView}
-              />
-            </div>
-          </Modal>
-        </MediaQuery>
         <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>{siloName || isMapView ? null : this.title(isReferralEnabled)}</MediaQuery>
-        <div>{this.topBar(siloName, filterOpened, isMapView, isReferralEnabled, isSearchBarFocused)}</div>
+        <this.topBar />
         {isMapView ? <this.mapView /> : <this.gridView />}
         <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
           <div ref={this.pageEndRef} />
@@ -704,6 +794,7 @@ const mapStateToProps = state => ({
   selectedRecord: state.providerRecord.selectedRecord,
   filtersChanged: state.providerFilter.filtersChanged,
   loading: state.providerRecord.loading,
+  loadingMap: state.providerRecord.loadingMap,
   referralCount: state.providerRecord.referredRecords ? state.providerRecord.referredRecords.size : 0,
   isReferralEnabled: state.authentication.account.siloIsReferralEnabled,
   isAuthenticated: state.authentication.isAuthenticated

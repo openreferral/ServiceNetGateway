@@ -25,7 +25,9 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
   }
 
   componentDidMount() {
-    this.props.onReset();
+    if (this.props.onReset) {
+      this.props.onReset();
+    }
   }
 
   updateText = event => {
