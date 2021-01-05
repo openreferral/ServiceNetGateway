@@ -1421,38 +1421,85 @@ exports[`All records renders correctly 1`] = `
       <main
         className="all-records flex-column-stretch"
       >
-        <div>
-          <Modal
-            autoFocus={true}
-            backdrop="static"
-            backdropTransition={
+        <Connect(ClaimRecordsModal)
+          claimRecordsOpened={false}
+          closeClaiminging={[Function]}
+          toggleClaimRecordsOpened={[Function]}
+        >
+          <ClaimRecordsModal
+            account={
               Object {
-                "mountOnEnter": true,
-                "timeout": 150,
+                "activated": true,
+                "authorities": Array [
+                  "ROLE_USER",
+                  "ROLE_ADMIN",
+                ],
+                "createdBy": "system",
+                "createdDate": null,
+                "email": "admin@localhost.com",
+                "firstName": "Administrator",
+                "id": "30000000-0000-0000-0000-000000000000",
+                "imageUrl": null,
+                "langKey": "en",
+                "lastModifiedBy": "admin",
+                "lastModifiedDate": "2020-03-20T17:37:36.301205Z",
+                "lastName": "Administrator",
+                "login": "admin",
+                "organizationName": "Chicago test1",
+                "organizationUrl": "www.wp.pl",
+                "organizations": null,
+                "phoneNumber": "+13456753456",
+                "shelters": Array [],
+                "siloId": null,
+                "systemAccountId": "ab7018c5-b3cc-4a5d-97fb-50e7ba8262c1",
+                "systemAccountName": "ShelterTech",
+                "userGroups": Array [],
               }
             }
-            centered={true}
-            className="claiming claim-record-modal"
-            contentClassName="modal-content"
-            fade={true}
-            isOpen={false}
-            keyboard={false}
-            modalTransition={
-              Object {
-                "timeout": 300,
-              }
-            }
-            onClosed={[Function]}
-            onOpened={[Function]}
-            returnFocusAfterClose={true}
-            role="dialog"
-            scrollable={false}
-            style={Object {}}
-            toggle={[Function]}
-            unmountOnClose={true}
-            zIndex={1050}
-          />
-        </div>
+            claimEntities={[Function]}
+            claimRecordsOpened={false}
+            closeClaiminging={[Function]}
+            getRecordsAvailableToClaim={[Function]}
+            resetRecordsToClaim={[Function]}
+            toggleClaimRecordsOpened={[Function]}
+          >
+            <div>
+              <Modal
+                autoFocus={true}
+                backdrop="static"
+                backdropTransition={
+                  Object {
+                    "mountOnEnter": true,
+                    "timeout": 150,
+                  }
+                }
+                centered={true}
+                className="claiming claim-record-modal"
+                contentClassName="modal-content"
+                fade={true}
+                isOpen={false}
+                keyboard={false}
+                modalTransition={
+                  Object {
+                    "timeout": 300,
+                  }
+                }
+                onClosed={[Function]}
+                onOpened={[Function]}
+                returnFocusAfterClose={true}
+                role="dialog"
+                scrollable={false}
+                style={Object {}}
+                toggle={[Function]}
+                unmountOnClose={true}
+                zIndex={1050}
+              />
+            </div>
+          </ClaimRecordsModal>
+        </Connect(ClaimRecordsModal)>
+        <MediaQuery
+          maxDeviceWidth={768}
+        />
         <MediaQuery
           minDeviceWidth={769}
         />
