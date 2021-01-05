@@ -312,8 +312,8 @@ export const getMadeToOptions = () => ({
   payload: axios.get(madeToOptionsApiUrl)
 });
 
-export const getRecordsAvailableToClaim = (page, itemsPerPage, isInitLoading = false) => {
-  const pageableUrl = `${recordsAvailableToClaimApiUrl}?page=${page}&size=${itemsPerPage}&sort=${DEFAULT_RECORDS_SORT}`;
+export const getRecordsAvailableToClaim = (page, itemsPerPage, isInitLoading = false, search) => {
+  const pageableUrl = `${recordsAvailableToClaimApiUrl}?search=${search}&page=${page}&size=${itemsPerPage}&sort=${DEFAULT_RECORDS_SORT}`;
   return {
     type: ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM,
     payload: axios.get(pageableUrl),

@@ -186,10 +186,6 @@
     }
   }
 
-  .search-from {
-    background-color: white;
-  }
-
   @media only screen and (max-width: 768px) {
     .app-container {
       margin-top: $marginTopMobile !important;
@@ -214,16 +210,6 @@
           display: flex;
           flex-direction: column;
         }
-      }
-    }
-
-    .search-bar {
-      padding-right: 0;
-      margin-bottom: 0.5rem;
-      margin-top: 0.25rem;
-
-      .search-from {
-        width: 100%;
       }
     }
 
@@ -310,58 +296,6 @@
     color: green;
     min-width: 50px;
     text-align: center;
-  }
-
-  .search-from {
-    width: 20vw;
-    height: 30px;
-    display: flex;
-    padding: 2px 4px;
-    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
-    align-items: center;
-    border-radius: 25px;
-  }
-
-  .search-input-container {
-    flex: 1;
-    margin-left: 8px;
-  }
-
-  .search-input {
-    outline: none;
-    font: inherit;
-    color: currentColor;
-    width: 100%;
-    border: 0;
-    height: 1.1876em;
-    margin: 0;
-    display: block;
-    padding: 6px 0 7px;
-    min-width: 0;
-    background: none;
-    box-sizing: content-box;
-    animation-name: mui-auto-fill-cancel;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .search-button {
-    flex: 0 0 auto;
-    color: rgba(0, 0, 0, 0.54);
-    padding: 8px;
-    overflow: visible;
-    font-size: 1.5rem;
-    text-align: center;
-    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0);
-    border: none;
-  }
-
-  .search-icon {
-    width: 100%;
-    display: flex;
-    align-items: inherit;
-    justify-content: inherit;
   }
 
   .bm-burger-button {

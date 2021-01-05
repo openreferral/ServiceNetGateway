@@ -2,7 +2,7 @@ import React from 'react';
 import { getRecordsAvailableToClaim } from './provider-record.reducer';
 import { claimEntities, resetRecordsToClaim } from 'app/entities/organization/organization.reducer';
 import { connect } from 'react-redux';
-import { Row, Modal, Spinner, Progress, Button } from 'reactstrap';
+import { Row, Modal, Spinner, Progress, Button, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import _ from 'lodash';
 import RecordCard from 'app/modules/provider/record/record-card';
@@ -10,10 +10,14 @@ import { IPaginationBaseState, Translate } from 'react-jhipster';
 import { getSearchPreferences } from 'app/shared/util/search-utils';
 import ButtonPill from './shared/button-pill';
 import SingleRecordView from 'app/modules/provider/record/single-record-view';
+import { setTextModal, resetTextModal } from 'app/modules/provider/shared/search.reducer';
+import SearchBar from './shared/search-bar';
+import { useMediaQuery } from 'react-responsive';
 
 import './all-records.scss';
 import InfiniteScroll from 'react-infinite-scroller';
 import { isIOS } from 'react-device-detect';
+import { MOBILE_WIDTH_BREAKPOINT } from 'app/config/constants';
 const IOS_MODAL_MARGIN = 15;
 
 export interface IClaimRecordsModalProps extends StateProps, DispatchProps {
@@ -53,10 +57,18 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.searchModal !== this.props.searchModal) {
+      const { searchModal } = this.props;
+      this.setState({ claimModalActivePage: 0 }, () => this.props.getRecordsAvailableToClaim(0, 9, true, searchModal));
+    }
+  }
+
   handleLoadMoreClaimModal = hasReachedMaxItems => {
+    const { searchModal } = this.props;
     if (!hasReachedMaxItems) {
       this.setState({ claimModalActivePage: this.state.claimModalActivePage + 1 }, () =>
-        this.props.getRecordsAvailableToClaim(this.state.claimModalActivePage, 9, false)
+        this.props.getRecordsAvailableToClaim(this.state.claimModalActivePage, 9, false, searchModal)
       );
     }
   };
@@ -73,9 +85,10 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
   };
 
   claimMore = () => {
+    const { searchModal } = this.props;
     this.setState({ doneClaiming: false }, () => {
       this.props.resetRecordsToClaim();
-      this.props.getRecordsAvailableToClaim(0, 9, true);
+      this.props.getRecordsAvailableToClaim(0, 9, true, searchModal);
     });
   };
 
@@ -109,6 +122,16 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
     this.props.closeClaiminging();
     this.setState({ doneClaiming: false });
   };
+
+  searchBar = () => (
+    <Row className={`search my-2 w-75 w-${this.isMobile() ? '100' : 75}`}>
+      <Col className="height-fluid">
+        <SearchBar onSearch={this.props.setTextModal} onReset={this.props.resetTextModal} />
+      </Col>
+    </Row>
+  );
+
+  isMobile = () => useMediaQuery({ maxWidth: MOBILE_WIDTH_BREAKPOINT });
 
   claimRecordsPage = () => {
     const {
@@ -165,6 +188,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
             <Translate contentKey="providerSite.claimSubtitle" />
           </span>
         </div>
+        <this.searchBar />
         <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body">
           {claimRecordsOpened && (
             <InfiniteScroll
@@ -177,7 +201,9 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
               useWindow={false}
               getScrollParent={() => document.getElementById('claim-record-modal-content')}
             >
-              <Row noGutters>{this.mapRecordsForClaimModal({ records: availableRecordsToClaim })}</Row>
+              <Row noGutters className="justify-content-center">
+                {this.mapRecordsForClaimModal({ records: availableRecordsToClaim })}
+              </Row>
             </InfiniteScroll>
           )}
         </div>
@@ -242,13 +268,16 @@ const mapStateToProps = state => ({
   recordsToClaim: state.organization.recordsToClaim,
   isAuthenticated: state.authentication.isAuthenticated,
   leftToClaim: state.organization.leftToClaim,
-  claimingProgress: state.organization.claimingProgress
+  claimingProgress: state.organization.claimingProgress,
+  searchModal: state.search.textModal
 });
 
 const mapDispatchToProps = {
   getRecordsAvailableToClaim,
   claimEntities,
-  resetRecordsToClaim
+  resetRecordsToClaim,
+  setTextModal,
+  resetTextModal
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

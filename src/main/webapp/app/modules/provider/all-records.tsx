@@ -35,6 +35,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { isIOS } from 'react-device-detect';
 import ReferralModal, { BENEFICIARY_CHECK_IN_TAB, REFERRAL_TAB } from 'app/modules/provider/referral/referral-modal';
 import ClaimRecordsModal from 'app/modules/provider/claim-records-modal';
+import { setText, resetText } from 'app/modules/provider/shared/search.reducer';
 
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 const GRID_VIEW = 'GRID';
@@ -240,7 +241,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   toggleClaimRecordsOpened = () => {
     this.setState({ claimRecordsOpened: !this.state.claimRecordsOpened }, () => {
       if (this.state.claimRecordsOpened) {
-        this.props.getRecordsAvailableToClaim(0, 9, true);
+        this.props.getRecordsAvailableToClaim(0, 9, true, '');
       }
     });
   };
@@ -572,7 +573,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 <Translate contentKey="providerSite.searchLabel" />
               </b>
             </div>
-            <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
+            <SearchBar
+              onSwitchFocus={this.onSearchBarSwitchFocus}
+              onSearch={this.props.setText}
+              onReset={this.props.resetText}
+              width="20vw"
+            />
           </Col>
         </Row>
       </MediaQuery>
@@ -586,7 +592,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                   <Translate contentKey="providerSite.searchPlaceholder" />
                 </b>
               </div>
-              <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
+              <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} onSearch={this.props.setText} onReset={this.props.resetText} />
             </Col>
           </Row>
         </div>
@@ -710,7 +716,9 @@ const mapDispatchToProps = {
   getAllProviderRecordsPublic,
   uncheckFiltersChanged,
   getRecordsAvailableToClaim,
-  resetRecordsToClaim
+  resetRecordsToClaim,
+  setText,
+  resetText
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
