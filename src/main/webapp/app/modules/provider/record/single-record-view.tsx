@@ -581,52 +581,54 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             </Card>
           ) : null}
 
-          <Card className="section">
-            <CardTitle onClick={this.toggleOrganization} className="clickable">
-              <div className="d-flex justify-content-center align-items-center details-section-title">
-                <img data-src={PeopleLogo} height={25} className="lazyload" alt="Organization" />
-                &nbsp;
-                <Translate contentKey="record.singleRecordView.orgInfo" />
-              </div>
-              {isOrganizationOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
-            </CardTitle>
-            <Collapse isOpen={isOrganizationOpen}>
-              <CardBody className="details organization p-0">
-                {organization.description ? (
-                  <section>
-                    <h6>
-                      <b>
-                        <Translate contentKey="record.singleRecordView.orgDescr" />
-                      </b>
-                    </h6>
-                    <span className="break">{organization.description}</span>
-                  </section>
-                ) : null}
-                {organization.url ? (
-                  <section>
-                    <h6>
-                      <b>
-                        <Translate contentKey="record.singleRecordView.orgWebsite" />
-                      </b>
-                    </h6>
-                    <a className="text-break" target="_blank" href={organization.url}>
-                      {organization.url}
-                    </a>
-                  </section>
-                ) : null}
-                {organization.email ? (
-                  <section>
-                    <h6>
-                      <b>
-                        <Translate contentKey="record.singleRecordView.orgEmail" />
-                      </b>
-                    </h6>
-                    <span>{organization.email}</span>
-                  </section>
-                ) : null}
-              </CardBody>
-            </Collapse>
-          </Card>
+          {organization.description || organization.url || organization.email ? (
+            <Card className="section">
+              <CardTitle onClick={this.toggleOrganization} className="clickable">
+                <div className="d-flex justify-content-center align-items-center details-section-title">
+                  <img data-src={PeopleLogo} height={25} className="lazyload" alt="Organization" />
+                  &nbsp;
+                  <Translate contentKey="record.singleRecordView.orgInfo" />
+                </div>
+                {isOrganizationOpen ? <FontAwesomeIcon icon="angle-up" size="lg" /> : <FontAwesomeIcon icon="angle-down" size="lg" />}
+              </CardTitle>
+              <Collapse isOpen={isOrganizationOpen}>
+                <CardBody className="details organization p-0">
+                  {organization.description ? (
+                    <section>
+                      <h6>
+                        <b>
+                          <Translate contentKey="record.singleRecordView.orgDescr" />
+                        </b>
+                      </h6>
+                      <span className="break">{organization.description}</span>
+                    </section>
+                  ) : null}
+                  {organization.url ? (
+                    <section>
+                      <h6>
+                        <b>
+                          <Translate contentKey="record.singleRecordView.orgWebsite" />
+                        </b>
+                      </h6>
+                      <a className="text-break" target="_blank" rel="noopener noreferrer" href={organization.url}>
+                        {organization.url}
+                      </a>
+                    </section>
+                  ) : null}
+                  {organization.email ? (
+                    <section>
+                      <h6>
+                        <b>
+                          <Translate contentKey="record.singleRecordView.orgEmail" />
+                        </b>
+                      </h6>
+                      <span>{organization.email}</span>
+                    </section>
+                  ) : null}
+                </CardBody>
+              </Collapse>
+            </Card>
+          ) : null}
           {locationsCount > 0 ? this.locationSection(locationsCount, isLocationsOpen, organization) : null}
           {servicesCount > 0
             ? this.serviceSection(servicesCount, isServicesOpen, detailsView, organization, taxonomyOptions, openService, currentServiceIdx)
