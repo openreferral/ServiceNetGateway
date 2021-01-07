@@ -81,7 +81,12 @@ div.card.record-card {
 
     .last-update {
       flex: 1;
-
+      overflow: hidden;
+      div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       &-full-width {
         @extend .last-update;
         display: flex;

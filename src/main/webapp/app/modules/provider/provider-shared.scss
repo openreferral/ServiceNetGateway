@@ -129,6 +129,8 @@
   .absolute-card {
     position: absolute;
     bottom: 0;
+    flex: 1;
+    max-width: 100%;
   }
 
   .sort-container {

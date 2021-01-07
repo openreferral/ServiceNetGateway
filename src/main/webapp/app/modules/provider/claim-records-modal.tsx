@@ -23,7 +23,7 @@ const IOS_MODAL_MARGIN = 15;
 export interface IClaimRecordsModalProps extends StateProps, DispatchProps {
   urlBase: string;
   claimRecordsOpened: boolean;
-  closeClaiminging: Function;
+  closeClaiming: Function;
   toggleClaimRecordsOpened: Function;
 }
 
@@ -118,8 +118,8 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
     this.setState({ singleRecordTab: false, orgId: '' });
   };
 
-  closeClaiminging = () => {
-    this.props.closeClaiminging();
+  closeClaiming = () => {
+    this.props.closeClaiming();
     this.setState({ doneClaiming: false });
   };
 
@@ -170,7 +170,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
                 <Translate contentKey="recordCard.yes" />
               </ButtonPill>
               &nbsp;
-              <ButtonPill onClick={() => this.closeClaiminging()}>
+              <ButtonPill onClick={() => this.closeClaiming()}>
                 <Translate contentKey="recordCard.no" />
               </ButtonPill>
             </div>

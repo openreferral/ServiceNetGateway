@@ -18,15 +18,13 @@ import { updateFilter, reset, checkFiltersChanged } from './provider-filter.redu
 
 const PLACEHOLDER_TEXT_COLOR = '#555';
 
-export interface IFilterCardProps extends StateProps, DispatchProps {
-  dropdownOpen: boolean;
-  toggleFilter: Function;
+export interface IFilterBarProps extends StateProps, DispatchProps {
   getFirstPage: Function;
   siloName?: string;
   isMapView: boolean;
 }
 
-export interface IFilterCardState {
+export interface IFilterBarState {
   city: string;
   region: string;
   zip: string;
@@ -34,7 +32,7 @@ export interface IFilterCardState {
   filtersChanged?: boolean;
 }
 
-export class FilterCard extends React.Component<IFilterCardProps, IFilterCardState> {
+export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -89,7 +87,6 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
     }
     this.props.getFirstPage();
     this.props.updateFilter({ ...filter });
-    this.props.toggleFilter();
   };
 
   resetFilter = () => {
@@ -99,7 +96,6 @@ export class FilterCard extends React.Component<IFilterCardProps, IFilterCardSta
     }
     this.props.getFirstPage();
     this.props.reset();
-    this.props.toggleFilter();
   };
 
   handleZipChanged = v => {
@@ -253,4 +249,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FilterCard);
+)(FilterBar);
