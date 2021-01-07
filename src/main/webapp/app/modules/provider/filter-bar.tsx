@@ -1,7 +1,6 @@
 import React from 'react';
-import { Col, Row, Label } from 'reactstrap';
+import { Label } from 'reactstrap';
 import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ButtonPill from './shared/button-pill';
 import Select from 'react-select';
 import { connect } from 'react-redux';
@@ -75,6 +74,12 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
     }
   }
 
+  componentDidUpdate(prevProps: Readonly<IFilterBarProps>, prevState: Readonly<IFilterBarState>, snapshot?: any) {
+    if (prevProps.filter !== this.props.filter) {
+      this.setState({ ...this.props.filter });
+    }
+  }
+
   handleServiceTypeChanged = values => {
     this.setState({ serviceTypes: values });
   };
@@ -128,7 +133,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
 
     return (
       <>
-        <div className="flex-1 mr-2">
+        <div className="flex-1 mr-2 filter-section">
           <b>
             <Translate contentKey="providerSite.serviceType" />
           </b>
@@ -156,7 +161,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
             }}
           />
         </div>
-        <div className="flex-1 mr-2">
+        <div className="flex-1 mr-2 filter-section">
           <div>
             <b>
               <Translate contentKey="providerSite.location" />
@@ -170,7 +175,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
               onChange={this.handleCityChanged}
               options={cityList}
               placeholder={translate('providerSite.city')}
-              value={_.find(cityList, c => c.value === city)}
+              value={_.find(cityList, c => c.value === city) || null}
               inputId="filter-city"
               className="flex-fill mr-1"
               styles={this.selectStyle()}
@@ -183,7 +188,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
               onChange={this.handleRegionChanged}
               options={regionList}
               placeholder={translate('providerSite.county')}
-              value={_.find(regionList, r => r.value === region)}
+              value={_.find(regionList, r => r.value === region) || null}
               className="flex-fill mr-1"
               styles={this.selectStyle()}
             />
@@ -195,13 +200,13 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
               onChange={this.handleZipChanged}
               options={postalCodeList}
               placeholder={translate('providerSite.zipCode')}
-              value={_.find(postalCodeList, c => c.value === zip)}
+              value={_.find(postalCodeList, c => c.value === zip) || null}
               className="flex-fill"
               styles={this.selectStyle()}
             />
           </div>
         </div>
-        <div className="mt-1 d-inline-flex align-items-end flex-wrap">
+        <div className="mt-1 d-inline-flex align-items-center justify-content-center flex-wrap filter-section buttons">
           {this.props.children}
           <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" className="mx-1 d-inline" />
           <ButtonPill className="button-pill-orange d-inline" onClick={this.applyFilter} translate="providerSite.apply" />

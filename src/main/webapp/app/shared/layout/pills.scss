@@ -126,7 +126,7 @@ $apply-button-color: #e78859;
 .multi-select-pill {
   span {
     display: flex !important;
-    padding: 2px 1rem;
+    padding: 0 1rem !important;
 
     div {
       svg {

@@ -1543,7 +1543,7 @@ exports[`All records renders correctly 1`] = `
                   userName="admin"
                 >
                   <div
-                    className="flex-1 mr-2"
+                    className="flex-1 mr-2 filter-section"
                   >
                     <b>
                       <Translate
@@ -2770,7 +2770,7 @@ exports[`All records renders correctly 1`] = `
                     </StateManager>
                   </div>
                   <div
-                    className="flex-1 mr-2"
+                    className="flex-1 mr-2 filter-section"
                   >
                     <div>
                       <b>
@@ -2825,6 +2825,7 @@ exports[`All records renders correctly 1`] = `
                             "placeholder": [Function],
                           }
                         }
+                        value={null}
                       >
                         <Select
                           backspaceRemovesValue={true}
@@ -4003,6 +4004,7 @@ exports[`All records renders correctly 1`] = `
                             "placeholder": [Function],
                           }
                         }
+                        value={null}
                       >
                         <Select
                           backspaceRemovesValue={true}
@@ -5181,6 +5183,7 @@ exports[`All records renders correctly 1`] = `
                             "placeholder": [Function],
                           }
                         }
+                        value={null}
                       >
                         <Select
                           backspaceRemovesValue={true}
@@ -6322,7 +6325,7 @@ exports[`All records renders correctly 1`] = `
                     </div>
                   </div>
                   <div
-                    className="mt-1 d-inline-flex align-items-end flex-wrap"
+                    className="mt-1 d-inline-flex align-items-center justify-content-center flex-wrap filter-section buttons"
                   >
                     <SortActivity
                       dropdownOpen={false}
