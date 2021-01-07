@@ -151,6 +151,7 @@ Array [
               <a
                 className="text-break"
                 href="fakeUrl"
+                rel="noopener noreferrer"
                 target="_blank"
               >
                 fakeUrl
