@@ -242,7 +242,8 @@
     "notFound": "<strong>Silo does not exist!</strong> Please check your registration link.",
     "invalidphone": "The Phone Number is invalid.",
     "toorgidnotfound": "Organization referring to has to be specified",
-    "tolocationidnotfound": "Location referring to has to be specified"
+    "tolocationidnotfound": "Location referring to has to be specified",
+    "linkExpired": "Your link has expired. Try again to reset your password."
   },
   "footerLeft": "Copyright {{ year }} | Benetech | Software for Social Good",
   "footerRight": "<a href=\"/#/about-us\">About us</a>",

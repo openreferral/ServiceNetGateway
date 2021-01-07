@@ -55,11 +55,7 @@ const apiUrl = AUTH_API_URL + '/account/reset-password';
 export const handlePasswordResetInit = (mail, baseUrl) => ({
   type: ACTION_TYPES.RESET_PASSWORD_INIT,
   // If the content-type isn't set that way, axios will try to encode the body and thus modify the data sent to the server.
-  payload: axios.post(`${apiUrl}/init`, { mail, baseUrl }),
-  meta: {
-    successMessage: translate('reset.request.messages.success'),
-    errorMessage: translate('reset.request.messages.notfound')
-  }
+  payload: axios.post(`${apiUrl}/init`, { mail, baseUrl })
 });
 
 export const handlePasswordResetFinish = (key, newPassword) => ({
