@@ -15,7 +15,7 @@ export class PasswordResetInit extends React.Component<IPasswordResetInitProps> 
   }
 
   handleValidSubmit = (event, values) => {
-    this.props.handlePasswordResetInit(values.email);
+    this.props.handlePasswordResetInit(values.email, window.location.origin);
     event.preventDefault();
   };
 
