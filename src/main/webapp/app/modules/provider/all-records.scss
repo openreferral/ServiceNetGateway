@@ -137,3 +137,12 @@
 .single-record {
   max-height: unset;
 }
+
+.filter-section {
+  &.buttons {
+    @media only screen and (min-width: 768px) {
+      padding-top: 1rem;
+    }
+  }
+  min-width: 300px;
+}
