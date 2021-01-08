@@ -189,12 +189,6 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                 label={translate('global.form.organizationName')}
                 placeholder={translate('global.form.organizationName.placeholder')}
                 type="text"
-                validate={{
-                  required: {
-                    value: true,
-                    errorMessage: translate('register.messages.validate.organizationName.required')
-                  }
-                }}
               />
               <AvField
                 name="organizationUrl"
