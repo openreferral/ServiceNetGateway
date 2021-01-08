@@ -752,7 +752,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   viewTypeButton = isMobile => (
-    <div>
+    <div
+      title={
+        this.props.isMapView || this.state.rightSectionOpened
+          ? translate('providerSite.title.gridView')
+          : translate('providerSite.title.map')
+      }
+    >
       <ButtonPill onClick={this.toggleViewType(isMobile)} className="ml-1 view-type-button">
         <span>
           <FontAwesomeIcon color={!this.props.isMapView && !this.state.rightSectionOpened ? 'black' : INACTIVE_COLOR} icon="bars" />
