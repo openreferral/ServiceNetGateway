@@ -46,6 +46,10 @@
     "succesfullClaim": "You successfully claimed {{count}} records.",
     "claimingInfo": "The cloning process might take a while depending on the amount of records to claim",
     "claimTitle": "Welcome to Service Net",
-    "claimSubtitle": "Here are the records that you can claim"
+    "claimSubtitle": "Here are the records that you can claim",
+    "title": {
+      "gridView": "Grid View",
+      "map": "Map"
+    }
   }
 }
