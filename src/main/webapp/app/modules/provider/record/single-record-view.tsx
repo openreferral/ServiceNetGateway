@@ -422,6 +422,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   <span className="break">{openService.docs.length > 0 ? openService.docs[0].document : ''}</span>
                 </section>
               ) : null}
+              {openService.phones && openService.phones.length > 0 ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.phone" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.phones.length > 0 ? openService.phones[0].number : ''}</span>
+                </section>
+              ) : null}
               {openService.locationIndexes && openService.locationIndexes.length ? (
                 <section>
                   <h6 className="d-flex align-items-center flex-wrap">
@@ -580,7 +590,6 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               </CardBody>
             </Card>
           ) : null}
-
           {organization.description || organization.url || organization.email ? (
             <Card className="section">
               <CardTitle onClick={this.toggleOrganization} className="clickable">
@@ -623,6 +632,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         </b>
                       </h6>
                       <span>{organization.email}</span>
+                    </section>
+                  ) : null}
+                  {organization.phones && organization.phones.length > 0 ? (
+                    <section>
+                      <h6>
+                        <b>
+                          <Translate contentKey="record.singleRecordView.phone" />
+                        </b>
+                      </h6>
+                      <span>{organization.phones[0].number}</span>
                     </section>
                   ) : null}
                 </CardBody>

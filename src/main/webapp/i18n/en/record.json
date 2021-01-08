@@ -22,6 +22,7 @@
     "description": "Organization Description",
     "update": "Update",
     "url": "Organization Website",
+    "phone": "Phone Number",
     "email": "Main Email Address",
     "tabs": {
       "organization": "Organization",
@@ -51,6 +52,7 @@
       "eligibilityCriteria": "Eligibility Criteria",
       "locations": "Which Locations Offer This Service?",
       "details": "Service Details",
+      "phone": "Phone Number",
       "back": "Back to all Services",
       "requiredDocuments": "Required Documents"
     },
@@ -93,7 +95,8 @@
       "noServiceName": "No Service Name Provided",
       "noLocations": "No Locations Provided",
       "untyped": "No service type found",
-      "lastUpdated": "Last updated"
+      "lastUpdated": "Last updated",
+      "phone": "Phone Number"
     },
     "deactivateQuestion": "Are you sure you want to deactivate this record?",
     "discardQuestion": "Are you sure you want to discard your changes?",

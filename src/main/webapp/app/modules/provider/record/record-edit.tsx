@@ -5,6 +5,7 @@ import { Badge, Card, CardBody, CardTitle, Col, Collapse, Label, Progress, Row }
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { deactivateEntity, getProviderEntity, updateUserOwnedEntity, unclaimEntity } from 'app/entities/organization/organization.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
@@ -257,6 +258,16 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       openLocation: -1
     });
   };
+
+  validatePhone(value) {
+    if (!value || value === '') {
+      return true;
+    }
+    if (!isPossiblePhoneNumber(value)) {
+      return translate('entity.validation.phone');
+    }
+    return true;
+  }
 
   getLocations = () =>
     this.state.organization.locations.map((location, i) => ({
@@ -531,6 +542,18 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           />
         </AvGroup>
         <AvGroup>
+          <div className="flex">
+            <Label>{translate('record.phone')}</Label>
+          </div>
+          <AvField
+            type="text"
+            name={'services[' + i + '].phones[0].number'}
+            validate={{ custom: this.validatePhone }}
+            placeholder={translate('record.phone')}
+            onChange={this.onServiceChange(i, 'phone')}
+          />
+        </AvGroup>
+        <AvGroup>
           <Label>{translate('record.service.applicationProcess')}</Label>
           <AvInput
             type="textarea"
@@ -701,6 +724,17 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                       maxLength: { value: 50, errorMessage: translate('entity.validation.maxlength', { max: 50 }) }
                     }}
                     onChange={this.onOrganizationChange('email')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label for="phone"> {translate('record.phone')}</Label>
+                  <AvField
+                    id="organization-phone"
+                    type="text"
+                    name="phones[0].number"
+                    validate={{ custom: this.validatePhone }}
+                    placeholder={translate('record.phone')}
+                    onChange={this.onOrganizationChange('phone')}
                   />
                 </AvGroup>
               </CardBody>
