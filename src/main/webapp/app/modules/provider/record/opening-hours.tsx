@@ -1,16 +1,18 @@
 import './refer-button.scss';
 
 import React from 'react';
-import { Col, Row } from 'reactstrap';
+import { Col, Row, Label } from 'reactstrap';
 import { daysBetweenDates, getDateWithTime, getTimeString, getWeekday } from 'app/shared/util/date-utils';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
 import ButtonPill from '../shared/button-pill';
 import _ from 'lodash';
-import { translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
+import { AvInput } from 'availity-reactstrap-validation';
 
 export interface IOpeningHoursProp extends StateProps, DispatchProps {
   location: any;
+  locationIndex: number;
   updateLocationData: any;
   openingHours: any;
   datesClosed: any;
@@ -155,20 +157,23 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
   };
 
   preview = () => {
-    const { openingHours, datesClosed } = this.props;
-    const ohByDay = [];
-    openingHours.forEach(oh => {
-      if (oh.activeDays && oh.from && oh.to) {
-        oh.activeDays.forEach(day => {
-          ohByDay.push({
-            day,
-            label: getWeekday(day, 'long') + ': ' + oh.from + '-' + oh.to
+    const { openingHours, datesClosed, location } = this.props;
+    let rows = [translate('record.openingHours.247')];
+    if (!location.open247) {
+      const ohByDay = [];
+      openingHours.forEach(oh => {
+        if (oh.activeDays && oh.from && oh.to) {
+          oh.activeDays.forEach(day => {
+            ohByDay.push({
+              day,
+              label: getWeekday(day, 'long') + ': ' + oh.from + '-' + oh.to
+            });
           });
-        });
-      }
-    });
-    ohByDay.sort((a, b) => a.day - b.day);
-    const rows = ohByDay.map(day => day.label);
+        }
+      });
+      ohByDay.sort((a, b) => a.day - b.day);
+      rows = ohByDay.map(day => day.label);
+    }
     const sortedDates = [...datesClosed].sort().reverse();
     sortedDates.forEach(dc => {
       if (dc) {
@@ -178,59 +183,71 @@ export class OpeningHours extends React.Component<IOpeningHoursProp, {}> {
     return rows;
   };
 
+  handleOpen247Change = e => {
+    const { openingHours, datesClosed, location } = this.props;
+    location.open247 = !location.open247;
+    this.props.updateLocationData(openingHours, datesClosed, location);
+  };
+
   render() {
-    const { openingHours, datesClosed } = this.props;
+    const { openingHours, datesClosed, location, locationIndex } = this.props;
     const noOhRows = openingHours.length || 1;
     const noDcRows = datesClosed.length || 1;
+    const inputId247 = 'locations[' + locationIndex + '].open247';
     return (
       <div>
         <Row className="mt-3">
           <Col>
             <div>
               <label>{translate('record.openingHours.title')}</label>
+              <Label check className="ml-1 pl-4">
+                <AvInput id={inputId247} type="checkbox" name={inputId247} onChange={this.handleOpen247Change} value={location.open247} />
+                <Translate contentKey="record.openingHours.247" />
+              </Label>
             </div>
-            {Array.apply(null, { length: noOhRows }).map((x, rowNumber) => (
-              <div className="d-flex align-items-baseline opening-hours flex-row flex-wrap">
-                <div className="btn-group mr-2" role="group">
-                  {Array.apply(null, { length: DAYS_IN_A_WEEK }).map((y, weekday) => (
-                    <button
-                      type="button"
-                      className={`btn btn-secondary ${this.hasWeekday(openingHours, rowNumber, weekday) ? ' active' : ''}`}
-                      onClick={this.toggleDay(rowNumber, weekday)}
-                    >
-                      {getWeekday(weekday)}
-                    </button>
-                  ))}
-                </div>
-                <div className="d-flex mr-2 align-items-baseline">
-                  <DatePicker
-                    className={'form-control time-picker'}
-                    onChange={this.onFromTimeChange(rowNumber)}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    selected={this.getFromTime(rowNumber)}
-                    dateFormat="hh:mm aa"
-                  />
-                  <span className="mx-1">to</span>
-                  <DatePicker
-                    className={'form-control time-picker'}
-                    onChange={this.onToTimeChange(rowNumber)}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    selected={this.getToTime(rowNumber)}
-                    dateFormat="hh:mm aa"
-                  />
-                </div>
-                <ButtonPill className="button-pill-secondary mr-1" onClick={this.removeOpeningHoursRow(rowNumber)}>
-                  {translate('record.openingHours.remove')}
-                </ButtonPill>
-                {rowNumber >= openingHours.length - 1 && (
-                  <ButtonPill className="button-pill-secondary" onClick={this.addOpeningHoursRow}>
-                    {translate('record.openingHours.add')}
+            {!location.open247 &&
+              Array.apply(null, { length: noOhRows }).map((x, rowNumber) => (
+                <div className="d-flex align-items-baseline opening-hours flex-row flex-wrap">
+                  <div className="btn-group mr-2" role="group">
+                    {Array.apply(null, { length: DAYS_IN_A_WEEK }).map((y, weekday) => (
+                      <button
+                        type="button"
+                        className={`btn btn-secondary ${this.hasWeekday(openingHours, rowNumber, weekday) ? ' active' : ''}`}
+                        onClick={this.toggleDay(rowNumber, weekday)}
+                      >
+                        {getWeekday(weekday)}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="d-flex mr-2 align-items-baseline">
+                    <DatePicker
+                      className={'form-control time-picker'}
+                      onChange={this.onFromTimeChange(rowNumber)}
+                      showTimeSelect
+                      showTimeSelectOnly
+                      selected={this.getFromTime(rowNumber)}
+                      dateFormat="hh:mm aa"
+                    />
+                    <span className="mx-1">to</span>
+                    <DatePicker
+                      className={'form-control time-picker'}
+                      onChange={this.onToTimeChange(rowNumber)}
+                      showTimeSelect
+                      showTimeSelectOnly
+                      selected={this.getToTime(rowNumber)}
+                      dateFormat="hh:mm aa"
+                    />
+                  </div>
+                  <ButtonPill className="button-pill-secondary mr-1" onClick={this.removeOpeningHoursRow(rowNumber)}>
+                    {translate('record.openingHours.remove')}
                   </ButtonPill>
-                )}
-              </div>
-            ))}
+                  {rowNumber >= openingHours.length - 1 && (
+                    <ButtonPill className="button-pill-secondary" onClick={this.addOpeningHoursRow}>
+                      {translate('record.openingHours.add')}
+                    </ButtonPill>
+                  )}
+                </div>
+              ))}
           </Col>
         </Row>
         <Row className="mt-3">

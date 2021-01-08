@@ -705,6 +705,24 @@ Array [
                     >
                       <div>
                         <label />
+                        <label
+                          className="ml-1 pl-4 form-check-label"
+                        >
+                          <input
+                            checked={false}
+                            className="is-untouched is-pristine av-valid form-check-input"
+                            id="locations[0].open247"
+                            name="locations[0].open247"
+                            onBlur={[Function]}
+                            onChange={[Function]}
+                            onFocus={[Function]}
+                            onInput={[Function]}
+                            onKeyUp={[Function]}
+                            type="checkbox"
+                            value={false}
+                          />
+                          <span />
+                        </label>
                       </div>
                       <div
                         className="d-flex align-items-baseline opening-hours flex-row flex-wrap"
