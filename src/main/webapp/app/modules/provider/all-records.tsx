@@ -88,6 +88,7 @@ export interface IAllRecordsState extends IPaginationBaseState {
   isSearchBarFocused: boolean;
   appContainerHeight: number;
   iOSMapHeight: any;
+  filterOpened: boolean;
   referralModalTab: string;
 }
 
@@ -119,6 +120,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       isSearchBarFocused: false,
       iOSMapHeight: '100%',
       referralModalTab: null,
+      filterOpened: false,
       ...providerSearchPreferences
     };
     this.controlLineContainerRef = React.createRef();
@@ -237,6 +239,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({ sortingOpened: !this.state.sortingOpened });
   };
 
+  toggleFilter = () => {
+    this.setState({ filterOpened: !this.state.filterOpened, isRecordHighlighted: false });
+  };
+
   toggleRightSection = () => {
     this.setState({ rightSectionOpened: !this.state.rightSectionOpened, isRecordHighlighted: false });
   };
@@ -292,6 +298,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       selectedLng: null,
       showMyLocation: false,
       boundaries: null,
+      filterOpened: false,
       recordViewType: GRID_VIEW
     });
   };
@@ -667,13 +674,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
 
   topBar = () => {
     const { siloName, isMapView, isReferralEnabled } = this.props;
-    const { isSearchBarFocused } = this.state;
+    const { isSearchBarFocused, filterOpened } = this.state;
     const isMobile = this.isMobile();
     return (
       <div>
         <div className={`control-line-container${siloName || isMapView ? '-solid' : ''}`} ref={this.controlLineContainerRef}>
           <MediaQuery minDeviceWidth={DESKTOP_WIDTH_BREAKPOINT}>
-            <Row className="search">
+            <Row className="search filter-section">
               <Col className="height-fluid">
                 <div className="mb-1">
                   <b>
@@ -683,8 +690,31 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} onSearch={this.props.setText} onReset={this.props.resetText} />
               </Col>
             </Row>
+            <FilterBar siloName={siloName} getFirstPage={this.getFirstPage} isMapView={isMapView}>
+              <SortSection
+                dropdownOpen={this.state.sortingOpened}
+                toggleSort={() => this.toggleSorting()}
+                values={PROVIDER_SORT_ARRAY}
+                sort={this.state.sort}
+                order={this.state.order}
+                sortFunc={this.sort}
+              />
+              {this.viewTypeButton(isMobile)}
+            </FilterBar>
           </MediaQuery>
           <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>
+            <Modal isOpen={filterOpened} centered toggle={this.toggleFilter} contentClassName="filter-modal">
+              <div className="filter-card mx-3 mb-4">
+                <FilterBar
+                  siloName={siloName}
+                  dropdownOpen={filterOpened}
+                  toggleFilter={this.toggleFilter}
+                  getFirstPage={this.getFirstPage}
+                  isMapView={isMapView}
+                  isModal
+                />
+              </div>
+            </Modal>
             {siloName || isMapView ? null : this.title(isReferralEnabled)}
             <div className={isSearchBarFocused ? 'on-top' : ''}>
               <Row className="search">
@@ -699,18 +729,23 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               </Row>
             </div>
             {isSearchBarFocused ? <div className="darken-overlay" /> : null}
+            <div className="d-flex flex-grow-1 justify-between mt-1">
+              <div className="flex-grow-1 d-inline-flex">
+                <ButtonPill onClick={this.toggleFilter} translate="providerSite.filter" className="mr-2" />
+                <div className="sort-container mr-2">
+                  <SortSection
+                    dropdownOpen={this.state.sortingOpened}
+                    toggleSort={() => this.toggleSorting()}
+                    values={PROVIDER_SORT_ARRAY}
+                    sort={this.state.sort}
+                    order={this.state.order}
+                    sortFunc={this.sort}
+                  />
+                </div>
+              </div>
+              {this.viewTypeButton(isMobile)}
+            </div>
           </MediaQuery>
-          <FilterBar siloName={siloName} getFirstPage={this.getFirstPage} isMapView={isMapView}>
-            <SortSection
-              dropdownOpen={this.state.sortingOpened}
-              toggleSort={() => this.toggleSorting()}
-              values={PROVIDER_SORT_ARRAY}
-              sort={this.state.sort}
-              order={this.state.order}
-              sortFunc={this.sort}
-            />
-            {this.viewTypeButton(isMobile)}
-          </FilterBar>
         </div>
       </div>
     );

@@ -14,6 +14,7 @@ import {
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
 import { updateFilter, reset, checkFiltersChanged } from './provider-filter.reducer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const PLACEHOLDER_TEXT_COLOR = '#555';
 
@@ -21,6 +22,8 @@ export interface IFilterBarProps extends StateProps, DispatchProps {
   getFirstPage: Function;
   siloName?: string;
   isMapView: boolean;
+  isModal?: boolean;
+  toggleFilter?: any;
 }
 
 export interface IFilterBarState {
@@ -86,21 +89,27 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
 
   applyFilter = () => {
     const filter = { ...this.state };
-    const { isMapView } = this.props;
+    const { isMapView, toggleFilter } = this.props;
     if (isMapView) {
       this.props.checkFiltersChanged();
     }
     this.props.getFirstPage();
     this.props.updateFilter({ ...filter });
+    if (toggleFilter) {
+      toggleFilter();
+    }
   };
 
   resetFilter = () => {
-    const { isMapView } = this.props;
+    const { isMapView, toggleFilter } = this.props;
     if (isMapView) {
       this.props.checkFiltersChanged();
     }
     this.props.getFirstPage();
     this.props.reset();
+    if (toggleFilter) {
+      toggleFilter();
+    }
   };
 
   handleZipChanged = v => {
@@ -119,7 +128,18 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
     placeholder: style => ({ ...style, color: PLACEHOLDER_TEXT_COLOR })
   });
 
-  render() {
+  filterHeader = () => (
+    <div className="filter-header">
+      <b>
+        <Translate contentKey="providerSite.filterRecords" />
+      </b>
+      <div className="mx-2" onClick={() => this.props.toggleFilter()}>
+        <FontAwesomeIcon icon="times" />
+      </div>
+    </div>
+  );
+
+  filterSections = () => {
     const { taxonomyOptions, cityList, regionList, postalCodeList } = this.props;
     const { city, region, zip, serviceTypes } = this.state;
 
@@ -130,7 +150,6 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
         </div>
       </div>
     );
-
     return (
       <>
         <div className="flex-1 mr-2 filter-section">
@@ -206,13 +225,39 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
             />
           </div>
         </div>
-        <div className="mt-1 d-inline-flex align-items-center justify-content-center flex-wrap filter-section buttons">
-          {this.props.children}
-          <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" className="mx-1 d-inline" />
-          <ButtonPill className="button-pill-orange d-inline" onClick={this.applyFilter} translate="providerSite.apply" />
-        </div>
       </>
     );
+  };
+
+  filterButtons = () => (
+    <div className="mt-1 d-inline-flex align-items-center justify-content-center flex-wrap filter-section buttons">
+      {this.props.children}
+      <ButtonPill onClick={this.resetFilter} translate="providerSite.clear" className="mx-1 d-inline" />
+      <ButtonPill className="button-pill-orange d-inline" onClick={this.applyFilter} translate="providerSite.apply" />
+    </div>
+  );
+
+  render() {
+    if (this.props.isModal) {
+      return (
+        <div>
+          <this.filterHeader />
+          <div className="filter-body">
+            <this.filterSections />
+          </div>
+          <div className="filter-footer">
+            <this.filterButtons />
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <>
+          <this.filterSections />
+          <this.filterButtons />
+        </>
+      );
+    }
   }
 }
 

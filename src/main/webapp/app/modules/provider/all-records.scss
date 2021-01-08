@@ -144,5 +144,8 @@
       padding-top: 1rem;
     }
   }
+  &.search {
+    flex: 1;
+  }
   min-width: 300px;
 }
