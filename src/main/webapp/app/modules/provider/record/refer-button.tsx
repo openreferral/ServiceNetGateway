@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { referRecord, unreferRecord } from '../provider-record.reducer';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
+import ButtonPill from '../shared/button-pill';
 
 export interface IReferButtonProp extends StateProps, DispatchProps {
   record: any;
@@ -19,21 +20,21 @@ export class ReferButton extends React.Component<IReferButtonProp, {}> {
     }
     if (referredRecords.has(record.organization.id)) {
       return (
-        <div className="refer-button green" onClick={() => this.props.unreferRecord(record, userName)}>
-          <b className="d-flex align-items-center">
+        <ButtonPill className="refer-button button-pill-referred" onClick={() => this.props.unreferRecord(record, userName)}>
+          <b className="d-flex align-items-center justify-content-center h-100">
             <Translate contentKey="recordCard.referred" />
             &nbsp;
             <FontAwesomeIcon icon="check" />
           </b>
-        </div>
+        </ButtonPill>
       );
     } else {
       return (
-        <div className="refer-button" onClick={() => this.props.referRecord(record, userName)}>
-          <b>
+        <ButtonPill className="refer-button button-pill-refer" onClick={() => this.props.referRecord(record, userName)}>
+          <b className="d-flex align-items-center justify-content-center h-100">
             <Translate contentKey="recordCard.refer" />
           </b>
-        </div>
+        </ButtonPill>
       );
     }
   }

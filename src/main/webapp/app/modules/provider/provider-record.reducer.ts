@@ -10,6 +10,7 @@ export const ACTION_TYPES = {
   FETCH_ALL_RECORDS: 'records/FETCH_ALL_RECORDS',
   FETCH_PROVIDER_OPTIONS: 'records/FETCH_PROVIDER_OPTIONS',
   FETCH_ALL_RECORDS_FOR_MAP: 'records/FETCH_ALL_RECORDS_FOR_MAP',
+  FETCH_RECORDS_AVAILABLE_TO_CLAIM: 'records/FETCH_RECORDS_AVAILABLE_TO_CLAIM',
   SELECT_RECORD: 'records/SELECT_RECORD',
   REFER_RECORD: 'records/REFER_RECORD',
   UNREFER_RECORD: 'records/UNREFER_RECORD',
@@ -22,6 +23,7 @@ export const ACTION_TYPES = {
 
 const initialState = {
   loading: false,
+  loadingMap: false,
   errorMessage: null,
   updating: false,
   updateSuccess: false,
@@ -37,7 +39,9 @@ const initialState = {
   checkedIn: false,
   referSuccess: false,
   providerOptions: [] as ReadonlyArray<IOrganizationOption>,
-  madeToOptions: [] as ReadonlyArray<IOrganizationOption>
+  madeToOptions: [] as ReadonlyArray<IOrganizationOption>,
+  recordsAvailableToClaim: [] as any[],
+  recordsAvailableToClaimTotal: 0
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -57,11 +61,17 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_RECORDS):
     case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS):
-    case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
+    case REQUEST(ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM):
       return {
         ...state,
         selectedRecord: null,
         loading: true
+      };
+    case REQUEST(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
+      return {
+        ...state,
+        selectedRecord: null,
+        loadingMap: true
       };
     case REQUEST(ACTION_TYPES.SELECT_RECORD):
       return {
@@ -85,6 +95,7 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
     case FAILURE(ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP):
     case FAILURE(ACTION_TYPES.SELECT_RECORD):
     case FAILURE(ACTION_TYPES.SEND_REFERRALS):
+    case FAILURE(ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM):
       return {
         ...state,
         loading: false,
@@ -125,6 +136,18 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         updating: false,
         updateSuccess: true,
         allRecordsForMap: action.payload.data,
+        loadingMap: false
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM):
+      const availableToClaimpayload = action.meta.isInitLoading
+        ? action.payload.data.content
+        : [...state.recordsAvailableToClaim, ...action.payload.data.content];
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        recordsAvailableToClaim: availableToClaimpayload,
+        recordsAvailableToClaimTotal: action.payload.data.totalElements,
         loading: false
       };
     case SUCCESS(ACTION_TYPES.SELECT_RECORD):
@@ -194,6 +217,7 @@ const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
 const checkInApiUrl = SERVICENET_API_URL + '/beneficiaries/check-in';
 const referUrl = SERVICENET_API_URL + '/beneficiaries/refer';
 const madeToOptionsApiUrl = SERVICENET_API_URL + '/referrals/made-to-options';
+const recordsAvailableToClaimApiUrl = SERVICENET_API_URL + '/records-to-claim';
 
 // Actions
 
@@ -293,3 +317,14 @@ export const getMadeToOptions = () => ({
   type: ACTION_TYPES.FETCH_MADE_TO_OPTIONS,
   payload: axios.get(madeToOptionsApiUrl)
 });
+
+export const getRecordsAvailableToClaim = (page, itemsPerPage, isInitLoading = false, search) => {
+  const pageableUrl = `${recordsAvailableToClaimApiUrl}?search=${search}&page=${page}&size=${itemsPerPage}&sort=${DEFAULT_RECORDS_SORT}`;
+  return {
+    type: ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM,
+    payload: axios.get(pageableUrl),
+    meta: {
+      isInitLoading
+    }
+  };
+};

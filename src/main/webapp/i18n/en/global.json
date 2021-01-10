@@ -18,6 +18,7 @@
       "contact": "Contact",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "referral": "Referral",
+      "bulkUpload": "Bulk Upload",
       "entities": {
         "main": "Entities",
         "systemAccount": "System Account",
@@ -119,7 +120,15 @@
       "firstName": "First name",
       "firstName.placeholder": "First name",
       "lastName": "Last name",
-      "lastName.placeholder": "Last name"
+      "lastName.placeholder": "Last name",
+      "organizationName": "If the record(s) not found on the above dropdown, enter below:",
+      "organizationName.placeholder": "Your Organization Name(s)",
+      "organizations": "Organization Name(s)",
+      "organizations.placeholder": "Your Organization Name(s)",
+      "contactEmail.placeholder": "Email",
+      "contactFirstName.placeholder": "First name",
+      "contactLastName.placeholder": "Last name",
+      "contact.label": "Provider a contact email who can verify your position in the organization"
     },
     "messages": {
       "info": {

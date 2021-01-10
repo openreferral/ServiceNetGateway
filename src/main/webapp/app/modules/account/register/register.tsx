@@ -1,5 +1,6 @@
+import './register.scss';
 import React from 'react';
-import { Translate, translate, getUrlParameter } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { AvForm, AvField, AvGroup } from 'availity-reactstrap-validation';
@@ -15,12 +16,15 @@ import ButtonPill from 'app/modules/provider/shared/button-pill';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { getCaptcha, ICaptchaComponent, ICaptchaState } from 'app/shared/auth/captcha';
 import { RECAPTCHA_SITE_KEY } from 'app/config/constants';
+import { getProviderOrganizationOptions } from 'app/entities/organization/organization.reducer';
+import Select from 'react-select';
 
 export interface IRegisterProps extends StateProps, DispatchProps, RouteComponentProps<{ siloName: any }> {}
 
 export interface IRegisterState extends ICaptchaState {
   password: string;
   phoneNumber: string;
+  organizationOptions: any[];
 }
 
 export class RegisterPage extends React.Component<IRegisterProps, IRegisterState> implements ICaptchaComponent {
@@ -28,9 +32,14 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
     password: '',
     phoneNumber: '',
     captcha: null,
-    captchaError: ''
+    captchaError: '',
+    organizationOptions: []
   };
   recaptchaRef = React.createRef();
+
+  componentDidMount() {
+    this.props.getProviderOrganizationOptions();
+  }
 
   componentWillUnmount() {
     this.props.reset();
@@ -57,6 +66,7 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
       return;
     }
     getCaptcha(this, captcha => {
+      const organizationIds = this.state.organizationOptions.map(option => option.value);
       if (this.props.match.params.siloName) {
         this.props.handleRegisterWithinSilo(
           this.props.match.params.siloName,
@@ -69,6 +79,10 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
           values.organizationUrl,
           this.state.phoneNumber,
           captcha,
+          organizationIds,
+          values.contactFirstName,
+          values.contactLastName,
+          values.contactEmail,
           this.props.currentLocale
         );
       } else {
@@ -82,6 +96,10 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
           values.organizationUrl,
           this.state.phoneNumber,
           captcha,
+          organizationIds,
+          values.contactFirstName,
+          values.contactLastName,
+          values.contactEmail,
           this.props.currentLocale
         );
       }
@@ -91,6 +109,12 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
 
   updatePassword = event => {
     this.setState({ password: event.target.value });
+  };
+
+  onOrganizationsChange = organizationOptions => {
+    this.setState({
+      organizationOptions
+    });
   };
 
   render() {
@@ -147,17 +171,24 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                 label={translate('global.form.lastName')}
                 placeholder={translate('global.form.lastName.placeholder')}
               />
+              <div className="form-group">
+                <Translate contentKey="global.form.organizations" />
+                <Label className="sr-only" for="organizationOptions">
+                  {translate('global.form.organizations.placeholder')}
+                </Label>
+                <Select
+                  options={this.props.organizationOptions}
+                  onChange={this.onOrganizationsChange}
+                  defaultValue={[]}
+                  isMulti
+                  inputId="organizationOptions"
+                />
+              </div>
               <AvField
                 name="organizationName"
-                label={translate('userManagement.organizationName')}
-                placeholder={translate('userManagement.organizationName.placeholder')}
+                label={translate('global.form.organizationName')}
+                placeholder={translate('global.form.organizationName.placeholder')}
                 type="text"
-                validate={{
-                  required: {
-                    value: true,
-                    errorMessage: translate('register.messages.validate.organizationName.required')
-                  }
-                }}
               />
               <AvField
                 name="organizationUrl"
@@ -193,6 +224,22 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
                     <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
                   )}
               </AvGroup>
+              <Label>
+                <Translate contentKey="global.form.contact.label" />
+              </Label>
+              <div className="d-flex flex-row contact-fields">
+                <AvField name="contactFirstName" placeholder={translate('global.form.contactFirstName.placeholder')} className="d-flex" />
+                <AvField name="contactLastName" placeholder={translate('global.form.contactLastName.placeholder')} />
+                <AvField
+                  name="contactEmail"
+                  placeholder={translate('global.form.contactEmail.placeholder')}
+                  type="email"
+                  validate={{
+                    minLength: { value: 5, errorMessage: translate('global.messages.validate.email.minlength') },
+                    maxLength: { value: 254, errorMessage: translate('global.messages.validate.email.maxlength') }
+                  }}
+                />
+              </div>
               <AvField
                 name="firstPassword"
                 autoComplete="new-password"
@@ -256,11 +303,12 @@ export class RegisterPage extends React.Component<IRegisterProps, IRegisterState
   }
 }
 
-const mapStateToProps = ({ locale }: IRootState) => ({
-  currentLocale: locale.currentLocale
+const mapStateToProps = ({ locale, organization }: IRootState) => ({
+  currentLocale: locale.currentLocale,
+  organizationOptions: organization.options.map(option => ({ value: option.id, label: option.name }))
 });
 
-const mapDispatchToProps = { handleRegister, handleRegisterWithinSilo, reset };
+const mapDispatchToProps = { handleRegister, handleRegisterWithinSilo, reset, getProviderOrganizationOptions };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 

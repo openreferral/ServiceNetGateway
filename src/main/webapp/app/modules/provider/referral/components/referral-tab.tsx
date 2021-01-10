@@ -18,6 +18,7 @@ import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 
 export interface IReferralTabProps extends StateProps, DispatchProps {
   isMobile: boolean;
+  handleClose: any;
 }
 
 export interface IReferralTabState {
@@ -62,6 +63,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
     if (prevProps.referSuccess !== this.props.referSuccess) {
       if (referSuccess) {
         toast.success(translate('referral.records.referSuccess'));
+        this.props.handleClose();
       } else if (!!error) {
         toast.error(translate('referral.records.referFailure'));
       }
@@ -174,14 +176,16 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
           <td>
             <div>{record.organization.name}</div>
           </td>
-          <td className="d-flex">
-            <Select
-              className={`full-width to-location ${missingLocations.indexOf(id) >= 0 ? 'required' : ''}`}
-              value={toLocationValue}
-              options={recordLocationOptions}
-              onChange={this.onToLocationSelect(id)}
-              styles={selectStyle()}
-            />
+          <td>
+            <div className="d-flex">
+              <Select
+                className={`full-width to-location ${missingLocations.indexOf(id) >= 0 ? 'required' : ''}`}
+                value={toLocationValue}
+                options={recordLocationOptions}
+                onChange={this.onToLocationSelect(id)}
+                styles={selectStyle()}
+              />
+            </div>
           </td>
           <td>
             <ButtonPill className="button-pill-danger pull-right" onClick={() => this.props.unreferRecord(record, this.props.userName)}>
@@ -292,14 +296,7 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
   contentEmpty = () => <div>{translate('referral.records.empty')}</div>;
 
   render() {
-    return (
-      <div className="col-12 col-md-6 offset-md-3">
-        <div className="content-title my-3 my-md-5">
-          <Translate contentKey="referral.title.referrals" />
-        </div>
-        {!_.isEmpty(this.props.referredRecords) ? this.content() : this.contentEmpty()}
-      </div>
-    );
+    return <div className="col-12">{!_.isEmpty(this.props.referredRecords) ? this.content() : this.contentEmpty()}</div>;
   }
 }
 

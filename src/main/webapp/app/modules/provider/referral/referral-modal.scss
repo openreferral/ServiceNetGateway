@@ -1,0 +1,23 @@
+#referral-modal {
+  max-width: 100% !important;
+  padding-left: 0;
+  padding-right: 0;
+  @media (max-width: 400px) {
+    margin: 0;
+  }
+  @media (min-width: 576px) {
+    margin-left: 8.3333333333%;
+    max-width: 83.3333333333% !important;
+  }
+  @media (min-width: 768px) {
+    margin-left: 16.6666666667%;
+    max-width: 66.6666666667% !important;
+  }
+  @media (min-width: 992px) {
+    margin-left: 25%;
+    max-width: 50% !important;
+  }
+  th {
+    border-top: 0;
+  }
+}

@@ -1,5 +1,13 @@
 {
   "record": {
+    "openingHours": {
+      "title": "Tell us your opening hours",
+      "dates": "Tell us specific dates that you are closed",
+      "closedOn": "Closed on",
+      "remove": "Remove",
+      "add": "Add more",
+      "preview": "Format that others will see"
+    },
     "newCard": {
       "title": "Have more data to contribute?",
       "buttonLabel": "Add a new record"
@@ -53,7 +61,8 @@
       "submit": "I'm Finished",
       "deactivate": "Deactivate Record",
       "discard": "Discard Changes",
-      "done": "Done"
+      "done": "Done",
+      "unclaim": "Unclaim Record"
     },
     "heading": {
       "organization": "Tell us a bit about your organization!",
@@ -67,6 +76,7 @@
       "back": "Back To All Records",
       "dailyUpdates": "Daily Updates",
       "noNewUpdates": "No new updates",
+      "orgInfo": "Organization Information",
       "orgDetails": "Organization Details",
       "orgName": "Organization Name",
       "orgDescr": "Organization Details",
@@ -86,6 +96,7 @@
       "lastUpdated": "Last updated"
     },
     "deactivateQuestion": "Are you sure you want to deactivate this record?",
-    "discardQuestion": "Are you sure you want to discard your changes?"
+    "discardQuestion": "Are you sure you want to discard your changes?",
+    "unclaimQuestion": "Are you sure you want to unclaim this record?"
   }
 }

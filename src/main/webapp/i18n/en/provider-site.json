@@ -1,6 +1,7 @@
 {
   "providerSite": {
     "searchPlaceholder": "Search by organization name or keyword",
+    "searchLabel": "Search",
     "hello": "Hello ",
     "anyUpdates": "Any updates to your records?",
     "loadMore": "Load more",
@@ -38,6 +39,17 @@
     "mapView": "Map View",
     "gridView": "Grid View",
     "directions": "Directions",
-    "referElsewhere": "Refer Elsewhere"
+    "beneficiaryCheckIn": "Beneficiary Check In",
+    "referElsewhere": "Refer Elsewhere",
+    "claim": "Claim Record(s)",
+    "claimMore": "Would you like to claim more records?",
+    "succesfullClaim": "You successfully claimed {{count}} records.",
+    "claimingInfo": "The cloning process might take a while depending on the amount of records to claim",
+    "claimTitle": "Welcome to Service Net",
+    "claimSubtitle": "Here are the records that you can claim",
+    "title": {
+      "gridView": "Grid View",
+      "map": "Map"
+    }
   }
 }

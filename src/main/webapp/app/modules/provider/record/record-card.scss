@@ -81,7 +81,12 @@ div.card.record-card {
 
     .last-update {
       flex: 1;
-
+      overflow: hidden;
+      div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       &-full-width {
         @extend .last-update;
         display: flex;
@@ -138,6 +143,10 @@ div.card.record-card {
     section {
       height: 50px;
       padding-top: 10px;
+    }
+
+    .locations-width {
+      flex-grow: 1;
     }
   }
 

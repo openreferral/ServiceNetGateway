@@ -17,6 +17,7 @@ import { getUser } from 'app/modules/administration/user-management/user-managem
 import { IRootState } from 'app/shared/reducers';
 import OwnerInfo from 'app/shared/layout/owner-info';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import ClaimButton from 'app/modules/provider/record/claim-button';
 import ReferButton from 'app/modules/provider/record/refer-button';
 import _ from 'lodash';
 import moment from 'moment';
@@ -38,6 +39,8 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   coordinates?: string;
   owner?: IUser;
   referring: boolean;
+  claiming?: boolean;
+  onNameClick?: Function;
 }
 
 export interface IRecordCardState {
@@ -141,6 +144,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
             <OwnerInfo owner={record.owner || this.props.owner || {}} organization={record.organization} direction="top" />
           </div>
         </div>
+        {this.props.claiming && <ClaimButton record={record} />}
         {this.props.coordinates && (
           <div>
             <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
@@ -203,12 +207,19 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     );
   };
 
+  organizationNameOnClick = event => {
+    if (this.props.onNameClick) {
+      event.preventDefault();
+      this.props.onNameClick();
+    }
+  };
+
   getHeader = () => {
     const { record, link, fullWidth } = this.props;
     return fullWidth ? (
       <div className="mb-2">
         <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', height: '2em' }}>
-          <Link className="organization-name-full-width" to={link}>
+          <Link className="organization-name-full-width" to={link} onClick={this.organizationNameOnClick}>
             {record.organization.name}
           </Link>
           <div style={{ flex: 1 }} className="ml-5">
@@ -218,7 +229,9 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       </div>
     ) : (
       <div className="organization-name">
-        <Link to={link}>{record.organization.name}</Link>
+        <Link to={link} onClick={this.organizationNameOnClick}>
+          {record.organization.name}
+        </Link>
       </div>
     );
   };
@@ -254,7 +267,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           )}
           {!fullWidth && <this.serviceSection />}
           <section className="d-flex justify-content-between">
-            <div style={referring ? { width: '90%' } : { width: '100%' }}>
+            <div className={referring ? 'locations-width' : 'w-100'}>
               <div className="locations">
                 {record.locations.length > 0 ? (
                   <AutoSizer disableHeight>

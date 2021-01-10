@@ -696,6 +696,220 @@ Array [
                     />
                   </div>
                 </div>
+                <div>
+                  <div
+                    className="mt-3 row"
+                  >
+                    <div
+                      className="col"
+                    >
+                      <div>
+                        <label />
+                      </div>
+                      <div
+                        className="d-flex align-items-baseline opening-hours flex-row flex-wrap"
+                      >
+                        <div
+                          className="btn-group mr-2"
+                          role="group"
+                        >
+                          <button
+                            className="btn btn-secondary "
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Sun
+                          </button>
+                          <button
+                            className="btn btn-secondary  active"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Mon
+                          </button>
+                          <button
+                            className="btn btn-secondary  active"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Tue
+                          </button>
+                          <button
+                            className="btn btn-secondary  active"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Wed
+                          </button>
+                          <button
+                            className="btn btn-secondary  active"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Thu
+                          </button>
+                          <button
+                            className="btn btn-secondary  active"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Fri
+                          </button>
+                          <button
+                            className="btn btn-secondary "
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Sat
+                          </button>
+                        </div>
+                        <div
+                          className="d-flex mr-2 align-items-baseline"
+                        >
+                          <div
+                            className="react-datepicker-wrapper"
+                          >
+                            <div
+                              className="react-datepicker__input-container"
+                            >
+                              <input
+                                className="form-control time-picker"
+                                disabled={false}
+                                onBlur={[Function]}
+                                onChange={[Function]}
+                                onClick={[Function]}
+                                onFocus={[Function]}
+                                onKeyDown={[Function]}
+                                readOnly={false}
+                                type="text"
+                                value="09:00 AM"
+                              />
+                            </div>
+                          </div>
+                          <span
+                            className="mx-1"
+                          >
+                            to
+                          </span>
+                          <div
+                            className="react-datepicker-wrapper"
+                          >
+                            <div
+                              className="react-datepicker__input-container"
+                            >
+                              <input
+                                className="form-control time-picker"
+                                disabled={false}
+                                onBlur={[Function]}
+                                onChange={[Function]}
+                                onClick={[Function]}
+                                onFocus={[Function]}
+                                onKeyDown={[Function]}
+                                readOnly={false}
+                                type="text"
+                                value="05:00 PM"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="button-pill button-pill-secondary mr-1"
+                          onClick={[Function]}
+                          style={Object {}}
+                        />
+                        <div
+                          className="button-pill button-pill-secondary"
+                          onClick={[Function]}
+                          style={Object {}}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="mt-3 row"
+                  >
+                    <div
+                      className="col"
+                    >
+                      <div>
+                        <label />
+                      </div>
+                      <div
+                        className="d-flex align-items-baseline opening-hours flex-row flex-wrap"
+                      >
+                        <div
+                          className="d-flex mr-2 align-items-baseline"
+                        >
+                          <span
+                            className="mx-1"
+                          >
+                            :
+                          </span>
+                          <div
+                            className="react-datepicker-wrapper"
+                          >
+                            <div
+                              className="react-datepicker__input-container"
+                            >
+                              <input
+                                className="form-control date-closed"
+                                disabled={false}
+                                onBlur={[Function]}
+                                onChange={[Function]}
+                                onClick={[Function]}
+                                onFocus={[Function]}
+                                onKeyDown={[Function]}
+                                readOnly={false}
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="button-pill button-pill-secondary mr-1"
+                          onClick={[Function]}
+                          style={Object {}}
+                        />
+                        <div
+                          className="button-pill button-pill-secondary"
+                          onClick={[Function]}
+                          style={Object {}}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="my-3 opening-hours row"
+                  >
+                    <div
+                      className="col"
+                    >
+                      <div>
+                        <label />
+                      </div>
+                      <div
+                        className="preview"
+                      >
+                        <div>
+                          Monday: 09:00 AM-05:00 PM
+                        </div>
+                        <div>
+                          Tuesday: 09:00 AM-05:00 PM
+                        </div>
+                        <div>
+                          Wednesday: 09:00 AM-05:00 PM
+                        </div>
+                        <div>
+                          Thursday: 09:00 AM-05:00 PM
+                        </div>
+                        <div>
+                          Friday: 09:00 AM-05:00 PM
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

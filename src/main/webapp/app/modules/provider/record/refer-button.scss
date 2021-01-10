@@ -1,13 +1,5 @@
 .refer-button {
   cursor: pointer;
-  color: black;
-
-  &:hover {
-    color: #157ba5;
-  }
-
-  &.green,
-  &.green:hover {
-    color: green;
-  }
+  height: 27px;
+  padding: 2px 1rem !important;
 }

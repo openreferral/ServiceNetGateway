@@ -94,7 +94,7 @@ describe('Creating account tests', () => {
         }
       ];
       await store
-        .dispatch(handleRegister('', '', '', '', '', '', '', '', ''))
+        .dispatch(handleRegister('', '', '', '', '', '', '', '', '', [], '', '', ''))
         .then(() => expect(store.getActions()).toEqual(expectedActions));
     });
     it('dispatches ACTION_TYPES.RESET actions', async () => {

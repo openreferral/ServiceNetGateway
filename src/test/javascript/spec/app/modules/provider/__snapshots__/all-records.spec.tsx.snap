@@ -1401,6 +1401,7 @@ exports[`All records renders correctly 1`] = `
       getAllProviderRecords={[Function]}
       getAllProviderRecordsPublic={[Function]}
       getProviderRecordsForMap={[Function]}
+      getRecordsAvailableToClaim={[Function]}
       providerFilter={
         Object {
           "city": "",
@@ -1409,94 +1410,113 @@ exports[`All records renders correctly 1`] = `
           "zip": "",
         }
       }
+      referralCount={0}
+      resetRecordsToClaim={[Function]}
+      resetText={[Function]}
       search=""
       selectRecord={[Function]}
       selectedRecord={null}
+      setText={[Function]}
       uncheckFiltersChanged={[Function]}
     >
       <main
         className="all-records flex-column-stretch"
       >
-        <MediaQuery
-          maxDeviceWidth={768}
-        />
+        <Connect(ClaimRecordsModal)
+          claimRecordsOpened={false}
+          closeClaiming={[Function]}
+          toggleClaimRecordsOpened={[Function]}
+        >
+          <ClaimRecordsModal
+            account={
+              Object {
+                "activated": true,
+                "authorities": Array [
+                  "ROLE_USER",
+                  "ROLE_ADMIN",
+                ],
+                "createdBy": "system",
+                "createdDate": null,
+                "email": "admin@localhost.com",
+                "firstName": "Administrator",
+                "id": "30000000-0000-0000-0000-000000000000",
+                "imageUrl": null,
+                "langKey": "en",
+                "lastModifiedBy": "admin",
+                "lastModifiedDate": "2020-03-20T17:37:36.301205Z",
+                "lastName": "Administrator",
+                "login": "admin",
+                "organizationName": "Chicago test1",
+                "organizationUrl": "www.wp.pl",
+                "organizations": null,
+                "phoneNumber": "+13456753456",
+                "shelters": Array [],
+                "siloId": null,
+                "systemAccountId": "ab7018c5-b3cc-4a5d-97fb-50e7ba8262c1",
+                "systemAccountName": "ShelterTech",
+                "userGroups": Array [],
+              }
+            }
+            claimEntities={[Function]}
+            claimRecordsOpened={false}
+            closeClaiming={[Function]}
+            getRecordsAvailableToClaim={[Function]}
+            resetRecordsToClaim={[Function]}
+            resetTextModal={[Function]}
+            setTextModal={[Function]}
+            toggleClaimRecordsOpened={[Function]}
+          >
+            <div>
+              <Modal
+                autoFocus={true}
+                backdrop="static"
+                backdropTransition={
+                  Object {
+                    "mountOnEnter": true,
+                    "timeout": 150,
+                  }
+                }
+                centered={true}
+                className="claiming claim-record-modal"
+                contentClassName="modal-content"
+                fade={true}
+                isOpen={false}
+                keyboard={false}
+                modalTransition={
+                  Object {
+                    "timeout": 300,
+                  }
+                }
+                onClosed={[Function]}
+                onOpened={[Function]}
+                returnFocusAfterClose={true}
+                role="dialog"
+                scrollable={false}
+                style={Object {}}
+                toggle={[Function]}
+                unmountOnClose={true}
+                zIndex={1050}
+              />
+            </div>
+          </ClaimRecordsModal>
+        </Connect(ClaimRecordsModal)>
         <MediaQuery
           minDeviceWidth={769}
         />
-        <div>
-          <div
-            className="control-line-container"
-          >
-            <MediaQuery
-              minDeviceWidth={769}
-            />
-            <MediaQuery
-              maxDeviceWidth={768}
-            />
+        <Component>
+          <div>
             <div
-              className="d-flex flex-grow-1 justify-between mt-1"
+              className="control-line-container"
             >
-              <div
-                className="flex-grow-1 d-inline-flex"
-              >
-                <ButtonPill
-                  className="mr-2"
-                  onClick={[Function]}
-                  translate="providerSite.filter"
-                >
-                  <div
-                    className="button-pill mr-2"
-                    onClick={[Function]}
-                    style={Object {}}
-                  >
-                    <b>
-                      <Translate
-                        component="span"
-                        contentKey="providerSite.filter"
-                      >
-                        <span />
-                      </Translate>
-                    </b>
-                  </div>
-                </ButtonPill>
-                <div
-                  className="sort-container"
-                >
-                  <SortActivity
-                    dropdownOpen={false}
-                    order="desc"
-                    sort="updatedAt"
-                    sortFunc={[Function]}
-                    toggleSort={[Function]}
-                    values={
-                      Array [
-                        "updatedAt",
-                        "name",
-                      ]
-                    }
-                  >
-                    <div>
-                      <MediaQuery
-                        maxDeviceWidth={768}
-                      />
-                      <MediaQuery
-                        minDeviceWidth={769}
-                      />
-                    </div>
-                  </SortActivity>
-                </div>
-              </div>
-              <div>
-                <MediaQuery
-                  maxDeviceWidth={768}
-                />
-                <MediaQuery
-                  minDeviceWidth={769}
-                />
-              </div>
+              <MediaQuery
+                minDeviceWidth={769}
+              />
+              <MediaQuery
+                maxDeviceWidth={768}
+              />
             </div>
           </div>
-        </div>
+        </Component>
         <Component>
           <div>
             <InfiniteScroll

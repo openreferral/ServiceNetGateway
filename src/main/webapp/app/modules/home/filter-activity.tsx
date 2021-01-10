@@ -23,6 +23,7 @@ import DatePicker from 'react-datepicker';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { GOOGLE_API_KEY } from 'app/config/constants';
 import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { dateWithoutTz, dateWithTz } from 'app/shared/util/date-utils';
 
 export interface IFilterActivityState {
   filtersChanged: boolean;
@@ -294,23 +295,13 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
     this.props.updateActivityFilter({ ...this.props.activityFilter, dateFilter: dateFilter.value });
   };
 
-  dateWithoutTz = dateToFormat => {
-    const date = new Date(dateToFormat);
-    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  };
-
-  dateWithTz = dateToFormat => {
-    const date = new Date(dateToFormat);
-    return date.setTime(date.getTime() + date.getTimezoneOffset() * 60000);
-  };
-
   handleFromDateChange = fromDate => {
-    this.props.updateActivityFilter({ ...this.props.activityFilter, fromDate: this.dateWithoutTz(fromDate).toISOString() });
+    this.props.updateActivityFilter({ ...this.props.activityFilter, fromDate: dateWithoutTz(fromDate).toISOString() });
     this.setState({ filtersChanged: true });
   };
 
   handleToDateChange = toDate => {
-    this.props.updateActivityFilter({ ...this.props.activityFilter, toDate: this.dateWithoutTz(toDate).toISOString() });
+    this.props.updateActivityFilter({ ...this.props.activityFilter, toDate: dateWithoutTz(toDate).toISOString() });
     this.setState({ filtersChanged: true });
   };
 
@@ -376,7 +367,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
     return merged;
   };
 
-  getDateOrNull = date => (date ? this.dateWithTz(date) : null);
+  getDateOrNull = date => (date ? dateWithTz(date) : null);
 
   optionsTab = () => this.changeTab('optionsTab');
 
