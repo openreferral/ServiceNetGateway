@@ -7,7 +7,7 @@ import { Button, Alert, Col, Row } from 'reactstrap';
 import { IRootState } from 'app/shared/reducers';
 import { handlePasswordResetInit, reset } from '../password-reset.reducer';
 
-export type IPasswordResetInitProps = DispatchProps;
+export interface IPasswordResetInitProps extends StateProps, DispatchProps {}
 
 export class PasswordResetInit extends React.Component<IPasswordResetInitProps> {
   componentWillUnmount() {
@@ -19,6 +19,21 @@ export class PasswordResetInit extends React.Component<IPasswordResetInitProps> 
     event.preventDefault();
   };
 
+  getAlert = () => {
+    const { resetPasswordSuccess, resetPasswordFailure } = this.props;
+    let message = 'reset.request.messages.info';
+    let messageColor = 'warning';
+    if (resetPasswordSuccess || resetPasswordFailure) {
+      messageColor = resetPasswordSuccess ? 'success' : 'danger';
+      message = resetPasswordSuccess ? 'reset.request.messages.success' : 'reset.request.messages.notfound';
+    }
+    return (
+      <Alert color={messageColor}>
+        <Translate contentKey={message} />
+      </Alert>
+    );
+  };
+
   render() {
     return (
       <div>
@@ -27,11 +42,7 @@ export class PasswordResetInit extends React.Component<IPasswordResetInitProps> 
             <h1>
               <Translate contentKey="reset.request.title">Reset your password</Translate>
             </h1>
-            <Alert color="warning">
-              <p>
-                <Translate contentKey="reset.request.messages.info">Enter the email address you used to register</Translate>
-              </p>
-            </Alert>
+            <this.getAlert />
             <AvForm onValidSubmit={this.handleValidSubmit}>
               <AvField
                 name="email"
@@ -55,11 +66,17 @@ export class PasswordResetInit extends React.Component<IPasswordResetInitProps> 
   }
 }
 
+const mapStateToProps = (state: IRootState) => ({
+  resetPasswordSuccess: state.passwordReset.resetPasswordSuccess,
+  resetPasswordFailure: state.passwordReset.resetPasswordFailure
+});
+
 const mapDispatchToProps = { handlePasswordResetInit, reset };
 
+type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(PasswordResetInit);

@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { Alert, Col, Row, Button } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Translate, translate, getUrlParameter } from 'react-jhipster';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 
-export interface IPasswordResetFinishProps extends DispatchProps, RouteComponentProps<{ key: string }> {}
+export interface IPasswordResetFinishProps extends StateProps, DispatchProps, RouteComponentProps<{ key: string }> {}
 
 export interface IPasswordResetFinishState {
   password: string;
@@ -33,6 +33,12 @@ export class PasswordResetFinishPage extends React.Component<IPasswordResetFinis
   updatePassword = event => {
     this.setState({ password: event.target.value });
   };
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.resetPasswordSuccess && this.props.resetPasswordSuccess) {
+      this.props.history.push('/login');
+    }
+  }
 
   getResetForm() {
     return (
@@ -89,11 +95,16 @@ export class PasswordResetFinishPage extends React.Component<IPasswordResetFinis
   }
 }
 
+const mapStateToProps = (state: IRootState) => ({
+  resetPasswordSuccess: state.passwordReset.resetPasswordSuccess
+});
+
 const mapDispatchToProps = { handlePasswordResetFinish, reset };
 
+type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(PasswordResetFinishPage);
+)(withRouter(PasswordResetFinishPage));
