@@ -150,7 +150,7 @@ Array [
               </h6>
               <a
                 className="text-break"
-                href="fakeUrl"
+                href="//fakeUrl"
                 rel="noopener noreferrer"
                 target="_blank"
               >

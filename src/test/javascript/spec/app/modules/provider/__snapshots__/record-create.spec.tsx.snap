@@ -129,6 +129,26 @@ Array [
             >
               <label
                 className="sr-only"
+                htmlFor="organization-covidProtocols"
+              />
+              <textarea
+                className="is-untouched is-pristine av-valid form-control"
+                id="organization-covidProtocols"
+                name="covidProtocols"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                onInput={[Function]}
+                onKeyUp={[Function]}
+                placeholder={null}
+                value=""
+              />
+            </div>
+            <div
+              className="form-group"
+            >
+              <label
+                className="sr-only"
                 htmlFor="organization-url"
               />
               <div
