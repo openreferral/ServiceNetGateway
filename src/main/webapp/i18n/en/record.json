@@ -56,7 +56,8 @@
       "details": "Service Details",
       "phone": "Phone Number",
       "back": "Back to all Services",
-      "requiredDocuments": "Required Documents"
+      "requiredDocuments": "Required Documents",
+      "fees": "Fees"
     },
     "navigation": {
       "goBack": "Go Back",
@@ -99,7 +100,8 @@
       "untyped": "No service type found",
       "lastUpdated": "Last updated",
       "phone": "Phone Number",
-      "covidProtocols": "COVID Protocols"
+      "covidProtocols": "COVID Protocols",
+      "fees": "Fees"
     },
     "deactivateQuestion": "Are you sure you want to deactivate this record?",
     "discardQuestion": "Are you sure you want to discard your changes?",
