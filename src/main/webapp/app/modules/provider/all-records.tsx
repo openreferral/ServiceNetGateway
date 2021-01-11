@@ -506,7 +506,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         />
         {this.mapOverlayBottom()}
         {isRecordHighlighted && selectedRecord ? (
-          <div className={`selected-record absolute-card`}>
+          <div className={`selected-record absolute-card full-width`}>
             <div>
               <RecordCard
                 record={selectedRecord}
