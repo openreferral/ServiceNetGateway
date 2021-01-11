@@ -186,7 +186,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
               <Translate contentKey="providerSite.location" />
             </b>
           </div>
-          <div className="d-flex flex-row flex-fill">
+          <div className="d-flex flex-row flex-fill location-filters">
             <Label className="sr-only" for="filter-city">
               <Translate contentKey="providerSite.city" />
             </Label>
