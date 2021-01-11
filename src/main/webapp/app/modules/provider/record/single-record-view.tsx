@@ -625,7 +625,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.orgWebsite" />
                         </b>
                       </h6>
-                      <a className="text-break" target="_blank" rel="noopener noreferrer" href={organization.url}>
+                      <a
+                        className="text-break"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={
+                          organization.url.startsWith('http') || organization.url.startsWith('//')
+                            ? organization.url
+                            : '//' + organization.url
+                        }
+                      >
                         {organization.url}
                       </a>
                     </section>
