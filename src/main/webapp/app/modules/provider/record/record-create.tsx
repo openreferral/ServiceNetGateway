@@ -3,6 +3,7 @@ import './record-create.scss';
 
 import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Col, Row, Label } from 'reactstrap';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
@@ -241,6 +242,16 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     });
   };
 
+  validatePhone(value) {
+    if (!value || value === '') {
+      return true;
+    }
+    if (!isPossiblePhoneNumber(value)) {
+      return translate('entity.validation.phone');
+    }
+    return true;
+  }
+
   render() {
     const { organization, locations, services, activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
     const { updating, taxonomyOptions } = this.props;
@@ -342,6 +353,19 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                     }}
                     placeholder={translate('record.email')}
                     onChange={this.onOrganizationChange('email')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for="organization-phone">
+                    {translate('record.phone')}
+                  </Label>
+                  <AvField
+                    id="organization-phone"
+                    type="text"
+                    name="phones[0].number"
+                    validate={{ custom: this.validatePhone }}
+                    placeholder={translate('record.phone')}
+                    onChange={this.onOrganizationChange('phone')}
                   />
                 </AvGroup>
               </Col>
@@ -546,6 +570,19 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                           isMulti
                           placeholder={translate('record.service.type')}
                           onChange={this.onServiceChange(i, 'taxonomyIds')}
+                        />
+                      </AvGroup>
+                      <AvGroup className="flex">
+                        <Label className="sr-only" for={'services[' + i + '].phone'}>
+                          {translate('record.phone')}
+                        </Label>
+                        <AvField
+                          id={'service-id[' + i + '].phone'}
+                          type="text"
+                          name={'services[' + i + '].phones[0].number'}
+                          validate={{ custom: this.validatePhone }}
+                          placeholder={translate('record.phone')}
+                          onChange={this.onServiceChange(i, 'phone')}
                         />
                       </AvGroup>
                       <AvGroup className="flex">
