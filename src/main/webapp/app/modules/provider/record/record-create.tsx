@@ -498,7 +498,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         </Col>
                       </Row>
                       <OpeningHours
-                        location={location}
+                        location={locations[i]}
                         locationIndex={i}
                         openingHours={this.state.openingHoursByLocation[i] || [{}]}
                         datesClosed={this.state.datesClosedByLocation[i] || [null]}
