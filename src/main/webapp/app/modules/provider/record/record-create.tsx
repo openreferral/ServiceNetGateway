@@ -329,6 +329,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-covidProtocols">
+                    {translate('record.covidProtocols')}
+                  </Label>
+                  <AvInput
+                    id="organization-covidProtocols"
+                    type="textarea"
+                    name="covidProtocols"
+                    placeholder={translate('record.covidProtocols')}
+                    onChange={this.onOrganizationChange('covidProtocols')}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label className="sr-only" for="organization-url">
                     {translate('record.description')}
                   </Label>

@@ -596,7 +596,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
               </CardBody>
             </Card>
           ) : null}
-          {organization.description || organization.url || organization.email ? (
+
+          {organization.description || organization.covidProtocols || organization.url || organization.email ? (
             <Card className="section">
               <CardTitle onClick={this.toggleOrganization} className="clickable">
                 <div className="d-flex justify-content-center align-items-center details-section-title">
@@ -616,6 +617,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         </b>
                       </h6>
                       <span className="break">{organization.description}</span>
+                    </section>
+                  ) : null}
+                  {organization.covidProtocols ? (
+                    <section>
+                      <h6>
+                        <b>
+                          <Translate contentKey="record.singleRecordView.covidProtocols" />
+                        </b>
+                      </h6>
+                      <span className="break">{organization.covidProtocols}</span>
                     </section>
                   ) : null}
                   {organization.url ? (
