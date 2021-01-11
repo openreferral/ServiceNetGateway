@@ -650,6 +650,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                         />
                       </AvGroup>
                       <AvGroup>
+                        <Label className="sr-only" for={'service-id[' + i + '].fees'}>
+                          {translate('record.service.fees')}
+                        </Label>
+                        <AvInput
+                          id={'service-id[' + i + '].fees'}
+                          type="textarea"
+                          name={'services[' + i + '].fees'}
+                          placeholder={translate('record.service.fees')}
+                          onChange={this.onServiceChange(i, 'fees')}
+                        />
+                      </AvGroup>
+                      <AvGroup>
                         <Label className="sr-only" for={'services[' + i + '].locationIndexes'}>
                           {translate('record.service.locations')}
                         </Label>

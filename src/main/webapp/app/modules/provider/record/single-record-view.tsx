@@ -428,6 +428,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   <span className="break">{openService.docs.length > 0 ? openService.docs[0].document : ''}</span>
                 </section>
               ) : null}
+              {openService.fees ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.singleRecordView.fees" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.fees}</span>
+                </section>
+              ) : null}
               {openService.phones && openService.phones.length > 0 ? (
                 <section>
                   <h6>

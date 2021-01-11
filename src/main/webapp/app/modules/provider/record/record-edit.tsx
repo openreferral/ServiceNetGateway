@@ -582,6 +582,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <AvInput type="textarea" name={'services[' + i + '].docs[0].document'} onChange={this.onServiceDocsChange(i)} />
         </AvGroup>
         <AvGroup>
+          <Label>{translate('record.service.fees')}</Label>
+          <AvInput type="textarea" name={'services[' + i + '].fees'} onChange={this.onServiceChange(i, 'fees')} />
+        </AvGroup>
+        <AvGroup>
           <Label>{translate('record.service.locations')}</Label>
           <AvSelect
             name={'services[' + i + '].locationIndexes'}
