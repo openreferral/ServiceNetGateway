@@ -317,13 +317,17 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
-  updateLocationData = idx => (openingHours, datesClosed) => {
-    const { openingHoursByLocation, datesClosedByLocation } = this.state;
+  updateLocationData = idx => (openingHours, datesClosed, location = null) => {
+    const { openingHoursByLocation, datesClosedByLocation, organization, openLocation } = this.state;
     openingHoursByLocation[idx] = openingHours;
     datesClosedByLocation[idx] = datesClosed;
+    if (location) {
+      organization.locations[openLocation] = location;
+    }
     this.setState({
       openingHoursByLocation,
-      datesClosedByLocation
+      datesClosedByLocation,
+      organization
     });
   };
 
@@ -463,6 +467,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         </Row>
         <OpeningHours
           location={location}
+          locationIndex={i}
           openingHours={this.state.openingHoursByLocation[i] || [{}]}
           datesClosed={this.state.datesClosedByLocation[i] || [null]}
           updateLocationData={this.updateLocationData(i)}

@@ -1,7 +1,7 @@
 import './record-shared.scss';
 
 import React from 'react';
-import { Collapse, Button, CardBody, Card, CardTitle, Progress } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, CardTitle, Progress, Label } from 'reactstrap';
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -256,6 +256,12 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           {loc.city}, {loc.ca}
                         </b>
                       </span>
+                      {loc.open247 ? (
+                        <span className="pull-right mr-2">
+                          <input type="checkbox" checked onClick={() => false} readOnly className="mr-1" id={`${loc.id}-247`} />
+                          <Translate contentKey="record.openingHours.247" />
+                        </span>
+                      ) : null}
                     </CardTitle>
                     <CardBody>
                       <div>
