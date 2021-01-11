@@ -716,6 +716,15 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label for="description">{translate('record.covidProtocols')}</Label>
+                  <AvInput
+                    id="organization-covidProtocols"
+                    type="textarea"
+                    name="covidProtocols"
+                    onChange={this.onOrganizationChange('covidProtocols')}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label>{translate('record.url')}</Label>
                   <AvField id="organization-url" type="text" name="url" onChange={this.onOrganizationChange('url')} />
                 </AvGroup>

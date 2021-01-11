@@ -13,6 +13,7 @@ export interface ISimpleOrganization {
   accountName?: string;
   replacedById?: string;
   phones?: any[];
+  covidProtocols?: string;
 }
 
 export const defaultSimpleOrganization: ISimpleOrganization = {};
