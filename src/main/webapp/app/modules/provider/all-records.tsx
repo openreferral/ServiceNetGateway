@@ -719,12 +719,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             <div className={isSearchBarFocused ? 'on-top' : ''}>
               <Row className="search">
                 <Col className="height-fluid">
-                  <div className="ml-2 mb-1">
-                    <b>
-                      <Translate contentKey="providerSite.searchPlaceholder" />
-                    </b>
-                  </div>
-                  <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} />
+                  <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} onSearch={this.props.setText} onReset={this.props.resetText} />
                 </Col>
               </Row>
             </div>

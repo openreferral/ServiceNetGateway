@@ -175,6 +175,31 @@ Array [
                 />
               </div>
             </div>
+            <div
+              className="form-group"
+            >
+              <label
+                className="sr-only"
+                htmlFor="organization-phone"
+              />
+              <div
+                className="form-group"
+              >
+                <input
+                  className="is-untouched is-pristine av-valid form-control"
+                  id="organization-phone"
+                  name="phones[0].number"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  onInput={[Function]}
+                  onKeyUp={[Function]}
+                  placeholder={null}
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
           </div>
           <div
             className="buttons navigation-buttons"
@@ -1199,6 +1224,31 @@ Array [
                         type="hidden"
                       />
                     </div>
+                  </div>
+                </div>
+                <div
+                  className="flex form-group"
+                >
+                  <label
+                    className="sr-only"
+                    htmlFor="services[0].phone"
+                  />
+                  <div
+                    className="form-group"
+                  >
+                    <input
+                      className="is-untouched is-pristine av-valid form-control"
+                      id="service-id[0].phone"
+                      name="services[0].phones[0].number"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onInput={[Function]}
+                      onKeyUp={[Function]}
+                      placeholder={null}
+                      type="text"
+                      value=""
+                    />
                   </div>
                 </div>
                 <div

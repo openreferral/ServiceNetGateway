@@ -82,7 +82,7 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
               className="search-input"
               type="search"
               value={this.state.text}
-              placeholder={translate('providerSite.searchPlaceholder')}
+              placeholder={translate('providerSite.searchPlaceholder') || 'Search by organization name or keyword'}
               onChange={this.updateText}
               onFocus={this.onFocus}
               onBlur={this.onBlur}
