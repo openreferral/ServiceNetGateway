@@ -1360,6 +1360,26 @@ Array [
                 >
                   <label
                     className="sr-only"
+                    htmlFor="service-id[0].fees"
+                  />
+                  <textarea
+                    className="is-untouched is-pristine av-valid form-control"
+                    id="service-id[0].fees"
+                    name="services[0].fees"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    onInput={[Function]}
+                    onKeyUp={[Function]}
+                    placeholder={null}
+                    value=""
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <label
+                    className="sr-only"
                     htmlFor="services[0].locationIndexes"
                   />
                   <div

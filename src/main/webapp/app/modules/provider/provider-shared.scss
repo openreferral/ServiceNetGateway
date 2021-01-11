@@ -131,6 +131,9 @@
     bottom: 0;
     flex: 1;
     max-width: 100%;
+    &.full-width {
+      width: 100%;
+    }
   }
 
   .sort-container {
