@@ -104,6 +104,7 @@
       "fees": "Fees"
     },
     "deactivateQuestion": "Are you sure you want to deactivate this record?",
+    "deactivateClaimedQuestion": "Are you sure you want to deactivate this record? If you deactivate this record, no other organization will be able to find this record, and no one else will be able to claim it. If you owned this record in error and want to make it available for others to claim, please use the 'Unclaim' button instead of the 'Deactivate' button.",
     "discardQuestion": "Are you sure you want to discard your changes?",
     "unclaimQuestion": "Are you sure you want to unclaim this record?"
   }

@@ -858,7 +858,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <div className="buttons navigation-buttons flex-column flex-md-row">
             {this.state.openDialogs.indexOf('deactivate') !== -1 && (
               <ConfirmationDialog
-                question={translate('record.deactivateQuestion')}
+                question={
+                  organization.replacedById ? translate('record.deactivateClaimedQuestion') : translate('record.deactivateQuestion')
+                }
                 handleClose={this.closeDialog('deactivate')}
                 handleConfirm={this.handleConfirmDeactivate}
               />
