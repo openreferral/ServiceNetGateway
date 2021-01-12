@@ -179,7 +179,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       </div>
     ) : (
       <div className="d-flex flex-column justify-content-between align-items-center claim-record-modal-container p-1">
-        <div className="d-flex flex-column justify-content-between align-items-center w-100 pt-4 pt-sm-3 pb-2">
+        <div className="d-flex flex-column align-items-center w-100 pt-4 pt-sm-3 pb-2">
           <span className="claim-modal-title">
             <Translate contentKey="providerSite.claimTitle" />
           </span>
@@ -187,8 +187,8 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
           <span className="claim-modal-subtitle">
             <Translate contentKey="providerSite.claimSubtitle" />
           </span>
+          <this.searchBar />
         </div>
-        <this.searchBar />
         <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body">
           {claimRecordsOpened && (
             <InfiniteScroll
@@ -201,12 +201,11 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
               useWindow={false}
               getScrollParent={() => document.getElementById('claim-record-modal-content')}
             >
-              <Row noGutters className="justify-content-center">
-                {this.mapRecordsForClaimModal({ records: availableRecordsToClaim })}
-              </Row>
+              <Row noGutters>{this.mapRecordsForClaimModal({ records: availableRecordsToClaim })}</Row>
             </InfiniteScroll>
           )}
         </div>
+        <div className="flex-grow-1" />
         <div className="d-flex align-items-center justify-content-center">
           <ButtonPill className="button-pill-green my-2" style={{ width: '120px' }} onClick={this.claimRecords}>
             <Translate contentKey="recordCard.done" />
