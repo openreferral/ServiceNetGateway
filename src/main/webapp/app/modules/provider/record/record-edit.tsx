@@ -6,6 +6,8 @@ import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
+// tslint:disable-next-line:no-submodule-imports
+import Input from 'react-phone-number-input/input';
 import { deactivateEntity, getProviderEntity, updateUserOwnedEntity, unclaimEntity } from 'app/entities/organization/organization.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
@@ -30,8 +32,11 @@ import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/m
 import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 import ButtonPill from '../shared/button-pill';
 import { OpeningHours } from 'app/modules/provider/record/opening-hours';
+import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 
-export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+  isMobile: boolean;
+}
 
 export interface IRecordEditViewState {
   organization: ISimpleOrganization;
@@ -63,7 +68,8 @@ const locationModel = {
 
 const serviceModel = {
   docs: [],
-  locationIndexes: []
+  locationIndexes: [],
+  phones: []
 };
 
 const TaxonomyOptionPill = taxonomyOption => (
@@ -138,23 +144,61 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       openSections: _.xor(this.state.openSections, [section])
     });
 
+  isOrgPhoneInvalid = organization => {
+    const phoneNumber = _.get(organization, 'phones[0].number', '');
+    return phoneNumber && !isPossiblePhoneNumber(phoneNumber);
+  };
+
+  areServicePhonesInvalid = services =>
+    _.some(services, service => {
+      const phone = _.get(service, `phones[0].number`, '');
+      return phone && !isPossiblePhoneNumber(phone);
+    });
+
+  getIdsOfInvalidServices = services => {
+    const result = [];
+    _.forEach(services, (service, i) => {
+      const phone = _.get(service, `phones[0].number`, '');
+      if (phone && !isPossiblePhoneNumber(phone)) {
+        result.push(i);
+      }
+    });
+    return result;
+  };
+
   saveRecord = (event, errors, values) => {
-    const { openingHoursByLocation, datesClosedByLocation } = this.state;
+    const { openingHoursByLocation, datesClosedByLocation, organization } = this.state;
     const invalidSections = [];
     const invalidLocations = [];
     const invalidServices = [];
     const { openSections } = this.state;
     values.updatedAt = new Date();
-
-    if (errors.length === 0) {
+    const entityWithServices = { ...values };
+    _.forEach(organization.services, (service, i) => {
+      entityWithServices['services'][i] = organization.services[i];
+    });
+    const isOrganizationPhoneValid = !this.isOrgPhoneInvalid(organization);
+    const areServicePhonesValid = !this.areServicePhonesInvalid(organization.services);
+    if (errors.length === 0 && isOrganizationPhoneValid && areServicePhonesValid) {
       const entity = {
-        ...values,
+        ...entityWithServices,
         openingHoursByLocation,
-        datesClosedByLocation
+        datesClosedByLocation,
+        phones: _.get(organization, 'phones', [])
       };
       this.props.updateUserOwnedEntity(entity);
     } else {
       const indexRegexp = /\[?([0-9]+?)\]?/;
+      if (!isOrganizationPhoneValid) {
+        invalidSections.push(ORGANIZATION);
+        openSections.push(ORGANIZATION);
+      }
+      if (!areServicePhonesValid) {
+        invalidSections.push(SERVICE);
+        openSections.push(SERVICE);
+      }
+      const idsOfInvalidServices = this.getIdsOfInvalidServices(organization.services);
+      invalidServices.push(...idsOfInvalidServices);
       errors.forEach(err => {
         if (err.includes(LOCATION)) {
           invalidSections.indexOf(LOCATION) === -1 && invalidSections.push(LOCATION);
@@ -246,6 +290,22 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
+  setPhone = phoneNumber => {
+    const organization = this.state.organization;
+    organization['phones'] = [{ number: phoneNumber }];
+    this.setState({
+      organization
+    });
+  };
+
+  setServicePhone = i => phoneNumber => {
+    const organization = this.state.organization;
+    organization.services[i]['phones'] = [{ number: phoneNumber }];
+    this.setState({
+      organization
+    });
+  };
+
   removeLocation = i => () => {
     const { organization } = this.state;
     organization.locations.splice(i, 1);
@@ -258,16 +318,6 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       openLocation: -1
     });
   };
-
-  validatePhone(value) {
-    if (!value || value === '') {
-      return true;
-    }
-    if (!isPossiblePhoneNumber(value)) {
-      return translate('entity.validation.phone');
-    }
-    return true;
-  }
 
   getLocations = () =>
     this.state.organization.locations.map((location, i) => ({
@@ -498,7 +548,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   };
 
   serviceDetails = (services, i, openService, taxonomyOptions) => {
+    const { isMobile } = this.props;
     const service = services[i];
+    const phoneNumber = _.get(service, 'phones[0].number', '');
+    const isPhoneValid = phoneNumber && !isPossiblePhoneNumber(phoneNumber);
     return (
       <div className={`service-details${i !== openService ? ' d-none' : ''}`}>
         {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
@@ -546,18 +599,22 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             onChange={this.onServiceChange(i, 'description')}
           />
         </AvGroup>
-        <AvGroup>
-          <div className="flex">
-            <Label>{translate('record.phone')}</Label>
-          </div>
-          <AvField
-            type="text"
-            name={'services[' + i + '].phones[0].number'}
-            validate={{ custom: this.validatePhone }}
-            placeholder={translate('record.phone')}
-            onChange={this.onServiceChange(i, 'phone')}
-          />
-        </AvGroup>
+        <div className="flex">
+          <Label>
+            <div className={`${isPhoneValid ? 'text-danger' : ''}`}>{translate('record.phone')}</div>
+          </Label>
+        </div>
+        <Input
+          className={`form-control ${isPhoneValid ? 'is-invalid' : 'mb-3'}`}
+          type="text"
+          name="phone"
+          id={'service-id[' + i + '].phone'}
+          placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+          onChange={this.setServicePhone(i)}
+          value={phoneNumber}
+          country="US"
+        />
+        {isPhoneValid && <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>}
         <AvGroup>
           <Label>{translate('record.service.applicationProcess')}</Label>
           <AvInput
@@ -640,7 +697,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       invalidServices,
       leaving
     } = this.state;
-    const { updating, taxonomyOptions } = this.props;
+    const phoneNumber = _.get(organization, 'phones[0].number', '');
+    const { updating, taxonomyOptions, isMobile } = this.props;
     const { locations, services } = organization;
     return organization.id && organization.id === this.props.match.params.id ? (
       <AvForm onSubmit={this.saveRecord} className="record-shared record-edit background" model={organization}>
@@ -744,17 +802,25 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                     onChange={this.onOrganizationChange('email')}
                   />
                 </AvGroup>
-                <AvGroup>
-                  <Label for="phone"> {translate('record.phone')}</Label>
-                  <AvField
-                    id="organization-phone"
-                    type="text"
-                    name="phones[0].number"
-                    validate={{ custom: this.validatePhone }}
-                    placeholder={translate('record.phone')}
-                    onChange={this.onOrganizationChange('phone')}
-                  />
-                </AvGroup>
+                <Label for="phone">
+                  <div className={`${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'text-danger' : ''}`}>
+                    {translate('record.phone')}
+                  </div>
+                </Label>
+                <Input
+                  className={`form-control ${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'is-invalid' : ''}`}
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+                  onChange={this.setPhone}
+                  value={phoneNumber}
+                  country="US"
+                />
+                {phoneNumber &&
+                  !isPossiblePhoneNumber(phoneNumber) && (
+                    <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                  )}
               </CardBody>
             </Collapse>
           </Card>
@@ -929,4 +995,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(RecordEdit);
+)(mediaQueryWrapper(RecordEdit));

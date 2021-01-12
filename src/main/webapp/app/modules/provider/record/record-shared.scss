@@ -72,6 +72,16 @@
     content: '*';
   }
 
+  .record-create.invalid {
+    border: 1px solid red;
+    border-radius: 4px;
+    padding: 0 5px;
+  }
+
+  .text-danger {
+    color: #d83635 !important;
+  }
+
   div.required {
     font-size: 16px;
     margin-left: -0.5em;
