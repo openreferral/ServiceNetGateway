@@ -21,7 +21,7 @@
     },
     "name": "Organization Name",
     "description": "Organization Description",
-    "covidProtocols": "COVID Protocols",
+    "covidProtocols": "COVID-19 Protocols",
     "update": "Update",
     "url": "Organization Website",
     "phone": "Phone Number",
@@ -100,7 +100,7 @@
       "untyped": "No service type found",
       "lastUpdated": "Last updated",
       "phone": "Phone Number",
-      "covidProtocols": "COVID Protocols",
+      "covidProtocols": "COVID-19 Protocols",
       "fees": "Fees"
     },
     "deactivateQuestion": "Are you sure you want to deactivate this record?",
