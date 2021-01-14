@@ -72,7 +72,7 @@ Array [
             <img
               alt="Organization"
               className="lazyload d-none d-sm-block mx-5"
-              data-src={null}
+              data-src="test-file-stub"
               height={100}
             />
           </div>
@@ -99,7 +99,7 @@ Array [
             <img
               alt="Organization"
               className="lazyload"
-              data-src={null}
+              data-src="test-file-stub"
               height={25}
             />
              
