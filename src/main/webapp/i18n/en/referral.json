@@ -18,6 +18,8 @@
     }
   },
   "referral": {
+    "successfullyCheckedIn": "Beneficiary <b>{{ beneficiary }}</b><br>checked in successfully to <br><b>{{ orgName }}</b>!",
+    "successfullyReferred": "Beneficiary <b>{{ beneficiary }}</b><br>was successfully referred to the following organizations:<br><b>{{ orgNames }}</b>",
     "labels": {
       "beneficiaryInformation": "Beneficiary Information",
       "close": "Close",
