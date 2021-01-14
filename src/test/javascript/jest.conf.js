@@ -17,7 +17,8 @@ module.exports = {
     "node_modules/(?!(@availity)/)"
   ],
   moduleNameMapper: mapTypescriptAliasToJestAlias({
-    '\\.(css|scss|svg|png|jpg)$': 'identity-obj-proxy'
+    "\\.(css|scss)$": "identity-obj-proxy",
+    "\\.(png|svg|pdf|jpg|jpeg)$": "<rootDir>/src/test/javascript/__mocks__/fileMock.js"
   }),
   reporters: [
     'default',

@@ -32,11 +32,8 @@ import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/m
 import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 import ButtonPill from '../shared/button-pill';
 import { OpeningHours } from 'app/modules/provider/record/opening-hours';
-import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 
-export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
-  isMobile: boolean;
-}
+export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IRecordEditViewState {
   organization: ISimpleOrganization;
@@ -548,7 +545,6 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   };
 
   serviceDetails = (services, i, openService, taxonomyOptions) => {
-    const { isMobile } = this.props;
     const service = services[i];
     const phoneNumber = _.get(service, 'phones[0].number', '');
     const isPhoneValid = phoneNumber && !isPossiblePhoneNumber(phoneNumber);
@@ -609,7 +605,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           type="text"
           name="phone"
           id={'service-id[' + i + '].phone'}
-          placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+          placeholder={translate('referral.placeholder.phone')}
           onChange={this.setServicePhone(i)}
           value={phoneNumber}
           country="US"
@@ -698,7 +694,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       leaving
     } = this.state;
     const phoneNumber = _.get(organization, 'phones[0].number', '');
-    const { updating, taxonomyOptions, isMobile } = this.props;
+    const { updating, taxonomyOptions } = this.props;
     const { locations, services } = organization;
     return organization.id && organization.id === this.props.match.params.id ? (
       <AvForm onSubmit={this.saveRecord} className="record-shared record-edit background" model={organization}>
@@ -812,7 +808,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   type="text"
                   name="phone"
                   id="phone"
-                  placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+                  placeholder={translate('referral.placeholder.phone')}
                   onChange={this.setPhone}
                   value={phoneNumber}
                   country="US"
@@ -997,4 +993,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(mediaQueryWrapper(RecordEdit));
+)(RecordEdit);

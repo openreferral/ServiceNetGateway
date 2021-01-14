@@ -28,11 +28,8 @@ import ServiceLogo from '../../../../static/images/service.svg';
 import _ from 'lodash';
 import ButtonPill from '../shared/button-pill';
 import { OpeningHours } from 'app/modules/provider/record/opening-hours';
-import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 
-export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {
-  isMobile: boolean;
-}
+export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export interface IRecordCreateViewState {
   organization: object;
@@ -291,7 +288,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   render() {
     const { organization, locations, services, activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
     const phoneNumber = _.get(organization, 'phones[0].number', '');
-    const { updating, taxonomyOptions, isMobile } = this.props;
+    const { updating, taxonomyOptions } = this.props;
     return (
       <div className="record-shared record-create">
         <Nav tabs>
@@ -410,7 +407,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                     type="text"
                     name="phone"
                     id="phone"
-                    placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+                    placeholder={translate('referral.placeholder.phone')}
                     onChange={this.setPhone}
                     value={phoneNumber}
                     country="US"
@@ -634,7 +631,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                             type="text"
                             name="phone"
                             id={'service-id[' + i + '].phone'}
-                            placeholder={isMobile ? translate('referral.placeholder.phoneMobile') : translate('referral.placeholder.phone')}
+                            placeholder={translate('referral.placeholder.phone')}
                             onChange={this.setServicePhone(i)}
                             value={_.get(this.state.services, `[${i}].phones[0].number`, '')}
                             country="US"
@@ -778,4 +775,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(mediaQueryWrapper(RecordCreate));
+)(RecordCreate);
