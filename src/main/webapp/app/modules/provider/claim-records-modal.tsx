@@ -223,7 +223,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
           <span className="claim-modal-title mb-2">
             <Translate contentKey="singleRecordView.details.recordDetails" />
           </span>
-          <Button color="" className="position-absolute" style={{ left: 0 }} onClick={this.onBackClick}>
+          <Button color="" className="position-absolute ml-2" style={{ left: 0, marginTop: '-0.25rem' }} onClick={this.onBackClick}>
             <FontAwesomeIcon icon="angle-left" />
             &nbsp;
             <Translate contentKey="global.goBack" />

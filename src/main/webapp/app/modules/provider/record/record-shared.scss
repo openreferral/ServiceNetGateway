@@ -355,6 +355,10 @@
         margin: 0 !important;
       }
     }
+
+    .progress {
+      width: 30vw !important;
+    }
   }
 
   @media only screen and (max-width: 400px) {
@@ -365,5 +369,16 @@
         font-size: 12px;
       }
     }
+  }
+
+  .progress-bar {
+    background-color: #e8895a;
+  }
+
+  .progress {
+    border: thin solid black;
+    width: 10vw;
+    border-radius: 10px;
+    background-color: white;
   }
 }
