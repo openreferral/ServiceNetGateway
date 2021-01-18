@@ -88,7 +88,7 @@
 
   .checked-in-label,
   .referred-label {
-    word-break: break-all;
+    word-break: break-word;
     > span {
       text-align: center;
     }
