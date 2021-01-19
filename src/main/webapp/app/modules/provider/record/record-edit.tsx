@@ -5,7 +5,7 @@ import { Badge, Card, CardBody, CardTitle, Col, Collapse, Label, Progress, Row }
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import { isPossiblePhoneNumber, formatPhoneNumber } from 'react-phone-number-input';
 // tslint:disable-next-line:no-submodule-imports
 import Input from 'react-phone-number-input/input';
 import { deactivateEntity, getProviderEntity, updateUserOwnedEntity, unclaimEntity } from 'app/entities/organization/organization.reducer';
@@ -142,15 +142,23 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
 
   isOrgPhoneInvalid = organization => {
-    const phoneNumber = _.get(organization, 'phones[0].number', '');
+    const phoneNumber = this.formatPhone(_.get(organization, 'phones[0].number', ''));
     return phoneNumber && !isPossiblePhoneNumber(phoneNumber);
   };
 
   areServicePhonesInvalid = services =>
     _.some(services, service => {
-      const phone = _.get(service, `phones[0].number`, '');
+      const phone = this.formatPhone(_.get(service, `phones[0].number`, ''));
       return phone && !isPossiblePhoneNumber(phone);
     });
+
+  formatPhone = phone => {
+    let phoneNumber = phone.replace(/[^0-9]/g, '');
+    if (phoneNumber && !phoneNumber.startsWith('+1')) {
+      phoneNumber = '+1' + phoneNumber;
+    }
+    return phoneNumber;
+  };
 
   getIdsOfInvalidServices = services => {
     const result = [];
@@ -546,8 +554,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   serviceDetails = (services, i, openService, taxonomyOptions) => {
     const service = services[i];
-    const phoneNumber = _.get(service, 'phones[0].number', '');
-    const isPhoneValid = phoneNumber && !isPossiblePhoneNumber(phoneNumber);
+    const phoneNumber = this.formatPhone(_.get(service, 'phones[0].number', ''));
+    const isPhoneInvalid = phoneNumber && !isPossiblePhoneNumber(phoneNumber);
     return (
       <div className={`service-details${i !== openService ? ' d-none' : ''}`}>
         {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
@@ -597,11 +605,11 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         </AvGroup>
         <div className="flex">
           <Label>
-            <div className={`${isPhoneValid ? 'text-danger' : ''}`}>{translate('record.phone')}</div>
+            <div className={`${isPhoneInvalid ? 'text-danger' : ''}`}>{translate('record.phone')}</div>
           </Label>
         </div>
         <Input
-          className={`form-control ${isPhoneValid ? 'is-invalid' : 'mb-3'}`}
+          className={`form-control ${isPhoneInvalid ? 'is-invalid' : 'mb-3'}`}
           type="text"
           name="phone"
           id={'service-id[' + i + '].phone'}
@@ -610,7 +618,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           value={phoneNumber}
           country="US"
         />
-        {isPhoneValid && <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>}
+        {isPhoneInvalid && <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>}
         <AvGroup>
           <Label>{translate('record.service.applicationProcess')}</Label>
           <AvInput
@@ -688,12 +696,11 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       openLocation,
       openService,
       latestDailyUpdate,
-      invalidSections,
       invalidLocations,
       invalidServices,
       leaving
     } = this.state;
-    const phoneNumber = _.get(organization, 'phones[0].number', '');
+    const phoneNumber = this.formatPhone(_.get(organization, 'phones[0].number', ''));
     const { updating, taxonomyOptions } = this.props;
     const { locations, services } = organization;
     return organization.id && organization.id === this.props.match.params.id ? (
