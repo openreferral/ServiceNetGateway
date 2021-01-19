@@ -14,6 +14,7 @@ import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validatio
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { US_STATES } from 'app/shared/util/us-states';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
+import { getReferralsMadeForRecord } from 'app/modules/provider/provider-record.reducer';
 import _ from 'lodash';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
@@ -100,6 +101,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   componentDidMount() {
     this.props.getProviderTaxonomies();
     this.props.getProviderEntity(this.props.match.params.id);
+    this.props.getReferralsMadeForRecord(this.props.match.params.id);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -373,6 +375,22 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     this.setState({
       openService: i
     });
+  };
+
+  getUnclaimConfirmationDialogQuestion = () => {
+    const { checkInsCount, referralsToCount, referralsFromCount } = this.props;
+    if (checkInsCount > 0 && referralsToCount + referralsFromCount > 0) {
+      return translate('record.unclaimWithCheckInsAndReferralsQuestion', {
+        checkInsCount,
+        referralsCount: referralsToCount + referralsFromCount
+      });
+    } else if (checkInsCount > 0) {
+      return translate('record.unclaimWithCheckInsQuestion', { checkInsCount });
+    } else if (referralsToCount + referralsFromCount > 0) {
+      return translate('record.unclaimWithReferralsQuestion', { referralsCount: referralsToCount + referralsFromCount });
+    } else {
+      return translate('record.unclaimQuestion');
+    }
   };
 
   updateLocationData = idx => (openingHours, datesClosed, location = null) => {
@@ -933,7 +951,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             {organization.replacedById &&
               this.state.openDialogs.indexOf('unclaim') !== -1 && (
                 <ConfirmationDialog
-                  question={translate('record.unclaimQuestion')}
+                  question={this.getUnclaimConfirmationDialogQuestion()}
                   handleClose={this.closeDialog('unclaim')}
                   handleConfirm={this.handleConfirmUnclaim}
                 />
@@ -976,7 +994,10 @@ const mapStateToProps = (storeState: IRootState) => ({
   updating: storeState.organization.updating,
   updateSuccess: storeState.organization.updateSuccess,
   organization: storeState.organization.providersEntity,
-  taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
+  taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(taxonomy => ({ value: taxonomy.id, label: taxonomy.name })),
+  checkInsCount: storeState.providerRecord.checkInsToRecordCount,
+  referralsToCount: storeState.providerRecord.referralsToRecordCount,
+  referralsFromCount: storeState.providerRecord.referralsFromRecordCount
 });
 
 const mapDispatchToProps = {
@@ -984,7 +1005,8 @@ const mapDispatchToProps = {
   updateUserOwnedEntity,
   getProviderEntity,
   deactivateEntity,
-  unclaimEntity
+  unclaimEntity,
+  getReferralsMadeForRecord
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
