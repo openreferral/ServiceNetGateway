@@ -34,13 +34,17 @@ export interface IClaimRecordsModalState extends IPaginationBaseState {
   orgId: string;
 }
 
+const INITIAL_STATE = {
+  claimModalActivePage: 0,
+  doneClaiming: false
+};
+
 export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, IClaimRecordsModalState> {
   constructor(props) {
     super(props);
     const { providerSearchPreferences } = this.props.account ? getSearchPreferences(this.props.account.login) : null;
     this.state = {
-      claimModalActivePage: 0,
-      doneClaiming: false,
+      ...INITIAL_STATE,
       singleRecordTab: false,
       orgId: null,
       ...providerSearchPreferences
@@ -61,6 +65,12 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
     if (prevProps.searchModal !== this.props.searchModal) {
       const { searchModal } = this.props;
       this.setState({ claimModalActivePage: 0 }, () => this.props.getRecordsAvailableToClaim(0, 9, true, searchModal));
+    }
+    if (!prevProps.claimRecordsOpened && this.props.claimRecordsOpened) {
+      // reset the state of the modal when opened
+      this.setState({
+        ...INITIAL_STATE
+      });
     }
   }
 
@@ -120,7 +130,6 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
 
   closeClaiming = () => {
     this.props.closeClaiming();
-    this.setState({ doneClaiming: false });
   };
 
   searchBar = () => (
@@ -145,7 +154,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
     const { claimModalActivePage, doneClaiming } = this.state;
     const hasReachedMaxItemsClaimModal =
       availableRecordsToClaim && availableRecordsToClaim.length === parseInt(recordsAvailableToClaimTotal, 10);
-    return doneClaiming ? (
+    return doneClaiming || !claimRecordsOpened ? (
       <div className="d-flex flex-column justify-content-between align-items-center p-2 claim-modal-title">
         {claimingProgress !== '100' &&
           recordsToClaim.length !== 0 && (
