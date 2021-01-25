@@ -127,9 +127,7 @@ export class AllRecordsView extends React.Component<IAllRecordsViewProp, IAllRec
     });
   };
 
-  denyMatch = () => {
-    ReactGA.event({ category: 'UserActions', action: 'Deny Match Button' });
-  };
+  denyMatch = () => {};
 
   hideActivity = partnerRecordId => event => {
     const { matches, orgId } = this.props;

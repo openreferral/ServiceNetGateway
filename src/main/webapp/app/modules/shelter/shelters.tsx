@@ -91,8 +91,6 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
     const searchPhrase = event.target.value;
     setShelterSearchPhrase(this.props.account.login, searchPhrase);
 
-    ReactGA.event({ category: 'UserActions', action: 'Shelter - Searching Records' });
-
     this.setState({
       searchPhrase,
       typingTimeout: setTimeout(() => {
@@ -117,8 +115,6 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
   sort = (sort, order) => {
     setShelterSort(this.props.account.login, sort, order);
 
-    ReactGA.event({ category: 'UserActions', action: 'Shelter - Sorting Records' });
-
     this.setState({ sort, order }, () => {
       this.reset();
     });
@@ -142,7 +138,6 @@ export class Shelters extends React.Component<ISheltersProp, ISheltersState> {
   };
 
   toggleFilter = () => {
-    ReactGA.event({ category: 'UserActions', action: 'Shelter - Clicked Filter' });
     this.setState(prevState => ({
       filterCollapseExpanded: !prevState.filterCollapseExpanded
     }));

@@ -27,12 +27,13 @@ import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
-import { APP_DATE_12_HOUR_FORMAT } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, GA_ACTIONS } from 'app/config/constants';
 import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/measure-widths';
 import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 import ButtonPill from '../shared/button-pill';
 import { OpeningHours } from 'app/modules/provider/record/opening-hours';
+import { sendAction } from 'app/shared/util/analytics';
 
 export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -237,6 +238,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       }
     }
     this.setState({ invalidSections, invalidServices, invalidLocations, openSections });
+    sendAction(GA_ACTIONS.EDIT_RECORD);
+    if (!!organization['update']) {
+      sendAction(GA_ACTIONS.RECORD_DAILY_UPDATE);
+    }
   };
 
   openDialog = name => () => {

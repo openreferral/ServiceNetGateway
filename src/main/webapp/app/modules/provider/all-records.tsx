@@ -21,6 +21,7 @@ import FilterBar from './filter-bar';
 import MediaQuery, { useMediaQuery } from 'react-responsive';
 import {
   DESKTOP_WIDTH_BREAKPOINT,
+  GA_ACTIONS,
   GOOGLE_API_KEY,
   LARGE_WIDTH_BREAKPOINT,
   MEDIUM_WIDTH_BREAKPOINT,
@@ -36,6 +37,7 @@ import { isIOS } from 'react-device-detect';
 import ReferralModal, { BENEFICIARY_CHECK_IN_TAB, REFERRAL_TAB } from 'app/modules/provider/referral/referral-modal';
 import ClaimRecordsModal from 'app/modules/provider/claim-records-modal';
 import { setText, resetText } from 'app/modules/provider/shared/search.reducer';
+import { sendAction, sendActionOnEvt } from 'app/shared/util/analytics';
 
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 const GRID_VIEW = 'GRID';
@@ -285,8 +287,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   toggleMapView = () => {
-    const { filtersChanged } = this.props;
-    if (this.props.isMapView && filtersChanged) {
+    const { filtersChanged, isMapView } = this.props;
+    if (isMapView) {
+      sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW : GA_ACTIONS.PUBLIC_MAP_VIEW);
+    } else {
+      sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW_BACK_TO_GRID : GA_ACTIONS.PUBLIC_MAP_VIEW_BACK_TO_GRID);
+    }
+    if (isMapView && filtersChanged) {
       this.getRecords(true);
       this.props.uncheckFiltersChanged();
     }
@@ -307,6 +314,11 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     if (isMobile || this.props.isMapView) {
       this.toggleMapView();
     } else {
+      if (this.state.rightSectionOpened) {
+        sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW_BACK_TO_GRID : GA_ACTIONS.PUBLIC_MAP_VIEW_BACK_TO_GRID);
+      } else {
+        sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW : GA_ACTIONS.PUBLIC_MAP_VIEW);
+      }
       this.setState({
         rightSectionOpened: !this.state.rightSectionOpened
       });
@@ -322,11 +334,15 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       setProviderSort(this.props.account.login, sort, order);
     }
 
-    ReactGA.event({ category: 'UserActions', action: 'Sorting Records' });
-
     this.setState({ sort, order, activePage: 0 }, () => {
       this.getRecords(true);
     });
+
+    if (sort === 'updatedat') {
+      sendAction(!this.props.siloName ? GA_ACTIONS.SORT_RECENTLY_UPDATED : GA_ACTIONS.PUBLIC_SORT_RECENTLY_UPDATED);
+    } else if (sort === 'name') {
+      sendAction(!this.props.siloName ? GA_ACTIONS.SORT_ALPHABETICAL : GA_ACTIONS.PUBLIC_SORT_ALPHABETICAL);
+    }
   };
 
   centerMapOnMyLocation = () => {
@@ -357,6 +373,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             record={record}
             link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${record.organization.id}`}
             referring={this.props.referring}
+            siloName={this.props.siloName}
           />
         </div>
       </div>
@@ -514,6 +531,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                 closeCard={this.closeRecordCard}
                 coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
                 referring={this.props.referring}
+                siloName={this.props.siloName}
               />
             </div>
           </div>
@@ -557,6 +575,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                         closeCard={this.closeRecordCard}
                         coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
                         referring={this.props.referring}
+                        siloName={this.props.siloName}
                       />
                     </div>
                   </Col>
@@ -583,6 +602,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                     link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
                     coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}
                     referring={this.props.referring}
+                    siloName={this.props.siloName}
                   />
                 </Col>
               ) : null}
@@ -687,7 +707,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                     <Translate contentKey="providerSite.searchLabel" />
                   </b>
                 </div>
-                <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} onSearch={this.props.setText} onReset={this.props.resetText} />
+                <SearchBar
+                  onSwitchFocus={this.onSearchBarSwitchFocus}
+                  onSearch={this.props.setText}
+                  onReset={this.props.resetText}
+                  onClick={sendActionOnEvt(!!siloName ? GA_ACTIONS.PUBLIC_SEARCHING_RECORDS : GA_ACTIONS.SEARCHING_RECORDS)}
+                />
               </Col>
             </Row>
             <FilterBar siloName={siloName} getFirstPage={this.getFirstPage} isMapView={isMapView}>
@@ -719,7 +744,12 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
             <div className={isSearchBarFocused ? 'on-top' : ''}>
               <Row className="search">
                 <Col className="height-fluid">
-                  <SearchBar onSwitchFocus={this.onSearchBarSwitchFocus} onSearch={this.props.setText} onReset={this.props.resetText} />
+                  <SearchBar
+                    onSwitchFocus={this.onSearchBarSwitchFocus}
+                    onSearch={this.props.setText}
+                    onReset={this.props.resetText}
+                    onClick={sendActionOnEvt(!!siloName ? GA_ACTIONS.PUBLIC_SEARCHING_RECORDS : GA_ACTIONS.SEARCHING_RECORDS)}
+                  />
                 </Col>
               </Row>
             </div>

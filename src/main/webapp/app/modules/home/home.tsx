@@ -110,8 +110,6 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
   sort = (sort, order) => {
     setSort(this.props.account.login, sort, order);
 
-    ReactGA.event({ category: 'UserActions', action: 'Sorting Records' });
-
     this.setState({ sort, order }, () => {
       this.reset();
     });
@@ -124,7 +122,6 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
   };
 
   toggleFilter = () => {
-    ReactGA.event({ category: 'UserActions', action: 'Clicked Filter' });
     this.setState(prevState => ({
       filterCollapseExpanded: !prevState.filterCollapseExpanded
     }));
@@ -187,8 +184,6 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
 
     setSearchPhrase(this.props.account.login, searchPhrase);
 
-    ReactGA.event({ category: 'UserActions', action: 'Searching Records' });
-
     this.setState({
       activePage: 1,
       searchPhrase,
@@ -219,9 +214,7 @@ export class Home extends React.Component<IHomeProp, IHomeState> {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
-  handleRecordClick = () => {
-    ReactGA.event({ category: 'UserActions', action: 'Clicking On A Record' });
-  };
+  handleRecordClick = () => {};
 
   onInputChange = (inputValue, { action }) => {
     if (action === 'input-change') {

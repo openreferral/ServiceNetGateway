@@ -99,8 +99,6 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
   }
 
   copyToClipboard = text => () => {
-    ReactGA.event({ category: 'UserActions', action: 'Copied Field' });
-
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
@@ -116,7 +114,6 @@ export class InputField extends React.Component<IInputFieldProp, IInputFieldStat
 
   handleConflictDescriptionClick = value => {
     this.props.getPartnerRecord(value.partnerResourceId);
-    ReactGA.event({ category: 'UserActions', action: 'Clicking On Side By Side View' });
   };
 
   render() {
