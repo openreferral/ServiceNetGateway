@@ -22,6 +22,7 @@
     "name": "Organization Name",
     "description": "Organization Description",
     "covidProtocols": "COVID-19 Protocols",
+    "remoteOnly": "Do you offer only online Services?",
     "update": "Update",
     "url": "Organization Website",
     "phone": "Phone Number",
@@ -42,7 +43,11 @@
       "ca": "CA",
       "zipcode": "Zip Code",
       "details": "Location Details",
-      "back": "Back to all Locations"
+      "isRemote": "This location also offers online/remote services",
+      "servicesOfferedOnline": "Services Offered Online",
+      "whereIsYourHeadquarters": "Where is your Corporate Headquarter?",
+      "back": "Back to all Locations",
+      "remote": "Remote"
     },
     "service": {
       "add": "Add Service",

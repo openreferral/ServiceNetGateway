@@ -61,7 +61,8 @@ const locationModel = {
   address2: '',
   city: '',
   ca: 'CA',
-  zipcode: ''
+  zipcode: '',
+  isRemote: false
 };
 
 const serviceModel = {
@@ -180,15 +181,21 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     const invalidServices = [];
     const { openSections } = this.state;
     values.updatedAt = new Date();
-    const entityWithServices = { ...values };
+    const entityWithServicesAndLocation = { ...values };
     _.forEach(organization.services, (service, i) => {
-      entityWithServices['services'][i] = organization.services[i];
+      entityWithServicesAndLocation['services'][i] = organization.services[i];
+    });
+    _.forEach(organization.locations, (location, i) => {
+      entityWithServicesAndLocation['locations'][i] = {
+        ...entityWithServicesAndLocation['locations'][i],
+        ...organization.locations[i]
+      };
     });
     const isOrganizationPhoneValid = !this.isOrgPhoneInvalid(organization);
     const areServicePhonesValid = !this.areServicePhonesInvalid(organization.services);
     if (errors.length === 0 && isOrganizationPhoneValid && areServicePhonesValid) {
       const entity = {
-        ...entityWithServices,
+        ...entityWithServicesAndLocation,
         openingHoursByLocation,
         datesClosedByLocation,
         phones: _.get(organization, 'phones', [])
@@ -322,7 +329,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
     this.setState({
       organization,
-      openLocation: -1
+      openLocation: -1,
+      openingHoursByLocation: {},
+      datesClosedByLocation: {}
     });
   };
 
@@ -415,6 +424,40 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
+  onLocationRemoteChange = i => () => {
+    const { organization } = this.state;
+    organization.locations[i].isRemote = !organization.locations[i].isRemote;
+    this.setState({
+      organization
+    });
+  };
+
+  setOnlyHeadLocation = () => {
+    const { organization, openingHoursByLocation, datesClosedByLocation } = this.state;
+    const { locations, services } = organization;
+    services.forEach(service => (service['locationIndexes'] = []));
+    this.setState({
+      openLocation: 0,
+      openingHoursByLocation: { 0: openingHoursByLocation[0] },
+      datesClosedByLocation: { 0: datesClosedByLocation[0] },
+      organization: {
+        ...organization,
+        services,
+        locations: [{ ...locations[0] }],
+        onlyRemote: !organization.onlyRemote
+      }
+    });
+  };
+
+  handleIsOrgRemoteChange = e => {
+    const { organization } = this.state;
+    if (!organization.onlyRemote) {
+      this.setOnlyHeadLocation();
+    } else {
+      this.setState({ organization: { ...organization, onlyRemote: !organization.onlyRemote } });
+    }
+  };
+
   locationCards = (locations, openLocation, invalidLocations) =>
     locations.map((location, i) => (
       <React.Fragment key={`location-${i}`}>
@@ -482,19 +525,27 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   locationDetails = (locations, i, openLocation) => {
     const location = locations[i];
+    const isLocationRemote = locations[i].isRemote;
+    const { organization } = this.state;
+    const isOrgRemote = _.get(organization, 'onlyRemote', false);
     return (
       <div className={`location-details${i !== openLocation ? ' d-none' : ''}`}>
         {location['id'] ? <AvField name={'locations[' + i + '].id'} value={location['id']} className="d-none" /> : ''}
+        {isOrgRemote ? (
+          <div className="mb-2">
+            <Translate contentKey="record.location.whereIsYourHeadquarters" />
+          </div>
+        ) : null}
         <AvGroup>
           <div className="flex">
-            <div className="required" />
+            <div className={`${!isOrgRemote ? 'required' : ''}`} />
             <Label>{translate('record.location.address1')}</Label>
           </div>
           <AvInput
             type="textarea"
             name={'locations[' + i + '].address1'}
             validate={{
-              required: { value: true, errorMessage: translate('entity.validation.required') }
+              required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
             }}
             onChange={this.onLocationChange(i, 'address1')}
           />
@@ -505,19 +556,19 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         </AvGroup>
         <Row>
           <Col md={7} className="flex mb-3">
-            <div className="required" />
+            <div className={`${!isOrgRemote ? 'required' : ''}`} />
             <AvInput
               type="text"
               name={'locations[' + i + '].city'}
               onChange={this.onLocationChange(i, 'city')}
               placeholder={translate('record.location.city')}
               validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
+                required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
               }}
             />
           </Col>
           <Col md={2} className="flex mb-3">
-            <div className="required" />
+            <div className={`${!isOrgRemote ? 'required' : ''}`} />
             <AvField
               type="select"
               name={'locations[' + i + '].ca'}
@@ -525,7 +576,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               placeholder={translate('record.location.ca')}
               value={location['ca'] || locationModel['ca']}
               validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
+                required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
               }}
               style={{ minWidth: '5em' }}
             >
@@ -537,18 +588,32 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             </AvField>
           </Col>
           <Col md={3} className="flex mb-3">
-            <div className="required" />
+            <div className={`${!isOrgRemote ? 'required' : ''}`} />
             <AvInput
               type="text"
               name={'locations[' + i + '].zipcode'}
               onChange={this.onLocationChange(i, 'zipcode')}
               placeholder={translate('record.location.zipcode')}
               validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
+                required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
               }}
             />
           </Col>
         </Row>
+        {!isOrgRemote ? (
+          <AvGroup check className="flex">
+            <Label check for={'location-id[' + i + '].isRemote'}>
+              {translate('record.location.isRemote')}
+            </Label>
+            <AvInput
+              id={'location-id[' + i + '].isRemote'}
+              type="checkbox"
+              name={'locations[' + i + '].isRemote'}
+              value={isLocationRemote}
+              onChange={this.onLocationRemoteChange(i)}
+            />
+          </AvGroup>
+        ) : null}
         <OpeningHours
           location={location}
           locationIndex={i}
@@ -721,6 +786,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     const phoneNumber = this.formatPhone(_.get(organization, 'phones[0].number', ''));
     const { updating, taxonomyOptions } = this.props;
     const { locations, services } = organization;
+    const isOrgRemote = _.get(organization, 'onlyRemote', false);
     return organization.id && organization.id === this.props.match.params.id ? (
       <AvForm onSubmit={this.saveRecord} className="record-shared record-edit background" model={organization}>
         <Prompt
@@ -855,8 +921,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               <FontAwesomeIcon icon={openSections.includes(LOCATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg" />
             </CardTitle>
             <Collapse isOpen={openSections.includes(LOCATION)}>
-              <div className="border-top-0">
-                <div className={openLocation !== -1 ? 'd-flex top-bar' : 'd-none'}>
+              <div className="border-top-0 mt-1">
+                <div className={openLocation !== -1 ? 'd-flex top-bar mb-3' : 'd-none'}>
                   <div onClick={this.openLocation(-1)} className="clickable ml-md-4">
                     <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
@@ -882,9 +948,15 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                     </div>
                   </div>
                 </div>
+                <AvGroup check className="flex mb-3 ml-4">
+                  <Label check for="onlyRemote">
+                    {translate('record.remoteOnly')}
+                  </Label>
+                  <AvInput id="onlyRemote" type="checkbox" name="onlyRemote" onChange={this.handleIsOrgRemoteChange} value={isOrgRemote} />
+                </AvGroup>
                 <CardBody className="details">
                   {locations && this.locationCards(locations, openLocation, invalidLocations)}
-                  <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
+                  <div className={openLocation === -1 && !isOrgRemote ? 'buttons list-buttons' : 'd-none'}>
                     <ButtonPill className="button-pill-secondary col-12 col-md-auto" onClick={this.addAnotherLocation}>
                       <FontAwesomeIcon icon="plus" />
                       &nbsp;
