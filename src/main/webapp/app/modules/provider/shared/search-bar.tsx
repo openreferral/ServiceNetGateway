@@ -13,6 +13,7 @@ export interface ISearchBarProp extends StateProps, DispatchProps {
   onReset: any;
   onClick?: any;
   width?: string;
+  initialValue?: string;
 }
 
 export interface ISearchBarState {
@@ -28,7 +29,11 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
   }
 
   componentDidMount() {
-    if (this.props.onReset) {
+    if (this.props.initialValue) {
+      this.setState({
+        text: this.props.initialValue
+      });
+    } else if (this.props.onReset) {
       this.props.onReset();
     }
   }

@@ -63,9 +63,9 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.searchModal !== this.props.searchModal) {
-      const { searchModal } = this.props;
-      this.setState({ claimModalActivePage: 0 }, () => this.props.getRecordsAvailableToClaim(0, 9, true, searchModal));
+    if (prevProps.searchTerm !== this.props.searchTerm) {
+      const { searchTerm } = this.props;
+      this.setState({ claimModalActivePage: 0 }, () => this.props.getRecordsAvailableToClaim(0, 9, true, searchTerm));
     }
     if (!prevProps.claimRecordsOpened && this.props.claimRecordsOpened) {
       // reset the state of the modal when opened
@@ -76,10 +76,10 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
   }
 
   handleLoadMoreClaimModal = hasReachedMaxItems => {
-    const { searchModal } = this.props;
+    const { searchTerm } = this.props;
     if (!hasReachedMaxItems) {
       this.setState({ claimModalActivePage: this.state.claimModalActivePage + 1 }, () =>
-        this.props.getRecordsAvailableToClaim(this.state.claimModalActivePage, 9, false, searchModal)
+        this.props.getRecordsAvailableToClaim(this.state.claimModalActivePage, 9, false, searchTerm)
       );
     }
   };
@@ -96,10 +96,10 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
   };
 
   claimMore = () => {
-    const { searchModal } = this.props;
+    const { searchTerm } = this.props;
     this.setState({ doneClaiming: false }, () => {
       this.props.resetRecordsToClaim();
-      this.props.getRecordsAvailableToClaim(0, 9, true, searchModal);
+      this.props.getRecordsAvailableToClaim(0, 9, true, searchTerm);
     });
 
     sendAction(GA_ACTIONS.CLAIM_RECORDS_CLAIM_MORE_RECORDS_POP_UP_YES);
@@ -139,7 +139,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
   searchBar = () => (
     <Row className={`search my-2 w-75 w-${this.isMobile() ? '100' : 75}`}>
       <Col className="height-fluid">
-        <SearchBar onSearch={this.props.setTextModal} onReset={this.props.resetTextModal} />
+        <SearchBar onSearch={this.props.setTextModal} onReset={this.props.resetTextModal} initialValue={this.props.searchTerm} />
       </Col>
     </Row>
   );
@@ -281,7 +281,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.authentication.isAuthenticated,
   leftToClaim: state.organization.leftToClaim,
   claimingProgress: state.organization.claimingProgress,
-  searchModal: state.search.textModal
+  searchTerm: state.search.textModal
 });
 
 const mapDispatchToProps = {
