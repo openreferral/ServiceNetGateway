@@ -17,7 +17,8 @@ import { useMediaQuery } from 'react-responsive';
 import './all-records.scss';
 import InfiniteScroll from 'react-infinite-scroller';
 import { isIOS } from 'react-device-detect';
-import { MOBILE_WIDTH_BREAKPOINT } from 'app/config/constants';
+import { GA_ACTIONS, MOBILE_WIDTH_BREAKPOINT } from 'app/config/constants';
+import { sendAction } from 'app/shared/util/analytics';
 const IOS_MODAL_MARGIN = 15;
 
 export interface IClaimRecordsModalProps extends StateProps, DispatchProps {
@@ -100,6 +101,8 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       this.props.resetRecordsToClaim();
       this.props.getRecordsAvailableToClaim(0, 9, true, searchModal);
     });
+
+    sendAction(GA_ACTIONS.CLAIM_RECORDS_CLAIM_MORE_RECORDS_POP_UP_YES);
   };
 
   organizationNameOnClick = orgId => () => {
@@ -130,6 +133,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
 
   closeClaiming = () => {
     this.props.closeClaiming();
+    sendAction(GA_ACTIONS.CLAIM_RECORDS_CLAIM_MORE_RECORDS_POP_UP_NO);
   };
 
   searchBar = () => (

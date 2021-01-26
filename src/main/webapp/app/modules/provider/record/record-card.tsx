@@ -9,7 +9,7 @@ import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
-import { APP_DATE_12_HOUR_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, GA_ACTIONS, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { connect } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
@@ -22,6 +22,7 @@ import ReferButton from 'app/modules/provider/record/refer-button';
 import _ from 'lodash';
 import moment from 'moment';
 import { IUser } from 'app/shared/model/user.model';
+import { sendAction, sendActionOnEvt } from 'app/shared/util/analytics';
 
 const REMAINDER_WIDTH = 25;
 
@@ -41,6 +42,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   referring: boolean;
   claiming?: boolean;
   onNameClick?: Function;
+  siloName?: string;
 }
 
 export interface IRecordCardState {
@@ -154,6 +156,9 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
                 rel="noopener noreferrer"
                 className="alert-link w-100 h-100 d-flex align-items-center px-2"
                 style={{ color: 'white' }}
+                onClick={sendActionOnEvt(
+                  !this.props.siloName ? GA_ACTIONS.RECORD_LOCATION_DIRECTIONS : GA_ACTIONS.PUBLIC_RECORD_LOCATION_DIRECTIONS
+                )}
               >
                 <FontAwesomeIcon icon="directions" size="lg" />
                 {shouldShowDirectionsLabelMobile || shouldShowDirectionsLabelDesktop ? (
@@ -212,6 +217,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       event.preventDefault();
       this.props.onNameClick();
     }
+    sendAction(!this.props.siloName ? GA_ACTIONS.CLICKING_ON_RECORDS : GA_ACTIONS.PUBLIC_CLICKING_ON_RECORDS);
   };
 
   getHeader = () => {

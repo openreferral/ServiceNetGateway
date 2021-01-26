@@ -4,11 +4,14 @@ import './search-bar.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { translate } from 'react-jhipster';
 import { connect } from 'react-redux';
+import { sendAction } from 'app/shared/util/analytics';
+import { GA_ACTIONS } from 'app/config/constants';
 
 export interface ISearchBarProp extends StateProps, DispatchProps {
   onSwitchFocus?: any;
   onSearch: any;
   onReset: any;
+  onClick?: any;
   width?: string;
 }
 
@@ -41,6 +44,7 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
       event.preventDefault();
     }
     this.props.onSearch(this.state.text);
+    sendAction(GA_ACTIONS.SEARCH_TERM);
   };
 
   reset = () => {
@@ -86,6 +90,7 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
               onChange={this.updateText}
               onFocus={this.onFocus}
               onBlur={this.onBlur}
+              onClick={this.props.onClick || null}
             />
             <label className="sr-only" htmlFor="search">
               {translate('providerSite.searchPlaceholder')}

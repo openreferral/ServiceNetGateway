@@ -173,7 +173,6 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     const matchNumber = this.getMatchNumber(offset);
     this.setState({ matchNumber, loadingPartner: true });
 
-    ReactGA.event({ category: 'UserActions', action: 'Clicking "See Another Match" on side by side view' });
     const id = this.props.matches[matchNumber].partnerVersionId;
     this.props.getPartnerRecord(id);
     this.replacePartnerId(id);
@@ -190,9 +189,7 @@ export class MultipleRecordView extends React.Component<IMultipleRecordViewProp,
     return matchNumber;
   };
 
-  denyMatch = () => {
-    ReactGA.event({ category: 'UserActions', action: 'Deny Match Button' });
-  };
+  denyMatch = () => {};
 
   hideActivity = event => {
     const { matches, partnerRecord, orgId } = this.props;

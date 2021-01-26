@@ -71,9 +71,7 @@ export class Details extends React.Component<ISingleRecordViewProp, ISingleRecor
     });
   };
 
-  handleMatchClick = () => {
-    ReactGA.event({ category: 'UserActions', action: 'Clicking On Side By Side View' });
-  };
+  handleMatchClick = () => {};
 
   render() {
     const { orgId, organizationMatches, dismissedMatches } = this.props;

@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Table } from 'reactstrap';
 import { TextFormat, Translate } from 'react-jhipster';
 import { getDeactivatedProviderRecords, reactivateRecord } from './deactivated-records.reducer';
-import { APP_DATE_12_HOUR_FORMAT } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, GA_ACTIONS } from 'app/config/constants';
 import ButtonPill from '../shared/button-pill';
+import { sendAction } from 'app/shared/util/analytics';
 
 export interface IDeactivatedRecordsProps extends StateProps, DispatchProps {}
 
@@ -15,6 +16,7 @@ export class DeactivatedRecords extends React.Component<IDeactivatedRecordsProps
 
   reactivateRecord = id => {
     this.props.reactivateRecord(id);
+    sendAction(GA_ACTIONS.DEACTIVATED_ACCOUNTS);
   };
 
   render() {

@@ -10,11 +10,12 @@ import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import Select from 'react-select';
-import { DESKTOP_WIDTH_BREAKPOINT, MOBILE_WIDTH_BREAKPOINT, selectStyle } from 'app/config/constants';
+import { DESKTOP_WIDTH_BREAKPOINT, GA_ACTIONS, MOBILE_WIDTH_BREAKPOINT, selectStyle } from 'app/config/constants';
 import { toast } from 'react-toastify';
 import MediaQuery from 'react-responsive';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
+import { sendAction } from 'app/shared/util/analytics';
 
 export interface IReferralTabProps extends StateProps, DispatchProps {
   isMobile: boolean;
@@ -110,6 +111,11 @@ class ReferralTab extends React.Component<IReferralTabProps, IReferralTabState> 
       this.setState({ referredTo: referredRecords }, () =>
         this.props.sendReferrals(cboId, orgLocationMap, fromLocationId, phoneNumber, beneficiaryId)
       );
+      if (!!phoneNumber) {
+        sendAction(GA_ACTIONS.REFERRAL_PHONE);
+      } else if (!!beneficiaryId) {
+        sendAction(GA_ACTIONS.REFERRAL_SN_ID);
+      }
     }
   };
 

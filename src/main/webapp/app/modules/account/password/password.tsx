@@ -10,6 +10,8 @@ import PasswordStrengthBar from 'app/shared/layout/password/password-strength-ba
 import { savePassword, reset } from './password.reducer';
 import { RouteComponentProps } from 'react-router-dom';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import { sendAction } from 'app/shared/util/analytics';
+import { GA_ACTIONS } from 'app/config/constants';
 
 export interface IUserPasswordProps extends StateProps, DispatchProps, RouteComponentProps {}
 
@@ -33,6 +35,7 @@ export class PasswordPage extends React.Component<IUserPasswordProps, IUserPassw
 
   handleValidSubmit = (event, values) => {
     this.props.savePassword(values.currentPassword, values.newPassword);
+    sendAction(GA_ACTIONS.PASSWORD);
     this.props.history.push(`/`);
   };
 

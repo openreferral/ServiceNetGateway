@@ -43,7 +43,6 @@ export class LocationMatchesDetails extends React.Component<ILocationMatchesDeta
   handleMatchClick = location => () => {
     this.props.getPartnerRecord(location.orgId);
     this.props.setOpenedPartnerLocation(location.matchingLocation);
-    ReactGA.event({ category: 'UserActions', action: 'Clicking On Side By Side View' });
   };
 
   render() {

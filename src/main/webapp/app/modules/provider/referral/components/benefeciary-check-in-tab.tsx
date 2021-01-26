@@ -11,10 +11,11 @@ import { IRootState } from 'app/shared/reducers';
 import Select from 'react-select';
 import { checkIn, resetCheckedIn } from '../../provider-record.reducer';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
-import { selectStyle } from 'app/config/constants';
+import { GA_ACTIONS, selectStyle } from 'app/config/constants';
 import mediaQueryWrapper from 'app/shared/util/media-query-wrapper';
 import { toast } from 'react-toastify';
 import { IReferralTabProps, IReferralTabState } from 'app/modules/provider/referral/components/referral-tab';
+import { sendAction } from 'app/shared/util/analytics';
 
 export interface IBeneficiaryCheckInTabState {
   phoneNumber: String;
@@ -72,6 +73,11 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
       const organization = organizations.find(org => org.id === orgId);
       const locId = organization.locations.length === 1 ? organization.locations[0].id : location;
       this.props.checkIn(phoneNumber, beneficiaryId, orgId, locId);
+      if (!!phoneNumber) {
+        sendAction(GA_ACTIONS.CHECK_IN_PHONE);
+      } else if (!!beneficiaryId) {
+        sendAction(GA_ACTIONS.CHECK_IN_SN_ID);
+      }
     }
   };
 

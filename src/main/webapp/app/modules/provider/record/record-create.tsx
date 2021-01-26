@@ -28,6 +28,8 @@ import ServiceLogo from '../../../../static/images/service.svg';
 import _ from 'lodash';
 import ButtonPill from '../shared/button-pill';
 import { OpeningHours } from 'app/modules/provider/record/opening-hours';
+import { sendAction } from 'app/shared/util/analytics';
+import { GA_ACTIONS } from 'app/config/constants';
 
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -192,6 +194,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
       }
     }
     this.setState({ invalidTabs });
+    sendAction(GA_ACTIONS.ADD_A_NEW_RECORD);
   };
 
   onLocationRemoteChange = i => () => {

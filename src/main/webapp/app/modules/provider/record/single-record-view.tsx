@@ -12,7 +12,7 @@ import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import { FixedSizeList as List, FixedSizeGrid as Grid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
-import { APP_DATE_12_HOUR_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, GA_ACTIONS, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
@@ -24,6 +24,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 import ServiceLogo from '../../../../static/images/service.svg';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import _ from 'lodash';
+import { sendAction, sendActionOnEvt } from 'app/shared/util/analytics';
 
 const LocationPill = location => {
   if (!location) {
@@ -135,7 +136,10 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     }
   }
 
-  showServiceDetails = serviceIdx => this.setState({ detailsView: true, currentServiceIdx: serviceIdx });
+  showServiceDetails = serviceIdx => {
+    this.setState({ detailsView: true, currentServiceIdx: serviceIdx });
+    sendAction(!this.getSiloName() ? GA_ACTIONS.RECORD_SERVICE_DETAILS : GA_ACTIONS.PUBLIC_RECORD_SERVICE_DETAILS);
+  };
 
   closeServiceDetails = () => this.setState({ detailsView: false });
 
@@ -300,6 +304,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                               rel="noopener noreferrer"
                               className="alert-link w-100 h-100 d-flex align-items-center px-2"
                               style={{ color: 'white' }}
+                              onClick={sendActionOnEvt(
+                                !this.getSiloName() ? GA_ACTIONS.RECORD_LOCATION_DIRECTIONS : GA_ACTIONS.PUBLIC_RECORD_LOCATION_DIRECTIONS
+                              )}
                             >
                               <FontAwesomeIcon icon="directions" size="lg" />
                               &nbsp;
@@ -678,6 +685,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                             ? organization.url
                             : '//' + organization.url
                         }
+                        onClick={sendActionOnEvt(
+                          !this.getSiloName() ? GA_ACTIONS.RECORD_WEBSITE_CLICK : GA_ACTIONS.PUBLIC_RECORD_WEBSITE_CLICK
+                        )}
                       >
                         {organization.url}
                       </a>
