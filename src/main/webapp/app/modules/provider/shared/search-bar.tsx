@@ -4,7 +4,7 @@ import './search-bar.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { translate } from 'react-jhipster';
 import { connect } from 'react-redux';
-import { sendAction } from 'app/shared/util/analytics';
+import { sendAction, sendSearch } from 'app/shared/util/analytics';
 import { GA_ACTIONS } from 'app/config/constants';
 
 export interface ISearchBarProp extends StateProps, DispatchProps {
@@ -45,6 +45,7 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
     }
     this.props.onSearch(this.state.text);
     sendAction(GA_ACTIONS.SEARCH_TERM);
+    sendSearch(this.state.text);
   };
 
   reset = () => {

@@ -7,3 +7,7 @@ export const sendAction = action => {
 export const sendActionOnEvt = action => evt => {
   sendAction(action);
 };
+
+export const sendSearch = query => {
+  ReactGA.pageview('/search?query=' + query);
+};
