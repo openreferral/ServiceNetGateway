@@ -1413,6 +1413,7 @@ exports[`All records renders correctly 1`] = `
       referralCount={0}
       resetRecordsToClaim={[Function]}
       resetText={[Function]}
+      resetTextModal={[Function]}
       search=""
       selectRecord={[Function]}
       selectedRecord={null}
