@@ -32,10 +32,10 @@ import { OpeningHours } from 'app/modules/provider/record/opening-hours';
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export interface IRecordCreateViewState {
-  organization: object;
+  organization: any;
   activeTab: string;
   locationCount: number;
-  locations: object[];
+  locations: any[];
   services: any[];
   serviceCount: number;
   invalidTabs: string[];
@@ -53,7 +53,8 @@ const locationModel = {
   address2: '',
   city: '',
   ca: 'CA',
-  zipcode: ''
+  zipcode: '',
+  isRemote: false
 };
 const initialLocations = [{ ...locationModel }];
 const DEFAULT_OPENING_HOURS = [
@@ -80,7 +81,8 @@ const organizationModel = {
   name: '',
   description: '',
   url: '',
-  email: ''
+  email: '',
+  onlyRemote: false
 };
 
 export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecordCreateViewState> {
@@ -112,6 +114,22 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     }
   }
 
+  setOnlyHeadLocation = () => {
+    const { locations, services, organization, openingHoursByLocation, datesClosedByLocation } = this.state;
+    services.forEach(service => (service['locationIndexes'] = []));
+    this.setState({
+      locationCount: 1,
+      locations: [{ ...locations[0] }],
+      services,
+      openingHoursByLocation: { 0: openingHoursByLocation[0] },
+      datesClosedByLocation: { 0: datesClosedByLocation[0] },
+      organization: {
+        ...organization,
+        onlyRemote: !organization.onlyRemote
+      }
+    });
+  };
+
   toggle(activeTab) {
     if (activeTab !== this.state.activeTab) {
       this.setState({
@@ -132,11 +150,17 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     });
 
   saveRecord = (event, errors, values) => {
-    const { openingHoursByLocation, datesClosedByLocation, organization, services } = this.state;
+    const { openingHoursByLocation, datesClosedByLocation, organization, services, locations } = this.state;
     values.updatedAt = new Date();
-    const entityWithServices = { ...values };
+    const entityWithServicesAndLocation = { ...values };
     _.forEach(services, (service, i) => {
-      entityWithServices['services'][i] = services[i];
+      entityWithServicesAndLocation['services'][i] = services[i];
+    });
+    _.forEach(locations, (location, i) => {
+      entityWithServicesAndLocation['locations'][i] = {
+        ...entityWithServicesAndLocation['locations'][i],
+        ...locations[i]
+      };
     });
 
     const invalidTabs = [];
@@ -144,7 +168,7 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     const areServicePhonesValid = !this.areServicePhonesInvalid(services);
     if (errors.length === 0 && isOrganizationPhoneValid && areServicePhonesValid) {
       const entity = {
-        ...entityWithServices,
+        ...entityWithServicesAndLocation,
         openingHoursByLocation,
         datesClosedByLocation,
         phones: _.get(organization, 'phones', [])
@@ -168,6 +192,14 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
       }
     }
     this.setState({ invalidTabs });
+  };
+
+  onLocationRemoteChange = i => () => {
+    const locations = this.state.locations;
+    locations[i].isRemote = !locations[i].isRemote;
+    this.setState({
+      locations
+    });
   };
 
   addAnotherService = () => {
@@ -285,10 +317,179 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     });
   };
 
+  handleIsOrgRemoteChange = e => {
+    const { organization } = this.state;
+    if (!organization.onlyRemote) {
+      this.setOnlyHeadLocation();
+    } else {
+      this.setState({ organization: { ...organization, onlyRemote: !organization.onlyRemote } });
+    }
+  };
+
+  locationTab = () => {
+    const { locationCount, organization } = this.state;
+    const isOrgRemote = _.get(organization, 'onlyRemote', false);
+    return (
+      <Col md={{ size: 10, offset: 1 }}>
+        <div className="heading">
+          <img data-src={BuildingLogo} height={100} className="lazyload" alt="Location" />
+          <h2>
+            <Translate contentKey="record.heading.locations" />
+          </h2>
+
+          <div className="description">
+            <Translate contentKey="record.heading.locationsDescription" />
+          </div>
+        </div>
+        <Row id="remote-only-row">
+          <Col md={{ size: 11, offset: 1 }}>
+            <AvGroup check className="flex">
+              <Label check for="onlyRemote">
+                {translate('record.remoteOnly')}
+              </Label>
+              <AvInput id="onlyRemote" type="checkbox" name="onlyRemote" onChange={this.handleIsOrgRemoteChange} value={isOrgRemote} />
+            </AvGroup>
+          </Col>
+        </Row>
+        {isOrgRemote ? (
+          <div className="mt-4" style={{ marginBottom: '-1rem' }}>
+            <Row id="whereIsYourHeadquarters" noGutters>
+              <Col md={{ size: 11, offset: 1 }}>
+                <Translate contentKey="record.location.whereIsYourHeadquarters" />
+              </Col>
+            </Row>
+          </div>
+        ) : null}
+        {Array.apply(null, { length: locationCount }).map((e, i) => {
+          const { locations } = this.state;
+          const isLocationRemote = locations[i].isRemote;
+          return (
+            <Row key={`location-${i}`} className="item location">
+              <Col md={1}>{!isOrgRemote ? <h4>{i + 1}.</h4> : null}</Col>
+              <Col md={11}>
+                <AvGroup className="flex">
+                  <div className={`${!isOrgRemote ? 'required' : ''}`} />
+                  <Label className="sr-only" for={'location-id[' + i + '].address1'}>
+                    {translate('record.location.address1')}
+                  </Label>
+                  <AvInput
+                    id={'location-id[' + i + '].address1'}
+                    type="textarea"
+                    name={'locations[' + i + '].address1'}
+                    onChange={this.onLocationChange(i, 'address1')}
+                    placeholder={translate('record.location.address1')}
+                    validate={{
+                      required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for={'location-id[' + i + '].address2'}>
+                    {translate('record.location.address2')}
+                  </Label>
+                  <AvInput
+                    id={'location-id[' + i + '].address2'}
+                    type="textarea"
+                    name={'locations[' + i + '].address2'}
+                    onChange={this.onLocationChange(i, 'address2')}
+                    placeholder={translate('record.location.address2')}
+                  />
+                </AvGroup>
+                <Row>
+                  <Col md={7} className="flex mb-3">
+                    <div className={`${!isOrgRemote ? 'required' : ''}`} />
+                    <Label className="sr-only" for={'location-id[' + i + '].city'}>
+                      {translate('record.location.city')}
+                    </Label>
+                    <AvInput
+                      id={'location-id[' + i + '].city'}
+                      type="text"
+                      name={'locations[' + i + '].city'}
+                      onChange={this.onLocationChange(i, 'city')}
+                      placeholder={translate('record.location.city')}
+                      validate={{
+                        required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
+                      }}
+                    />
+                  </Col>
+                  <Col md={2} className="flex mb-3">
+                    <div className={`${!isOrgRemote ? 'required' : ''}`} />
+                    <Label className="sr-only" for={'location-id[' + i + '].ca'}>
+                      {translate('entity.validation.required')}
+                    </Label>
+                    <AvField
+                      id={'location-id[' + i + '].ca'}
+                      type="select"
+                      name={'locations[' + i + '].ca'}
+                      onChange={this.onLocationChange(i, 'ca')}
+                      placeholder={translate('record.location.ca')}
+                      value={locationModel['ca']}
+                      validate={{
+                        required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
+                      }}
+                      style={{ minWidth: '5em' }}
+                    >
+                      {US_STATES.map(state => (
+                        <option value={state} key={state}>
+                          {state}
+                        </option>
+                      ))}
+                    </AvField>
+                  </Col>
+                  <Col md={3} className="flex mb-3">
+                    <div className={`${!isOrgRemote ? 'required' : ''}`} />
+                    <Label className="sr-only" for={'location-id[' + i + '].zipcode'}>
+                      {translate('record.location.zipcode')}
+                    </Label>
+                    <AvInput
+                      id={'location-id[' + i + '].zipcode'}
+                      type="text"
+                      name={'locations[' + i + '].zipcode'}
+                      onChange={this.onLocationChange(i, 'zipcode')}
+                      placeholder={translate('record.location.zipcode')}
+                      validate={{
+                        required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
+                      }}
+                    />
+                  </Col>
+                  {!isOrgRemote ? (
+                    <Col md={7} className="flex mb-3">
+                      <AvGroup check className="flex">
+                        <Label check for={'location-id[' + i + '].isRemote'}>
+                          {translate('record.location.isRemote')}
+                        </Label>
+                        <AvInput
+                          id={'location-id[' + i + '].isRemote'}
+                          type="checkbox"
+                          name={'locations[' + i + '].isRemote'}
+                          value={isLocationRemote}
+                          onChange={this.onLocationRemoteChange(i)}
+                        />
+                      </AvGroup>
+                    </Col>
+                  ) : null}
+                </Row>
+                <OpeningHours
+                  location={locations[i]}
+                  locationIndex={i}
+                  openingHours={this.state.openingHoursByLocation[i] || [{}]}
+                  datesClosed={this.state.datesClosedByLocation[i] || [null]}
+                  updateLocationData={this.updateLocationData(i)}
+                  defaultOpeningHours={DEFAULT_OPENING_HOURS}
+                />
+              </Col>
+            </Row>
+          );
+        })}
+      </Col>
+    );
+  };
+
   render() {
-    const { organization, locations, services, activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
+    const { organization, locations, services, activeTab, invalidTabs, serviceCount, leaving } = this.state;
     const phoneNumber = _.get(organization, 'phones[0].number', '');
     const { updating, taxonomyOptions } = this.props;
+    const onlyRemote = _.get(organization, 'onlyRemote', false);
     return (
       <div className="record-shared record-create">
         <Nav tabs>
@@ -432,132 +633,23 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               </div>
             </TabPane>
             <TabPane tabId={LOCATION_TAB}>
-              <Col md={{ size: 10, offset: 1 }}>
-                <div className="heading">
-                  <img data-src={BuildingLogo} height={100} className="lazyload" alt="Location" />
-                  <h2>
-                    <Translate contentKey="record.heading.locations" />
-                  </h2>
-                  <div className="description">
-                    <Translate contentKey="record.heading.locationsDescription" />
-                  </div>
-                </div>
-                {Array.apply(null, { length: locationCount }).map((e, i) => (
-                  <Row key={`location-${i}`} className="item location">
-                    <Col md={1}>
-                      <h4>{i + 1}.</h4>
-                    </Col>
-                    <Col md={11}>
-                      <AvGroup className="flex">
-                        <div className="required" />
-                        <Label className="sr-only" for={'location-id[' + i + '].address1'}>
-                          {translate('record.location.address1')}
-                        </Label>
-                        <AvInput
-                          id={'location-id[' + i + '].address1'}
-                          type="textarea"
-                          name={'locations[' + i + '].address1'}
-                          onChange={this.onLocationChange(i, 'address1')}
-                          placeholder={translate('record.location.address1')}
-                          validate={{
-                            required: { value: true, errorMessage: translate('entity.validation.required') }
-                          }}
-                        />
-                      </AvGroup>
-                      <AvGroup>
-                        <Label className="sr-only" for={'location-id[' + i + '].address2'}>
-                          {translate('record.location.address2')}
-                        </Label>
-                        <AvInput
-                          id={'location-id[' + i + '].address2'}
-                          type="textarea"
-                          name={'locations[' + i + '].address2'}
-                          onChange={this.onLocationChange(i, 'address2')}
-                          placeholder={translate('record.location.address2')}
-                        />
-                      </AvGroup>
-                      <Row>
-                        <Col md={7} className="flex mb-3">
-                          <div className="required" />
-                          <Label className="sr-only" for={'location-id[' + i + '].city'}>
-                            {translate('record.location.city')}
-                          </Label>
-                          <AvInput
-                            id={'location-id[' + i + '].city'}
-                            type="text"
-                            name={'locations[' + i + '].city'}
-                            onChange={this.onLocationChange(i, 'city')}
-                            placeholder={translate('record.location.city')}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                          />
-                        </Col>
-                        <Col md={2} className="flex mb-3">
-                          <div className="required" />
-                          <Label className="sr-only" for={'location-id[' + i + '].ca'}>
-                            {translate('entity.validation.required')}
-                          </Label>
-                          <AvField
-                            id={'location-id[' + i + '].ca'}
-                            type="select"
-                            name={'locations[' + i + '].ca'}
-                            onChange={this.onLocationChange(i, 'ca')}
-                            placeholder={translate('record.location.ca')}
-                            value={locationModel['ca']}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            style={{ minWidth: '5em' }}
-                          >
-                            {US_STATES.map(state => (
-                              <option value={state} key={state}>
-                                {state}
-                              </option>
-                            ))}
-                          </AvField>
-                        </Col>
-                        <Col md={3} className="flex mb-3">
-                          <div className="required" />
-                          <Label className="sr-only" for={'location-id[' + i + '].zipcode'}>
-                            {translate('record.location.zipcode')}
-                          </Label>
-                          <AvInput
-                            id={'location-id[' + i + '].zipcode'}
-                            type="text"
-                            name={'locations[' + i + '].zipcode'}
-                            onChange={this.onLocationChange(i, 'zipcode')}
-                            placeholder={translate('record.location.zipcode')}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                      <OpeningHours
-                        location={locations[i]}
-                        locationIndex={i}
-                        openingHours={this.state.openingHoursByLocation[i] || [{}]}
-                        datesClosed={this.state.datesClosedByLocation[i] || [null]}
-                        updateLocationData={this.updateLocationData(i)}
-                        defaultOpeningHours={DEFAULT_OPENING_HOURS}
-                      />
-                    </Col>
-                  </Row>
-                ))}
-              </Col>
-              <div className="buttons list-buttons">
-                {this.state.locationCount === 1 ? null : (
-                  <ButtonPill onClick={this.removeLocation} className="button-pill-secondary mr-1">
-                    <Translate contentKey="record.remove" />
+              <this.locationTab />
+              {!onlyRemote ? (
+                <div className="buttons list-buttons">
+                  {this.state.locationCount === 1 ? null : (
+                    <ButtonPill onClick={this.removeLocation} className="button-pill-secondary mr-1">
+                      <Translate contentKey="record.remove" />
+                    </ButtonPill>
+                  )}
+                  <ButtonPill onClick={this.addAnotherLocation} className="button-pill-secondary">
+                    <FontAwesomeIcon icon="plus" />
+                    &nbsp;
+                    <Translate contentKey="record.addAnother" />
                   </ButtonPill>
-                )}
-                <ButtonPill onClick={this.addAnotherLocation} className="button-pill-secondary">
-                  <FontAwesomeIcon icon="plus" />
-                  &nbsp;
-                  <Translate contentKey="record.addAnother" />
-                </ButtonPill>
-              </div>
+                </div>
+              ) : (
+                ''
+              )}
               <div className="buttons navigation-buttons">
                 <ButtonPill onClick={() => this.toggle(ORGANIZATION_TAB)} className="button-pill-secondary">
                   <FontAwesomeIcon icon="angle-left" />
