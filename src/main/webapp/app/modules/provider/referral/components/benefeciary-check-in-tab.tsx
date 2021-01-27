@@ -103,7 +103,7 @@ class BeneficiaryCheckInTab extends React.Component<IBeneficiaryCheckInTabProps,
     const isPhoneValid = phoneNumber && isPossiblePhoneNumber(phoneNumber);
     const isBeneficiaryValid = isPhoneValid || beneficiaryId;
     const isCboValid = cbo || referralOptions.length === 1;
-    const isLocationValid = location || this.locationOptions().length === 1;
+    const isLocationValid = location || this.locationOptions().length < 2;
 
     this.setState({ isBeneficiaryValid, isCboValid, isLocationValid });
     return isBeneficiaryValid && isCboValid && isLocationValid;
