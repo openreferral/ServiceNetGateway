@@ -50,6 +50,7 @@ export interface IRecordEditViewState {
   leaving: boolean;
   openingHoursByLocation: any;
   datesClosedByLocation: any;
+  hiddenLocations: any[];
 }
 
 const ORGANIZATION = 'organization';
@@ -97,7 +98,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     openDialogs: [],
     leaving: false,
     openingHoursByLocation: {},
-    datesClosedByLocation: {}
+    datesClosedByLocation: {},
+    hiddenLocations: []
   };
 
   componentDidMount() {
@@ -440,6 +442,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   setOnlyHeadLocation = () => {
     const { organization, openingHoursByLocation, datesClosedByLocation } = this.state;
     const { locations, services } = organization;
+    if (locations.length > 1) {
+      const [head, ...tail] = locations;
+      this.setState({ hiddenLocations: tail });
+    }
     services.forEach(service => (service['locationIndexes'] = []));
     this.setState({
       openLocation: 0,
@@ -455,10 +461,11 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   };
 
   handleIsOrgRemoteChange = e => {
-    const { organization } = this.state;
+    const { organization, hiddenLocations } = this.state;
     if (!organization.onlyRemote) {
       this.setOnlyHeadLocation();
     } else {
+      organization.locations = [...organization.locations, ...hiddenLocations];
       this.setState({ organization: { ...organization, onlyRemote: !organization.onlyRemote } });
     }
   };
