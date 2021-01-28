@@ -122,9 +122,6 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   componentDidUpdate(prevProps: Readonly<IRecordEditViewProp>, prevState: Readonly<IRecordEditViewState>) {
     if (prevProps.organization !== this.props.organization) {
       const organization = _.cloneDeep(this.props.organization);
-      if (!organization.locations || organization.locations.length === 0) {
-        organization.locations = this.state.organization.locations;
-      }
       if (!organization.services || organization.services.length === 0) {
         organization.services = this.state.organization.services;
       }
@@ -447,14 +444,15 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       this.setState({ hiddenLocations: tail });
     }
     services.forEach(service => (service['locationIndexes'] = []));
+    const hasLocations = locations.length !== 0;
     this.setState({
-      openLocation: 0,
-      openingHoursByLocation: { 0: openingHoursByLocation[0] },
-      datesClosedByLocation: { 0: datesClosedByLocation[0] },
+      openLocation: hasLocations ? 0 : -1,
+      openingHoursByLocation: hasLocations ? { 0: openingHoursByLocation[0] } : {},
+      datesClosedByLocation: hasLocations ? { 0: datesClosedByLocation[0] } : {},
       organization: {
         ...organization,
         services,
-        locations: [{ ...locations[0] }],
+        locations: hasLocations ? [{ ...locations[0] }] : [],
         onlyRemote: !organization.onlyRemote
       }
     });
