@@ -42,6 +42,8 @@
     "phoneNumber": "Phone Number",
     "organizationName.placeholder": "Your Organization Name",
     "organizationUrl.placeholder": "Your Organization URL",
-    "phoneNumber.placeholder": "Your Phone Number (XXX)-XXX-XXXX"
+    "phoneNumber.placeholder": "Your Phone Number (XXX)-XXX-XXXX",
+    "verified": "Verified",
+    "notVerified": "Not verified"
   }
 }
