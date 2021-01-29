@@ -155,7 +155,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       claimRecordsOpened,
       claimingProgress
     } = this.props;
-    const { claimModalActivePage, doneClaiming } = this.state;
+    const { claimModalActivePage, doneClaiming, singleRecordTab } = this.state;
     const hasReachedMaxItemsClaimModal =
       availableRecordsToClaim && availableRecordsToClaim.length === parseInt(recordsAvailableToClaimTotal, 10);
     return doneClaiming || !claimRecordsOpened ? (
@@ -191,7 +191,12 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
         )}
       </div>
     ) : (
-      <div className="d-flex flex-column justify-content-between align-items-center claim-record-modal-container p-1">
+      <div
+        className={
+          (singleRecordTab ? 'd-none' : 'd-flex') +
+          ' flex-column justify-content-between align-items-center claim-record-modal-container p-1'
+        }
+      >
         <div className="d-flex flex-column align-items-center w-100 pt-4 pt-sm-3 pb-2">
           <span className="claim-modal-title">
             <Translate contentKey="providerSite.claimTitle" />
@@ -265,7 +270,8 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
           style={isIOS ? { height: modalHeight - IOS_MODAL_MARGIN, minHeight: modalHeight - IOS_MODAL_MARGIN } : {}}
           contentClassName={isIOS ? 'ios modal-content' : 'modal-content'}
         >
-          {singleRecordTab ? <this.singleRecordView /> : <this.claimRecordsPage />}
+          {singleRecordTab ? <this.singleRecordView /> : null}
+          <this.claimRecordsPage />
         </Modal>
       </div>
     );
