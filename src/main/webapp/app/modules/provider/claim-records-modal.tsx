@@ -33,11 +33,13 @@ export interface IClaimRecordsModalState extends IPaginationBaseState {
   doneClaiming: boolean;
   singleRecordTab: boolean;
   orgId: string;
+  searching: boolean;
 }
 
 const INITIAL_STATE = {
   claimModalActivePage: 0,
-  doneClaiming: false
+  doneClaiming: false,
+  searching: false
 };
 
 export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, IClaimRecordsModalState> {
@@ -65,7 +67,12 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.searchTerm !== this.props.searchTerm) {
       const { searchTerm } = this.props;
-      this.setState({ claimModalActivePage: 0 }, () => this.props.getRecordsAvailableToClaim(0, 9, true, searchTerm));
+      this.setState({ claimModalActivePage: 0, searching: true }, () => this.props.getRecordsAvailableToClaim(0, 9, true, searchTerm));
+    }
+    if (prevProps.loading && !this.props.loading) {
+      this.setState({
+        searching: false
+      });
     }
     if (!prevProps.claimRecordsOpened && this.props.claimRecordsOpened) {
       // reset the state of the modal when opened
@@ -155,7 +162,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       claimRecordsOpened,
       claimingProgress
     } = this.props;
-    const { claimModalActivePage, doneClaiming, singleRecordTab } = this.state;
+    const { claimModalActivePage, doneClaiming, singleRecordTab, searching } = this.state;
     const hasReachedMaxItemsClaimModal =
       availableRecordsToClaim && availableRecordsToClaim.length === parseInt(recordsAvailableToClaimTotal, 10);
     return doneClaiming || !claimRecordsOpened ? (
@@ -208,20 +215,22 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
           <this.searchBar />
         </div>
         <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body">
-          {claimRecordsOpened && (
-            <InfiniteScroll
-              pageStart={claimModalActivePage}
-              loadMore={() => this.handleLoadMoreClaimModal(hasReachedMaxItemsClaimModal)}
-              hasMore={!hasReachedMaxItemsClaimModal}
-              loader={loading ? <Spinner key={0} color="primary" /> : null}
-              threshold={0}
-              initialLoad={false}
-              useWindow={false}
-              getScrollParent={() => document.getElementById('claim-record-modal-content')}
-            >
-              <Row noGutters>{this.mapRecordsForClaimModal({ records: availableRecordsToClaim })}</Row>
-            </InfiniteScroll>
-          )}
+          {searching && <Spinner key={0} color="primary" />}
+          {claimRecordsOpened &&
+            !searching && (
+              <InfiniteScroll
+                pageStart={claimModalActivePage}
+                loadMore={() => this.handleLoadMoreClaimModal(hasReachedMaxItemsClaimModal)}
+                hasMore={!hasReachedMaxItemsClaimModal}
+                loader={loading ? <Spinner key={0} color="primary" /> : null}
+                threshold={0}
+                initialLoad={false}
+                useWindow={false}
+                getScrollParent={() => document.getElementById('claim-record-modal-content')}
+              >
+                <Row noGutters>{this.mapRecordsForClaimModal({ records: availableRecordsToClaim })}</Row>
+              </InfiniteScroll>
+            )}
         </div>
         <div className="flex-grow-1" />
         <div className="d-flex align-items-center justify-content-center">
