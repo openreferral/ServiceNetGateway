@@ -4,7 +4,7 @@ import Loadable from 'react-loadable';
 
 import Login from 'app/modules/login/login';
 import Register from 'app/modules/account/register/register';
-import Activate from 'app/modules/account/activate/activate';
+import Verify from 'app/modules/account/activate/activate';
 import PasswordResetInit from 'app/modules/account/password-reset/init/password-reset-init';
 import PasswordResetFinish from 'app/modules/account/password-reset/finish/password-reset-finish';
 import Logout from 'app/modules/login/logout';
@@ -47,7 +47,7 @@ const Routes = ({ isAdmin, isSacramento }) => (
     <Switch>
       <ErrorBoundaryRoute path="/register/:siloName" component={Register} />
       <ErrorBoundaryRoute path="/register" component={Register} />
-      <ErrorBoundaryRoute path="/activate/:key?" component={Activate} />
+      <ErrorBoundaryRoute path="/verify/:key?" component={Verify} />
       <ErrorBoundaryRoute path="/reset/request" component={PasswordResetInit} />
       <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} />
       <ErrorBoundaryRoute path="/api-documentation" component={DocsPage} />

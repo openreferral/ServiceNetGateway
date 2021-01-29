@@ -22,6 +22,7 @@ export interface IUser {
   shelters?: any[];
   siloId?: string;
   userGroups?: IUserGroup[];
+  verified?: boolean;
 }
 
 export const defaultValue: Readonly<IUser> = {
