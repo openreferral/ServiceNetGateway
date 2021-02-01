@@ -40,7 +40,7 @@ const initialState = {
   options: [] as ReadonlyArray<IOrganizationOption>,
   claimSuccess: false,
   leftToClaim: [],
-  recordsToClaim: [],
+  claimedRecords: [],
   claimingProgress: '0'
 };
 
@@ -48,7 +48,7 @@ export type OrganizationState = Readonly<typeof initialState>;
 // Reducer
 
 export default (state: OrganizationState = initialState, action): OrganizationState => {
-  const { recordsToClaim } = state;
+  const { claimedRecords } = state;
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION):
@@ -104,8 +104,8 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         errorMessage: action.payload,
         claimSuccess: false,
         claimingProgress:
-          recordsToClaim.length > 0
-            ? (((recordsToClaim.length - state.leftToClaim.length) / recordsToClaim.length) * 100).toFixed(0)
+          claimedRecords.length > 0
+            ? (((claimedRecords.length - state.leftToClaim.length) / claimedRecords.length) * 100).toFixed(0)
             : '100'
       };
     case SUCCESS(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
@@ -165,8 +165,8 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         updating: false,
         claimSuccess: true,
         claimingProgress:
-          recordsToClaim.length > 0
-            ? (((recordsToClaim.length - state.leftToClaim.length) / recordsToClaim.length) * 100).toFixed(0)
+          claimedRecords.length > 0
+            ? (((claimedRecords.length - state.leftToClaim.length) / claimedRecords.length) * 100).toFixed(0)
             : '100'
       };
     case ACTION_TYPES.SET_BLOB:
@@ -180,16 +180,16 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         }
       };
     case ACTION_TYPES.MARK_RECORD_TO_CLAIM:
-      recordsToClaim.push(action.payload);
+      claimedRecords.push(action.payload);
       return {
         ...state,
-        recordsToClaim: [...recordsToClaim]
+        claimedRecords: [...claimedRecords]
       };
     case ACTION_TYPES.UNMARK_RECORD_TO_CLAIM:
-      _.remove(recordsToClaim, r => r === action.payload);
+      _.remove(claimedRecords, r => r === action.payload);
       return {
         ...state,
-        recordsToClaim: [...recordsToClaim]
+        claimedRecords: [...claimedRecords]
       };
     case ACTION_TYPES.RESET:
       return {
@@ -198,7 +198,7 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case ACTION_TYPES.RESET_RECORDS_TO_CLAIM:
       return {
         ...state,
-        recordsToClaim: [],
+        claimedRecords: [],
         claimingProgress: '0'
       };
     default:
