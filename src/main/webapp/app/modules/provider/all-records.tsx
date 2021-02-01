@@ -250,12 +250,8 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   toggleClaimRecordsOpened = () => {
-    this.setState({ claimRecordsOpened: !this.state.claimRecordsOpened }, () => {
-      if (this.state.claimRecordsOpened) {
-        this.props.getRecordsAvailableToClaim(0, 9, true, '');
-        this.props.resetTextModal();
-      }
-    });
+    const { claimRecordsOpened } = this.state;
+    this.setState({ claimRecordsOpened: !claimRecordsOpened });
   };
 
   closeClaiming = () => {

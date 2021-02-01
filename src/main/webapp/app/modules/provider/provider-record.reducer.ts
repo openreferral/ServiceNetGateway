@@ -41,8 +41,8 @@ const initialState = {
   referSuccess: false,
   providerOptions: [] as ReadonlyArray<IOrganizationOption>,
   madeToOptions: [] as ReadonlyArray<IOrganizationOption>,
-  recordsAvailableToClaim: [] as any[],
-  recordsAvailableToClaimTotal: 0,
+  claimableRecords: [] as any[],
+  totalClaimableRecords: 0,
   checkInsToRecordCount: 0,
   referralsToRecordCount: 0,
   referralsFromRecordCount: 0
@@ -152,13 +152,13 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
     case SUCCESS(ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM):
       const availableToClaimpayload = action.meta.isInitLoading
         ? action.payload.data.content
-        : [...state.recordsAvailableToClaim, ...action.payload.data.content];
+        : [...state.claimableRecords, ...action.payload.data.content];
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        recordsAvailableToClaim: availableToClaimpayload,
-        recordsAvailableToClaimTotal: action.payload.data.totalElements,
+        claimableRecords: availableToClaimpayload,
+        totalClaimableRecords: action.payload.data.totalElements,
         loading: false
       };
     case SUCCESS(ACTION_TYPES.SELECT_RECORD):
@@ -235,7 +235,7 @@ const selectRecordPublicApiUrl = SERVICENET_PUBLIC_API_URL + '/select-record';
 const checkInApiUrl = SERVICENET_API_URL + '/beneficiaries/check-in';
 const referUrl = SERVICENET_API_URL + '/beneficiaries/refer';
 const madeToOptionsApiUrl = SERVICENET_API_URL + '/referrals/made-to-options';
-const recordsAvailableToClaimApiUrl = SERVICENET_API_URL + '/records-to-claim';
+const claimableRecordsApiUrl = SERVICENET_API_URL + '/records-to-claim';
 const referralsMadeForRecordApiUrl = SERVICENET_API_URL + '/referrals/made-for-record?recordId=';
 
 // Actions
@@ -338,7 +338,7 @@ export const getMadeToOptions = () => ({
 });
 
 export const getRecordsAvailableToClaim = (page, itemsPerPage, isInitLoading = false, search) => {
-  const pageableUrl = `${recordsAvailableToClaimApiUrl}?search=${search}&page=${page}&size=${itemsPerPage}&sort=${DEFAULT_RECORDS_SORT}`;
+  const pageableUrl = `${claimableRecordsApiUrl}?search=${search}&page=${page}&size=${itemsPerPage}&sort=${DEFAULT_RECORDS_SORT}`;
   return {
     type: ACTION_TYPES.FETCH_RECORDS_AVAILABLE_TO_CLAIM,
     payload: axios.get(pageableUrl),
