@@ -342,7 +342,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
       </CardTitle>
       <Collapse isOpen={isServicesOpen}>
         <CardBody className="details p-0">
-          <section className={detailsView ? 'd-none' : ''}>
+          <section className={detailsView ? 'service-section-hide-mobile' : ''}>
             {servicesCount > 0 ? (
               organization.services.map((srv, idx) => (
                 <div key={`srv-${srv.id}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
@@ -370,7 +370,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             )}
           </section>
           {servicesCount > 0 && openService ? (
-            <div className={`service p-0 ${detailsView ? '' : 'd-none'}`}>
+            <div className={`service p-0 ${detailsView ? 'service-detail-pop-up col-12 col-md-8 offset-md-2' : 'd-none'}`}>
               <section className="d-flex top-bar">
                 <div className="d-inline-block w-100 d-md-flex justify-content-between">
                   <div className="d-inline-flex align-items-center service-name">
@@ -381,18 +381,24 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                     </h5>
                   </div>
                   <div className="d-inline-flex align-items-center pull-right">
-                    <div className="p-2 mr-1 clickable" onClick={() => this.prevService(servicesCount)}>
+                    <div className="p-2 mr-1 clickable service-details-navigation-mobile" onClick={() => this.prevService(servicesCount)}>
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
                     </div>
-                    <div className="d-flex justify-content-center mr-1">
+                    <div className="p-2 clickable service-details-navigation-desktop-left" onClick={() => this.prevService(servicesCount)}>
+                      <FontAwesomeIcon icon="angle-left" size="lg" />
+                    </div>
+                    <div className="d-flex justify-content-center mr-1 service-details-navigation-mobile">
                       <div className="align-self-cente">{currentServiceIdx + 1}</div>
                       <div className="align-self-center mx-2">
                         <Progress value={((currentServiceIdx + 1) / servicesCount) * 100} />
                       </div>
                       <div className="align-self-center">{servicesCount}</div>
                     </div>
-                    <div className="p-2 clickable" onClick={() => this.nextService(servicesCount)}>
+                    <div className="p-2 clickable service-details-navigation-mobile" onClick={() => this.nextService(servicesCount)}>
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
+                    </div>
+                    <div className="p-2 clickable service-details-navigation-desktop-right" onClick={() => this.nextService(servicesCount)}>
+                      <FontAwesomeIcon icon="angle-right" size="lg" />
                     </div>
                     <div className="p-2 clickable" onClick={this.closeServiceDetails}>
                       <FontAwesomeIcon icon={['fas', 'times']} />
