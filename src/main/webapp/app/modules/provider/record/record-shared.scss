@@ -333,6 +333,66 @@
     .service-name {
       vertical-align: -webkit-baseline-middle;
     }
+
+    .service-details-navigation-desktop {
+      position: absolute;
+      height: 30px;
+      width: 30px;
+      top: 40px;
+      background-color: white;
+      border: 2px solid black;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .service-details-navigation-desktop-left {
+      @extend .service-details-navigation-desktop;
+      left: -15px;
+    }
+
+    .service-details-navigation-desktop-right {
+      @extend .service-details-navigation-desktop;
+      right: -15px;
+    }
+
+    @media only screen and (min-width: 768px) {
+      .service-detail-pop-up {
+        z-index: 1;
+        position: absolute;
+        top: 50px;
+        background: white;
+        border: 1px solid black;
+        box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
+        .service-details-navigation-mobile {
+          display: none !important;
+        }
+      }
+
+      .service-details-navigation-desktop {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        top: 40px;
+        background-color: white;
+        border: 2px solid black;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    @media only screen and (max-width: 767px) {
+      .service-section-hide-mobile {
+        display: none;
+      }
+
+      .service-details-navigation-desktop {
+        display: none;
+      }
+    }
   }
 
   .details-section-title {
