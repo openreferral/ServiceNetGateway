@@ -118,6 +118,14 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     );
   };
 
+  isOrgOffersOnlineServices = () => {
+    const { record } = this.props;
+    const locations = _.get(record, 'locations', []);
+    const allLocationsRemote = locations.length > 0 && _.every(locations, el => el.isRemote);
+    const orgRemoteOnly = record.onlyRemote;
+    return allLocationsRemote || orgRemoteOnly;
+  };
+
   cardTitle = () => {
     const { record, fullWidth } = this.props;
     const shouldShowDirectionsLabelMobile = useMediaQuery({
@@ -222,11 +230,31 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
 
   getHeader = () => {
     const { record, link, fullWidth } = this.props;
+    const isOrgOffersOnlineServices = this.isOrgOffersOnlineServices();
     return fullWidth ? (
       <div className="mb-2">
-        <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', height: '2em' }}>
-          <Link className="organization-name-full-width" to={link} onClick={this.organizationNameOnClick}>
-            {record.organization.name}
+        <span
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            height: `${isOrgOffersOnlineServices ? '3em' : '2em'}`
+          }}
+        >
+          <Link
+            className="organization-name-full-width"
+            style={{ height: `${isOrgOffersOnlineServices ? '3em' : '2em'}` }}
+            to={link}
+            onClick={this.organizationNameOnClick}
+          >
+            <div className="d-flex flex-column">
+              <div>{record.organization.name}</div>
+              {isOrgOffersOnlineServices ? (
+                <div className="service-online-text">
+                  <Translate contentKey="record.location.servicesOfferedOnline" />
+                </div>
+              ) : null}
+            </div>
           </Link>
           <div style={{ flex: 1 }} className="ml-5">
             {fullWidth && <this.serviceSection />}
@@ -235,9 +263,16 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       </div>
     ) : (
       <div className="organization-name">
-        <Link to={link} onClick={this.organizationNameOnClick}>
-          {record.organization.name}
-        </Link>
+        <div className="d-flex flex-column">
+          <Link to={link} onClick={this.organizationNameOnClick}>
+            {record.organization.name}
+          </Link>
+          {isOrgOffersOnlineServices ? (
+            <div className="service-online-text">
+              <Translate contentKey="record.location.servicesOfferedOnline" />
+            </div>
+          ) : null}
+        </div>
       </div>
     );
   };
@@ -260,7 +295,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           <div id={measureId(record.organization.id)} style={containerStyle} />
           <this.getHeader />
           {latestDailyUpdate ? (
-            <div className={`latest-daily-update${fullWidth ? '-full-width' : ''} mb-1`}>
+            <div className={`latest-daily-update${fullWidth ? '-full-width mt-3' : ''} mb-1`}>
               <span>
                 Update (<TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                 ):

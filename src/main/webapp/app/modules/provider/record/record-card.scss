@@ -7,6 +7,13 @@ div.card.record-card {
   height: 250px;
   box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
 
+  .service-online-text {
+    span {
+      color: #3b7b65;
+      font-size: medium;
+    }
+  }
+
   @media only screen and (max-width: 1000px) {
     &.new-record {
       h1 {
@@ -130,7 +137,6 @@ div.card.record-card {
 
       &-full-width {
         @extend .organization-name;
-        height: 2em;
         max-width: 70%;
       }
     }
