@@ -294,6 +294,12 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     this.setState({ services });
   };
 
+  onServiceInsuranceChange = (i, fieldName) => () => {
+    const { services } = this.state;
+    services[i][fieldName] = !services[i][fieldName];
+    this.setState({ services });
+  };
+
   updateLocationData = idx => (openingHours, datesClosed) => {
     const { openingHoursByLocation, datesClosedByLocation } = this.state;
     openingHoursByLocation[idx] = openingHours;
@@ -591,6 +597,42 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-facebook-url">
+                    {translate('record.facebookUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-facebook-url"
+                    type="text"
+                    name="facebookUrl"
+                    placeholder={translate('record.facebookUrl')}
+                    onChange={this.onOrganizationChange('facebookUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for="organization-twitter-url">
+                    {translate('record.twitterUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-twitter-url"
+                    type="text"
+                    name="twitterUrl"
+                    placeholder={translate('record.twitterUrl')}
+                    onChange={this.onOrganizationChange('twitterUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for="organization-instagram-url">
+                    {translate('record.instagramUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-instagram-url"
+                    type="text"
+                    name="instagramUrl"
+                    placeholder={translate('record.instagramUrl')}
+                    onChange={this.onOrganizationChange('instagramUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label className="sr-only" for="organization-email">
                     {translate('record.email')}
                   </Label>
@@ -797,6 +839,68 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                             name={'services[' + i + '].fees'}
                             placeholder={translate('record.service.fees')}
                             onChange={this.onServiceChange(i, 'fees')}
+                          />
+                        </AvGroup>
+                        <div className="d-flex flex-wrap">
+                          <AvGroup check className="flex mr-5">
+                            <Label check for={'service[' + i + '].medicareAccepted'}>
+                              {translate('record.service.medicareAccepted')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].medicareAccepted'}
+                              type="checkbox"
+                              name={'services[' + i + '].medicareAccepted'}
+                              onChange={this.onServiceInsuranceChange(i, 'medicareAccepted')}
+                              value={_.get(this.state.services, `[${i}].medicareAccepted`, false)}
+                            />
+                          </AvGroup>
+                          <AvGroup check className="flex mr-5">
+                            <Label check for={'service[' + i + '].medicaidAccepted'}>
+                              {translate('record.service.medicaidAccepted')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].medicaidAccepted'}
+                              type="checkbox"
+                              name={'services[' + i + '].medicaidAccepted'}
+                              onChange={this.onServiceInsuranceChange(i, 'medicaidAccepted')}
+                              value={_.get(this.state.services, `[${i}].medicaidAccepted`, false)}
+                            />
+                          </AvGroup>
+                          <AvGroup check className="flex" style={{ marginBottom: '1rem' }}>
+                            <Label check for={'service[' + i + '].uninsuredAccepted'}>
+                              {translate('record.service.uninsuredAccepted')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].uninsuredAccepted'}
+                              type="checkbox"
+                              name={'services[' + i + '].uninsuredAccepted'}
+                              onChange={this.onServiceInsuranceChange(i, 'uninsuredAccepted')}
+                              value={_.get(this.state.services, `[${i}].uninsuredAccepted`, false)}
+                            />
+                          </AvGroup>
+                        </div>
+                        <AvGroup>
+                          <Label className="sr-only" for={'service[' + i + '].insuranceLabel'}>
+                            {translate('record.service.insuranceLabel')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].insuranceLabel'}
+                            type="text"
+                            name={'services[' + i + '].insuranceLabel'}
+                            placeholder={translate('record.service.insuranceLabel')}
+                            onChange={this.onServiceChange(i, 'insuranceLabel')}
+                          />
+                        </AvGroup>
+                        <AvGroup>
+                          <Label className="sr-only" for={'service[' + i + '].safeForUndocumented'}>
+                            {translate('record.service.safeForUndocumented')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].safeForUndocumented'}
+                            type="textarea"
+                            name={'services[' + i + '].safeForUndocumented'}
+                            placeholder={translate('record.service.safeForUndocumented')}
+                            onChange={this.onServiceChange(i, 'safeForUndocumented')}
                           />
                         </AvGroup>
                         <AvGroup>
