@@ -43,13 +43,50 @@
     "referElsewhere": "Refer Elsewhere",
     "claim": "Claim Record(s)",
     "claimMore": "Would you like to claim more records?",
-    "succesfullClaim": "You successfully claimed {{count}} records.",
+    "succesfulClaim": "You successfully claimed {{count}} records.",
     "claimingInfo": "The cloning process might take a while depending on the amount of records to claim",
     "claimTitle": "Welcome to Service Net",
     "claimSubtitle": "Here are the records that you can claim",
     "title": {
       "gridView": "Grid View",
-      "map": "Map"
-    }
+      "map": "Map",
+      "update": "{{name}} made an update to your record",
+      "success": "Success!"
+    },
+    "fieldUpdated": "Field updated",
+    "yourRecordSays": "Your record says",
+    "yourRecordNowSays": "Your record now says",
+    "updatedItTo": "Updated it to",
+    "updateQuestion": "Would you like to update your record?",
+    "yes": "Yes",
+    "no": "No",
+    "done": "Done",
+    "fieldLabels": {
+      "name": "Organization name",
+      "alternateName": "Organization Alternate name",
+      "description": "Organization Description",
+      "email": "Email",
+      "phone": "Phone",
+      "url": "Website Url",
+      "covidProtocols": "Covid Protocols",
+      "location": {
+        "name": "Location",
+        "address2": "Location Address2",
+        "regularSchedule": "Location Opening Hours",
+        "holidaySchedule": "Location Dates closed",
+        "open247": "Location Open 24/7",
+        "remote": "Location Remote"
+      },
+      "service": {
+        "name": "Service name",
+        "description": "Service Description",
+        "applicationProcess": "Service Application Process",
+        "eligibilityCriteria": "Service Eligibility Criteria",
+        "fees": "Service Fees",
+        "requiredDocuments": "Service Required Documents",
+        "taxonomies": "Service Type"
+      }
+    },
+    "recordDiscarded": "The updates have been discarded successfully!"
   }
 }
