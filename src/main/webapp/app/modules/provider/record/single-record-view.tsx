@@ -484,6 +484,52 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   <span className="break">{openService.phones.length > 0 ? openService.phones[0].number : ''}</span>
                 </section>
               ) : null}
+              {openService.medicareAccepted ||
+              openService.medicaidAccepted ||
+              openService.uninsuredAccepted ||
+              openService.insuranceLabel ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.insurance" />
+                    </b>
+                  </h6>
+                  <div className="d-flex flex-wrap">
+                    {openService.medicareAccepted ? (
+                      <span className="mr-5 d-flex align-items-center">
+                        <FontAwesomeIcon icon={['far', 'check-square']} />
+                        &nbsp;
+                        <Translate contentKey="record.service.medicareAccepted" />
+                      </span>
+                    ) : null}
+                    {openService.medicaidAccepted ? (
+                      <span className="mr-5 d-flex align-items-center">
+                        <FontAwesomeIcon icon={['far', 'check-square']} />
+                        &nbsp;
+                        <Translate contentKey="record.service.medicaidAccepted" />
+                      </span>
+                    ) : null}
+                    {openService.uninsuredAccepted ? (
+                      <span className="mr-5 d-flex align-items-center">
+                        <FontAwesomeIcon icon={['far', 'check-square']} />
+                        &nbsp;
+                        <Translate contentKey="record.service.uninsuredAccepted" />
+                      </span>
+                    ) : null}
+                  </div>
+                  <span className="break">{openService.insuranceLabel ? openService.insuranceLabel : ''}</span>
+                </section>
+              ) : null}
+              {openService.phones && openService.phones.length > 0 ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.phone" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.phones.length > 0 ? openService.phones[0].number : ''}</span>
+                </section>
+              ) : null}
               {openService.locationIndexes && openService.locationIndexes.length ? (
                 <section>
                   <h6 className="d-flex align-items-center flex-wrap">

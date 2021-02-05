@@ -78,11 +78,14 @@ Array [
           </div>
         </div>
         <div
-          className="p-0 border-top-0 card-body"
+          className="p-0 border-top-0 d-flex justify-content-between card-body"
         >
           <section
-            className="locations p-2"
+            className="locations p-2 w-100"
             id="locations"
+          />
+          <div
+            className="p-2 d-flex align-items-center social-icons-container"
           />
         </div>
       </div>

@@ -65,7 +65,13 @@
       "phone": "Phone Number",
       "back": "Back to all Services",
       "requiredDocuments": "Required Documents",
-      "fees": "Fees"
+      "fees": "Fees",
+      "medicareAccepted": "Medicare Accepted",
+      "medicaidAccepted": "Medicaid Accepted",
+      "uninsuredAccepted": "Uninsured Accepted",
+      "insuranceLabel": "Insurance Information Details",
+      "insurance": "Insurance",
+      "safeForUndocumented": "Safe For Undocumented Individuals?"
     },
     "navigation": {
       "goBack": "Go Back",

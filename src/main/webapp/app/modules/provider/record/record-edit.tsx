@@ -386,6 +386,12 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
+  onServiceInsuranceChange = (i, fieldName) => () => {
+    const { organization } = this.state;
+    organization.services[i][fieldName] = !organization.services[i][fieldName];
+    this.setState({ organization });
+  };
+
   openLocation = i => () => {
     this.setState({
       openLocation: i
@@ -738,6 +744,63 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         <AvGroup>
           <Label>{translate('record.service.fees')}</Label>
           <AvInput type="textarea" name={'services[' + i + '].fees'} onChange={this.onServiceChange(i, 'fees')} />
+        </AvGroup>
+        <Label for={'service[' + i + '].insuranceLabel'}>{translate('record.service.insurance')}</Label>
+        <div className="d-flex flex-wrap">
+          <AvGroup check className="flex mr-5 mb-0">
+            <Label check for={'service[' + i + '].medicareAccepted'} className="font-weight-normal">
+              {translate('record.service.medicareAccepted')}
+            </Label>
+            <AvInput
+              id={'service-id[' + i + '].medicareAccepted'}
+              type="checkbox"
+              name={'services[' + i + '].medicareAccepted'}
+              onChange={this.onServiceInsuranceChange(i, 'medicareAccepted')}
+              value={_.get(this.state.organization.services, `[${i}].medicareAccepted`, false)}
+            />
+          </AvGroup>
+          <AvGroup check className="flex mr-5 mb-0">
+            <Label check for={'service[' + i + '].medicaidAccepted'} className="font-weight-normal">
+              {translate('record.service.medicaidAccepted')}
+            </Label>
+            <AvInput
+              id={'service-id[' + i + '].medicaidAccepted'}
+              type="checkbox"
+              name={'services[' + i + '].medicaidAccepted'}
+              onChange={this.onServiceInsuranceChange(i, 'medicaidAccepted')}
+              value={_.get(this.state.organization.services, `[${i}].medicaidAccepted`, false)}
+            />
+          </AvGroup>
+          <AvGroup check className="flex mr-0">
+            <Label check for={'service[' + i + '].uninsuredAccepted'} className="font-weight-normal">
+              {translate('record.service.uninsuredAccepted')}
+            </Label>
+            <AvInput
+              id={'service-id[' + i + '].uninsuredAccepted'}
+              type="checkbox"
+              name={'services[' + i + '].uninsuredAccepted'}
+              onChange={this.onServiceInsuranceChange(i, 'uninsuredAccepted')}
+              value={_.get(this.state.organization.services, `[${i}].uninsuredAccepted`, false)}
+            />
+          </AvGroup>
+        </div>
+        <AvGroup>
+          <AvInput
+            id={'service-id[' + i + '].insuranceLabel'}
+            type="text"
+            name={'services[' + i + '].insuranceLabel'}
+            placeholder={translate('record.service.insuranceLabel')}
+            onChange={this.onServiceChange(i, 'insuranceLabel')}
+          />
+        </AvGroup>
+        <AvGroup>
+          <Label for={'service[' + i + '].safeForUndocumented'}>{translate('record.service.safeForUndocumented')}</Label>
+          <AvInput
+            id={'service-id[' + i + '].safeForUndocumented'}
+            type="textarea"
+            name={'services[' + i + '].safeForUndocumented'}
+            onChange={this.onServiceChange(i, 'safeForUndocumented')}
+          />
         </AvGroup>
         <AvGroup>
           <Label>{translate('record.service.locations')}</Label>

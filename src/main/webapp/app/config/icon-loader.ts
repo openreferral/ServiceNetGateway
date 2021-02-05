@@ -7,8 +7,6 @@ import { faBan } from '@fortawesome/free-solid-svg-icons/faBan';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight';
-import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft';
-import { faArrowAltCircleRight } from '@fortawesome/free-regular-svg-icons/faArrowAltCircleRight';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
@@ -64,6 +62,9 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 import { faLayerGroup } from '@fortawesome/free-solid-svg-icons/faLayerGroup';
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 import { faDownload } from '@fortawesome/free-solid-svg-icons/faDownload';
+import { faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft';
+import { faArrowAltCircleRight } from '@fortawesome/free-regular-svg-icons/faArrowAltCircleRight';
+import { faCheckSquare } from '@fortawesome/free-regular-svg-icons/faCheckSquare';
 
 export const loadIcons = () => {
   library.add(
@@ -130,6 +131,7 @@ export const loadIcons = () => {
     faCheck,
     faLayerGroup,
     faEdit,
-    faDownload
+    faDownload,
+    faCheckSquare
   );
 };
