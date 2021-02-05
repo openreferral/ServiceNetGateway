@@ -15,6 +15,9 @@ export const ACTION_TYPES = {
   FETCH_ORGANIZATION_OPTIONS: 'organization/FETCH_ORGANIZATION_OPTIONS',
   FETCH_ORGANIZATION: 'organization/FETCH_ORGANIZATION',
   FETCH_SIMPLE_ORGANIZATION: 'organization/FETCH_SIMPLE_ORGANIZATION',
+  FETCH_ORGANIZATION_WITH_UPDATES: 'organization/FETCH_ORGANIZATION_WITH_UPDATES',
+  APPLY_UPDATES: 'organization/APPLY_UPDATES',
+  DISCARD_UPDATES: 'organization/DISCARD_UPDATES',
   CREATE_ORGANIZATION: 'organization/CREATE_ORGANIZATION',
   UPDATE_ORGANIZATION: 'organization/UPDATE_ORGANIZATION',
   DELETE_ORGANIZATION: 'organization/DELETE_ORGANIZATION',
@@ -41,7 +44,8 @@ const initialState = {
   claimSuccess: false,
   leftToClaim: [],
   claimedRecords: [],
-  claimingProgress: '0'
+  claimingProgress: '0',
+  providersEntityWithUpdates: defaultSimpleOrganization
 };
 
 export type OrganizationState = Readonly<typeof initialState>;
@@ -64,6 +68,8 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case REQUEST(ACTION_TYPES.DELETE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.UNCLAIM_RECORDS):
+    case REQUEST(ACTION_TYPES.APPLY_UPDATES):
+    case REQUEST(ACTION_TYPES.DISCARD_UPDATES):
       return {
         ...state,
         errorMessage: null,
@@ -88,6 +94,8 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case FAILURE(ACTION_TYPES.DELETE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.UNCLAIM_RECORDS):
+    case FAILURE(ACTION_TYPES.APPLY_UPDATES):
+    case FAILURE(ACTION_TYPES.DISCARD_UPDATES):
       return {
         ...state,
         loading: false,
@@ -169,6 +177,18 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
             ? (((claimedRecords.length - state.leftToClaim.length) / claimedRecords.length) * 100).toFixed(0)
             : '100'
       };
+    case SUCCESS(ACTION_TYPES.FETCH_ORGANIZATION_WITH_UPDATES):
+      return {
+        ...state,
+        loading: false,
+        providersEntityWithUpdates: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.APPLY_UPDATES):
+    case SUCCESS(ACTION_TYPES.DISCARD_UPDATES):
+      return {
+        ...state,
+        updating: false
+      };
     case ACTION_TYPES.SET_BLOB:
       const { name, data, contentType } = action.payload;
       return {
@@ -244,6 +264,30 @@ export const getProviderEntity = (id, siloName = '') => {
   return {
     type: ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION,
     payload: axios.get<ISimpleOrganization>(requestUrl)
+  };
+};
+
+export const getProviderEntityUpdates = id => {
+  const requestUrl = `${SERVICENET_API_URL}/provider-organization/${id}?includeUpdates=true`;
+  return {
+    type: ACTION_TYPES.FETCH_ORGANIZATION_WITH_UPDATES,
+    payload: axios.get<ISimpleOrganization>(requestUrl)
+  };
+};
+
+export const applyUpdates = id => {
+  const requestUrl = `${SERVICENET_API_URL}/provider-organization/${id}/apply-updates`;
+  return {
+    type: ACTION_TYPES.APPLY_UPDATES,
+    payload: axios.post<ISimpleOrganization>(requestUrl)
+  };
+};
+
+export const discardUpdates = id => {
+  const requestUrl = `${SERVICENET_API_URL}/provider-organization/${id}/discard-updates`;
+  return {
+    type: ACTION_TYPES.DISCARD_UPDATES,
+    payload: axios.post<ISimpleOrganization>(requestUrl)
   };
 };
 

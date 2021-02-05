@@ -171,7 +171,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       {(claimingProgress === '100' || noRecordsToClaim === 0) && (
         <div className="d-flex flex-column justify-content-between align-items-center">
           <span className="pt-4 claim-modal-title">
-            <Translate contentKey="providerSite.succesfullClaim" interpolate={{ count: noRecordsToClaim || 0 }} />
+            <Translate contentKey="providerSite.succesfulClaim" interpolate={{ count: noRecordsToClaim || 0 }} />
           </span>
           <br />
           <span className="claim-modal-subtitle">

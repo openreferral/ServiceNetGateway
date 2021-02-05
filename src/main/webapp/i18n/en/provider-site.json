@@ -43,13 +43,20 @@
     "referElsewhere": "Refer Elsewhere",
     "claim": "Claim Record(s)",
     "claimMore": "Would you like to claim more records?",
-    "succesfullClaim": "You successfully claimed {{count}} records.",
+    "succesfulClaim": "You successfully claimed {{count}} records.",
     "claimingInfo": "The cloning process might take a while depending on the amount of records to claim",
     "claimTitle": "Welcome to Service Net",
     "claimSubtitle": "Here are the records that you can claim",
     "title": {
       "gridView": "Grid View",
-      "map": "Map"
-    }
+      "map": "Map",
+      "update": "{{name}} made an update to your record"
+    },
+    "fieldUpdated": "Field updated",
+    "yourRecordSays": "Your record says",
+    "updatedItTo": "Updated it to",
+    "updateQuestion": "Would you like to update your record?",
+    "yes": "Yes",
+    "no": "No"
   }
 }

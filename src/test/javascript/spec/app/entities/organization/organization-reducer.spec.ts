@@ -42,7 +42,8 @@ describe('Entities reducer tests', () => {
     claimSuccess: false,
     leftToClaim: [],
     claimedRecords: [],
-    claimingProgress: '0'
+    claimingProgress: '0',
+    providersEntityWithUpdates: defaultSimpleOrganization
   };
 
   function testInitialState(state) {
