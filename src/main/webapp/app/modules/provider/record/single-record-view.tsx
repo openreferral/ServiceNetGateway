@@ -521,6 +521,53 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     ) : null;
   };
 
+  getSocialMediaLinks = organization => (
+    <div className="p-2 d-flex align-items-center social-icons-container">
+      {organization.facebookUrl && (
+        <a
+          className="text-break"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.facebookUrl.startsWith('http') || organization.facebookUrl.startsWith('//')
+              ? organization.facebookUrl
+              : '//' + organization.facebookUrl
+          }
+        >
+          <img data-src="content/images/facebook_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+      {organization.twitterUrl && (
+        <a
+          className="text-break ml-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.twitterUrl.startsWith('http') || organization.twitterUrl.startsWith('//')
+              ? organization.twitterUrl
+              : '//' + organization.twitterUrl
+          }
+        >
+          <img data-src="content/images/twitter_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+      {organization.instagramUrl && (
+        <a
+          className="text-break ml-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.instagramUrl.startsWith('http') || organization.instagramUrl.startsWith('//')
+              ? organization.instagramUrl
+              : '//' + organization.instagramUrl
+          }
+        >
+          <img data-src="content/images/instagram_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+    </div>
+  );
+
   render() {
     const {
       isOrganizationOpen,
@@ -581,8 +628,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 <img data-src={PeopleLogo} height={100} alt="Organization" className="lazyload d-none d-sm-block mx-5" />
               </div>
             </CardTitle>
-            <CardBody className="p-0 border-top-0">
-              <section className="locations p-2" id="locations">
+            <CardBody className="p-0 border-top-0 d-flex justify-content-between">
+              <section className="locations p-2 w-100" id="locations">
                 {locationsCount > 0 ? (
                   <AutoSizer disableHeight>
                     {({ width }) => {
@@ -610,6 +657,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   </AutoSizer>
                 ) : null}
               </section>
+              {this.getSocialMediaLinks(organization)}
             </CardBody>
           </Card>
 

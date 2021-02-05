@@ -25,6 +25,9 @@
     "remoteOnly": "Do you offer only online Services?",
     "update": "Update",
     "url": "Organization Website",
+    "facebookUrl": "Facebook URL",
+    "twitterUrl": "Twitter URL",
+    "instagramUrl": "Instagram URL",
     "phone": "Phone Number",
     "email": "Main Email Address",
     "tabs": {

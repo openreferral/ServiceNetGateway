@@ -127,6 +127,53 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     return (allLocationsRemote || orgRemoteOnly) && withOnlineServiceLabel;
   };
 
+  getSocialMediaLinks = organization => (
+    <div className="d-flex align-items-center">
+      {organization.facebookUrl && (
+        <a
+          className="text-break"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.facebookUrl.startsWith('http') || organization.facebookUrl.startsWith('//')
+              ? organization.facebookUrl
+              : '//' + organization.facebookUrl
+          }
+        >
+          <img data-src="content/images/facebook_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+      {organization.twitterUrl && (
+        <a
+          className="text-break ml-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.twitterUrl.startsWith('http') || organization.twitterUrl.startsWith('//')
+              ? organization.twitterUrl
+              : '//' + organization.twitterUrl
+          }
+        >
+          <img data-src="content/images/twitter_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+      {organization.instagramUrl && (
+        <a
+          className="text-break ml-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.instagramUrl.startsWith('http') || organization.instagramUrl.startsWith('//')
+              ? organization.instagramUrl
+              : '//' + organization.instagramUrl
+          }
+        >
+          <img data-src="content/images/instagram_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+    </div>
+  );
+
   cardTitle = () => {
     const { record, fullWidth } = this.props;
     const shouldShowDirectionsLabelMobile = useMediaQuery({
@@ -185,6 +232,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
             <FontAwesomeIcon icon="times" />
           </div>
         )}
+        {this.getSocialMediaLinks(record.organization)}
       </CardTitle>
     );
   };

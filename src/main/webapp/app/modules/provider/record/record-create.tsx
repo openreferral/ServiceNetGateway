@@ -591,6 +591,42 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-facebook-url">
+                    {translate('record.facebookUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-facebook-url"
+                    type="text"
+                    name="facebookUrl"
+                    placeholder={translate('record.facebookUrl')}
+                    onChange={this.onOrganizationChange('facebookUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for="organization-twitter-url">
+                    {translate('record.twitterUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-twitter-url"
+                    type="text"
+                    name="twitterUrl"
+                    placeholder={translate('record.twitterUrl')}
+                    onChange={this.onOrganizationChange('twitterUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for="organization-instagram-url">
+                    {translate('record.instagramUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-instagram-url"
+                    type="text"
+                    name="instagramUrl"
+                    placeholder={translate('record.instagramUrl')}
+                    onChange={this.onOrganizationChange('instagramUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label className="sr-only" for="organization-email">
                     {translate('record.email')}
                   </Label>

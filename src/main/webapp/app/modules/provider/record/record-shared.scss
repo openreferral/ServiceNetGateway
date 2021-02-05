@@ -47,6 +47,7 @@
     margin-top: 5px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     span {
       svg {
@@ -392,6 +393,11 @@
       .service-details-navigation-desktop {
         display: none;
       }
+    }
+
+    .social-icons-container {
+      margin-top: 5px;
+      border-top: 1px solid #f0f0f0;
     }
   }
 

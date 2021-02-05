@@ -888,6 +888,23 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   <AvField id="organization-url" type="text" name="url" onChange={this.onOrganizationChange('url')} />
                 </AvGroup>
                 <AvGroup>
+                  <Label>{translate('record.facebookUrl')}</Label>
+                  <AvField id="organization-url" type="text" name="facebookUrl" onChange={this.onOrganizationChange('facebookUrl')} />
+                </AvGroup>
+                <AvGroup>
+                  <Label>{translate('record.twitterUrl')}</Label>
+                  <AvField id="organization-twitter-url" type="text" name="twitterUrl" onChange={this.onOrganizationChange('twitterUrl')} />
+                </AvGroup>
+                <AvGroup>
+                  <Label>{translate('record.instagramUrl')}</Label>
+                  <AvField
+                    id="organization-instagram-url"
+                    type="text"
+                    name="instagramUrl"
+                    onChange={this.onOrganizationChange('instagramUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label for="email">{translate('record.email')}</Label>
                   <AvField
                     id="organization-email"
