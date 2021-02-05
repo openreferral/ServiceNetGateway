@@ -43,6 +43,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   claiming?: boolean;
   onNameClick?: Function;
   siloName?: string;
+  withOnlineServiceLabel?: boolean;
 }
 
 export interface IRecordCardState {
@@ -119,11 +120,11 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   };
 
   isOrgOffersOnlineServices = () => {
-    const { record } = this.props;
+    const { record, withOnlineServiceLabel } = this.props;
     const locations = _.get(record, 'locations', []);
     const allLocationsRemote = locations.length > 0 && _.every(locations, el => el.isRemote);
     const orgRemoteOnly = record.onlyRemote;
-    return allLocationsRemote || orgRemoteOnly;
+    return (allLocationsRemote || orgRemoteOnly) && withOnlineServiceLabel;
   };
 
   cardTitle = () => {
@@ -262,17 +263,17 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
         </span>
       </div>
     ) : (
-      <div className="organization-name">
-        <div className="d-flex flex-column">
+      <div className="d-flex flex-column" style={{ height: '4em' }}>
+        <div className="organization-name">
           <Link to={link} onClick={this.organizationNameOnClick}>
             {record.organization.name}
           </Link>
-          {isOrgOffersOnlineServices ? (
-            <div className="service-online-text">
-              <Translate contentKey="record.location.servicesOfferedOnline" />
-            </div>
-          ) : null}
         </div>
+        {isOrgOffersOnlineServices ? (
+          <div className="service-online-text">
+            <Translate contentKey="record.location.servicesOfferedOnline" />
+          </div>
+        ) : null}
       </div>
     );
   };

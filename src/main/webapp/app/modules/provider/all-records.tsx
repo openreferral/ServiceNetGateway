@@ -366,6 +366,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       >
         <div className="mb-4">
           <RecordCard
+            withOnlineServiceLabel
             fullWidth={recordViewType === LIST_VIEW && isInAllRecordSection}
             record={record}
             link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${record.organization.id}`}
@@ -523,6 +524,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           <div className={`selected-record absolute-card full-width`}>
             <div>
               <RecordCard
+                withOnlineServiceLabel
                 record={selectedRecord}
                 link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
                 closeCard={this.closeRecordCard}
@@ -567,6 +569,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                   <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
                     <div className="px-2">
                       <RecordCard
+                        withOnlineServiceLabel
                         record={selectedRecord}
                         link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
                         closeCard={this.closeRecordCard}
@@ -595,6 +598,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               {isRecordHighlighted && selectedRecord && !rightSectionOpened ? (
                 <Col md={4} className={`col-md-4 pr-0 selected-record`}>
                   <RecordCard
+                    withOnlineServiceLabel
                     record={selectedRecord}
                     link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
                     coordinates={selectedLat && selectedLng ? `${selectedLat},${selectedLng}` : null}

@@ -72,6 +72,7 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
     const record = records[index];
     return (
       <RecordCard
+        withOnlineServiceLabel
         key={index}
         record={record}
         link={record ? `record/${record.organization.id}/edit` : ''}

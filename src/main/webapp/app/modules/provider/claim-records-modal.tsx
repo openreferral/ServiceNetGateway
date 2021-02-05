@@ -125,6 +125,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       <div key={record.organization.id} className="col-12 col-lg-4 col-md-6">
         <div className="mb-4">
           <RecordCard
+            withOnlineServiceLabel
             fullWidth={false}
             record={record}
             link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${record.organization.id}`}
