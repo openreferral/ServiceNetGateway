@@ -520,6 +520,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   <span className="break">{openService.insuranceLabel ? openService.insuranceLabel : ''}</span>
                 </section>
               ) : null}
+              {openService.safeForUndocumented ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.safeForUndocumented" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.safeForUndocumented}</span>
+                </section>
+              ) : null}
               {openService.phones && openService.phones.length > 0 ? (
                 <section>
                   <h6>
