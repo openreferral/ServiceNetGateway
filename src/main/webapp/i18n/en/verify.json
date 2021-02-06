@@ -1,0 +1,9 @@
+{
+  "verify": {
+    "title": "Email Verification",
+    "messages": {
+      "success": "<strong>Thanks for verifying your email.</strong> You can login after you receive an email notification from Service Net staff after approval of your account",
+      "error": "<strong>Your user could not be verified.</strong> Please use the registration form to sign up."
+    }
+  }
+}

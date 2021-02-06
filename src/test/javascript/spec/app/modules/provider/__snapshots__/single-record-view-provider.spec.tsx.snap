@@ -72,17 +72,20 @@ Array [
             <img
               alt="Organization"
               className="lazyload d-none d-sm-block mx-5"
-              data-src={null}
+              data-src="test-file-stub"
               height={100}
             />
           </div>
         </div>
         <div
-          className="p-0 border-top-0 card-body"
+          className="p-0 border-top-0 d-flex justify-content-between card-body"
         >
           <section
-            className="locations p-2"
+            className="locations p-2 w-100"
             id="locations"
+          />
+          <div
+            className="p-2 d-flex align-items-center social-icons-container"
           />
         </div>
       </div>
@@ -99,7 +102,7 @@ Array [
             <img
               alt="Organization"
               className="lazyload"
-              data-src={null}
+              data-src="test-file-stub"
               height={25}
             />
              
@@ -150,7 +153,8 @@ Array [
               </h6>
               <a
                 className="text-break"
-                href="fakeUrl"
+                href="//fakeUrl"
+                onClick={[Function]}
                 rel="noopener noreferrer"
                 target="_blank"
               >

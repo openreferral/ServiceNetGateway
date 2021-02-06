@@ -14,8 +14,8 @@ export interface IClaimButtonProp extends StateProps, DispatchProps {
 
 export class ClaimButton extends React.Component<IClaimButtonProp, {}> {
   render() {
-    const { record, recordsToClaim } = this.props;
-    if (recordsToClaim && recordsToClaim.indexOf(record.organization.id) > -1) {
+    const { record, claimedRecords } = this.props;
+    if (claimedRecords && claimedRecords.indexOf(record.organization.id) > -1) {
       return (
         <ButtonPill className="claim-button button-pill-referred" onClick={() => this.props.unmarkRecordToClaim(record.organization.id)}>
           <b className="d-flex align-items-center justify-content-center h-100">
@@ -38,7 +38,7 @@ export class ClaimButton extends React.Component<IClaimButtonProp, {}> {
 }
 
 const mapStateToProps = ({ organization }: IRootState) => ({
-  recordsToClaim: organization.recordsToClaim
+  claimedRecords: organization.claimedRecords
 });
 
 const mapDispatchToProps = {

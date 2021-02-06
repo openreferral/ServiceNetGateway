@@ -15,6 +15,8 @@ import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
 import { updateFilter, reset, checkFiltersChanged } from './provider-filter.reducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { sendAction } from 'app/shared/util/analytics';
+import { GA_ACTIONS } from 'app/config/constants';
 
 const PLACEHOLDER_TEXT_COLOR = '#555';
 
@@ -84,6 +86,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
   }
 
   handleServiceTypeChanged = values => {
+    sendAction(!this.props.siloName ? GA_ACTIONS.SERVICE_TYPE : GA_ACTIONS.PUBLIC_SERVICE_TYPE);
     this.setState({ serviceTypes: values });
   };
 
@@ -98,6 +101,35 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
     if (toggleFilter) {
       toggleFilter();
     }
+    if (filter.city) {
+      if (filter.serviceTypes.length > 0) {
+        sendAction(
+          !this.props.siloName ? GA_ACTIONS.FILTER_VARIATION_SERVICE_TYPE_CITY : GA_ACTIONS.PUBLIC_FILTER_VARIATION_SERVICE_TYPE_CITY
+        );
+      } else {
+        sendAction(!this.props.siloName ? GA_ACTIONS.LOCATION_CITY : GA_ACTIONS.PUBLIC_LOCATION_CITY);
+      }
+    }
+    if (filter.region) {
+      if (filter.serviceTypes.length > 0) {
+        sendAction(
+          !this.props.siloName ? GA_ACTIONS.FILTER_VARIATION_SERVICE_TYPE_COUNTY : GA_ACTIONS.PUBLIC_FILTER_VARIATION_SERVICE_TYPE_COUNTY
+        );
+      } else {
+        sendAction(!this.props.siloName ? GA_ACTIONS.LOCATION_COUNTY : GA_ACTIONS.PUBLIC_LOCATION_COUNTY);
+      }
+    }
+    if (filter.zip) {
+      if (filter.serviceTypes.length > 0) {
+        sendAction(
+          !this.props.siloName
+            ? GA_ACTIONS.FILTER_VARIATION_SERVICE_TYPE_ZIP_CODE
+            : GA_ACTIONS.PUBLIC_FILTER_VARIATION_SERVICE_TYPE_ZIP_CODE
+        );
+      } else {
+        sendAction(!this.props.siloName ? GA_ACTIONS.LOCATION_ZIP_CODE : GA_ACTIONS.PUBLIC_LOCATION_ZIP_CODE);
+      }
+    }
   };
 
   resetFilter = () => {
@@ -110,6 +142,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
     if (toggleFilter) {
       toggleFilter();
     }
+    sendAction(!this.props.siloName ? GA_ACTIONS.CLEAR_FILTERS : GA_ACTIONS.PUBLIC_CLEAR_FILTERS);
   };
 
   handleZipChanged = v => {
@@ -186,7 +219,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
               <Translate contentKey="providerSite.location" />
             </b>
           </div>
-          <div className="d-flex flex-row flex-fill">
+          <div className="d-flex flex-row flex-fill location-filters">
             <Label className="sr-only" for="filter-city">
               <Translate contentKey="providerSite.city" />
             </Label>

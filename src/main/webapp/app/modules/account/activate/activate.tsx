@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { Row, Col, Alert } from 'reactstrap';
 import { Translate, getUrlParameter } from 'react-jhipster';
 
@@ -9,27 +9,25 @@ import { activateAction, reset } from './activate.reducer';
 
 const successAlert = (
   <Alert color="success">
-    <Translate contentKey="activate.messages.success">
-      <strong>Your user account has been activated.</strong> Please
+    <Translate contentKey="verify.messages.success">
+      <strong>Thanks for verifying your email. </strong>
+      You can login after you receive an email notification from Service Net staff after approval of your account
     </Translate>
-    <Link to="/login" className="alert-link">
-      <Translate contentKey="global.messages.info.authenticated.link">sign in</Translate>
-    </Link>
     .
   </Alert>
 );
 
 const failureAlert = (
   <Alert color="danger">
-    <Translate contentKey="activate.messages.error">
-      <strong>Your user could not be activated.</strong> Please use the registration form to sign up.
+    <Translate contentKey="verify.messages.error">
+      <strong>Your user could not be verified.</strong> Please use the registration form to sign up.
     </Translate>
   </Alert>
 );
 
-export interface IActivateProps extends StateProps, DispatchProps, RouteComponentProps<{ key: any }> {}
+export interface IVerifyProps extends StateProps, DispatchProps, RouteComponentProps<{ key: any }> {}
 
-export class ActivatePage extends React.Component<IActivateProps> {
+export class VerifyPage extends React.Component<IVerifyProps> {
   componentWillUnmount() {
     this.props.reset();
   }
@@ -47,7 +45,7 @@ export class ActivatePage extends React.Component<IActivateProps> {
         <Row className="justify-content-center">
           <Col md="8">
             <h1>
-              <Translate contentKey="activate.title">Activation</Translate>
+              <Translate contentKey="verify.title">Activation</Translate>
             </h1>
             {activationSuccess ? successAlert : undefined}
             {activationFailure ? failureAlert : undefined}
@@ -71,4 +69,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ActivatePage);
+)(VerifyPage);

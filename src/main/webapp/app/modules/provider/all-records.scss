@@ -135,7 +135,7 @@
 }
 
 .single-record {
-  max-height: unset;
+  max-height: 90%;
 }
 
 .filter-section {
@@ -147,5 +147,21 @@
   &.search {
     flex: 1;
   }
-  min-width: 300px;
+  @media only screen and (min-width: 576px) {
+    min-width: 300px;
+  }
+  @media only screen and (max-width: 576px) {
+    .location-filters {
+      flex-wrap: wrap;
+
+      > div {
+        min-width: 100px;
+        max-width: 50%;
+        flex: 0 0 50%;
+        &:first-of-type {
+          margin-bottom: 0.5em;
+        }
+      }
+    }
+  }
 }

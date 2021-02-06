@@ -4,12 +4,16 @@ import './search-bar.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { translate } from 'react-jhipster';
 import { connect } from 'react-redux';
+import { sendAction, sendSearch } from 'app/shared/util/analytics';
+import { GA_ACTIONS } from 'app/config/constants';
 
 export interface ISearchBarProp extends StateProps, DispatchProps {
   onSwitchFocus?: any;
   onSearch: any;
   onReset: any;
+  onClick?: any;
   width?: string;
+  initialValue?: string;
 }
 
 export interface ISearchBarState {
@@ -25,7 +29,11 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
   }
 
   componentDidMount() {
-    if (this.props.onReset) {
+    if (this.props.initialValue) {
+      this.setState({
+        text: this.props.initialValue
+      });
+    } else if (this.props.onReset) {
       this.props.onReset();
     }
   }
@@ -41,6 +49,8 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
       event.preventDefault();
     }
     this.props.onSearch(this.state.text);
+    sendAction(GA_ACTIONS.SEARCH_TERM);
+    sendSearch(this.state.text);
   };
 
   reset = () => {
@@ -82,10 +92,11 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
               className="search-input"
               type="search"
               value={this.state.text}
-              placeholder={translate('providerSite.searchPlaceholder')}
+              placeholder={translate('providerSite.searchPlaceholder') || 'Search by organization name or keyword'}
               onChange={this.updateText}
               onFocus={this.onFocus}
               onBlur={this.onBlur}
+              onClick={this.props.onClick || null}
             />
             <label className="sr-only" htmlFor="search">
               {translate('providerSite.searchPlaceholder')}

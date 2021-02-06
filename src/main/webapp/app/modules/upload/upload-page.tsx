@@ -23,7 +23,7 @@ export interface IUploadState {
 }
 
 registerPlugin(FilePondPluginFileValidateType);
-const supportedFileTypes = ['CSV', 'JSON'];
+const supportedFileTypes = ['CSV', 'JSON', 'XLSX'];
 const maxNumberOfFiles = 100;
 const valid = 'valid';
 

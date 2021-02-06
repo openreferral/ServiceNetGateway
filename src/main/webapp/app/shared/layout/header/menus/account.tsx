@@ -5,6 +5,8 @@ import { NavLink as Link } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { NavDropdown } from '../header-components';
 import _ from 'lodash';
+import { sendActionOnEvt } from 'app/shared/util/analytics';
+import { GA_ACTIONS } from 'app/config/constants';
 
 const accountMenuItemsAuthenticated = (isSacramento, isReferralEnabled, isServiceProvider) => (
   <>
@@ -12,14 +14,9 @@ const accountMenuItemsAuthenticated = (isSacramento, isReferralEnabled, isServic
       <FontAwesomeIcon icon="wrench" /> <Translate contentKey="global.menu.account.settings">Settings</Translate>
     </DropdownItem>
     {isServiceProvider && isReferralEnabled ? (
-      <>
-        <DropdownItem tag={Link} to="/referral-history">
-          <FontAwesomeIcon icon="edit" /> <Translate contentKey="providerSite.menu.beneficiaryHistory">Beneficiary History</Translate>
-        </DropdownItem>
-        <DropdownItem tag={Link} to="/bulk-upload">
-          <FontAwesomeIcon icon="layer-group" /> <Translate contentKey="global.menu.bulkUpload" />
-        </DropdownItem>
-      </>
+      <DropdownItem tag={Link} to="/bulk-upload">
+        <FontAwesomeIcon icon="layer-group" /> <Translate contentKey="global.menu.bulkUpload" />
+      </DropdownItem>
     ) : null}
     <DropdownItem tag={Link} to="/account/password">
       <FontAwesomeIcon icon="clock" /> <Translate contentKey="global.menu.account.password">Password</Translate>
@@ -35,7 +32,7 @@ const accountMenuItemsAuthenticated = (isSacramento, isReferralEnabled, isServic
         <Translate contentKey="providerSite.menu.deactivatedRecords">Deactivated Records</Translate>
       </DropdownItem>
     )}
-    <DropdownItem tag={Link} to="/logout">
+    <DropdownItem tag={Link} to="/logout" onClick={sendActionOnEvt(GA_ACTIONS.LOG_OUT)}>
       <FontAwesomeIcon icon="sign-out-alt" /> <Translate contentKey="global.menu.account.logout">Sign out</Translate>
     </DropdownItem>
   </>
@@ -46,10 +43,10 @@ const accountMenuItems = (match, prependRoutesWithMatch = false) => {
   const loginUrl = (prependRoutesWithMatch ? match.url : ``) + '/login';
   return (
     <>
-      <DropdownItem id="login-item" tag={Link} to={loginUrl}>
+      <DropdownItem id="login-item" tag={Link} to={loginUrl} onClick={sendActionOnEvt(GA_ACTIONS.LOG_IN)}>
         <FontAwesomeIcon icon="sign-in-alt" /> <Translate contentKey="global.menu.account.login">Sign in</Translate>
       </DropdownItem>
-      <DropdownItem tag={Link} to={`/register${!_.isEmpty(siloName) ? `/${siloName}` : ''}`}>
+      <DropdownItem tag={Link} to={`/register${!_.isEmpty(siloName) ? `/${siloName}` : ''}`} onClick={sendActionOnEvt(GA_ACTIONS.REGISTER)}>
         <FontAwesomeIcon icon="sign-in-alt" /> <Translate contentKey="global.menu.account.register">Register</Translate>
       </DropdownItem>
     </>

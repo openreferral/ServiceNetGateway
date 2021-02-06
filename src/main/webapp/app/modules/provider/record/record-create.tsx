@@ -3,6 +3,9 @@ import './record-create.scss';
 
 import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Col, Row, Label } from 'reactstrap';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
+// tslint:disable-next-line:no-submodule-imports
+import Input from 'react-phone-number-input/input';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
@@ -25,14 +28,16 @@ import ServiceLogo from '../../../../static/images/service.svg';
 import _ from 'lodash';
 import ButtonPill from '../shared/button-pill';
 import { OpeningHours } from 'app/modules/provider/record/opening-hours';
+import { sendAction } from 'app/shared/util/analytics';
+import { GA_ACTIONS } from 'app/config/constants';
 
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export interface IRecordCreateViewState {
-  organization: object;
+  organization: any;
   activeTab: string;
   locationCount: number;
-  locations: object[];
+  locations: any[];
   services: any[];
   serviceCount: number;
   invalidTabs: string[];
@@ -50,7 +55,8 @@ const locationModel = {
   address2: '',
   city: '',
   ca: 'CA',
-  zipcode: ''
+  zipcode: '',
+  isRemote: false
 };
 const initialLocations = [{ ...locationModel }];
 const DEFAULT_OPENING_HOURS = [
@@ -68,7 +74,8 @@ const serviceModel = {
   applicationProcess: '',
   eligibilityCriteria: '',
   locationIndexes: [],
-  docs: []
+  docs: [],
+  phones: []
 };
 const initialServices = [{ ...serviceModel }];
 
@@ -76,7 +83,8 @@ const organizationModel = {
   name: '',
   description: '',
   url: '',
-  email: ''
+  email: '',
+  onlyRemote: false
 };
 
 export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecordCreateViewState> {
@@ -108,6 +116,22 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     }
   }
 
+  setOnlyHeadLocation = () => {
+    const { locations, services, organization, openingHoursByLocation, datesClosedByLocation } = this.state;
+    services.forEach(service => (service['locationIndexes'] = []));
+    this.setState({
+      locationCount: 1,
+      locations: [{ ...locations[0] }],
+      services,
+      openingHoursByLocation: { 0: openingHoursByLocation[0] },
+      datesClosedByLocation: { 0: datesClosedByLocation[0] },
+      organization: {
+        ...organization,
+        onlyRemote: !organization.onlyRemote
+      }
+    });
+  };
+
   toggle(activeTab) {
     if (activeTab !== this.state.activeTab) {
       this.setState({
@@ -116,19 +140,49 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     }
   }
 
+  isOrgPhoneInvalid = organization => {
+    const phoneNumber = _.get(organization, 'phones[0].number', '');
+    return phoneNumber && !isPossiblePhoneNumber(phoneNumber);
+  };
+
+  areServicePhonesInvalid = services =>
+    _.some(services, service => {
+      const phone = _.get(service, `phones[0].number`, '');
+      return phone && !isPossiblePhoneNumber(phone);
+    });
+
   saveRecord = (event, errors, values) => {
-    const { openingHoursByLocation, datesClosedByLocation } = this.state;
+    const { openingHoursByLocation, datesClosedByLocation, organization, services, locations } = this.state;
     values.updatedAt = new Date();
+    const entityWithServicesAndLocation = { ...values };
+    _.forEach(services, (service, i) => {
+      entityWithServicesAndLocation['services'][i] = services[i];
+    });
+    _.forEach(locations, (location, i) => {
+      entityWithServicesAndLocation['locations'][i] = {
+        ...entityWithServicesAndLocation['locations'][i],
+        ...locations[i]
+      };
+    });
 
     const invalidTabs = [];
-    if (errors.length === 0) {
+    const isOrganizationPhoneValid = !this.isOrgPhoneInvalid(organization);
+    const areServicePhonesValid = !this.areServicePhonesInvalid(services);
+    if (errors.length === 0 && isOrganizationPhoneValid && areServicePhonesValid) {
       const entity = {
-        ...values,
+        ...entityWithServicesAndLocation,
         openingHoursByLocation,
-        datesClosedByLocation
+        datesClosedByLocation,
+        phones: _.get(organization, 'phones', [])
       };
       this.props.createUserOwnedEntity(entity);
     } else {
+      if (!isOrganizationPhoneValid) {
+        invalidTabs.push(ORGANIZATION_TAB);
+      }
+      if (!areServicePhonesValid) {
+        invalidTabs.push(SERVICE_TAB);
+      }
       if (errors.some(err => err.includes(LOCATION_TAB))) {
         invalidTabs.push(LOCATION_TAB);
       }
@@ -140,6 +194,15 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
       }
     }
     this.setState({ invalidTabs });
+    sendAction(GA_ACTIONS.ADD_A_NEW_RECORD);
+  };
+
+  onLocationRemoteChange = i => () => {
+    const locations = this.state.locations;
+    locations[i].isRemote = !locations[i].isRemote;
+    this.setState({
+      locations
+    });
   };
 
   addAnotherService = () => {
@@ -231,6 +294,12 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     this.setState({ services });
   };
 
+  onServiceInsuranceChange = (i, fieldName) => () => {
+    const { services } = this.state;
+    services[i][fieldName] = !services[i][fieldName];
+    this.setState({ services });
+  };
+
   updateLocationData = idx => (openingHours, datesClosed) => {
     const { openingHoursByLocation, datesClosedByLocation } = this.state;
     openingHoursByLocation[idx] = openingHours;
@@ -241,9 +310,195 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     });
   };
 
+  setPhone = phoneNumber => {
+    const organization = this.state.organization;
+    organization['phones'] = [{ number: phoneNumber }];
+    this.setState({
+      organization
+    });
+  };
+
+  setServicePhone = i => phoneNumber => {
+    const services = this.state.services;
+    services[i]['phones'] = [{ number: phoneNumber }];
+    this.setState({
+      services
+    });
+  };
+
+  handleIsOrgRemoteChange = e => {
+    const { organization } = this.state;
+    if (!organization.onlyRemote) {
+      this.setOnlyHeadLocation();
+    } else {
+      this.setState({ organization: { ...organization, onlyRemote: !organization.onlyRemote } });
+    }
+  };
+
+  locationTab = () => {
+    const { locationCount, organization } = this.state;
+    const isOrgRemote = _.get(organization, 'onlyRemote', false);
+    return (
+      <Col md={{ size: 10, offset: 1 }}>
+        <div className="heading">
+          <img data-src={BuildingLogo} height={100} className="lazyload" alt="Location" />
+          <h2>
+            <Translate contentKey="record.heading.locations" />
+          </h2>
+
+          <div className="description">
+            <Translate contentKey="record.heading.locationsDescription" />
+          </div>
+        </div>
+        <Row id="remote-only-row">
+          <Col md={{ size: 11, offset: 1 }}>
+            <AvGroup check className="flex">
+              <Label check for="onlyRemote">
+                {translate('record.remoteOnly')}
+              </Label>
+              <AvInput id="onlyRemote" type="checkbox" name="onlyRemote" onChange={this.handleIsOrgRemoteChange} value={isOrgRemote} />
+            </AvGroup>
+          </Col>
+        </Row>
+        {isOrgRemote ? (
+          <div className="mt-4" style={{ marginBottom: '-1rem' }}>
+            <Row id="whereIsYourHeadquarters" noGutters>
+              <Col md={{ size: 11, offset: 1 }}>
+                <Translate contentKey="record.location.whereIsYourHeadquarters" />
+              </Col>
+            </Row>
+          </div>
+        ) : null}
+        {Array.apply(null, { length: locationCount }).map((e, i) => {
+          const { locations } = this.state;
+          const isLocationRemote = locations[i].isRemote;
+          return (
+            <Row key={`location-${i}`} className="item location">
+              <Col md={1}>{!isOrgRemote ? <h4>{i + 1}.</h4> : null}</Col>
+              <Col md={11}>
+                <AvGroup className="flex">
+                  <div className={`${!isOrgRemote ? 'required' : ''}`} />
+                  <Label className="sr-only" for={'location-id[' + i + '].address1'}>
+                    {translate('record.location.address1')}
+                  </Label>
+                  <AvInput
+                    id={'location-id[' + i + '].address1'}
+                    type="textarea"
+                    name={'locations[' + i + '].address1'}
+                    onChange={this.onLocationChange(i, 'address1')}
+                    placeholder={translate('record.location.address1')}
+                    validate={{
+                      required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for={'location-id[' + i + '].address2'}>
+                    {translate('record.location.address2')}
+                  </Label>
+                  <AvInput
+                    id={'location-id[' + i + '].address2'}
+                    type="textarea"
+                    name={'locations[' + i + '].address2'}
+                    onChange={this.onLocationChange(i, 'address2')}
+                    placeholder={translate('record.location.address2')}
+                  />
+                </AvGroup>
+                <Row>
+                  <Col md={7} className="flex mb-3">
+                    <div className={`${!isOrgRemote ? 'required' : ''}`} />
+                    <Label className="sr-only" for={'location-id[' + i + '].city'}>
+                      {translate('record.location.city')}
+                    </Label>
+                    <AvInput
+                      id={'location-id[' + i + '].city'}
+                      type="text"
+                      name={'locations[' + i + '].city'}
+                      onChange={this.onLocationChange(i, 'city')}
+                      placeholder={translate('record.location.city')}
+                      validate={{
+                        required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
+                      }}
+                    />
+                  </Col>
+                  <Col md={2} className="flex mb-3">
+                    <div className={`${!isOrgRemote ? 'required' : ''}`} />
+                    <Label className="sr-only" for={'location-id[' + i + '].ca'}>
+                      {translate('entity.validation.required')}
+                    </Label>
+                    <AvField
+                      id={'location-id[' + i + '].ca'}
+                      type="select"
+                      name={'locations[' + i + '].ca'}
+                      onChange={this.onLocationChange(i, 'ca')}
+                      placeholder={translate('record.location.ca')}
+                      value={locationModel['ca']}
+                      validate={{
+                        required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
+                      }}
+                      style={{ minWidth: '5em' }}
+                    >
+                      {US_STATES.map(state => (
+                        <option value={state} key={state}>
+                          {state}
+                        </option>
+                      ))}
+                    </AvField>
+                  </Col>
+                  <Col md={3} className="flex mb-3">
+                    <div className={`${!isOrgRemote ? 'required' : ''}`} />
+                    <Label className="sr-only" for={'location-id[' + i + '].zipcode'}>
+                      {translate('record.location.zipcode')}
+                    </Label>
+                    <AvInput
+                      id={'location-id[' + i + '].zipcode'}
+                      type="text"
+                      name={'locations[' + i + '].zipcode'}
+                      onChange={this.onLocationChange(i, 'zipcode')}
+                      placeholder={translate('record.location.zipcode')}
+                      validate={{
+                        required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
+                      }}
+                    />
+                  </Col>
+                  {!isOrgRemote ? (
+                    <Col md={7} className="flex mb-3">
+                      <AvGroup check className="flex">
+                        <Label check for={'location-id[' + i + '].isRemote'}>
+                          {translate('record.location.isRemote')}
+                        </Label>
+                        <AvInput
+                          id={'location-id[' + i + '].isRemote'}
+                          type="checkbox"
+                          name={'locations[' + i + '].isRemote'}
+                          value={isLocationRemote}
+                          onChange={this.onLocationRemoteChange(i)}
+                        />
+                      </AvGroup>
+                    </Col>
+                  ) : null}
+                </Row>
+                <OpeningHours
+                  location={locations[i]}
+                  locationIndex={i}
+                  openingHours={this.state.openingHoursByLocation[i] || [{}]}
+                  datesClosed={this.state.datesClosedByLocation[i] || [null]}
+                  updateLocationData={this.updateLocationData(i)}
+                  defaultOpeningHours={DEFAULT_OPENING_HOURS}
+                />
+              </Col>
+            </Row>
+          );
+        })}
+      </Col>
+    );
+  };
+
   render() {
-    const { organization, locations, services, activeTab, invalidTabs, locationCount, serviceCount, leaving } = this.state;
+    const { organization, locations, services, activeTab, invalidTabs, serviceCount, leaving } = this.state;
+    const phoneNumber = _.get(organization, 'phones[0].number', '');
     const { updating, taxonomyOptions } = this.props;
+    const onlyRemote = _.get(organization, 'onlyRemote', false);
     return (
       <div className="record-shared record-create">
         <Nav tabs>
@@ -318,6 +573,18 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label className="sr-only" for="organization-covidProtocols">
+                    {translate('record.covidProtocols')}
+                  </Label>
+                  <AvInput
+                    id="organization-covidProtocols"
+                    type="textarea"
+                    name="covidProtocols"
+                    placeholder={translate('record.covidProtocols')}
+                    onChange={this.onOrganizationChange('covidProtocols')}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label className="sr-only" for="organization-url">
                     {translate('record.description')}
                   </Label>
@@ -327,6 +594,42 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                     name="url"
                     placeholder={translate('record.url')}
                     onChange={this.onOrganizationChange('url')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for="organization-facebook-url">
+                    {translate('record.facebookUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-facebook-url"
+                    type="text"
+                    name="facebookUrl"
+                    placeholder={translate('record.facebookUrl')}
+                    onChange={this.onOrganizationChange('facebookUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for="organization-twitter-url">
+                    {translate('record.twitterUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-twitter-url"
+                    type="text"
+                    name="twitterUrl"
+                    placeholder={translate('record.twitterUrl')}
+                    onChange={this.onOrganizationChange('twitterUrl')}
+                  />
+                </AvGroup>
+                <AvGroup>
+                  <Label className="sr-only" for="organization-instagram-url">
+                    {translate('record.instagramUrl')}
+                  </Label>
+                  <AvField
+                    id="organization-instagram-url"
+                    type="text"
+                    name="instagramUrl"
+                    placeholder={translate('record.instagramUrl')}
+                    onChange={this.onOrganizationChange('instagramUrl')}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -344,6 +647,22 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                     onChange={this.onOrganizationChange('email')}
                   />
                 </AvGroup>
+                <div className={`record-create ${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'invalid' : ''}`}>
+                  <Input
+                    className="my-2 form-control"
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    placeholder={translate('referral.placeholder.phone')}
+                    onChange={this.setPhone}
+                    value={phoneNumber}
+                    country="US"
+                  />
+                </div>
+                {phoneNumber &&
+                  !isPossiblePhoneNumber(phoneNumber) && (
+                    <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                  )}
               </Col>
               <div className="buttons navigation-buttons">
                 <ButtonPill onClick={() => this.props.history.goBack()} className="button-pill-secondary">
@@ -359,131 +678,23 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               </div>
             </TabPane>
             <TabPane tabId={LOCATION_TAB}>
-              <Col md={{ size: 10, offset: 1 }}>
-                <div className="heading">
-                  <img data-src={BuildingLogo} height={100} className="lazyload" alt="Location" />
-                  <h2>
-                    <Translate contentKey="record.heading.locations" />
-                  </h2>
-                  <div className="description">
-                    <Translate contentKey="record.heading.locationsDescription" />
-                  </div>
-                </div>
-                {Array.apply(null, { length: locationCount }).map((e, i) => (
-                  <Row key={`location-${i}`} className="item location">
-                    <Col md={1}>
-                      <h4>{i + 1}.</h4>
-                    </Col>
-                    <Col md={11}>
-                      <AvGroup className="flex">
-                        <div className="required" />
-                        <Label className="sr-only" for={'location-id[' + i + '].address1'}>
-                          {translate('record.location.address1')}
-                        </Label>
-                        <AvInput
-                          id={'location-id[' + i + '].address1'}
-                          type="textarea"
-                          name={'locations[' + i + '].address1'}
-                          onChange={this.onLocationChange(i, 'address1')}
-                          placeholder={translate('record.location.address1')}
-                          validate={{
-                            required: { value: true, errorMessage: translate('entity.validation.required') }
-                          }}
-                        />
-                      </AvGroup>
-                      <AvGroup>
-                        <Label className="sr-only" for={'location-id[' + i + '].address2'}>
-                          {translate('record.location.address2')}
-                        </Label>
-                        <AvInput
-                          id={'location-id[' + i + '].address2'}
-                          type="textarea"
-                          name={'locations[' + i + '].address2'}
-                          onChange={this.onLocationChange(i, 'address2')}
-                          placeholder={translate('record.location.address2')}
-                        />
-                      </AvGroup>
-                      <Row>
-                        <Col md={7} className="flex mb-3">
-                          <div className="required" />
-                          <Label className="sr-only" for={'location-id[' + i + '].city'}>
-                            {translate('record.location.city')}
-                          </Label>
-                          <AvInput
-                            id={'location-id[' + i + '].city'}
-                            type="text"
-                            name={'locations[' + i + '].city'}
-                            onChange={this.onLocationChange(i, 'city')}
-                            placeholder={translate('record.location.city')}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                          />
-                        </Col>
-                        <Col md={2} className="flex mb-3">
-                          <div className="required" />
-                          <Label className="sr-only" for={'location-id[' + i + '].ca'}>
-                            {translate('entity.validation.required')}
-                          </Label>
-                          <AvField
-                            id={'location-id[' + i + '].ca'}
-                            type="select"
-                            name={'locations[' + i + '].ca'}
-                            onChange={this.onLocationChange(i, 'ca')}
-                            placeholder={translate('record.location.ca')}
-                            value={locationModel['ca']}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            style={{ minWidth: '5em' }}
-                          >
-                            {US_STATES.map(state => (
-                              <option value={state} key={state}>
-                                {state}
-                              </option>
-                            ))}
-                          </AvField>
-                        </Col>
-                        <Col md={3} className="flex mb-3">
-                          <div className="required" />
-                          <Label className="sr-only" for={'location-id[' + i + '].zipcode'}>
-                            {translate('record.location.zipcode')}
-                          </Label>
-                          <AvInput
-                            id={'location-id[' + i + '].zipcode'}
-                            type="text"
-                            name={'locations[' + i + '].zipcode'}
-                            onChange={this.onLocationChange(i, 'zipcode')}
-                            placeholder={translate('record.location.zipcode')}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                      <OpeningHours
-                        location={location}
-                        openingHours={this.state.openingHoursByLocation[i] || [{}]}
-                        datesClosed={this.state.datesClosedByLocation[i] || [null]}
-                        updateLocationData={this.updateLocationData(i)}
-                        defaultOpeningHours={DEFAULT_OPENING_HOURS}
-                      />
-                    </Col>
-                  </Row>
-                ))}
-              </Col>
-              <div className="buttons list-buttons">
-                {this.state.locationCount === 1 ? null : (
-                  <ButtonPill onClick={this.removeLocation} className="button-pill-secondary mr-1">
-                    <Translate contentKey="record.remove" />
+              <this.locationTab />
+              {!onlyRemote ? (
+                <div className="buttons list-buttons">
+                  {this.state.locationCount === 1 ? null : (
+                    <ButtonPill onClick={this.removeLocation} className="button-pill-secondary mr-1">
+                      <Translate contentKey="record.remove" />
+                    </ButtonPill>
+                  )}
+                  <ButtonPill onClick={this.addAnotherLocation} className="button-pill-secondary">
+                    <FontAwesomeIcon icon="plus" />
+                    &nbsp;
+                    <Translate contentKey="record.addAnother" />
                   </ButtonPill>
-                )}
-                <ButtonPill onClick={this.addAnotherLocation} className="button-pill-secondary">
-                  <FontAwesomeIcon icon="plus" />
-                  &nbsp;
-                  <Translate contentKey="record.addAnother" />
-                </ButtonPill>
-              </div>
+                </div>
+              ) : (
+                ''
+              )}
               <div className="buttons navigation-buttons">
                 <ButtonPill onClick={() => this.toggle(ORGANIZATION_TAB)} className="button-pill-secondary">
                   <FontAwesomeIcon icon="angle-left" />
@@ -508,114 +719,208 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                     <Translate contentKey="record.heading.servicesDescription" />
                   </div>
                 </div>
-                {Array.apply(null, { length: serviceCount }).map((e, i) => (
-                  <Row key={`service-${i}`} className="item service">
-                    <Col md={1}>
-                      <h4>{i + 1}.</h4>
-                    </Col>
-                    <Col md={11}>
-                      <AvGroup className="flex">
-                        <div className="required" />
-                        <Label className="sr-only" for={'service-id[' + i + '].name'}>
-                          {translate('entity.validation.required')}
-                        </Label>
-                        <AvInput
-                          id={'service-id[' + i + '].name'}
-                          type="text"
-                          name={'services[' + i + '].name'}
-                          placeholder={translate('record.service.name')}
-                          validate={{
-                            required: { value: true, errorMessage: translate('entity.validation.required') }
-                          }}
-                          onChange={this.onServiceChange(i, 'name')}
-                        />
-                      </AvGroup>
-                      <AvGroup className="flex">
-                        <div className="required" />
-                        <Label className="sr-only" for={'services[' + i + '].taxonomyIds'}>
-                          {translate('record.service.type')}
-                        </Label>
-                        <AvSelect
-                          name={'services[' + i + '].taxonomyIds'}
-                          validate={{
-                            required: { value: true, errorMessage: translate('entity.validation.required') }
-                          }}
-                          options={taxonomyOptions}
-                          // @ts-ignore
-                          isMulti
-                          placeholder={translate('record.service.type')}
-                          onChange={this.onServiceChange(i, 'taxonomyIds')}
-                        />
-                      </AvGroup>
-                      <AvGroup className="flex">
-                        <div className="required" />
-                        <Label className="sr-only" for={'service-id[' + i + '].description'}>
-                          {translate('record.service.description')}
-                        </Label>
-                        <AvInput
-                          id={'service-id[' + i + '].description'}
-                          type="textarea"
-                          name={'services[' + i + '].description'}
-                          placeholder={translate('record.service.description')}
-                          validate={{
-                            required: { value: true, errorMessage: translate('entity.validation.required') }
-                          }}
-                          onChange={this.onServiceChange(i, 'description')}
-                        />
-                      </AvGroup>
-                      <AvGroup>
-                        <Label className="sr-only" for={'service-id[' + i + '].applicationProcess'}>
-                          {translate('record.service.applicationProcess')}
-                        </Label>
-                        <AvInput
-                          id={'service-id[' + i + '].applicationProcess'}
-                          type="textarea"
-                          name={'services[' + i + '].applicationProcess'}
-                          placeholder={translate('record.service.applicationProcess')}
-                          onChange={this.onServiceChange(i, 'applicationProcess')}
-                        />
-                      </AvGroup>
-                      <AvGroup>
-                        <Label className="sr-only" for={'service-id[' + i + '].eligibilityCriteria'}>
-                          {translate('record.service.eligibilityCriteria')}
-                        </Label>
-                        <AvInput
-                          id={'service-id[' + i + '].eligibilityCriteria'}
-                          type="textarea"
-                          name={'services[' + i + '].eligibilityCriteria'}
-                          placeholder={translate('record.service.eligibilityCriteria')}
-                          onChange={this.onServiceChange(i, 'eligibilityCriteria')}
-                        />
-                      </AvGroup>
-                      <AvGroup>
-                        <Label className="sr-only" for={'service-id[' + i + '].docs[0].document'}>
-                          {translate('record.service.requiredDocuments')}
-                        </Label>
-                        <AvInput
-                          id={'service-id[' + i + '].docs[0].document'}
-                          type="textarea"
-                          name={'services[' + i + '].docs[0].document'}
-                          placeholder={translate('record.service.requiredDocuments')}
-                          onChange={this.onServiceDocsChange(i)}
-                        />
-                      </AvGroup>
-                      <AvGroup>
-                        <Label className="sr-only" for={'services[' + i + '].locationIndexes'}>
-                          {translate('record.service.locations')}
-                        </Label>
-                        <AvSelect
-                          name={'services[' + i + '].locationIndexes'}
-                          value={this.state.services[i]['locationIndexes']}
-                          onChange={this.onServiceChange(i, 'locationIndexes', [])}
-                          options={this.getLocations()}
-                          // @ts-ignore
-                          isMulti
-                          placeholder={translate('record.service.locations')}
-                        />
-                      </AvGroup>
-                    </Col>
-                  </Row>
-                ))}
+                {Array.apply(null, { length: serviceCount }).map((e, i) => {
+                  const isPhoneInvalid =
+                    _.get(this.state.services, `[${i}].phones[0].number`, '') &&
+                    !isPossiblePhoneNumber(_.get(this.state.services, `[${i}].phones[0].number`, ''));
+                  return (
+                    <Row key={`service-${i}`} className="item service">
+                      <Col md={1}>
+                        <h4>{i + 1}.</h4>
+                      </Col>
+                      <Col md={11}>
+                        <AvGroup className="flex">
+                          <div className="required" />
+                          <Label className="sr-only" for={'service-id[' + i + '].name'}>
+                            {translate('entity.validation.required')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].name'}
+                            type="text"
+                            name={'services[' + i + '].name'}
+                            placeholder={translate('record.service.name')}
+                            validate={{
+                              required: { value: true, errorMessage: translate('entity.validation.required') }
+                            }}
+                            onChange={this.onServiceChange(i, 'name')}
+                          />
+                        </AvGroup>
+                        <AvGroup className="flex">
+                          <div className="required" />
+                          <Label className="sr-only" for={'services[' + i + '].taxonomyIds'}>
+                            {translate('record.service.type')}
+                          </Label>
+                          <AvSelect
+                            name={'services[' + i + '].taxonomyIds'}
+                            validate={{
+                              required: { value: true, errorMessage: translate('entity.validation.required') }
+                            }}
+                            options={taxonomyOptions}
+                            // @ts-ignore
+                            isMulti
+                            placeholder={translate('record.service.type')}
+                            onChange={this.onServiceChange(i, 'taxonomyIds')}
+                          />
+                        </AvGroup>
+                        <div className={`record-create ${isPhoneInvalid ? 'invalid' : ''}`}>
+                          <Input
+                            className="my-2 form-control"
+                            type="text"
+                            name="phone"
+                            id={'service-id[' + i + '].phone'}
+                            placeholder={translate('referral.placeholder.phone')}
+                            onChange={this.setServicePhone(i)}
+                            value={_.get(this.state.services, `[${i}].phones[0].number`, '')}
+                            country="US"
+                          />
+                        </div>
+                        {isPhoneInvalid && (
+                          <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                        )}
+                        <AvGroup className="flex">
+                          <div className="required" />
+                          <Label className="sr-only" for={'service-id[' + i + '].description'}>
+                            {translate('record.service.description')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].description'}
+                            type="textarea"
+                            name={'services[' + i + '].description'}
+                            placeholder={translate('record.service.description')}
+                            validate={{
+                              required: { value: true, errorMessage: translate('entity.validation.required') }
+                            }}
+                            onChange={this.onServiceChange(i, 'description')}
+                          />
+                        </AvGroup>
+                        <AvGroup>
+                          <Label className="sr-only" for={'service-id[' + i + '].applicationProcess'}>
+                            {translate('record.service.applicationProcess')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].applicationProcess'}
+                            type="textarea"
+                            name={'services[' + i + '].applicationProcess'}
+                            placeholder={translate('record.service.applicationProcess')}
+                            onChange={this.onServiceChange(i, 'applicationProcess')}
+                          />
+                        </AvGroup>
+                        <AvGroup>
+                          <Label className="sr-only" for={'service-id[' + i + '].eligibilityCriteria'}>
+                            {translate('record.service.eligibilityCriteria')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].eligibilityCriteria'}
+                            type="textarea"
+                            name={'services[' + i + '].eligibilityCriteria'}
+                            placeholder={translate('record.service.eligibilityCriteria')}
+                            onChange={this.onServiceChange(i, 'eligibilityCriteria')}
+                          />
+                        </AvGroup>
+                        <AvGroup>
+                          <Label className="sr-only" for={'service-id[' + i + '].docs[0].document'}>
+                            {translate('record.service.requiredDocuments')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].docs[0].document'}
+                            type="textarea"
+                            name={'services[' + i + '].docs[0].document'}
+                            placeholder={translate('record.service.requiredDocuments')}
+                            onChange={this.onServiceDocsChange(i)}
+                          />
+                        </AvGroup>
+                        <AvGroup>
+                          <Label className="sr-only" for={'service-id[' + i + '].fees'}>
+                            {translate('record.service.fees')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].fees'}
+                            type="textarea"
+                            name={'services[' + i + '].fees'}
+                            placeholder={translate('record.service.fees')}
+                            onChange={this.onServiceChange(i, 'fees')}
+                          />
+                        </AvGroup>
+                        <div className="d-flex flex-wrap">
+                          <AvGroup check className="flex mr-5">
+                            <Label check for={'service[' + i + '].medicareAccepted'}>
+                              {translate('record.service.medicareAccepted')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].medicareAccepted'}
+                              type="checkbox"
+                              name={'services[' + i + '].medicareAccepted'}
+                              onChange={this.onServiceInsuranceChange(i, 'medicareAccepted')}
+                              value={_.get(this.state.services, `[${i}].medicareAccepted`, false)}
+                            />
+                          </AvGroup>
+                          <AvGroup check className="flex mr-5">
+                            <Label check for={'service[' + i + '].medicaidAccepted'}>
+                              {translate('record.service.medicaidAccepted')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].medicaidAccepted'}
+                              type="checkbox"
+                              name={'services[' + i + '].medicaidAccepted'}
+                              onChange={this.onServiceInsuranceChange(i, 'medicaidAccepted')}
+                              value={_.get(this.state.services, `[${i}].medicaidAccepted`, false)}
+                            />
+                          </AvGroup>
+                          <AvGroup check className="flex" style={{ marginBottom: '1rem' }}>
+                            <Label check for={'service[' + i + '].uninsuredAccepted'}>
+                              {translate('record.service.uninsuredAccepted')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].uninsuredAccepted'}
+                              type="checkbox"
+                              name={'services[' + i + '].uninsuredAccepted'}
+                              onChange={this.onServiceInsuranceChange(i, 'uninsuredAccepted')}
+                              value={_.get(this.state.services, `[${i}].uninsuredAccepted`, false)}
+                            />
+                          </AvGroup>
+                        </div>
+                        <AvGroup>
+                          <Label className="sr-only" for={'service[' + i + '].insuranceLabel'}>
+                            {translate('record.service.insuranceLabel')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].insuranceLabel'}
+                            type="text"
+                            name={'services[' + i + '].insuranceLabel'}
+                            placeholder={translate('record.service.insuranceLabel')}
+                            onChange={this.onServiceChange(i, 'insuranceLabel')}
+                          />
+                        </AvGroup>
+                        <AvGroup>
+                          <Label className="sr-only" for={'service[' + i + '].safeForUndocumented'}>
+                            {translate('record.service.safeForUndocumented')}
+                          </Label>
+                          <AvInput
+                            id={'service-id[' + i + '].safeForUndocumented'}
+                            type="textarea"
+                            name={'services[' + i + '].safeForUndocumented'}
+                            placeholder={translate('record.service.safeForUndocumented')}
+                            onChange={this.onServiceChange(i, 'safeForUndocumented')}
+                          />
+                        </AvGroup>
+                        <AvGroup>
+                          <Label className="sr-only" for={'services[' + i + '].locationIndexes'}>
+                            {translate('record.service.locations')}
+                          </Label>
+                          <AvSelect
+                            name={'services[' + i + '].locationIndexes'}
+                            value={this.state.services[i]['locationIndexes']}
+                            onChange={this.onServiceChange(i, 'locationIndexes', [])}
+                            options={this.getLocations()}
+                            // @ts-ignore
+                            isMulti
+                            placeholder={translate('record.service.locations')}
+                          />
+                        </AvGroup>
+                      </Col>
+                    </Row>
+                  );
+                })}
               </Col>
               <div className="buttons list-buttons">
                 {this.state.serviceCount === 1 ? null : (

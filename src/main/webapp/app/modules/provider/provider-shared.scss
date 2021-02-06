@@ -95,17 +95,6 @@
     display: flex !important;
   }
 
-  .progress-bar {
-    background-color: #e8895a;
-  }
-
-  .progress {
-    border: thin solid black;
-    width: 10vw;
-    border-radius: 10px;
-    background-color: white;
-  }
-
   .control-line-container {
     display: flex;
     justify-content: space-between;
@@ -131,6 +120,9 @@
     bottom: 0;
     flex: 1;
     max-width: 100%;
+    &.full-width {
+      width: 100%;
+    }
   }
 
   .sort-container {
@@ -254,10 +246,6 @@
 
     .mobile-invisible {
       display: none !important;
-    }
-
-    .progress {
-      width: 30vw;
     }
 
     .hello-text {

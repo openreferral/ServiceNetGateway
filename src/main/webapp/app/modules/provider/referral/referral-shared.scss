@@ -85,4 +85,12 @@
       color: red;
     }
   }
+
+  .checked-in-label,
+  .referred-label {
+    word-break: break-word;
+    > span {
+      text-align: center;
+    }
+  }
 }

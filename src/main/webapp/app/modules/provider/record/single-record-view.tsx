@@ -1,7 +1,7 @@
 import './record-shared.scss';
 
 import React from 'react';
-import { Collapse, Button, CardBody, Card, CardTitle, Progress } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, CardTitle, Progress, Label } from 'reactstrap';
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,7 +12,7 @@ import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import { FixedSizeList as List, FixedSizeGrid as Grid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
-import { APP_DATE_12_HOUR_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, GA_ACTIONS, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
@@ -24,6 +24,7 @@ import PeopleLogo from '../../../../static/images/people.svg';
 import ServiceLogo from '../../../../static/images/service.svg';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import _ from 'lodash';
+import { sendAction, sendActionOnEvt } from 'app/shared/util/analytics';
 
 const LocationPill = location => {
   if (!location) {
@@ -135,7 +136,10 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     }
   }
 
-  showServiceDetails = serviceIdx => this.setState({ detailsView: true, currentServiceIdx: serviceIdx });
+  showServiceDetails = serviceIdx => {
+    this.setState({ detailsView: true, currentServiceIdx: serviceIdx });
+    sendAction(!this.getSiloName() ? GA_ACTIONS.RECORD_SERVICE_DETAILS : GA_ACTIONS.PUBLIC_RECORD_SERVICE_DETAILS);
+  };
 
   closeServiceDetails = () => this.setState({ detailsView: false });
 
@@ -246,43 +250,75 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
         <CardBody className="details p-0">
           <section>
             {locationsCount > 0 ? (
-              organization.locations.map(loc => (
-                <div key={`loc-${loc.id}`} className="d-inline-block col-xl-4 col-md-6 col-xs-12 p-0">
-                  <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3">
-                    <CardTitle>
-                      <span className="text-ellipsis font-weight-bold">
-                        <FontAwesomeIcon icon="circle" className="blue" size="xs" />{' '}
-                        <b>
-                          {loc.city}, {loc.ca}
-                        </b>
-                      </span>
-                    </CardTitle>
-                    <CardBody>
-                      <div>
-                        <p className="m-0 text-ellipsis">{loc.address1}</p>
-                        <p className="m-0">{loc.zipcode}</p>
-                      </div>
-                      <div className="d-flex justify-content-end my-1">
-                        <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
-                          <a
-                            href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${loc.address1},${loc.city},${loc.ca} ${
-                              loc.zipcode ? loc.zipcode : ''
-                            }`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="alert-link w-100 h-100 d-flex align-items-center px-2"
-                            style={{ color: 'white' }}
-                          >
-                            <FontAwesomeIcon icon="directions" size="lg" />
-                            &nbsp;
-                            <Translate contentKey="providerSite.directions">Directions</Translate>
-                          </a>
-                        </ButtonPill>
-                      </div>
-                    </CardBody>
-                  </Card>
-                </div>
-              ))
+              organization.locations.map(loc => {
+                const isLocationOrOrgRemote = loc.isRemote || organization.onlyRemote;
+                return (
+                  <div key={`loc-${loc.id}`} className="d-inline-block col-xl-4 col-md-6 col-xs-12 p-0">
+                    <Card className="record-card details-card ml-0 mb-3 mr-0 mr-md-3">
+                      <CardTitle>
+                        <div className="w-100 d-flex flex-column">
+                          <div className="w-100 d-flex">
+                            <span className="text-ellipsis font-weight-bold">
+                              <FontAwesomeIcon icon="circle" className="blue" size="xs" />{' '}
+                              <b>
+                                {loc.city}, {loc.ca}
+                              </b>
+                            </span>
+                            {isLocationOrOrgRemote ? (
+                              <span className="pull-right mr-2">
+                                <b>
+                                  <Translate contentKey="record.location.servicesOfferedOnline" />
+                                </b>
+                              </span>
+                            ) : loc.open247 ? (
+                              <div className="w-100">
+                                <span className="pull-right mr-2">
+                                  <input type="checkbox" checked onClick={() => false} readOnly className="mr-1" id={`${loc.id}-247`} />
+                                  <Translate contentKey="record.openingHours.247" />
+                                </span>
+                              </div>
+                            ) : null}
+                          </div>
+                          {isLocationOrOrgRemote && loc.open247 ? (
+                            <div className="w-100">
+                              <span className="pull-right mr-2">
+                                <input type="checkbox" checked onClick={() => false} readOnly className="mr-1" id={`${loc.id}-247`} />
+                                <Translate contentKey="record.openingHours.247" />
+                              </span>
+                            </div>
+                          ) : null}
+                        </div>
+                      </CardTitle>
+                      <CardBody>
+                        <div>
+                          <p className="m-0 text-ellipsis">{loc.address1}</p>
+                          <p className="m-0">{loc.zipcode}</p>
+                        </div>
+                        <div className="d-flex justify-content-end my-1">
+                          <ButtonPill className="button-pill-primary d-flex align-items-center px-0 py-1">
+                            <a
+                              href={`${GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL}${loc.address1},${loc.city},${loc.ca} ${
+                                loc.zipcode ? loc.zipcode : ''
+                              }`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="alert-link w-100 h-100 d-flex align-items-center px-2"
+                              style={{ color: 'white' }}
+                              onClick={sendActionOnEvt(
+                                !this.getSiloName() ? GA_ACTIONS.RECORD_LOCATION_DIRECTIONS : GA_ACTIONS.PUBLIC_RECORD_LOCATION_DIRECTIONS
+                              )}
+                            >
+                              <FontAwesomeIcon icon="directions" size="lg" />
+                              &nbsp;
+                              <Translate contentKey="providerSite.directions">Directions</Translate>
+                            </a>
+                          </ButtonPill>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </div>
+                );
+              })
             ) : (
               <Translate contentKey="record.singleRecordView.noLocations" />
             )}
@@ -306,7 +342,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
       </CardTitle>
       <Collapse isOpen={isServicesOpen}>
         <CardBody className="details p-0">
-          <section className={detailsView ? 'd-none' : ''}>
+          <section className={detailsView ? 'service-section-hide-mobile' : ''}>
             {servicesCount > 0 ? (
               organization.services.map((srv, idx) => (
                 <div key={`srv-${srv.id}`} className="d-inline-block col-lg-4 col-md-6 col-xs-12 p-0">
@@ -334,7 +370,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             )}
           </section>
           {servicesCount > 0 && openService ? (
-            <div className={`service p-0 ${detailsView ? '' : 'd-none'}`}>
+            <div className={`service p-0 ${detailsView ? 'service-detail-pop-up col-12 col-md-8 offset-md-2' : 'd-none'}`}>
               <section className="d-flex top-bar">
                 <div className="d-inline-block w-100 d-md-flex justify-content-between">
                   <div className="d-inline-flex align-items-center service-name">
@@ -345,18 +381,24 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                     </h5>
                   </div>
                   <div className="d-inline-flex align-items-center pull-right">
-                    <div className="p-2 mr-1 clickable" onClick={() => this.prevService(servicesCount)}>
+                    <div className="p-2 mr-1 clickable service-details-navigation-mobile" onClick={() => this.prevService(servicesCount)}>
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-left']} />
                     </div>
-                    <div className="d-flex justify-content-center mr-1">
+                    <div className="p-2 clickable service-details-navigation-desktop-left" onClick={() => this.prevService(servicesCount)}>
+                      <FontAwesomeIcon icon="angle-left" size="lg" />
+                    </div>
+                    <div className="d-flex justify-content-center mr-1 service-details-navigation-mobile">
                       <div className="align-self-cente">{currentServiceIdx + 1}</div>
                       <div className="align-self-center mx-2">
                         <Progress value={((currentServiceIdx + 1) / servicesCount) * 100} />
                       </div>
                       <div className="align-self-center">{servicesCount}</div>
                     </div>
-                    <div className="p-2 clickable" onClick={() => this.nextService(servicesCount)}>
+                    <div className="p-2 clickable service-details-navigation-mobile" onClick={() => this.nextService(servicesCount)}>
                       <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />
+                    </div>
+                    <div className="p-2 clickable service-details-navigation-desktop-right" onClick={() => this.nextService(servicesCount)}>
+                      <FontAwesomeIcon icon="angle-right" size="lg" />
                     </div>
                     <div className="p-2 clickable" onClick={this.closeServiceDetails}>
                       <FontAwesomeIcon icon={['fas', 'times']} />
@@ -422,6 +464,82 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   <span className="break">{openService.docs.length > 0 ? openService.docs[0].document : ''}</span>
                 </section>
               ) : null}
+              {openService.fees ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.singleRecordView.fees" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.fees}</span>
+                </section>
+              ) : null}
+              {openService.phones && openService.phones.length > 0 ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.phone" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.phones.length > 0 ? openService.phones[0].number : ''}</span>
+                </section>
+              ) : null}
+              {openService.medicareAccepted ||
+              openService.medicaidAccepted ||
+              openService.uninsuredAccepted ||
+              openService.insuranceLabel ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.insurance" />
+                    </b>
+                  </h6>
+                  <div className="d-flex flex-wrap">
+                    {openService.medicareAccepted ? (
+                      <span className="mr-5 d-flex align-items-center">
+                        <FontAwesomeIcon icon={['far', 'check-square']} />
+                        &nbsp;
+                        <Translate contentKey="record.service.medicareAccepted" />
+                      </span>
+                    ) : null}
+                    {openService.medicaidAccepted ? (
+                      <span className="mr-5 d-flex align-items-center">
+                        <FontAwesomeIcon icon={['far', 'check-square']} />
+                        &nbsp;
+                        <Translate contentKey="record.service.medicaidAccepted" />
+                      </span>
+                    ) : null}
+                    {openService.uninsuredAccepted ? (
+                      <span className="mr-5 d-flex align-items-center">
+                        <FontAwesomeIcon icon={['far', 'check-square']} />
+                        &nbsp;
+                        <Translate contentKey="record.service.uninsuredAccepted" />
+                      </span>
+                    ) : null}
+                  </div>
+                  <span className="break">{openService.insuranceLabel ? openService.insuranceLabel : ''}</span>
+                </section>
+              ) : null}
+              {openService.safeForUndocumented ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.safeForUndocumented" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.safeForUndocumented}</span>
+                </section>
+              ) : null}
+              {openService.phones && openService.phones.length > 0 ? (
+                <section>
+                  <h6>
+                    <b>
+                      <Translate contentKey="record.service.phone" />
+                    </b>
+                  </h6>
+                  <span className="break">{openService.phones.length > 0 ? openService.phones[0].number : ''}</span>
+                </section>
+              ) : null}
               {openService.locationIndexes && openService.locationIndexes.length ? (
                 <section>
                   <h6 className="d-flex align-items-center flex-wrap">
@@ -458,6 +576,53 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
       </Button>
     ) : null;
   };
+
+  getSocialMediaLinks = organization => (
+    <div className="p-2 d-flex align-items-center social-icons-container">
+      {organization.facebookUrl && (
+        <a
+          className="text-break"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.facebookUrl.startsWith('http') || organization.facebookUrl.startsWith('//')
+              ? organization.facebookUrl
+              : '//' + organization.facebookUrl
+          }
+        >
+          <img data-src="content/images/facebook_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+      {organization.twitterUrl && (
+        <a
+          className="text-break ml-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.twitterUrl.startsWith('http') || organization.twitterUrl.startsWith('//')
+              ? organization.twitterUrl
+              : '//' + organization.twitterUrl
+          }
+        >
+          <img data-src="content/images/twitter_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+      {organization.instagramUrl && (
+        <a
+          className="text-break ml-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.instagramUrl.startsWith('http') || organization.instagramUrl.startsWith('//')
+              ? organization.instagramUrl
+              : '//' + organization.instagramUrl
+          }
+        >
+          <img data-src="content/images/instagram_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+    </div>
+  );
 
   render() {
     const {
@@ -519,8 +684,8 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                 <img data-src={PeopleLogo} height={100} alt="Organization" className="lazyload d-none d-sm-block mx-5" />
               </div>
             </CardTitle>
-            <CardBody className="p-0 border-top-0">
-              <section className="locations p-2" id="locations">
+            <CardBody className="p-0 border-top-0 d-flex justify-content-between">
+              <section className="locations p-2 w-100" id="locations">
                 {locationsCount > 0 ? (
                   <AutoSizer disableHeight>
                     {({ width }) => {
@@ -548,6 +713,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   </AutoSizer>
                 ) : null}
               </section>
+              {this.getSocialMediaLinks(organization)}
             </CardBody>
           </Card>
 
@@ -581,7 +747,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
             </Card>
           ) : null}
 
-          {organization.description || organization.url || organization.email ? (
+          {organization.description || organization.covidProtocols || organization.url || organization.email ? (
             <Card className="section">
               <CardTitle onClick={this.toggleOrganization} className="clickable">
                 <div className="d-flex justify-content-center align-items-center details-section-title">
@@ -603,6 +769,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                       <span className="break">{organization.description}</span>
                     </section>
                   ) : null}
+                  {organization.covidProtocols ? (
+                    <section>
+                      <h6>
+                        <b>
+                          <Translate contentKey="record.singleRecordView.covidProtocols" />
+                        </b>
+                      </h6>
+                      <span className="break">{organization.covidProtocols}</span>
+                    </section>
+                  ) : null}
                   {organization.url ? (
                     <section>
                       <h6>
@@ -610,7 +786,19 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                           <Translate contentKey="record.singleRecordView.orgWebsite" />
                         </b>
                       </h6>
-                      <a className="text-break" target="_blank" rel="noopener noreferrer" href={organization.url}>
+                      <a
+                        className="text-break"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={
+                          organization.url.startsWith('http') || organization.url.startsWith('//')
+                            ? organization.url
+                            : '//' + organization.url
+                        }
+                        onClick={sendActionOnEvt(
+                          !this.getSiloName() ? GA_ACTIONS.RECORD_WEBSITE_CLICK : GA_ACTIONS.PUBLIC_RECORD_WEBSITE_CLICK
+                        )}
+                      >
                         {organization.url}
                       </a>
                     </section>
@@ -623,6 +811,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                         </b>
                       </h6>
                       <span>{organization.email}</span>
+                    </section>
+                  ) : null}
+                  {organization.phones && organization.phones.length > 0 ? (
+                    <section>
+                      <h6>
+                        <b>
+                          <Translate contentKey="record.singleRecordView.phone" />
+                        </b>
+                      </h6>
+                      <span>{organization.phones[0].number}</span>
                     </section>
                   ) : null}
                 </CardBody>

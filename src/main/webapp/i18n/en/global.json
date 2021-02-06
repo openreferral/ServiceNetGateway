@@ -207,7 +207,8 @@
       "pattern": "This field should follow pattern for {{ pattern }}.",
       "number": "This field should be a number.",
       "datetimelocal": "This field should be a date and time.",
-      "patternLogin": "This field can only contain letters, digits and e-mail addresses."
+      "patternLogin": "This field can only contain letters, digits and e-mail addresses.",
+      "phone": "Phone number is invalid. Please add valid phone number (e.g. +12133734253)"
     },
     "pagination": {
       "header": "100 (default)",
@@ -242,7 +243,8 @@
     "notFound": "<strong>Silo does not exist!</strong> Please check your registration link.",
     "invalidphone": "The Phone Number is invalid.",
     "toorgidnotfound": "Organization referring to has to be specified",
-    "tolocationidnotfound": "Location referring to has to be specified"
+    "tolocationidnotfound": "Location referring to has to be specified",
+    "linkExpired": "Your link has expired. Try again to reset your password."
   },
   "footerLeft": "Copyright {{ year }} | Benetech | Software for Social Good",
   "footerRight": "<a href=\"/#/about-us\">About us</a>",
