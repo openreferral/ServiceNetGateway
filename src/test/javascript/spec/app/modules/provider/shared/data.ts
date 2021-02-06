@@ -41,6 +41,25 @@ export const store = mockStore({
   },
   taxonomy: {
     providerTaxonomies: []
+  },
+  filterActivity: {
+    providersPostalCodeList: [],
+    providersRegionList: [],
+    providersCityList: [],
+    partnerList: [],
+    selectedCity: [],
+    selectedCounty: [],
+    selectedZip: [],
+    selectedTaxonomy: [],
+    selectedSearchFields: [],
+    activityFilter: {
+      citiesFilterList: [],
+      regionFilterList: [],
+      postalCodesFilterList: [],
+      taxonomiesFilterList: [],
+      searchFields: [],
+      showPartner: false
+    }
   }
 });
 

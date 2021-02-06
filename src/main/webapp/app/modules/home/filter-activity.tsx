@@ -139,7 +139,6 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
   };
 
   applyFilter = () => {
-    ReactGA.event({ category: 'UserActions', action: 'Applied Filter' });
     if (this.validateFilters()) {
       this.props.getActivityEntities(null);
       this.setState({ filtersChanged: false });
@@ -214,7 +213,7 @@ export class FilterActivity extends React.Component<IFilterActivityProps, IFilte
     this.props.updateActivityFilter(filter);
 
     this.props.resetActivityFilter();
-    ReactGA.event({ category: 'UserActions', action: 'Filter Reset' });
+
     this.saveCurrentFilter(filter);
     this.setState(INITIAL_STATE);
   };

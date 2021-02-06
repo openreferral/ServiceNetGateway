@@ -9,7 +9,7 @@ import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
-import { APP_DATE_12_HOUR_FORMAT, SYSTEM_ACCOUNTS } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, GA_ACTIONS, SYSTEM_ACCOUNTS } from 'app/config/constants';
 import { measureWidths, getColumnCount, containerStyle } from 'app/shared/util/measure-widths';
 import { connect } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
@@ -22,6 +22,7 @@ import ReferButton from 'app/modules/provider/record/refer-button';
 import _ from 'lodash';
 import moment from 'moment';
 import { IUser } from 'app/shared/model/user.model';
+import { sendAction, sendActionOnEvt } from 'app/shared/util/analytics';
 
 const REMAINDER_WIDTH = 25;
 
@@ -40,6 +41,9 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   owner?: IUser;
   referring: boolean;
   claiming?: boolean;
+  onNameClick?: Function;
+  siloName?: string;
+  withOnlineServiceLabel?: boolean;
 }
 
 export interface IRecordCardState {
@@ -115,6 +119,61 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     );
   };
 
+  isOrgOffersOnlineServices = () => {
+    const { record, withOnlineServiceLabel } = this.props;
+    const locations = _.get(record, 'locations', []);
+    const allLocationsRemote = locations.length > 0 && _.every(locations, el => el.isRemote);
+    const orgRemoteOnly = record.onlyRemote;
+    return (allLocationsRemote || orgRemoteOnly) && withOnlineServiceLabel;
+  };
+
+  getSocialMediaLinks = organization => (
+    <div className="d-flex align-items-center">
+      {organization.facebookUrl && (
+        <a
+          className="text-break"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.facebookUrl.startsWith('http') || organization.facebookUrl.startsWith('//')
+              ? organization.facebookUrl
+              : '//' + organization.facebookUrl
+          }
+        >
+          <img data-src="content/images/facebook_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+      {organization.twitterUrl && (
+        <a
+          className="text-break ml-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.twitterUrl.startsWith('http') || organization.twitterUrl.startsWith('//')
+              ? organization.twitterUrl
+              : '//' + organization.twitterUrl
+          }
+        >
+          <img data-src="content/images/twitter_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+      {organization.instagramUrl && (
+        <a
+          className="text-break ml-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            organization.instagramUrl.startsWith('http') || organization.instagramUrl.startsWith('//')
+              ? organization.instagramUrl
+              : '//' + organization.instagramUrl
+          }
+        >
+          <img data-src="content/images/instagram_logo.png" className="lazyload" height={25} />
+        </a>
+      )}
+    </div>
+  );
+
   cardTitle = () => {
     const { record, fullWidth } = this.props;
     const shouldShowDirectionsLabelMobile = useMediaQuery({
@@ -153,6 +212,9 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
                 rel="noopener noreferrer"
                 className="alert-link w-100 h-100 d-flex align-items-center px-2"
                 style={{ color: 'white' }}
+                onClick={sendActionOnEvt(
+                  !this.props.siloName ? GA_ACTIONS.RECORD_LOCATION_DIRECTIONS : GA_ACTIONS.PUBLIC_RECORD_LOCATION_DIRECTIONS
+                )}
               >
                 <FontAwesomeIcon icon="directions" size="lg" />
                 {shouldShowDirectionsLabelMobile || shouldShowDirectionsLabelDesktop ? (
@@ -170,6 +232,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
             <FontAwesomeIcon icon="times" />
           </div>
         )}
+        {this.getSocialMediaLinks(record.organization)}
       </CardTitle>
     );
   };
@@ -206,13 +269,41 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
     );
   };
 
+  organizationNameOnClick = event => {
+    if (this.props.onNameClick) {
+      event.preventDefault();
+      this.props.onNameClick();
+    }
+    sendAction(!this.props.siloName ? GA_ACTIONS.CLICKING_ON_RECORDS : GA_ACTIONS.PUBLIC_CLICKING_ON_RECORDS);
+  };
+
   getHeader = () => {
     const { record, link, fullWidth } = this.props;
+    const isOrgOffersOnlineServices = this.isOrgOffersOnlineServices();
     return fullWidth ? (
       <div className="mb-2">
-        <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', height: '2em' }}>
-          <Link className="organization-name-full-width" to={link}>
-            {record.organization.name}
+        <span
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            height: `${isOrgOffersOnlineServices ? '3em' : '2em'}`
+          }}
+        >
+          <Link
+            className="organization-name-full-width"
+            style={{ height: `${isOrgOffersOnlineServices ? '3em' : '2em'}` }}
+            to={link}
+            onClick={this.organizationNameOnClick}
+          >
+            <div className="d-flex flex-column">
+              <div>{record.organization.name}</div>
+              {isOrgOffersOnlineServices ? (
+                <div className="service-online-text">
+                  <Translate contentKey="record.location.servicesOfferedOnline" />
+                </div>
+              ) : null}
+            </div>
           </Link>
           <div style={{ flex: 1 }} className="ml-5">
             {fullWidth && <this.serviceSection />}
@@ -220,8 +311,17 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
         </span>
       </div>
     ) : (
-      <div className="organization-name">
-        <Link to={link}>{record.organization.name}</Link>
+      <div className="d-flex flex-column" style={{ height: '4em' }}>
+        <div className="organization-name">
+          <Link to={link} onClick={this.organizationNameOnClick}>
+            {record.organization.name}
+          </Link>
+        </div>
+        {isOrgOffersOnlineServices ? (
+          <div className="service-online-text">
+            <Translate contentKey="record.location.servicesOfferedOnline" />
+          </div>
+        ) : null}
       </div>
     );
   };
@@ -244,7 +344,7 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           <div id={measureId(record.organization.id)} style={containerStyle} />
           <this.getHeader />
           {latestDailyUpdate ? (
-            <div className={`latest-daily-update${fullWidth ? '-full-width' : ''} mb-1`}>
+            <div className={`latest-daily-update${fullWidth ? '-full-width mt-3' : ''} mb-1`}>
               <span>
                 Update (<TextFormat value={latestDailyUpdate.createdAt} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
                 ):

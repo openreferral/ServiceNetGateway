@@ -74,6 +74,8 @@ services:
       - SPRING_OAUTH2_REFRESH_TOKEN_VALIDITY=${SPRING_OAUTH2_SESSION_TIMEOUT:-604800}
       - JHIPSTER_SLEEP=10 # gives time for other services to boot before the application
       - SENTRY_DSN=${SENTRY_DSN}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - REGISTRATION_SENDER_ADDRESS=${REGISTRATION_SENDER_ADDRESS:-servicenetaccounts@benetech.org}
       - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetauth\\\" || exit 1" ]

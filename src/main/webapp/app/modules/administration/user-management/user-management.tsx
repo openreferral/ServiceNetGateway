@@ -115,6 +115,10 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                 <Translate contentKey="userManagement.email">Email</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
+              <th onClick={this.sort('verified')}>
+                <Translate contentKey="userManagement.verified">Verified</Translate>
+                <FontAwesomeIcon icon="sort" />
+              </th>
               <th />
               <th className="hand" onClick={this.sort('langKey')}>
                 <Translate contentKey="userManagement.langKey">Lang Key</Translate>
@@ -152,6 +156,13 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                 </td>
                 <td>{user.login}</td>
                 <td>{user.email}</td>
+                <td>
+                  {user.verified || user.activated ? (
+                    <Translate contentKey="userManagement.verified">Verified</Translate>
+                  ) : (
+                    <Translate contentKey="userManagement.notVerified">Not verified</Translate>
+                  )}
+                </td>
                 <td>
                   {user.activated ? (
                     <Button color="success" onClick={this.toggleActive(user)}>

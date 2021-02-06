@@ -7,6 +7,13 @@ div.card.record-card {
   height: 250px;
   box-shadow: 5px 5px 4px 0 rgba(0, 0, 0, 0.1);
 
+  .service-online-text {
+    span {
+      color: #3b7b65;
+      font-size: small;
+    }
+  }
+
   @media only screen and (max-width: 1000px) {
     &.new-record {
       h1 {
@@ -81,7 +88,12 @@ div.card.record-card {
 
     .last-update {
       flex: 1;
-
+      overflow: hidden;
+      div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       &-full-width {
         @extend .last-update;
         display: flex;
@@ -112,7 +124,6 @@ div.card.record-card {
     }
 
     .organization-name {
-      height: 3em;
       font-size: large;
       font-weight: bold;
       overflow: hidden;
@@ -125,7 +136,6 @@ div.card.record-card {
 
       &-full-width {
         @extend .organization-name;
-        height: 2em;
         max-width: 70%;
       }
     }
@@ -141,11 +151,7 @@ div.card.record-card {
     }
 
     .locations-width {
-      width: 80%;
-
-      @media only screen and (max-width: 768px) {
-        width: 70%;
-      }
+      flex-grow: 1;
     }
   }
 

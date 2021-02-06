@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { ICaptchaComponent, ICaptchaState, getCaptcha } from 'app/shared/auth/captcha';
-import { RECAPTCHA_SITE_KEY } from 'app/config/constants';
+import { GA_ACTIONS, RECAPTCHA_SITE_KEY } from 'app/config/constants';
 import './login-modal.scss';
+import ReactGA from 'react-ga';
+import { sendActionOnEvt } from 'app/shared/util/analytics';
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -89,7 +91,6 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
                     placeholder={translate('global.form.username.placeholder')}
                     required
                     errorMessage="Username cannot be empty!"
-                    autoFocus
                   />
                   <AvField
                     name="password"
@@ -102,10 +103,11 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
                   />
                   <AvGroup check inline>
                     <Label className="form-check-label">
-                      <AvInput type="checkbox" name="rememberMe" /> <Translate contentKey="login.form.rememberme">Remember me</Translate>
+                      <AvInput type="checkbox" name="rememberMe" onClick={sendActionOnEvt(GA_ACTIONS.REMEMBER_ME)} />{' '}
+                      <Translate contentKey="login.form.rememberme">Remember me</Translate>
                     </Label>
                   </AvGroup>
-                  <Link className="forgot-password auth-label" to="/reset/request">
+                  <Link className="forgot-password auth-label" to="/reset/request" onClick={sendActionOnEvt(GA_ACTIONS.FORGOT_PASSWORD)}>
                     <Translate contentKey="login.password.forgot">Forgot password</Translate>
                   </Link>
                 </Col>
@@ -114,7 +116,7 @@ class LoginModal extends React.Component<ILoginModalProps, ICaptchaState> implem
                 <span className="auth-label">
                   <Translate contentKey="global.messages.info.register.noaccount">You don't have an account yet?</Translate>
                 </span>{' '}
-                <Link className="auth-label register-label" to="/register">
+                <Link className="auth-label register-label" to="/register" onClick={sendActionOnEvt(GA_ACTIONS.REGISTER_ON_LOG_IN)}>
                   <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
                 </Link>
               </Alert>

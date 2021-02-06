@@ -50,6 +50,7 @@ exports[`Record edit renders correctly 1`] = `
           deactivateEntity={[Function]}
           getProviderEntity={[Function]}
           getProviderTaxonomies={[Function]}
+          getReferralsMadeForRecord={[Function]}
           locations={Array []}
           match={
             Object {

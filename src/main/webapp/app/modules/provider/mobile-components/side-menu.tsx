@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Translate } from 'react-jhipster';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+import { GA_ACTIONS } from 'app/config/constants';
+import { sendActionOnEvt } from 'app/shared/util/analytics';
 
 const ProviderHomeLinks = props => (
   <>
@@ -58,7 +60,7 @@ const PublicHomeLinks = props => {
           <Link to={`${root}/login`} onClick={() => props.toggleMenu()}>
             <Translate contentKey="global.menu.account.login">Sign in</Translate>
           </Link>
-          <Link to={`/register${!_.isEmpty(siloName) ? `/${siloName}` : ''}`}>
+          <Link to={`/register${!_.isEmpty(siloName) ? `/${siloName}` : ''}`} onClick={sendActionOnEvt(GA_ACTIONS.REGISTER)}>
             <Translate contentKey="global.menu.account.register">Register</Translate>
           </Link>
         </>

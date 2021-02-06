@@ -5,12 +5,16 @@ import { Badge, Card, CardBody, CardTitle, Col, Collapse, Label, Progress, Row }
 import { TextFormat, Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Prompt, RouteComponentProps } from 'react-router-dom';
+import { isPossiblePhoneNumber, formatPhoneNumber } from 'react-phone-number-input';
+// tslint:disable-next-line:no-submodule-imports
+import Input from 'react-phone-number-input/input';
 import { deactivateEntity, getProviderEntity, updateUserOwnedEntity, unclaimEntity } from 'app/entities/organization/organization.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { US_STATES } from 'app/shared/util/us-states';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
+import { getReferralsMadeForRecord } from 'app/modules/provider/provider-record.reducer';
 import _ from 'lodash';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
@@ -23,12 +27,13 @@ import PeopleLogo from '../../../../static/images/people.svg';
 // @ts-ignore
 import ServiceLogo from '../../../../static/images/service.svg';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
-import { APP_DATE_12_HOUR_FORMAT } from 'app/config/constants';
+import { APP_DATE_12_HOUR_FORMAT, GA_ACTIONS } from 'app/config/constants';
 import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 import { containerStyle, getColumnCount, measureWidths } from 'app/shared/util/measure-widths';
 import { ISimpleOrganization } from 'app/shared/model/simple-organization.model';
 import ButtonPill from '../shared/button-pill';
 import { OpeningHours } from 'app/modules/provider/record/opening-hours';
+import { sendAction } from 'app/shared/util/analytics';
 
 export interface IRecordEditViewProp extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -45,6 +50,7 @@ export interface IRecordEditViewState {
   leaving: boolean;
   openingHoursByLocation: any;
   datesClosedByLocation: any;
+  hiddenLocations: any[];
 }
 
 const ORGANIZATION = 'organization';
@@ -57,12 +63,14 @@ const locationModel = {
   address2: '',
   city: '',
   ca: 'CA',
-  zipcode: ''
+  zipcode: '',
+  isRemote: false
 };
 
 const serviceModel = {
   docs: [],
-  locationIndexes: []
+  locationIndexes: [],
+  phones: []
 };
 
 const TaxonomyOptionPill = taxonomyOption => (
@@ -90,12 +98,14 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     openDialogs: [],
     leaving: false,
     openingHoursByLocation: {},
-    datesClosedByLocation: {}
+    datesClosedByLocation: {},
+    hiddenLocations: []
   };
 
   componentDidMount() {
     this.props.getProviderTaxonomies();
     this.props.getProviderEntity(this.props.match.params.id);
+    this.props.getReferralsMadeForRecord(this.props.match.params.id);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -112,9 +122,6 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
   componentDidUpdate(prevProps: Readonly<IRecordEditViewProp>, prevState: Readonly<IRecordEditViewState>) {
     if (prevProps.organization !== this.props.organization) {
       const organization = _.cloneDeep(this.props.organization);
-      if (!organization.locations || organization.locations.length === 0) {
-        organization.locations = this.state.organization.locations;
-      }
       if (!organization.services || organization.services.length === 0) {
         organization.services = this.state.organization.services;
       }
@@ -137,23 +144,75 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       openSections: _.xor(this.state.openSections, [section])
     });
 
+  isOrgPhoneInvalid = organization => {
+    const phoneNumber = this.formatPhone(_.get(organization, 'phones[0].number', ''));
+    return phoneNumber && !isPossiblePhoneNumber(phoneNumber);
+  };
+
+  areServicePhonesInvalid = services =>
+    _.some(services, service => {
+      const phone = this.formatPhone(_.get(service, `phones[0].number`, ''));
+      return phone && !isPossiblePhoneNumber(phone);
+    });
+
+  formatPhone = phone => {
+    let phoneNumber = phone.replace(/[^0-9]/g, '');
+    if (phoneNumber && !phoneNumber.startsWith('+1')) {
+      phoneNumber = '+1' + phoneNumber;
+    }
+    return phoneNumber;
+  };
+
+  getIdsOfInvalidServices = services => {
+    const result = [];
+    _.forEach(services, (service, i) => {
+      const phone = _.get(service, `phones[0].number`, '');
+      if (phone && !isPossiblePhoneNumber(phone)) {
+        result.push(i);
+      }
+    });
+    return result;
+  };
+
   saveRecord = (event, errors, values) => {
-    const { openingHoursByLocation, datesClosedByLocation } = this.state;
+    const { openingHoursByLocation, datesClosedByLocation, organization } = this.state;
     const invalidSections = [];
     const invalidLocations = [];
     const invalidServices = [];
     const { openSections } = this.state;
     values.updatedAt = new Date();
-
-    if (errors.length === 0) {
+    const entityWithServicesAndLocation = { ...values };
+    _.forEach(organization.services, (service, i) => {
+      entityWithServicesAndLocation['services'][i] = organization.services[i];
+    });
+    _.forEach(organization.locations, (location, i) => {
+      entityWithServicesAndLocation['locations'][i] = {
+        ...entityWithServicesAndLocation['locations'][i],
+        ...organization.locations[i]
+      };
+    });
+    const isOrganizationPhoneValid = !this.isOrgPhoneInvalid(organization);
+    const areServicePhonesValid = !this.areServicePhonesInvalid(organization.services);
+    if (errors.length === 0 && isOrganizationPhoneValid && areServicePhonesValid) {
       const entity = {
-        ...values,
+        ...entityWithServicesAndLocation,
         openingHoursByLocation,
-        datesClosedByLocation
+        datesClosedByLocation,
+        phones: _.get(organization, 'phones', [])
       };
       this.props.updateUserOwnedEntity(entity);
     } else {
       const indexRegexp = /\[?([0-9]+?)\]?/;
+      if (!isOrganizationPhoneValid) {
+        invalidSections.push(ORGANIZATION);
+        openSections.push(ORGANIZATION);
+      }
+      if (!areServicePhonesValid) {
+        invalidSections.push(SERVICE);
+        openSections.push(SERVICE);
+      }
+      const idsOfInvalidServices = this.getIdsOfInvalidServices(organization.services);
+      invalidServices.push(...idsOfInvalidServices);
       errors.forEach(err => {
         if (err.includes(LOCATION)) {
           invalidSections.indexOf(LOCATION) === -1 && invalidSections.push(LOCATION);
@@ -178,6 +237,10 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       }
     }
     this.setState({ invalidSections, invalidServices, invalidLocations, openSections });
+    sendAction(GA_ACTIONS.EDIT_RECORD);
+    if (!!organization['update']) {
+      sendAction(GA_ACTIONS.RECORD_DAILY_UPDATE);
+    }
   };
 
   openDialog = name => () => {
@@ -202,8 +265,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         leaving: true
       },
       () => {
-        this.props.unclaimEntity(this.props.match.params.id);
-        this.props.history.goBack();
+        this.props.unclaimEntity(this.props.match.params.id, () => {
+          this.props.history.goBack();
+        });
       }
     );
   };
@@ -244,6 +308,22 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
+  setPhone = phoneNumber => {
+    const organization = this.state.organization;
+    organization['phones'] = [{ number: phoneNumber }];
+    this.setState({
+      organization
+    });
+  };
+
+  setServicePhone = i => phoneNumber => {
+    const organization = this.state.organization;
+    organization.services[i]['phones'] = [{ number: phoneNumber }];
+    this.setState({
+      organization
+    });
+  };
+
   removeLocation = i => () => {
     const { organization } = this.state;
     organization.locations.splice(i, 1);
@@ -253,7 +333,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
     this.setState({
       organization,
-      openLocation: -1
+      openLocation: -1,
+      openingHoursByLocation: {},
+      datesClosedByLocation: {}
     });
   };
 
@@ -304,6 +386,12 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
+  onServiceInsuranceChange = (i, fieldName) => () => {
+    const { organization } = this.state;
+    organization.services[i][fieldName] = !organization.services[i][fieldName];
+    this.setState({ organization });
+  };
+
   openLocation = i => () => {
     this.setState({
       openLocation: i
@@ -316,14 +404,74 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
     });
   };
 
-  updateLocationData = idx => (openingHours, datesClosed) => {
-    const { openingHoursByLocation, datesClosedByLocation } = this.state;
+  getUnclaimConfirmationDialogQuestion = () => {
+    const { checkInsCount, referralsToCount, referralsFromCount } = this.props;
+    if (checkInsCount > 0 && referralsToCount + referralsFromCount > 0) {
+      return translate('record.unclaimWithCheckInsAndReferralsQuestion', {
+        checkInsCount,
+        referralsCount: referralsToCount + referralsFromCount
+      });
+    } else if (checkInsCount > 0) {
+      return translate('record.unclaimWithCheckInsQuestion', { checkInsCount });
+    } else if (referralsToCount + referralsFromCount > 0) {
+      return translate('record.unclaimWithReferralsQuestion', { referralsCount: referralsToCount + referralsFromCount });
+    } else {
+      return translate('record.unclaimQuestion');
+    }
+  };
+
+  updateLocationData = idx => (openingHours, datesClosed, location = null) => {
+    const { openingHoursByLocation, datesClosedByLocation, organization, openLocation } = this.state;
     openingHoursByLocation[idx] = openingHours;
     datesClosedByLocation[idx] = datesClosed;
+    if (location) {
+      organization.locations[openLocation] = location;
+    }
     this.setState({
       openingHoursByLocation,
-      datesClosedByLocation
+      datesClosedByLocation,
+      organization
     });
+  };
+
+  onLocationRemoteChange = i => () => {
+    const { organization } = this.state;
+    organization.locations[i].isRemote = !organization.locations[i].isRemote;
+    this.setState({
+      organization
+    });
+  };
+
+  setOnlyHeadLocation = () => {
+    const { organization, openingHoursByLocation, datesClosedByLocation } = this.state;
+    const { locations, services } = organization;
+    if (locations.length > 1) {
+      const [head, ...tail] = locations;
+      this.setState({ hiddenLocations: tail });
+    }
+    services.forEach(service => (service['locationIndexes'] = []));
+    const hasLocations = locations.length !== 0;
+    this.setState({
+      openLocation: hasLocations ? 0 : -1,
+      openingHoursByLocation: hasLocations ? { 0: openingHoursByLocation[0] } : {},
+      datesClosedByLocation: hasLocations ? { 0: datesClosedByLocation[0] } : {},
+      organization: {
+        ...organization,
+        services,
+        locations: hasLocations ? [{ ...locations[0] }] : [],
+        onlyRemote: !organization.onlyRemote
+      }
+    });
+  };
+
+  handleIsOrgRemoteChange = e => {
+    const { organization, hiddenLocations } = this.state;
+    if (!organization.onlyRemote) {
+      this.setOnlyHeadLocation();
+    } else {
+      organization.locations = [...organization.locations, ...hiddenLocations];
+      this.setState({ organization: { ...organization, onlyRemote: !organization.onlyRemote } });
+    }
   };
 
   locationCards = (locations, openLocation, invalidLocations) =>
@@ -393,19 +541,27 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   locationDetails = (locations, i, openLocation) => {
     const location = locations[i];
+    const isLocationRemote = locations[i].isRemote;
+    const { organization } = this.state;
+    const isOrgRemote = _.get(organization, 'onlyRemote', false);
     return (
       <div className={`location-details${i !== openLocation ? ' d-none' : ''}`}>
         {location['id'] ? <AvField name={'locations[' + i + '].id'} value={location['id']} className="d-none" /> : ''}
+        {isOrgRemote ? (
+          <div className="mb-2">
+            <Translate contentKey="record.location.whereIsYourHeadquarters" />
+          </div>
+        ) : null}
         <AvGroup>
           <div className="flex">
-            <div className="required" />
+            <div className={`${!isOrgRemote ? 'required' : ''}`} />
             <Label>{translate('record.location.address1')}</Label>
           </div>
           <AvInput
             type="textarea"
             name={'locations[' + i + '].address1'}
             validate={{
-              required: { value: true, errorMessage: translate('entity.validation.required') }
+              required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
             }}
             onChange={this.onLocationChange(i, 'address1')}
           />
@@ -416,19 +572,19 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         </AvGroup>
         <Row>
           <Col md={7} className="flex mb-3">
-            <div className="required" />
+            <div className={`${!isOrgRemote ? 'required' : ''}`} />
             <AvInput
               type="text"
               name={'locations[' + i + '].city'}
               onChange={this.onLocationChange(i, 'city')}
               placeholder={translate('record.location.city')}
               validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
+                required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
               }}
             />
           </Col>
           <Col md={2} className="flex mb-3">
-            <div className="required" />
+            <div className={`${!isOrgRemote ? 'required' : ''}`} />
             <AvField
               type="select"
               name={'locations[' + i + '].ca'}
@@ -436,7 +592,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               placeholder={translate('record.location.ca')}
               value={location['ca'] || locationModel['ca']}
               validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
+                required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
               }}
               style={{ minWidth: '5em' }}
             >
@@ -448,20 +604,35 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             </AvField>
           </Col>
           <Col md={3} className="flex mb-3">
-            <div className="required" />
+            <div className={`${!isOrgRemote ? 'required' : ''}`} />
             <AvInput
               type="text"
               name={'locations[' + i + '].zipcode'}
               onChange={this.onLocationChange(i, 'zipcode')}
               placeholder={translate('record.location.zipcode')}
               validate={{
-                required: { value: true, errorMessage: translate('entity.validation.required') }
+                required: { value: !isOrgRemote, errorMessage: translate('entity.validation.required') }
               }}
             />
           </Col>
         </Row>
+        {!isOrgRemote ? (
+          <AvGroup check className="flex">
+            <Label check for={'location-id[' + i + '].isRemote'}>
+              {translate('record.location.isRemote')}
+            </Label>
+            <AvInput
+              id={'location-id[' + i + '].isRemote'}
+              type="checkbox"
+              name={'locations[' + i + '].isRemote'}
+              value={isLocationRemote}
+              onChange={this.onLocationRemoteChange(i)}
+            />
+          </AvGroup>
+        ) : null}
         <OpeningHours
           location={location}
+          locationIndex={i}
           openingHours={this.state.openingHoursByLocation[i] || [{}]}
           datesClosed={this.state.datesClosedByLocation[i] || [null]}
           updateLocationData={this.updateLocationData(i)}
@@ -482,6 +653,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
 
   serviceDetails = (services, i, openService, taxonomyOptions) => {
     const service = services[i];
+    const phoneNumber = this.formatPhone(_.get(service, 'phones[0].number', ''));
+    const isPhoneInvalid = phoneNumber && !isPossiblePhoneNumber(phoneNumber);
     return (
       <div className={`service-details${i !== openService ? ' d-none' : ''}`}>
         {service['id'] ? <AvField name={'services[' + i + '].id'} value={service['id']} className="d-none" /> : ''}
@@ -529,6 +702,22 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             onChange={this.onServiceChange(i, 'description')}
           />
         </AvGroup>
+        <div className="flex">
+          <Label>
+            <div className={`${isPhoneInvalid ? 'text-danger' : ''}`}>{translate('record.phone')}</div>
+          </Label>
+        </div>
+        <Input
+          className={`form-control ${isPhoneInvalid ? 'is-invalid' : 'mb-3'}`}
+          type="text"
+          name="phone"
+          id={'service-id[' + i + '].phone'}
+          placeholder={translate('referral.placeholder.phone')}
+          onChange={this.setServicePhone(i)}
+          value={phoneNumber}
+          country="US"
+        />
+        {isPhoneInvalid && <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>}
         <AvGroup>
           <Label>{translate('record.service.applicationProcess')}</Label>
           <AvInput
@@ -551,6 +740,67 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
         <AvGroup>
           <Label>{translate('record.service.requiredDocuments')}</Label>
           <AvInput type="textarea" name={'services[' + i + '].docs[0].document'} onChange={this.onServiceDocsChange(i)} />
+        </AvGroup>
+        <AvGroup>
+          <Label>{translate('record.service.fees')}</Label>
+          <AvInput type="textarea" name={'services[' + i + '].fees'} onChange={this.onServiceChange(i, 'fees')} />
+        </AvGroup>
+        <Label for={'service[' + i + '].insuranceLabel'}>{translate('record.service.insurance')}</Label>
+        <div className="d-flex flex-wrap">
+          <AvGroup check className="flex mr-5 mb-0">
+            <Label check for={'service[' + i + '].medicareAccepted'} className="font-weight-normal">
+              {translate('record.service.medicareAccepted')}
+            </Label>
+            <AvInput
+              id={'service-id[' + i + '].medicareAccepted'}
+              type="checkbox"
+              name={'services[' + i + '].medicareAccepted'}
+              onChange={this.onServiceInsuranceChange(i, 'medicareAccepted')}
+              value={_.get(this.state.organization.services, `[${i}].medicareAccepted`, false)}
+            />
+          </AvGroup>
+          <AvGroup check className="flex mr-5 mb-0">
+            <Label check for={'service[' + i + '].medicaidAccepted'} className="font-weight-normal">
+              {translate('record.service.medicaidAccepted')}
+            </Label>
+            <AvInput
+              id={'service-id[' + i + '].medicaidAccepted'}
+              type="checkbox"
+              name={'services[' + i + '].medicaidAccepted'}
+              onChange={this.onServiceInsuranceChange(i, 'medicaidAccepted')}
+              value={_.get(this.state.organization.services, `[${i}].medicaidAccepted`, false)}
+            />
+          </AvGroup>
+          <AvGroup check className="flex mr-0">
+            <Label check for={'service[' + i + '].uninsuredAccepted'} className="font-weight-normal">
+              {translate('record.service.uninsuredAccepted')}
+            </Label>
+            <AvInput
+              id={'service-id[' + i + '].uninsuredAccepted'}
+              type="checkbox"
+              name={'services[' + i + '].uninsuredAccepted'}
+              onChange={this.onServiceInsuranceChange(i, 'uninsuredAccepted')}
+              value={_.get(this.state.organization.services, `[${i}].uninsuredAccepted`, false)}
+            />
+          </AvGroup>
+        </div>
+        <AvGroup>
+          <AvInput
+            id={'service-id[' + i + '].insuranceLabel'}
+            type="text"
+            name={'services[' + i + '].insuranceLabel'}
+            placeholder={translate('record.service.insuranceLabel')}
+            onChange={this.onServiceChange(i, 'insuranceLabel')}
+          />
+        </AvGroup>
+        <AvGroup>
+          <Label for={'service[' + i + '].safeForUndocumented'}>{translate('record.service.safeForUndocumented')}</Label>
+          <AvInput
+            id={'service-id[' + i + '].safeForUndocumented'}
+            type="textarea"
+            name={'services[' + i + '].safeForUndocumented'}
+            onChange={this.onServiceChange(i, 'safeForUndocumented')}
+          />
         </AvGroup>
         <AvGroup>
           <Label>{translate('record.service.locations')}</Label>
@@ -602,13 +852,14 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
       openLocation,
       openService,
       latestDailyUpdate,
-      invalidSections,
       invalidLocations,
       invalidServices,
       leaving
     } = this.state;
+    const phoneNumber = this.formatPhone(_.get(organization, 'phones[0].number', ''));
     const { updating, taxonomyOptions } = this.props;
     const { locations, services } = organization;
+    const isOrgRemote = _.get(organization, 'onlyRemote', false);
     return organization.id && organization.id === this.props.match.params.id ? (
       <AvForm onSubmit={this.saveRecord} className="record-shared record-edit background" model={organization}>
         <Prompt
@@ -687,8 +938,34 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                   />
                 </AvGroup>
                 <AvGroup>
+                  <Label for="description">{translate('record.covidProtocols')}</Label>
+                  <AvInput
+                    id="organization-covidProtocols"
+                    type="textarea"
+                    name="covidProtocols"
+                    onChange={this.onOrganizationChange('covidProtocols')}
+                  />
+                </AvGroup>
+                <AvGroup>
                   <Label>{translate('record.url')}</Label>
                   <AvField id="organization-url" type="text" name="url" onChange={this.onOrganizationChange('url')} />
+                </AvGroup>
+                <AvGroup>
+                  <Label>{translate('record.facebookUrl')}</Label>
+                  <AvField id="organization-url" type="text" name="facebookUrl" onChange={this.onOrganizationChange('facebookUrl')} />
+                </AvGroup>
+                <AvGroup>
+                  <Label>{translate('record.twitterUrl')}</Label>
+                  <AvField id="organization-twitter-url" type="text" name="twitterUrl" onChange={this.onOrganizationChange('twitterUrl')} />
+                </AvGroup>
+                <AvGroup>
+                  <Label>{translate('record.instagramUrl')}</Label>
+                  <AvField
+                    id="organization-instagram-url"
+                    type="text"
+                    name="instagramUrl"
+                    onChange={this.onOrganizationChange('instagramUrl')}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label for="email">{translate('record.email')}</Label>
@@ -702,6 +979,25 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                     onChange={this.onOrganizationChange('email')}
                   />
                 </AvGroup>
+                <Label for="phone">
+                  <div className={`${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'text-danger' : ''}`}>
+                    {translate('record.phone')}
+                  </div>
+                </Label>
+                <Input
+                  className={`form-control ${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'is-invalid' : ''}`}
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  placeholder={translate('referral.placeholder.phone')}
+                  onChange={this.setPhone}
+                  value={phoneNumber}
+                  country="US"
+                />
+                {phoneNumber &&
+                  !isPossiblePhoneNumber(phoneNumber) && (
+                    <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                  )}
               </CardBody>
             </Collapse>
           </Card>
@@ -715,8 +1011,8 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
               <FontAwesomeIcon icon={openSections.includes(LOCATION) ? 'angle-up' : 'angle-down'} className="pull-right" size="lg" />
             </CardTitle>
             <Collapse isOpen={openSections.includes(LOCATION)}>
-              <div className="border-top-0">
-                <div className={openLocation !== -1 ? 'd-flex top-bar' : 'd-none'}>
+              <div className="border-top-0 mt-1">
+                <div className={openLocation !== -1 ? 'd-flex top-bar mb-3' : 'd-none'}>
                   <div onClick={this.openLocation(-1)} className="clickable ml-md-4">
                     <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
@@ -742,9 +1038,15 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
                     </div>
                   </div>
                 </div>
+                <AvGroup check className="flex mb-3 ml-4">
+                  <Label check for="onlyRemote">
+                    {translate('record.remoteOnly')}
+                  </Label>
+                  <AvInput id="onlyRemote" type="checkbox" name="onlyRemote" onChange={this.handleIsOrgRemoteChange} value={isOrgRemote} />
+                </AvGroup>
                 <CardBody className="details">
                   {locations && this.locationCards(locations, openLocation, invalidLocations)}
-                  <div className={openLocation === -1 ? 'buttons list-buttons' : 'd-none'}>
+                  <div className={openLocation === -1 && !isOrgRemote ? 'buttons list-buttons' : 'd-none'}>
                     <ButtonPill className="button-pill-secondary col-12 col-md-auto" onClick={this.addAnotherLocation}>
                       <FontAwesomeIcon icon="plus" />
                       &nbsp;
@@ -805,7 +1107,9 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
           <div className="buttons navigation-buttons flex-column flex-md-row">
             {this.state.openDialogs.indexOf('deactivate') !== -1 && (
               <ConfirmationDialog
-                question={translate('record.deactivateQuestion')}
+                question={
+                  organization.replacedById ? translate('record.deactivateClaimedQuestion') : translate('record.deactivateQuestion')
+                }
                 handleClose={this.closeDialog('deactivate')}
                 handleConfirm={this.handleConfirmDeactivate}
               />
@@ -816,7 +1120,7 @@ export class RecordEdit extends React.Component<IRecordEditViewProp, IRecordEdit
             {organization.replacedById &&
               this.state.openDialogs.indexOf('unclaim') !== -1 && (
                 <ConfirmationDialog
-                  question={translate('record.unclaimQuestion')}
+                  question={this.getUnclaimConfirmationDialogQuestion()}
                   handleClose={this.closeDialog('unclaim')}
                   handleConfirm={this.handleConfirmUnclaim}
                 />
@@ -859,7 +1163,10 @@ const mapStateToProps = (storeState: IRootState) => ({
   updating: storeState.organization.updating,
   updateSuccess: storeState.organization.updateSuccess,
   organization: storeState.organization.providersEntity,
-  taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
+  taxonomyOptions: storeState.taxonomy.providerTaxonomies.map(taxonomy => ({ value: taxonomy.id, label: taxonomy.name })),
+  checkInsCount: storeState.providerRecord.checkInsToRecordCount,
+  referralsToCount: storeState.providerRecord.referralsToRecordCount,
+  referralsFromCount: storeState.providerRecord.referralsFromRecordCount
 });
 
 const mapDispatchToProps = {
@@ -867,7 +1174,8 @@ const mapDispatchToProps = {
   updateUserOwnedEntity,
   getProviderEntity,
   deactivateEntity,
-  unclaimEntity
+  unclaimEntity,
+  getReferralsMadeForRecord
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

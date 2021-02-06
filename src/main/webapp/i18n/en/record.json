@@ -6,7 +6,8 @@
       "closedOn": "Closed on",
       "remove": "Remove",
       "add": "Add more",
-      "preview": "Format that others will see"
+      "preview": "Format that others will see",
+      "247": "Open 24/7"
     },
     "newCard": {
       "title": "Have more data to contribute?",
@@ -20,8 +21,14 @@
     },
     "name": "Organization Name",
     "description": "Organization Description",
+    "covidProtocols": "COVID-19 Protocols",
+    "remoteOnly": "Do you offer only online Services?",
     "update": "Update",
     "url": "Organization Website",
+    "facebookUrl": "Facebook URL",
+    "twitterUrl": "Twitter URL",
+    "instagramUrl": "Instagram URL",
+    "phone": "Phone Number",
     "email": "Main Email Address",
     "tabs": {
       "organization": "Organization",
@@ -39,7 +46,11 @@
       "ca": "CA",
       "zipcode": "Zip Code",
       "details": "Location Details",
-      "back": "Back to all Locations"
+      "isRemote": "This location also offers online/remote services",
+      "servicesOfferedOnline": "Services Offered Online",
+      "whereIsYourHeadquarters": "Where is your Corporate Headquarter?",
+      "back": "Back to all Locations",
+      "remote": "Remote"
     },
     "service": {
       "add": "Add Service",
@@ -51,8 +62,16 @@
       "eligibilityCriteria": "Eligibility Criteria",
       "locations": "Which Locations Offer This Service?",
       "details": "Service Details",
+      "phone": "Phone Number",
       "back": "Back to all Services",
-      "requiredDocuments": "Required Documents"
+      "requiredDocuments": "Required Documents",
+      "fees": "Fees",
+      "medicareAccepted": "Medicare Accepted",
+      "medicaidAccepted": "Medicaid Accepted",
+      "uninsuredAccepted": "Uninsured Accepted",
+      "insuranceLabel": "Insurance Information Details",
+      "insurance": "Insurance",
+      "safeForUndocumented": "Safe For Undocumented Individuals?"
     },
     "navigation": {
       "goBack": "Go Back",
@@ -76,6 +95,7 @@
       "back": "Back To All Records",
       "dailyUpdates": "Daily Updates",
       "noNewUpdates": "No new updates",
+      "orgInfo": "Organization Information",
       "orgDetails": "Organization Details",
       "orgName": "Organization Name",
       "orgDescr": "Organization Details",
@@ -92,10 +112,17 @@
       "noServiceName": "No Service Name Provided",
       "noLocations": "No Locations Provided",
       "untyped": "No service type found",
-      "lastUpdated": "Last updated"
+      "lastUpdated": "Last updated",
+      "phone": "Phone Number",
+      "covidProtocols": "COVID-19 Protocols",
+      "fees": "Fees"
     },
     "deactivateQuestion": "Are you sure you want to deactivate this record?",
+    "deactivateClaimedQuestion": "Are you sure you want to deactivate this record? If you deactivate this record, no other organization will be able to find this record, and no one else will be able to claim it. If you owned this record in error and want to make it available for others to claim, please use the 'Unclaim' button instead of the 'Deactivate' button.",
     "discardQuestion": "Are you sure you want to discard your changes?",
-    "unclaimQuestion": "Are you sure you want to unclaim this record?"
+    "unclaimQuestion": "Are you sure you want to unclaim this record?",
+    "unclaimWithCheckInsQuestion": "You have checked in {{ checkInsCount }} time(s). <br>Are you sure you want to unclaim this record?",
+    "unclaimWithReferralsQuestion": "You have {{ referralsCount }} referral(s) connected to this organization. <br>Are you sure you want to unclaim this record?",
+    "unclaimWithCheckInsAndReferralsQuestion": "You have checked in {{ checkInsCount }} time(s) and have {{ referralsCount }} connected referrals. <br>Are you sure you want to unclaim this record?"
   }
 }

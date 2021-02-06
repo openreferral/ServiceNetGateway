@@ -4,7 +4,7 @@
 }
 
 .filter-card {
-  min-height: calc(100% - 1.5rem);
+  height: calc(100% - 1.5rem) !important;
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.125);
   font-family: 'Mulish', sans-serif;

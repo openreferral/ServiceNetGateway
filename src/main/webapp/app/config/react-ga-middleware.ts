@@ -1,20 +1,15 @@
-import ReactGA from 'react-ga';
-
-import { REQUEST } from './../shared/reducers/action-type.util';
-import { ACTION_TYPES as AUTH_ACTIONS } from './../shared/reducers/authentication';
-
-const ACTIONS_CATEGORY = 'UserActions';
+import { sendAction } from 'app/shared/util/analytics';
 
 const TRACKED_ACTIONS = {
-  [REQUEST(AUTH_ACTIONS.LOGIN)]: 'Log In',
-  [REQUEST(AUTH_ACTIONS.LOGOUT)]: 'Log Out'
+  // this could be automatic, we are tracking clicks rather than actions
+  // [REQUEST(AUTH_ACTIONS.LOGOUT)]: GA_ACTIONS.LOG_OUT
 };
 
 export default () => next => action => {
   const trackedAction = TRACKED_ACTIONS[action.type];
 
   if (trackedAction) {
-    ReactGA.event({ category: ACTIONS_CATEGORY, action: trackedAction });
+    sendAction(trackedAction);
   }
 
   return next(action);

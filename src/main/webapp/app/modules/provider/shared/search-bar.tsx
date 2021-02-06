@@ -1,12 +1,19 @@
 import React from 'react';
 import '../provider-shared.scss';
+import './search-bar.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { translate } from 'react-jhipster';
 import { connect } from 'react-redux';
-import { setText, resetText } from 'app/modules/provider/shared/search.reducer';
+import { sendAction, sendSearch } from 'app/shared/util/analytics';
+import { GA_ACTIONS } from 'app/config/constants';
 
 export interface ISearchBarProp extends StateProps, DispatchProps {
   onSwitchFocus?: any;
+  onSearch: any;
+  onReset: any;
+  onClick?: any;
+  width?: string;
+  initialValue?: string;
 }
 
 export interface ISearchBarState {
@@ -22,7 +29,13 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
   }
 
   componentDidMount() {
-    this.props.resetText();
+    if (this.props.initialValue) {
+      this.setState({
+        text: this.props.initialValue
+      });
+    } else if (this.props.onReset) {
+      this.props.onReset();
+    }
   }
 
   updateText = event => {
@@ -35,14 +48,16 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
     if (event !== null) {
       event.preventDefault();
     }
-    this.props.setText(this.state.text);
+    this.props.onSearch(this.state.text);
+    sendAction(GA_ACTIONS.SEARCH_TERM);
+    sendSearch(this.state.text);
   };
 
   reset = () => {
     this.setState({
       text: ''
     });
-    this.props.resetText();
+    this.props.onReset();
   };
 
   onFocus = e => {
@@ -62,9 +77,10 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
   };
 
   render() {
+    const { width } = this.props;
     return (
       <div className="search-bar">
-        <form className="search-from" onSubmit={this.search}>
+        <form className="search-from" style={{ width: width ? width : null }} onSubmit={this.search}>
           <div className="search-button">
             <span className="search-button search-icon" onClick={this.search}>
               <FontAwesomeIcon className="self-align-center" size="xs" icon="search" />
@@ -76,10 +92,11 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
               className="search-input"
               type="search"
               value={this.state.text}
-              placeholder={translate('providerSite.searchPlaceholder')}
+              placeholder={translate('providerSite.searchPlaceholder') || 'Search by organization name or keyword'}
               onChange={this.updateText}
               onFocus={this.onFocus}
               onBlur={this.onBlur}
+              onClick={this.props.onClick || null}
             />
             <label className="sr-only" htmlFor="search">
               {translate('providerSite.searchPlaceholder')}
@@ -98,10 +115,7 @@ export class SearchBar extends React.Component<ISearchBarProp, ISearchBarState> 
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = {
-  setText,
-  resetText
-};
+const mapDispatchToProps = {};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
