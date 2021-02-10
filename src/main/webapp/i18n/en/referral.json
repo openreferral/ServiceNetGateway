@@ -47,14 +47,16 @@
       "check_in_mobile": "Check In",
       "referral_mobile": "Referral",
       "bulk_upload_mobile": "Bulk Upload",
-      "referralHistory": "Referral History",
+      "inboundReferralHistory": "Inbound Referral History",
+      "outboundReferralHistory": "Outbound Referral History",
       "numberOfReferrals": "Number of Referrals"
     },
     "title": {
       "check_in": "Beneficiary Check In",
       "referrals": "Referrals",
       "bulk_upload": "Log Upload",
-      "referralHistory": "Referral History",
+      "inboundReferralHistory": "Inbound Referral History",
+      "outboundReferralHistory": "Outbound Referral History",
       "numberOfReferrals": "Number of Referrals"
     },
     "records": {
