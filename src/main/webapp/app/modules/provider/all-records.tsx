@@ -258,13 +258,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({ claimRecordsOpened: false }, () => this.props.resetRecordsToClaim());
   };
 
-  getRecordsForMap = () => {
+  getRecordsForMap = (initial = false) => {
     const { siloName, providerFilter, search } = this.props;
     this.setState({
       requestedBoundaries: this.state.boundaries,
       searchArea: false
     });
-    this.props.getProviderRecordsForMap(siloName, providerFilter, search, this.state.boundaries, MAX_PINS_ON_MAP);
+    this.props.getProviderRecordsForMap(siloName, providerFilter, search, initial ? null : this.state.boundaries, MAX_PINS_ON_MAP);
   };
 
   selectRecord = record => {
@@ -290,9 +290,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     } else {
       sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW_BACK_TO_GRID : GA_ACTIONS.PUBLIC_MAP_VIEW_BACK_TO_GRID);
     }
-    if (isMapView && filtersChanged) {
-      this.getRecords(true);
-      this.props.uncheckFiltersChanged();
+    if (isMapView) {
+      if (filtersChanged) {
+        this.getRecords(true);
+        this.props.uncheckFiltersChanged();
+      }
+    } else {
+      this.getRecordsForMap(true);
     }
     this.props.toggleMapView();
     this.setState({
@@ -315,6 +319,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW_BACK_TO_GRID : GA_ACTIONS.PUBLIC_MAP_VIEW_BACK_TO_GRID);
       } else {
         sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW : GA_ACTIONS.PUBLIC_MAP_VIEW);
+        this.getRecordsForMap(true);
       }
       this.setState({
         rightSectionOpened: !this.state.rightSectionOpened
@@ -423,14 +428,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   onMapBoundariesChanged = boundaries => {
-    const initialBoundaries = _.isEmpty(this.state.boundaries);
     const boundariesChanged = !_.isEqual(boundaries, this.state.requestedBoundaries);
     this.setState(
       {
         boundaries
       },
       () => {
-        if ((this.state.searchArea && boundariesChanged) || initialBoundaries) {
+        if (this.state.searchArea && boundariesChanged) {
           this.getRecordsForMap();
         }
       }
@@ -497,12 +501,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapCard = () => {
-    const { allRecordsForMap, selectedRecord, urlBase } = this.props;
+    const { allRecordsForMap, selectedRecord, urlBase, loadingMap } = this.props;
     const { isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const mapHeight = '100%';
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
+      loadingMap,
       lat: selectedLat,
       lng: selectedLng,
       loadingElement: <div style={{ height: mapHeight }} />,
@@ -540,13 +545,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapView = () => {
-    const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
+    const { allRecordsForMap, selectedRecord, urlBase, loadingMap } = this.props;
     const { rightSectionOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const isMobile = this.isMobile();
     const mapHeight = isIOS ? this.state.iOSMapHeight : '100%';
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
+      loadingMap,
       lat: selectedLat,
       lng: selectedLng,
       loadingElement: <div style={{ height: mapHeight }} />,
