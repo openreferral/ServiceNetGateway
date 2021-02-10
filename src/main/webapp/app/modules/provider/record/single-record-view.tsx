@@ -454,7 +454,7 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
                   <span className="break">{openService.eligibilityCriteria}</span>
                 </section>
               ) : null}
-              {openService.docs && openService.docs.length > 0 ? (
+              {openService.docs && openService.docs.length > 0 && openService.docs[0].document ? (
                 <section>
                   <h6>
                     <b>
