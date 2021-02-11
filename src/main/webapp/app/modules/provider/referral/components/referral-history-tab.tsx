@@ -14,7 +14,7 @@ import {
 import { RouteComponentProps } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import { APP_DATE_12_HOUR_FORMAT, MS_IN_A_DAY, selectStyle } from 'app/config/constants';
-import { apiUrl, searchReferrals } from 'app/entities/referral/referral.reducer';
+import { apiUrl, REFERRAL_TYPE, searchInboundReferrals, searchOutboundReferrals } from 'app/entities/referral/referral.reducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageSizeSelector from 'app/entities/page-size-selector';
 import { FIRST_PAGE, ITEMS_PER_PAGE_ENTITY, MAX_BUTTONS } from 'app/shared/util/pagination.constants';
@@ -34,7 +34,9 @@ export interface IReferralHistoryTabState extends IPaginationBaseState {
   status: any;
 }
 
-export interface IReferralHistoryTabProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IReferralHistoryTabProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
+  type: string;
+}
 
 class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IReferralHistoryTabState> {
   constructor(props) {
@@ -148,7 +150,8 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
     } else if (dateRange && dateRange.value === MONTH) {
       since = new Date(new Date().getTime() - 30 * MS_IN_A_DAY).toISOString();
     }
-    this.props.searchReferrals(since, status && status.value, activePage - 1, itemsPerPage, order, sort);
+    const search = this.props.type === REFERRAL_TYPE.OUTBOUND ? this.props.searchOutboundReferrals : this.props.searchInboundReferrals;
+    search(since, status && status.value, activePage - 1, itemsPerPage, order, sort);
   }
 
   filters = () => (
@@ -179,13 +182,15 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
   );
 
   render() {
-    const { referrals, totalItems } = this.props;
+    const isInbound = this.props.type === REFERRAL_TYPE.INBOUND;
+    const referrals = isInbound ? this.props.inboundReferrals : this.props.referrals;
+    const totalItems = isInbound ? this.props.totalInboundReferrals : this.props.totalItems;
 
     return (
       <div className="col-12 col-md-10 offset-md-1">
         <div className="content-title my-2 my-md-4 my-lg-5">
-          <Translate contentKey="referral.title.referralHistory" />
-          <a href={`/${apiUrl}/csv`}>
+          <Translate contentKey={`referral.title.${isInbound ? 'inboundReferralHistory' : 'outboundReferralHistory'}`} />
+          <a href={`/${apiUrl}/csv?type=${this.props.type}`}>
             <ButtonPill className="ml-2 csv-download d-inline">
               <FontAwesomeIcon icon="download" />{' '}
               <span className="d-inline">
@@ -257,11 +262,14 @@ class ReferralHistoryTab extends React.Component<IReferralHistoryTabProps, IRefe
 
 const mapStateToProps = ({ referral }: IRootState) => ({
   referrals: referral.referrals,
-  totalItems: referral.totalItems
+  inboundReferrals: referral.inboundReferrals,
+  totalItems: referral.totalItems,
+  totalInboundReferrals: referral.totalInboundReferrals
 });
 
 const mapDispatchToProps = {
-  searchReferrals
+  searchOutboundReferrals,
+  searchInboundReferrals
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

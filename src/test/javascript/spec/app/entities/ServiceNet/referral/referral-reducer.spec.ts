@@ -35,10 +35,12 @@ describe('Entities reducer tests', () => {
     referrals: [],
     referralsMadeTo: [],
     referralsMadeFrom: [],
+    inboundReferrals: [],
     links: {
       next: 0
     },
     totalItems: 0,
+    totalInboundReferrals: 0,
     totalReferralsMadeFromItems: 0,
     totalReferralsMadeToItems: 0,
     updating: false,

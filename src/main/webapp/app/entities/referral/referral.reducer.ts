@@ -21,7 +21,8 @@ export const ACTION_TYPES = {
   UPDATE_REFERRAL: 'referral/UPDATE_REFERRAL',
   DELETE_REFERRAL: 'referral/DELETE_REFERRAL',
   RESET: 'referral/RESET',
-  SEARCH_REFERRALS: 'referral/SEARCH_REFERRALS',
+  SEARCH_INBOUND_REFERRALS: 'referral/SEARCH_INBOUND_REFERRALS',
+  SEARCH_OUTBOUND_REFERRALS: 'referral/SEARCH_OUTBOUND_REFERRALS',
   SEARCH_REFERRALS_MADE_TO: 'referral/SEARCH_REFERRALS_MADE_TO',
   SEARCH_REFERRALS_MADE_FROM: 'referral/SEARCH_REFERRALS_MADE_FROM'
 };
@@ -36,6 +37,8 @@ const initialState = {
   totalItems: 0,
   updateSuccess: false,
   referrals: [] as any[],
+  inboundReferrals: [] as any[],
+  totalInboundReferrals: 0,
   referralsMadeTo: [] as any[],
   totalReferralsMadeToItems: 0,
   referralsMadeFrom: [] as any[],
@@ -44,13 +47,18 @@ const initialState = {
 
 export type ReferralState = Readonly<typeof initialState>;
 
+export const REFERRAL_TYPE = {
+  INBOUND: 'INBOUND',
+  OUTBOUND: 'OUTBOUND'
+};
 // Reducer
 
 export default (state: ReferralState = initialState, action): ReferralState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_REFERRAL_LIST):
     case REQUEST(ACTION_TYPES.FETCH_REFERRAL):
-    case REQUEST(ACTION_TYPES.SEARCH_REFERRALS):
+    case REQUEST(ACTION_TYPES.SEARCH_INBOUND_REFERRALS):
+    case REQUEST(ACTION_TYPES.SEARCH_OUTBOUND_REFERRALS):
     case REQUEST(ACTION_TYPES.SEARCH_REFERRALS_MADE_TO):
     case REQUEST(ACTION_TYPES.SEARCH_REFERRALS_MADE_FROM):
       return {
@@ -73,7 +81,8 @@ export default (state: ReferralState = initialState, action): ReferralState => {
     case FAILURE(ACTION_TYPES.CREATE_REFERRAL):
     case FAILURE(ACTION_TYPES.UPDATE_REFERRAL):
     case FAILURE(ACTION_TYPES.DELETE_REFERRAL):
-    case FAILURE(ACTION_TYPES.SEARCH_REFERRALS):
+    case FAILURE(ACTION_TYPES.SEARCH_INBOUND_REFERRALS):
+    case FAILURE(ACTION_TYPES.SEARCH_OUTBOUND_REFERRALS):
     case FAILURE(ACTION_TYPES.SEARCH_REFERRALS_MADE_TO):
     case FAILURE(ACTION_TYPES.SEARCH_REFERRALS_MADE_FROM):
       return {
@@ -115,7 +124,15 @@ export default (state: ReferralState = initialState, action): ReferralState => {
         updateSuccess: true,
         entity: {}
       };
-    case SUCCESS(ACTION_TYPES.SEARCH_REFERRALS): {
+    case SUCCESS(ACTION_TYPES.SEARCH_INBOUND_REFERRALS): {
+      return {
+        ...state,
+        loading: false,
+        inboundReferrals: action.payload.data,
+        totalInboundReferrals: parseInt(action.payload.headers['x-total-count'], 10)
+      };
+    }
+    case SUCCESS(ACTION_TYPES.SEARCH_OUTBOUND_REFERRALS): {
       return {
         ...state,
         loading: false,
@@ -199,12 +216,22 @@ export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
 
-export const searchReferrals = (since = '', status = '', page = 0, size = MAX_PAGE_SIZE, order = '', sort = '') => {
-  const pageableUrl = `${apiUrl}/search?page=${page}&size=${size}&sort=${sort},${order}${since ? '&since=' + since : ''}${
+export const searchInboundReferrals = (since = '', status = '', page = 0, size = MAX_PAGE_SIZE, order = '', sort = '') => {
+  const pageableUrl = `${apiUrl}/search?type=INBOUND&page=${page}&size=${size}&sort=${sort},${order}${since ? '&since=' + since : ''}${
     status ? '&status=' + status : ''
   }`;
   return {
-    type: ACTION_TYPES.SEARCH_REFERRALS,
+    type: ACTION_TYPES.SEARCH_INBOUND_REFERRALS,
+    payload: axios.get(pageableUrl)
+  };
+};
+
+export const searchOutboundReferrals = (since = '', status = '', page = 0, size = MAX_PAGE_SIZE, order = '', sort = '') => {
+  const pageableUrl = `${apiUrl}/search?type=OUTBOUND&page=${page}&size=${size}&sort=${sort},${order}${since ? '&since=' + since : ''}${
+    status ? '&status=' + status : ''
+  }`;
+  return {
+    type: ACTION_TYPES.SEARCH_OUTBOUND_REFERRALS,
     payload: axios.get(pageableUrl)
   };
 };
