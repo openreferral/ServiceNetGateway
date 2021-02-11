@@ -75,7 +75,9 @@
         "regularSchedule": "Location Opening Hours",
         "holidaySchedule": "Location Dates closed",
         "open247": "Location Open 24/7",
-        "remote": "Location Remote"
+        "remote": "Location Remote",
+        "removed": "Removed Location",
+        "new": "New Location"
       },
       "service": {
         "name": "Service name",
@@ -84,7 +86,9 @@
         "eligibilityCriteria": "Service Eligibility Criteria",
         "fees": "Service Fees",
         "requiredDocuments": "Service Required Documents",
-        "taxonomies": "Service Type"
+        "taxonomies": "Service Type",
+        "removed": "Removed Service",
+        "new": "New Service"
       }
     },
     "recordDiscarded": "The updates have been discarded successfully!"
