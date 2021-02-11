@@ -1,4 +1,7 @@
 .record-updates-modal {
+  @media (min-width: 768px) {
+    max-width: 600px;
+  }
   .modal-content {
     background-color: #f5f9fc;
     .modal-title {
@@ -55,17 +58,15 @@
       border-top: 0;
       .button-pill {
         background-color: white;
+        &:hover, &:active {
+          background-color: #343f51;
+          color: white;
+        }
       }
     }
     border: 3px red solid;
     &.success {
       border: 3px green solid;
     }
-  }
-}
-
-@media (min-width: 768px) {
-  .modal-dialog {
-    max-width: 600px;
   }
 }
