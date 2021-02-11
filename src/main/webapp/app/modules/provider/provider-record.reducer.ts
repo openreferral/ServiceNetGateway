@@ -45,7 +45,8 @@ const initialState = {
   totalClaimableRecords: 0,
   checkInsToRecordCount: 0,
   referralsToRecordCount: 0,
-  referralsFromRecordCount: 0
+  referralsFromRecordCount: 0,
+  initialMapLoad: false
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -75,7 +76,8 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
       return {
         ...state,
         selectedRecord: null,
-        loadingMap: true
+        loadingMap: true,
+        initialMapLoad: action.meta.initialMapLoad
       };
     case REQUEST(ACTION_TYPES.SELECT_RECORD):
       return {
@@ -280,7 +282,10 @@ export const getProviderRecordsForMap = (siloName = '', providerFilter, search, 
   const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}&${params}` : `${allRecordForMapApiUrl}?${params}`;
   return {
     type: ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP,
-    payload: axios.post(baseUrl, clearFilter(providerFilter))
+    payload: axios.post(baseUrl, clearFilter(providerFilter)),
+    meta: {
+      initialMapLoad: boundaries == null
+    }
   };
 };
 

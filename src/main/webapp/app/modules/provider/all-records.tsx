@@ -501,12 +501,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapCard = () => {
-    const { allRecordsForMap, selectedRecord, urlBase, loadingMap } = this.props;
+    const { allRecordsForMap, selectedRecord, urlBase, loadingMap, initialMapLoad } = this.props;
     const { isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const mapHeight = '100%';
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
+      initialLoad: initialMapLoad,
       loadingMap,
       lat: selectedLat,
       lng: selectedLng,
@@ -545,13 +546,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapView = () => {
-    const { allRecordsForMap, selectedRecord, urlBase, loadingMap } = this.props;
+    const { allRecordsForMap, selectedRecord, urlBase, loadingMap, initialMapLoad } = this.props;
     const { rightSectionOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const isMobile = this.isMobile();
     const mapHeight = isIOS ? this.state.iOSMapHeight : '100%';
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
+      initialLoad: initialMapLoad,
       loadingMap,
       lat: selectedLat,
       lng: selectedLng,
@@ -859,6 +861,7 @@ const mapStateToProps = state => ({
   providerFilter: state.providerFilter.filter,
   search: state.search.text,
   allRecordsForMap: state.providerRecord.allRecordsForMap,
+  initialMapLoad: state.providerRecord.initialMapLoad,
   selectedRecord: state.providerRecord.selectedRecord,
   filtersChanged: state.providerFilter.filtersChanged,
   loading: state.providerRecord.loading,
