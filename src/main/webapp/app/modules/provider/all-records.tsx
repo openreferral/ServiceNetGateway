@@ -721,6 +721,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                   onSearch={this.props.setText}
                   onReset={this.props.resetText}
                   onClick={sendActionOnEvt(!!siloName ? GA_ACTIONS.PUBLIC_SEARCHING_RECORDS : GA_ACTIONS.SEARCHING_RECORDS)}
+                  initialValue={this.props.search}
                 />
               </Col>
             </Row>
@@ -758,6 +759,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                     onSearch={this.props.setText}
                     onReset={this.props.resetText}
                     onClick={sendActionOnEvt(!!siloName ? GA_ACTIONS.PUBLIC_SEARCHING_RECORDS : GA_ACTIONS.SEARCHING_RECORDS)}
+                    initialValue={this.props.search}
                   />
                 </Col>
               </Row>
