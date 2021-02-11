@@ -77,6 +77,7 @@ services:
       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
       - REGISTRATION_SENDER_ADDRESS=${REGISTRATION_SENDER_ADDRESS:-servicenetaccounts@benetech.org}
       - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
+      - FEEDBACK_RECEIVER_ADDRESS=${FEEDBACK_RECEIVER_ADDRESS:-feedback@benetech.org}
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://consul:8500/v1/agent/services | grep \\\"servicenetauth\\\" || exit 1" ]
       interval: 1m
