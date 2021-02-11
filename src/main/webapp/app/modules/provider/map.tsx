@@ -31,7 +31,6 @@ interface IPersistentMapState {
   lat: number;
   lng: number;
   zoom: number;
-  initialLoad: boolean;
 }
 
 interface IPersistentMapProps {
@@ -45,14 +44,14 @@ interface IPersistentMapProps {
   onMarkerClick: any;
   centeredAt: any;
   loadingMap: boolean;
+  initialLoad: boolean;
 }
 
 export default class PersistentMap extends React.Component<IPersistentMapProps> {
   state = {
     lat: this.props.lat || 37.7799,
     lng: this.props.lng || -122.2822,
-    zoom: this.props.lat ? MY_LOCATION_ZOOM : DEFAULT_ZOOM,
-    initialLoad: true
+    zoom: this.props.lat ? MY_LOCATION_ZOOM : DEFAULT_ZOOM
   };
   mapRef: any;
   constructor(props) {
@@ -81,7 +80,7 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
         zoom: MY_LOCATION_ZOOM
       });
     }
-    if (prevProps.records !== this.props.records && this.state.initialLoad) {
+    if (prevProps.records !== this.props.records && this.props.initialLoad) {
       this.fitToMarkers();
     }
   }
@@ -91,7 +90,7 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
       this.mapRef = mapRef;
       const transitLayer = new window.google.maps.TransitLayer();
       transitLayer.setMap(mapRef.context[MAP]);
-      if (this.props.records && !this.props.loadingMap) {
+      if (this.props.records && this.props.initialLoad) {
         this.fitToMarkers();
       }
     }
@@ -132,9 +131,6 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
         bounds.extend(latLng);
       });
       this.mapRef.fitBounds(bounds);
-      this.setState({
-        initialLoad: false
-      });
     }
   };
 
