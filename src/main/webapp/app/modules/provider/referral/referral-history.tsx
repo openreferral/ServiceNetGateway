@@ -40,7 +40,7 @@ class ReferralHistory extends React.Component<IReferralHistoryProp, IReferralHis
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={`text-nowrap ${activeTab === INBOUND_REFERRAL_HISTORY_TAB ? 'active' : ''}`}
+              className={`${activeTab === INBOUND_REFERRAL_HISTORY_TAB ? 'active' : ''}`}
               onClick={() => this.toggle(INBOUND_REFERRAL_HISTORY_TAB)}
             >
               <span className="d-inline">
@@ -50,7 +50,7 @@ class ReferralHistory extends React.Component<IReferralHistoryProp, IReferralHis
           </NavItem>
           <NavItem>
             <NavLink
-              className={`text-nowrap ${activeTab === OUTBOUND_REFERRAL_HISTORY_TAB ? 'active' : ''}`}
+              className={`${activeTab === OUTBOUND_REFERRAL_HISTORY_TAB ? 'active' : ''}`}
               onClick={() => this.toggle(OUTBOUND_REFERRAL_HISTORY_TAB)}
             >
               <span className="d-inline">
@@ -60,7 +60,7 @@ class ReferralHistory extends React.Component<IReferralHistoryProp, IReferralHis
           </NavItem>
           <NavItem>
             <NavLink
-              className={`text-nowrap ${activeTab === NUMBER_OF_REFERRALS_TAB ? 'active' : ''}`}
+              className={`${activeTab === NUMBER_OF_REFERRALS_TAB ? 'active' : ''}`}
               onClick={() => this.toggle(NUMBER_OF_REFERRALS_TAB)}
             >
               <span className="d-inline">
