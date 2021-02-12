@@ -98,7 +98,7 @@ export class RecordUpdatesModal extends React.Component<IRecordUpdatesModalProps
             <span className="field-updated-label">
               <Translate contentKey="providerSite.fieldUpdated" />:{' '}
             </span>
-            { update.fieldName ? translate(`providerSite.fieldLabels.${update.fieldName}`) : null }
+            {update.fieldName ? translate(`providerSite.fieldLabels.${update.fieldName}`) : null}
           </Col>
           <Row className="mx-3 update">{this.fieldUpdate(update)}</Row>
         </>

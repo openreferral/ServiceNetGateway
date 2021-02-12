@@ -58,7 +58,8 @@
       border-top: 0;
       .button-pill {
         background-color: white;
-        &:hover, &:active {
+        &:hover,
+        &:active {
           background-color: #343f51;
           color: white;
         }
