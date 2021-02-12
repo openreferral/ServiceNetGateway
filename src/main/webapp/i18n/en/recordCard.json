@@ -9,6 +9,11 @@
     "claimed": "Claimed",
     "yes": "Yes",
     "no": "No",
-    "done": "Done"
+    "done": "Done Claiming",
+    "exit": "Exit",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "cancelQuestionWithNumber": "You have claimed {{count}} of records claimed. Are you sure you want to exit?",
+    "cancelQuestion": "Are you sure you want to exit?"
   }
 }
