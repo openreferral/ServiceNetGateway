@@ -17,7 +17,8 @@
     background-color: white;
     .nav-link {
       height: 100%;
-      &.active, &:hover {
+      &.active,
+      &:hover {
         height: calc(100% + 6px);
       }
     }
