@@ -199,7 +199,11 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
           </div>
           <div className={`updated-by ${fullWidth ? 'ml-3' : ''}`}>
             <Translate contentKey="recordCard.by" />
-            <OwnerInfo owner={record.owner || this.props.owner || {}} organization={record.organization} direction="top" />
+            <OwnerInfo
+              owner={record.updatedBy ? record.updatedBy : record.owner || this.props.owner || {}}
+              organization={record.organization}
+              direction="top"
+            />
           </div>
         </div>
         {this.props.claiming && <ClaimButton record={record} />}
