@@ -19,6 +19,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { isIOS } from 'react-device-detect';
 import { GA_ACTIONS, MOBILE_WIDTH_BREAKPOINT } from 'app/config/constants';
 import { sendAction } from 'app/shared/util/analytics';
+import ClaimButton from 'app/modules/provider/record/claim-button';
 const IOS_MODAL_MARGIN = 15;
 
 export interface IClaimRecordsModalProps extends StateProps, DispatchProps {
@@ -34,12 +35,14 @@ export interface IClaimRecordsModalState extends IPaginationBaseState {
   singleRecordTab: boolean;
   orgId: string;
   initialLoading: boolean;
+  isExiting: boolean;
 }
 
 const INITIAL_STATE = {
   claimModalActivePage: 0,
   doneClaiming: false,
-  initialLoading: true
+  initialLoading: true,
+  isExiting: false
 };
 
 export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, IClaimRecordsModalState> {
@@ -102,6 +105,13 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       },
       () => this.props.claimEntities([...claimedRecords])
     );
+  };
+
+  exit = () => {
+    this.setState({
+      isExiting: true,
+      claimModalActivePage: 0
+    });
   };
 
   claimMore = () => {
@@ -191,6 +201,38 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
     </div>
   );
 
+  turnOffExitModal = () => this.setState({ isExiting: false });
+
+  modalOnExit = numberOfClaimedRecords => (
+    <div className="modal-on-exit d-flex flex-column justify-content-between align-items-center p-2 claim-modal-title">
+      <div className="modal-on-exit-bottom-divider d-flex justify-content-center align-items-center w-100">
+        <div>
+          <Translate contentKey="recordCard.exit" />
+        </div>
+      </div>
+      <div className="d-flex flex-column justify-content-between align-items-center mb-2 w-100">
+        <div className="modal-on-exit-bottom-divider d-flex justify-content-center align-items-center w-100 py-2">
+          <span className="claim-modal-subtitle px-2" style={{ textAlign: 'center' }}>
+            {numberOfClaimedRecords === 0 ? (
+              <Translate contentKey="recordCard.cancelQuestion" />
+            ) : (
+              <Translate contentKey="recordCard.cancelQuestionWithNumber" interpolate={{ count: numberOfClaimedRecords }} />
+            )}
+          </span>
+        </div>
+        <div className="d-flex w-100 justify-content-center py-4">
+          <ButtonPill onClick={() => this.turnOffExitModal()} style={{ borderColor: '#d6d6d6', background: '#d6d6d6' }}>
+            <Translate contentKey="recordCard.cancel" />
+          </ButtonPill>
+          &nbsp;
+          <ButtonPill onClick={() => this.closeClaiming()} style={{ background: 'red', borderColor: 'red', color: 'white' }}>
+            <Translate contentKey="recordCard.confirm" />
+          </ButtonPill>
+        </div>
+      </div>
+    </div>
+  );
+
   recordList = () => {
     const { claimModalActivePage, initialLoading } = this.state;
     const { loading, numberOfClaimableRecords, totalClaimableRecords, claimRecordsOpened } = this.props;
@@ -216,38 +258,47 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
 
   claimRecordsPage = () => {
     const { claimedRecords, claimRecordsOpened, claimingProgress } = this.props;
-    const { doneClaiming, singleRecordTab, initialLoading } = this.state;
+    const { doneClaiming, singleRecordTab, initialLoading, isExiting } = this.state;
     const doneClaimingOpen = doneClaiming || !claimRecordsOpened;
+    const numberOfClaimedRecords = _.get(claimedRecords, 'length', 0);
     return (
       <>
-        {doneClaimingOpen && this.doneClaimingModal(claimingProgress, claimedRecords.length)}
-        <div
-          className={
-            (singleRecordTab || doneClaimingOpen ? 'd-none' : 'd-flex') +
-            ' flex-column justify-content-between align-items-center claim-record-modal-container p-1'
-          }
-        >
-          <div className="d-flex flex-column align-items-center w-100 pt-4 pt-sm-3 pb-2">
-            <span className="claim-modal-title">
-              <Translate contentKey="providerSite.claimTitle" />
-            </span>
-            <br />
-            <span className="claim-modal-subtitle">
-              <Translate contentKey="providerSite.claimSubtitle" />
-            </span>
-            <this.searchBar />
+        {isExiting && this.modalOnExit(numberOfClaimedRecords)}
+        <>
+          {doneClaimingOpen && this.doneClaimingModal(claimingProgress, claimedRecords.length)}
+          <div
+            className={
+              (singleRecordTab || doneClaimingOpen ? 'd-none' : 'd-flex') +
+              ' flex-column justify-content-between align-items-center claim-record-modal-container p-1'
+            }
+          >
+            <div className="d-flex flex-column align-items-center w-100 pt-4 pt-sm-3 pb-2">
+              <span className="claim-modal-title">
+                <Translate contentKey="providerSite.claimTitle" />
+              </span>
+              <br />
+              <span className="claim-modal-subtitle">
+                <Translate contentKey="providerSite.claimSubtitle" />
+              </span>
+              <this.searchBar />
+            </div>
+            <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body">
+              {initialLoading && <Spinner key={0} color="primary" />}
+              {this.recordList()}
+            </div>
+            <div className="flex-grow-1" />
+            <div className="d-flex align-items-center justify-content-center">
+              {numberOfClaimedRecords !== 0 ? (
+                <ButtonPill className="button-pill-green my-2 mr-2" onClick={this.claimRecords}>
+                  <Translate contentKey="recordCard.done" />
+                </ButtonPill>
+              ) : null}
+              <ButtonPill className="button-pill-gray my-2" style={{ backgroundColor: 'red' }} onClick={this.exit}>
+                <Translate contentKey="recordCard.exit" />
+              </ButtonPill>
+            </div>
           </div>
-          <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body">
-            {initialLoading && <Spinner key={0} color="primary" />}
-            {this.recordList()}
-          </div>
-          <div className="flex-grow-1" />
-          <div className="d-flex align-items-center justify-content-center">
-            <ButtonPill className="button-pill-green my-2" style={{ width: '120px' }} onClick={this.claimRecords}>
-              <Translate contentKey="recordCard.done" />
-            </ButtonPill>
-          </div>
-        </div>
+        </>
       </>
     );
   };
@@ -269,6 +320,12 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
         <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body single-record">
           <SingleRecordView orgId={orgId} />
         </div>
+        <div className="d-flex align-items-center justify-content-center">
+          <ClaimButton orgId={orgId} style={{ width: '100px' }} />
+          <ButtonPill className="button-pill-gray my-2 ml-2" style={{ backgroundColor: 'red' }} onClick={this.exit}>
+            <Translate contentKey="recordCard.exit" />
+          </ButtonPill>
+        </div>
       </div>
     );
   };
@@ -289,8 +346,13 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
           style={isIOS ? { height: modalHeight - IOS_MODAL_MARGIN, minHeight: modalHeight - IOS_MODAL_MARGIN } : {}}
           contentClassName={isIOS ? 'ios modal-content' : 'modal-content'}
         >
-          {singleRecordTab ? <this.singleRecordView /> : null}
-          <this.claimRecordsPage />
+          <>
+            <Button color="" className="position-absolute" style={{ right: '0' }} onClick={this.exit}>
+              <FontAwesomeIcon icon="times" />
+            </Button>
+            {singleRecordTab ? <this.singleRecordView /> : null}
+            <this.claimRecordsPage />
+          </>
         </Modal>
       </div>
     );

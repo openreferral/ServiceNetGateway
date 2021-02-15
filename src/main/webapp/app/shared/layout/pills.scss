@@ -1,6 +1,7 @@
 @import '../../bootstrap-variables';
 @import '../../app-variables';
 $apply-button-color: #e78859;
+$exit-button-color: #d6d6d6;
 
 .button-pill {
   display: block;
@@ -76,6 +77,12 @@ $apply-button-color: #e78859;
   background-color: $new-record-color !important;
   color: white;
   border: 1px $new-record-color solid;
+}
+
+.button-pill-gray {
+  background-color: $exit-button-color !important;
+  color: black;
+  border: 1px black solid;
 }
 
 .button-pill-new-record {
