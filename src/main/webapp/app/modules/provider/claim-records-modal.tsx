@@ -142,6 +142,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
             referring={false}
             claiming
             onNameClick={this.organizationNameOnClick(record.organization.id)}
+            marginClass="mx-3 mx-lg-2 mx-xl-3"
           />
         </div>
       </div>
