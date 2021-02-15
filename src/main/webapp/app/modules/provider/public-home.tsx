@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import AllRecords from 'app/modules/provider/all-records';
 import { isIOS } from 'react-device-detect';
+import SingleRecordView from 'app/modules/provider/record/single-record-view';
+import { IRootState } from 'app/shared/reducers';
+import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 
 export interface IPublicHomeProps extends StateProps, DispatchProps {
   siloName: string;
@@ -17,27 +20,40 @@ class PublicHome extends React.Component<IPublicHomeProps, IPublicHomeState> {
     isMapView: false
   };
 
+  componentDidMount(): void {
+    this.props.toggleSingleRecordView({ orgId: null, singleRecordViewActive: false });
+  }
+
   toggleMapView = () =>
     this.setState({
       isMapView: !this.state.isMapView
     });
 
   render() {
-    const { urlBase, siloName } = this.props;
+    const { urlBase, siloName, singleRecordViewActive, recordToOpen } = this.props;
     const { isMapView } = this.state;
     return (
-      <div className={`background-public${isIOS ? ' iOS' : ''}`}>
-        <div className={`all-records-container-public${isMapView ? ' map' : ''}`}>
-          <AllRecords urlBase={urlBase} siloName={siloName} toggleMapView={this.toggleMapView} isMapView={isMapView} referring={false} />
+      <>
+        {singleRecordViewActive ? <SingleRecordView orgId={recordToOpen} withBackButton /> : null}
+        <div
+          id="home-container"
+          className={`background-public${isIOS ? ' iOS' : ''} ${singleRecordViewActive ? 'd-none' : ''} overflowYAuto`}
+        >
+          <div className={`all-records-container-public${isMapView ? ' map' : ''}`}>
+            <AllRecords urlBase={urlBase} siloName={siloName} toggleMapView={this.toggleMapView} isMapView={isMapView} referring={false} />
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ providerRecord }: IRootState) => ({
+  recordToOpen: providerRecord.orgId,
+  singleRecordViewActive: providerRecord.singleRecordViewActive
+});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { toggleSingleRecordView };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

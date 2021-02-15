@@ -28,7 +28,8 @@ export const ACTION_TYPES = {
   UNCLAIM_RECORDS: 'organization/UNCLAIM_RECORDS',
   MARK_RECORD_TO_CLAIM: 'records/MARK_RECORD_TO_CLAIM',
   UNMARK_RECORD_TO_CLAIM: 'records/UNMARK_RECORD_TO_CLAIM',
-  RESET_RECORDS_TO_CLAIM: 'records/RESET_RECORDS_TO_CLAIM'
+  RESET_RECORDS_TO_CLAIM: 'records/RESET_RECORDS_TO_CLAIM',
+  RESET_ORGANIZATION: 'RESET_ORGANIZATION'
 };
 
 const initialState = {
@@ -236,6 +237,11 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         claimedRecords: [],
         claimingProgress: '0'
       };
+    case ACTION_TYPES.RESET_ORGANIZATION:
+      return {
+        ...state,
+        providersEntity: defaultSimpleOrganization
+      };
     default:
       return state;
   }
@@ -421,4 +427,8 @@ export const unmarkRecordToClaim = recordId => ({
 
 export const resetRecordsToClaim = () => ({
   type: ACTION_TYPES.RESET_RECORDS_TO_CLAIM
+});
+
+export const resetOrganization = () => ({
+  type: ACTION_TYPES.RESET_ORGANIZATION
 });

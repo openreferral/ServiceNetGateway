@@ -17,11 +17,11 @@ Array [
         }
       }
     />
-    <a
+    <button
       aria-label={null}
-      className="d-none d-sm-block position-fixed go-back btn btn-"
-      href="#/"
+      className="d-sm-block position-fixed go-back btn btn-"
       onClick={[Function]}
+      type="button"
     >
       <svg
         aria-hidden="true"
@@ -42,7 +42,7 @@ Array [
       </svg>
        
       <span />
-    </a>
+    </button>
     <div
       className="col-md-10 offset-md-1 col-lg-8 offset-lg-2"
     >
