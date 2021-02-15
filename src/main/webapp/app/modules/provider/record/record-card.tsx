@@ -2,7 +2,7 @@ import './record-shared.scss';
 import './record-card.scss';
 
 import React from 'react';
-import { TextFormat, Translate } from 'react-jhipster';
+import { TextFormat, translate, Translate } from 'react-jhipster';
 import { Card, CardBody, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FixedSizeList as List } from 'react-window';
@@ -23,6 +23,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { IUser } from 'app/shared/model/user.model';
 import { sendAction, sendActionOnEvt } from 'app/shared/util/analytics';
+import { formatText } from 'app/shared/util/text-format';
 
 const REMAINDER_WIDTH = 25;
 
@@ -44,6 +45,7 @@ export interface IRecordCardProps extends StateProps, DispatchProps {
   onNameClick?: Function;
   siloName?: string;
   withOnlineServiceLabel?: boolean;
+  marginClass?: string;
 }
 
 export interface IRecordCardState {
@@ -185,17 +187,16 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
       return null;
     }
     const systemAccountName = record.organization.accountName;
+    const lastUpdated = record.lastUpdated
+      ? formatText(record.lastUpdated, 'date', APP_DATE_12_HOUR_FORMAT, true)
+      : translate('recordcard.unknown');
     return (
       <CardTitle>
         <div className="bookmark">{this.lastUpdatedIcon(record.lastUpdated, systemAccountName)}</div>
         <div className={`last-update${fullWidth ? '-full-width' : ''}`}>
           <div>
             <Translate contentKey="recordCard.lastUpdate" />
-            {record.lastUpdated ? (
-              <TextFormat value={record.lastUpdated} type="date" format={APP_DATE_12_HOUR_FORMAT} blankOnInvalid />
-            ) : (
-              <Translate contentKey="recordCard.unknown" />
-            )}
+            <span title={lastUpdated}>{lastUpdated ? <span>{lastUpdated}</span> : null}</span>
           </div>
           <div className={`updated-by ${fullWidth ? 'ml-3' : ''}`}>
             <Translate contentKey="recordCard.by" />
@@ -394,9 +395,9 @@ class RecordCard extends React.Component<IRecordCardProps, IRecordCardState> {
   };
 
   render() {
-    const { fullWidth } = this.props;
+    const { fullWidth, marginClass } = this.props;
     return (
-      <Card className={`record-shared record-card${fullWidth ? '-full-width' : ''} mx-3 mb-4`}>
+      <Card className={`record-shared record-card${fullWidth ? '-full-width' : ''} ${marginClass ? marginClass : 'mx-3'} mb-4`}>
         <this.cardTitle />
         <CardBody>
           <this.cardContent />

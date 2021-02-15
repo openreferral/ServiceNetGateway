@@ -85,11 +85,16 @@
 }
 
 .claim-record-modal {
-  width: 80vw;
-  max-width: 80vw;
+  min-width: 80vw;
+  max-width: 90vw;
+  // medium devices
   @media only screen and (max-width: 768px) {
     width: auto;
     max-width: none;
+  }
+  // extra large devices
+  @media only screen and (min-width: 1200px) {
+    width: 80vw;
   }
 
   &.claiming {

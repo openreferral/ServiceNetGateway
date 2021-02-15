@@ -117,7 +117,7 @@ export class RecordUpdatesModal extends React.Component<IRecordUpdatesModalProps
 
   getPartnerName = record => {
     if (record && !!record.updates) {
-      return record.updates[0].partnerName;
+      return record.updates[0] && record.updates[0].partnerName;
     }
     return '';
   };
