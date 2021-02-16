@@ -154,6 +154,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
   };
 
   closeClaiming = () => {
+    this.setState({ singleRecordTab: false, orgId: null });
     this.props.closeClaiming();
     sendAction(GA_ACTIONS.CLAIM_RECORDS_CLAIM_MORE_RECORDS_POP_UP_NO);
   };
