@@ -19,7 +19,8 @@ export const ACTION_TYPES = {
   RESET_CHECKED_IN: 'records/RESET_CHECKED_IN',
   SEND_REFERRALS: 'records/SEND_REFERRALS',
   FETCH_MADE_TO_OPTIONS: 'records/FETCH_MADE_TO_OPTIONS',
-  FETCH_REFERRAL_MADE_FOR_RECORD: 'records/FETCH_REFERRAL_MADE_FOR_RECORD'
+  FETCH_REFERRAL_MADE_FOR_RECORD: 'records/FETCH_REFERRAL_MADE_FOR_RECORD',
+  TOGGLE_SINGLE_RECORD_VIEW: 'TOGGLE_SINGLE_RECORD_VIEW'
 };
 
 const initialState = {
@@ -46,7 +47,9 @@ const initialState = {
   checkInsToRecordCount: 0,
   referralsToRecordCount: 0,
   referralsFromRecordCount: 0,
-  initialMapLoad: false
+  initialMapLoad: false,
+  orgId: '',
+  singleRecordViewActive: false
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -221,6 +224,12 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         checkedIn: false
       };
+    case ACTION_TYPES.TOGGLE_SINGLE_RECORD_VIEW:
+      return {
+        ...state,
+        orgId: action.payload.orgId,
+        singleRecordViewActive: action.payload.singleRecordViewActive
+      };
     default:
       return state;
   }
@@ -356,4 +365,12 @@ export const getRecordsAvailableToClaim = (page, itemsPerPage, isInitLoading = f
 export const getReferralsMadeForRecord = (recordId: string) => ({
   type: ACTION_TYPES.FETCH_REFERRAL_MADE_FOR_RECORD,
   payload: axios.get(referralsMadeForRecordApiUrl + recordId)
+});
+
+export const toggleSingleRecordView = ({ orgId, singleRecordViewActive }) => ({
+  type: ACTION_TYPES.TOGGLE_SINGLE_RECORD_VIEW,
+  payload: {
+    orgId,
+    singleRecordViewActive
+  }
 });

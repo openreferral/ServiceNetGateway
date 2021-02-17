@@ -47,14 +47,16 @@ export const BrandMenu = props => {
     nabBrandUrl = props.match.url;
   }
 
+  const onHomeLinkClick = () => props.toggleSingleRecordView({ orgId: null, singleRecordViewActive: false });
+
   return (
     <div className="d-flex align-items-center brand-menu">
-      <NavbarBrand tag={Link} to={nabBrandUrl} className="brand-logo d-flex align-items-center mr-1">
+      <NavbarBrand tag={Link} to={nabBrandUrl} className="brand-logo d-flex align-items-center mr-1" onClick={onHomeLinkClick}>
         <MediaQuery minDeviceWidth={769}>
           <BrandIcon />
         </MediaQuery>
       </NavbarBrand>
-      <NavLink exact tag={Link} to={homeUrl} className="pl-0">
+      <NavLink exact tag={Link} to={homeUrl} className="pl-0" onClick={onHomeLinkClick}>
         <span className="navbar-label text-dark header-link">
           <Translate contentKey="global.menu.home" />
         </span>

@@ -7,7 +7,7 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
-import { getProviderEntity } from 'app/entities/organization/organization.reducer';
+import { getProviderEntity, resetOrganization } from 'app/entities/organization/organization.reducer';
 import { getProviderTaxonomies } from 'app/entities/taxonomy/taxonomy.reducer';
 import { FixedSizeList as List, FixedSizeGrid as Grid } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -25,6 +25,7 @@ import ServiceLogo from '../../../../static/images/service.svg';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import _ from 'lodash';
 import { sendAction, sendActionOnEvt } from 'app/shared/util/analytics';
+import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 
 const LocationPill = location => {
   if (!location) {
@@ -66,6 +67,7 @@ const GOOGLE_MAP_DIRECTIONS_WITH_DESTINATION_URL = 'https://www.google.com/maps/
 
 export interface ISingleRecordViewProps extends StateProps, DispatchProps, RouteComponentProps<{ orgId: string }> {
   orgId?: string;
+  withBackButton?: boolean;
 }
 
 export interface ISingleRecordViewState {
@@ -100,7 +102,9 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   componentDidMount() {
     const siloName = this.getSiloName();
     const orgId = this.props.orgId ? this.props.orgId : this.props.match.params.orgId;
-    this.props.getProviderEntity(orgId, siloName);
+    if (orgId) {
+      this.props.getProviderEntity(orgId, siloName);
+    }
   }
 
   componentWillUpdate(nextProps) {
@@ -114,8 +118,13 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
   componentDidUpdate(prevProps: Readonly<ISingleRecordViewProps>, prevState: Readonly<ISingleRecordViewState>) {
     const { organization, taxonomyOptions, match } = this.props;
     const orgDiffers = organization !== prevProps.organization;
+    const orgId = this.props.orgId ? this.props.orgId : this.props.match.params.orgId;
+    const prevOrgId = prevProps.orgId ? prevProps.orgId : prevProps.match.params.orgId;
+    const siloName = this.getSiloName();
+    if (orgId !== prevOrgId && orgId !== null) {
+      this.props.getProviderEntity(orgId, siloName);
+    }
     if (orgDiffers) {
-      const siloName = this.getSiloName();
       this.props.getProviderTaxonomies(organization.accountName, siloName);
     }
     if (orgDiffers || taxonomyOptions !== prevProps.taxonomyOptions) {
@@ -565,11 +574,16 @@ class SingleRecordView extends React.Component<ISingleRecordViewProps, ISingleRe
     </Card>
   );
 
+  onBackButtonClick = e => {
+    e.preventDefault();
+    this.props.toggleSingleRecordView({ orgId: null, singleRecordViewActive: false });
+    this.props.resetOrganization();
+  };
+
   backButton = () => {
-    const siloName = this.getSiloName();
-    const { orgId } = this.props;
-    return !orgId ? (
-      <Button tag={Link} to={siloName ? `/public/${siloName}` : '/'} color="" className="d-none d-sm-block position-fixed go-back">
+    const { orgId, withBackButton } = this.props;
+    return !orgId || withBackButton ? (
+      <Button onClick={this.onBackButtonClick} color="" className="d-sm-block position-fixed go-back">
         <FontAwesomeIcon icon="angle-left" />
         &nbsp;
         <Translate contentKey="record.singleRecordView.back" />
@@ -842,7 +856,7 @@ const mapStateToProps = (rootState: IRootState) => ({
   taxonomyOptions: rootState.taxonomy.providerTaxonomies.map(taxonomy => ({ value: taxonomy.id, label: taxonomy.name }))
 });
 
-const mapDispatchToProps = { getProviderEntity, getProviderTaxonomies };
+const mapDispatchToProps = { getProviderEntity, getProviderTaxonomies, toggleSingleRecordView, resetOrganization };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

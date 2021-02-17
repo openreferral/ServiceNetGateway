@@ -1418,6 +1418,7 @@ exports[`All records renders correctly 1`] = `
       selectRecord={[Function]}
       selectedRecord={null}
       setText={[Function]}
+      toggleSingleRecordView={[Function]}
       uncheckFiltersChanged={[Function]}
     >
       <main
