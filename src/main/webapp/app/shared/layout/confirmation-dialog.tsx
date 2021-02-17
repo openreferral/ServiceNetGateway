@@ -7,6 +7,7 @@ export interface IConfirmationDialogProps {
   question: any;
   handleClose: any;
   handleConfirm: any;
+  title?: string;
 }
 
 export class ConfirmationDialog extends React.Component<IConfirmationDialogProps> {
@@ -20,10 +21,11 @@ export class ConfirmationDialog extends React.Component<IConfirmationDialogProps
   };
 
   render() {
+    const title = this.props.title ? this.props.title : 'global.dialog.confirm';
     return (
       <Modal isOpen toggle={this.handleClose}>
         <ModalHeader toggle={this.handleClose}>
-          <Translate contentKey="global.dialog.confirm" />
+          <Translate contentKey={title} />
         </ModalHeader>
         <ModalBody>{this.props.question}</ModalBody>
         <ModalFooter>

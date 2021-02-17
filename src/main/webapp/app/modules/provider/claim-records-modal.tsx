@@ -20,6 +20,7 @@ import { isIOS } from 'react-device-detect';
 import { GA_ACTIONS, MOBILE_WIDTH_BREAKPOINT } from 'app/config/constants';
 import { sendAction } from 'app/shared/util/analytics';
 import ClaimButton from 'app/modules/provider/record/claim-button';
+import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 const IOS_MODAL_MARGIN = 15;
 
 export interface IClaimRecordsModalProps extends StateProps, DispatchProps {
@@ -205,35 +206,22 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
 
   turnOffExitModal = () => this.setState({ isExiting: false });
 
-  modalOnExit = numberOfClaimedRecords => (
-    <div className="modal-on-exit d-flex flex-column justify-content-between align-items-center p-2 claim-modal-title">
-      <div className="modal-on-exit-bottom-divider d-flex justify-content-center align-items-center w-100">
-        <div>
-          <Translate contentKey="recordCard.exit" />
-        </div>
-      </div>
-      <div className="d-flex flex-column justify-content-between align-items-center mb-2 w-100">
-        <div className="modal-on-exit-bottom-divider d-flex justify-content-center align-items-center w-100 py-2">
-          <span className="claim-modal-subtitle px-2" style={{ textAlign: 'center' }}>
-            {numberOfClaimedRecords === 0 ? (
-              <Translate contentKey="recordCard.cancelQuestion" />
-            ) : (
-              <Translate contentKey="recordCard.cancelQuestionWithNumber" interpolate={{ count: numberOfClaimedRecords }} />
-            )}
-          </span>
-        </div>
-        <div className="d-flex w-100 justify-content-center py-4">
-          <ButtonPill onClick={() => this.turnOffExitModal()} style={{ borderColor: '#d6d6d6', background: '#d6d6d6' }}>
-            <Translate contentKey="recordCard.cancel" />
-          </ButtonPill>
-          &nbsp;
-          <ButtonPill onClick={() => this.closeClaiming()} style={{ background: 'red', borderColor: 'red', color: 'white' }}>
-            <Translate contentKey="recordCard.confirm" />
-          </ButtonPill>
-        </div>
-      </div>
-    </div>
-  );
+  modalOnExit = numberOfClaimedRecords => {
+    const question =
+      numberOfClaimedRecords === 0 ? (
+        <Translate contentKey="recordCard.cancelQuestion" />
+      ) : (
+        <Translate contentKey="recordCard.cancelQuestionWithNumber" interpolate={{ count: numberOfClaimedRecords }} />
+      );
+    return (
+      <ConfirmationDialog
+        handleClose={() => this.turnOffExitModal()}
+        handleConfirm={() => this.closeClaiming()}
+        question={question}
+        title="recordCard.exit"
+      />
+    );
+  };
 
   recordList = () => {
     const { claimModalActivePage, initialLoading } = this.state;
