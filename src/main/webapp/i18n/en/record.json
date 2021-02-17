@@ -19,6 +19,11 @@
       "lastUpdated": "Last Updated",
       "updateOrganizationDetails": "Update Organization Details"
     },
+    "create": {
+      "discardQuestion": "Are you sure you want to discard changes on this page?",
+      "discardOtherQuestion": "Are you sure you want to discard changes on this page? Any other information added in previous pages for this record will be retained.",
+      "exit": "Are you sure you want to discard all the information for this record and exit?"
+    },
     "name": "Organization Name",
     "description": "Organization Description",
     "covidProtocols": "COVID-19 Protocols",
@@ -81,7 +86,9 @@
       "deactivate": "Deactivate Record",
       "discard": "Discard Changes",
       "done": "Done",
-      "unclaim": "Unclaim Record"
+      "unclaim": "Unclaim Record",
+      "exit": "Exit",
+      "discardChanges": "Discard Changes"
     },
     "heading": {
       "organization": "Tell us a bit about your organization!",

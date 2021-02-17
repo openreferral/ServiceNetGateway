@@ -173,10 +173,6 @@ exports[`Record create renders correctly  1`] = `
                   onKeyDown={[Function]}
                   onSubmit={[Function]}
                 >
-                  <Prompt
-                    message={[Function]}
-                    when={false}
-                  />
                   <TabContent
                     activeTab="organization"
                     tag="div"
@@ -20863,14 +20859,14 @@ exports[`Record create renders correctly  1`] = `
                             </div>
                           </Col>
                           <div
-                            className="buttons navigation-buttons"
+                            className="buttons navigation-buttons flex-wrap"
                           >
                             <ButtonPill
-                              className="button-pill-secondary"
+                              className="button-pill-secondary mb-1"
                               onClick={[Function]}
                             >
                               <div
-                                className="button-pill button-pill-secondary"
+                                className="button-pill button-pill-secondary mb-1"
                                 onClick={[Function]}
                                 style={Object {}}
                               >
@@ -20903,11 +20899,11 @@ exports[`Record create renders correctly  1`] = `
                               </div>
                             </ButtonPill>
                             <ButtonPill
-                              className="pull-right button-pill-secondary"
+                              className="pull-right button-pill-secondary mb-1"
                               onClick={[Function]}
                             >
                               <div
-                                className="button-pill pull-right button-pill-secondary"
+                                className="button-pill pull-right button-pill-secondary mb-1"
                                 onClick={[Function]}
                                 style={Object {}}
                               >
@@ -20937,6 +20933,23 @@ exports[`Record create renders correctly  1`] = `
                                   title=""
                                   transform={null}
                                 />
+                              </div>
+                            </ButtonPill>
+                            <ButtonPill
+                              className="button-pill-danger ml-1 mb-1"
+                              onClick={[Function]}
+                            >
+                              <div
+                                className="button-pill button-pill-danger ml-1 mb-1"
+                                onClick={[Function]}
+                                style={Object {}}
+                              >
+                                <Translate
+                                  component="span"
+                                  contentKey="record.navigation.exit"
+                                >
+                                  <span />
+                                </Translate>
                               </div>
                             </ButtonPill>
                           </div>
@@ -22782,14 +22795,14 @@ exports[`Record create renders correctly  1`] = `
                             </ButtonPill>
                           </div>
                           <div
-                            className="buttons navigation-buttons"
+                            className="buttons navigation-buttons flex-wrap"
                           >
                             <ButtonPill
-                              className="button-pill-secondary"
+                              className="button-pill-secondary mb-1"
                               onClick={[Function]}
                             >
                               <div
-                                className="button-pill button-pill-secondary"
+                                className="button-pill button-pill-secondary mb-1"
                                 onClick={[Function]}
                                 style={Object {}}
                               >
@@ -22822,11 +22835,11 @@ exports[`Record create renders correctly  1`] = `
                               </div>
                             </ButtonPill>
                             <ButtonPill
-                              className="pull-right button-pill-secondary"
+                              className="pull-right button-pill-secondary mb-1"
                               onClick={[Function]}
                             >
                               <div
-                                className="button-pill pull-right button-pill-secondary"
+                                className="button-pill pull-right button-pill-secondary mb-1"
                                 onClick={[Function]}
                                 style={Object {}}
                               >
@@ -22856,6 +22869,23 @@ exports[`Record create renders correctly  1`] = `
                                   title=""
                                   transform={null}
                                 />
+                              </div>
+                            </ButtonPill>
+                            <ButtonPill
+                              className="button-pill-danger ml-1 mb-1"
+                              onClick={[Function]}
+                            >
+                              <div
+                                className="button-pill button-pill-danger ml-1 mb-1"
+                                onClick={[Function]}
+                                style={Object {}}
+                              >
+                                <Translate
+                                  component="span"
+                                  contentKey="record.navigation.exit"
+                                >
+                                  <span />
+                                </Translate>
                               </div>
                             </ButtonPill>
                           </div>
@@ -47040,14 +47070,14 @@ exports[`Record create renders correctly  1`] = `
                             </ButtonPill>
                           </div>
                           <div
-                            className="buttons navigation-buttons"
+                            className="buttons navigation-buttons flex-wrap"
                           >
                             <ButtonPill
-                              className="button-pill-secondary"
+                              className="button-pill-secondary mb-1"
                               onClick={[Function]}
                             >
                               <div
-                                className="button-pill button-pill-secondary"
+                                className="button-pill button-pill-secondary mb-1"
                                 onClick={[Function]}
                                 style={Object {}}
                               >
@@ -47080,10 +47110,10 @@ exports[`Record create renders correctly  1`] = `
                               </div>
                             </ButtonPill>
                             <ButtonPill
-                              className="pull-right button-pill-primary outline-none disabled"
+                              className="pull-right button-pill-primary outline-none mb-1 disabled"
                             >
                               <button
-                                className="button-pill pull-right button-pill-primary outline-none disabled"
+                                className="button-pill pull-right button-pill-primary outline-none mb-1 disabled"
                                 disabled={true}
                                 id="submit"
                                 type="submit"
@@ -47115,6 +47145,23 @@ exports[`Record create renders correctly  1`] = `
                                   <span />
                                 </Translate>
                               </button>
+                            </ButtonPill>
+                            <ButtonPill
+                              className="button-pill-danger ml-1 mb-1"
+                              onClick={[Function]}
+                            >
+                              <div
+                                className="button-pill button-pill-danger ml-1 mb-1"
+                                onClick={[Function]}
+                                style={Object {}}
+                              >
+                                <Translate
+                                  component="span"
+                                  contentKey="record.navigation.exit"
+                                >
+                                  <span />
+                                </Translate>
+                              </div>
                             </ButtonPill>
                           </div>
                         </div>
