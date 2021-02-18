@@ -22,6 +22,7 @@ import { SideMenu } from './mobile-components/side-menu';
 import MediaQuery from 'react-responsive';
 import Routes from './routes';
 import Footer from 'app/shared/layout/footer/footer';
+import { getSiloByNameOrId } from 'app/entities/silo/silo.reducer';
 
 export interface IProviderSiteProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -40,6 +41,12 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
 
   componentDidMount() {
     this.props.getUser(this.props.account.login);
+  }
+
+  componentDidUpdate(prevProps: Readonly<IProviderSiteProps>): void {
+    if (this.props.account && this.props.account.siloId && !this.props.silo && !this.props.loading && !this.props.loggingOut) {
+      this.props.getSiloByNameOrId(this.props.account.siloId);
+    }
   }
 
   toggleMenu = () => {
@@ -67,6 +74,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             isShelterOwner={this.props.isShelterOwner}
             toggleMenu={this.toggleMenu}
             avatarBase64={this.props.account.avatarBase64}
+            logoBase64={this.props.silo ? this.props.silo.logoBase64 : null}
           />
         </MediaQuery>
         <MediaQuery minDeviceWidth={769}>
@@ -86,6 +94,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             isReferralEnabled={this.props.isReferralEnabled}
             isServiceProvider={this.props.isServiceProvider}
             avatarBase64={this.props.account.avatarBase64}
+            logoBase64={this.props.silo ? this.props.silo.logoBase64 : null}
           />
         </MediaQuery>
       </div>
@@ -113,7 +122,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
   }
 }
 
-const mapStateToProps = ({ authentication, applicationProfile, locale, activity, providerRecord }: IRootState) => ({
+const mapStateToProps = ({ silo, authentication, applicationProfile, locale, activity, providerRecord }: IRootState) => ({
   account: authentication.account,
   autosuggestOptions: MainHome.getAutosuggestOptions(activity.suggestions),
   currentLocale: locale.currentLocale,
@@ -129,14 +138,17 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, activity,
   loggingOut: authentication.loggingOut,
   referralCount: providerRecord.referredRecords.size,
   isReferralEnabled: authentication.account.siloIsReferralEnabled,
-  isServiceProvider: authentication.account.systemAccountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER
+  isServiceProvider: authentication.account.systemAccountName === SYSTEM_ACCOUNTS.SERVICE_PROVIDER,
+  silo: silo.silo,
+  loading: silo.loading
 });
 
 const mapDispatchToProps = {
   setLocale,
   getSession,
   getProfile,
-  getUser
+  getUser,
+  getSiloByNameOrId
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

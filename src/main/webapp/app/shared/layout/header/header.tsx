@@ -14,7 +14,7 @@ import { BrandMenu, Upload, DataStatus } from './header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu, SacramentoMenu } from './menus';
 import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 
-export interface IHeaderProps extends DispatchProps {
+export interface IHeaderProps extends StateProps, DispatchProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isSacramento: boolean;
@@ -33,9 +33,10 @@ export interface IHeaderProps extends DispatchProps {
   referralCount?: number;
   isReferralEnabled?: boolean;
   isServiceProvider?: boolean;
+  logoBase64?: any;
 }
 
-export interface IHeaderState extends StateProps {
+export interface IHeaderState {
   menuOpen: boolean;
 }
 

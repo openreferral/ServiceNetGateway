@@ -4,11 +4,13 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { ISilo, defaultValue } from 'app/shared/model/ServiceNet/silo.model';
-import { SERVICENET_API_URL } from 'app/shared/util/service-url.constants';
+import { SERVICENET_API_URL, SERVICENET_PUBLIC_API_URL } from 'app/shared/util/service-url.constants';
 
 export const ACTION_TYPES = {
   FETCH_SILO_LIST: 'silo/FETCH_SILO_LIST',
   FETCH_SILO: 'silo/FETCH_SILO',
+  FETCH_SILO_BY_NAME: 'silo/FETCH_SILO_BY_NAME',
+  RESET_SILO: 'silo/RESET_SILO',
   CREATE_SILO: 'silo/CREATE_SILO',
   UPDATE_SILO: 'silo/UPDATE_SILO',
   DELETE_SILO: 'silo/DELETE_SILO',
@@ -24,7 +26,8 @@ const initialState = {
   allSilos: [] as ReadonlyArray<ISilo>,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  silo: null
 };
 
 export type SiloState = Readonly<typeof initialState>;
@@ -35,6 +38,7 @@ export default (state: SiloState = initialState, action): SiloState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_SILO_LIST):
     case REQUEST(ACTION_TYPES.FETCH_SILO):
+    case REQUEST(ACTION_TYPES.FETCH_SILO_BY_NAME):
     case REQUEST(ACTION_TYPES.FETCH_ALL_SILO):
       return {
         ...state,
@@ -57,6 +61,7 @@ export default (state: SiloState = initialState, action): SiloState => {
     case FAILURE(ACTION_TYPES.UPDATE_SILO):
     case FAILURE(ACTION_TYPES.FETCH_ALL_SILO):
     case FAILURE(ACTION_TYPES.DELETE_SILO):
+    case FAILURE(ACTION_TYPES.FETCH_SILO_BY_NAME):
       return {
         ...state,
         loading: false,
@@ -99,10 +104,22 @@ export default (state: SiloState = initialState, action): SiloState => {
         updateSuccess: true,
         allSilos: action.payload.data
       };
+    case SUCCESS(ACTION_TYPES.FETCH_SILO_BY_NAME):
+      return {
+        ...state,
+        loading: false,
+        silo: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case ACTION_TYPES.RESET_SILO: {
+      return {
+        ...state,
+        silo: null
+      };
+    }
     default:
       return state;
   }
@@ -110,6 +127,7 @@ export default (state: SiloState = initialState, action): SiloState => {
 
 const apiUrl = SERVICENET_API_URL + '/silos';
 const allSilosApiUrl = SERVICENET_API_URL + '/all-silos';
+const publicApiUr = SERVICENET_PUBLIC_API_URL + '/silos';
 
 // Actions
 
@@ -128,6 +146,18 @@ export const getEntity: ICrudGetAction<ISilo> = id => {
     payload: axios.get<ISilo>(requestUrl)
   };
 };
+
+export const getSiloByNameOrId = nameOrId => {
+  const requestUrl = `${publicApiUr}/${nameOrId}`;
+  return {
+    type: ACTION_TYPES.FETCH_SILO_BY_NAME,
+    payload: axios.get<ISilo>(requestUrl)
+  };
+};
+
+export const resetSilo = () => ({
+  type: ACTION_TYPES.RESET_SILO
+});
 
 export const getAllSilos = () => ({
   type: ACTION_TYPES.FETCH_ALL_SILO,

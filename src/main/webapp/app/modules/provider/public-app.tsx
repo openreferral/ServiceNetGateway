@@ -84,6 +84,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
                 isPublic
                 match={match}
                 avatarBase64={this.props.account.avatarBase64}
+                logoBase64={this.props.silo ? this.props.silo.logoBase64 : null}
                 prependRoutesWithMatch
               />
             </MediaQuery>
@@ -104,6 +105,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
                 match={match}
                 avatarBase64={this.props.account.avatarBase64}
                 prependRoutesWithMatch
+                logoBase64={this.props.silo ? this.props.silo.logoBase64 : null}
               />
             </MediaQuery>
           </ErrorBoundary>
@@ -119,7 +121,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
   }
 }
 
-const mapStateToProps = ({ authentication, applicationProfile, locale, activity }: IRootState) => ({
+const mapStateToProps = ({ authentication, applicationProfile, locale, activity, silo }: IRootState) => ({
   account: authentication.account,
   autosuggestOptions: MainHome.getAutosuggestOptions(activity.suggestions),
   currentLocale: locale.currentLocale,
@@ -132,7 +134,8 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, activity 
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
   userLogin: authentication.account.login,
   isShelterOwner: authentication.account.shelters && authentication.account.shelters.length > 0,
-  loggingOut: authentication.loggingOut
+  loggingOut: authentication.loggingOut,
+  silo: silo.silo
 });
 
 const mapDispatchToProps = {
