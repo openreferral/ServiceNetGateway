@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './silo.reducer';
-import { Translate } from 'react-jhipster';
+import { translate, Translate } from 'react-jhipster';
 import AvatarCropModal from 'app/modules/account/settings/avatar-crop-modal';
 import { toBase64 } from 'app/shared/util/file-utils';
 
@@ -130,8 +130,12 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
                   <img alt="Silo logo big preview" src={logoBase64} />
                 </div>
               )}
-              <AvField name="image" type="file" accept=".jpeg, .png, .jpg" onChange={handleImageFileRead} className="mt-3 mb-3" />
+              <div className="d-flex justify-content-between mt-3 mb-3">
+                <Translate contentKey="serviceNetApp.silo.uploadLogo">Upload Logo</Translate>
+                <AvField name="image" type="file" accept=".jpeg, .png, .jpg" onChange={handleImageFileRead} />
+              </div>
               <AvatarCropModal
+                title="serviceNetApp.silo.choseLogo"
                 previewStyle="d-inline mr-2"
                 onePreview
                 outputWidth={LOGO_WIDTH}
