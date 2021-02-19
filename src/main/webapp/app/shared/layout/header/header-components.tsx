@@ -33,6 +33,15 @@ export const BrandIcon = props => (
   </div>
 );
 
+const getLogo = props =>
+  props && props.logoBase64 ? (
+    <div className="brand-icon">
+      <img alt="Avatar big preview" src={props.logoBase64} />
+    </div>
+  ) : (
+    <BrandIcon />
+  );
+
 export const BrandMenu = props => {
   let homeUrl = '/';
   let nabBrandUrl = '/';
@@ -52,9 +61,7 @@ export const BrandMenu = props => {
   return (
     <div className="d-flex align-items-center brand-menu">
       <NavbarBrand tag={Link} to={nabBrandUrl} className="brand-logo d-flex align-items-center mr-1" onClick={onHomeLinkClick}>
-        <MediaQuery minDeviceWidth={769}>
-          <BrandIcon />
-        </MediaQuery>
+        <MediaQuery minDeviceWidth={769}>{getLogo(props)}</MediaQuery>
       </NavbarBrand>
       <NavLink exact tag={Link} to={homeUrl} className="pl-0" onClick={onHomeLinkClick}>
         <span className="navbar-label text-dark header-link">

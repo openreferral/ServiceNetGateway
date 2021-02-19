@@ -15,6 +15,10 @@ export interface IAvatarCropModalProps {
   handleClose: any;
   handleSubmit: Function;
   imageBase64: any;
+  outputWidth?: number;
+  imageAspect?: number;
+  onePreview?: boolean;
+  previewStyle?: any;
 }
 
 export interface IAvatarCropModalState {
@@ -28,7 +32,7 @@ class AvatarCropModal extends React.Component<IAvatarCropModalProps> {
     image: null,
     avatarBase64: null,
     crop: {
-      aspect: AVATAR_ASPECT
+      aspect: this.props.imageAspect ? this.props.imageAspect : AVATAR_ASPECT
     }
   };
 
@@ -44,18 +48,19 @@ class AvatarCropModal extends React.Component<IAvatarCropModalProps> {
   };
 
   onCropComplete = async crop => {
+    const outputWidth = this.props.outputWidth ? this.props.outputWidth : MAX_OUTPUT_WIDTH;
     this.setState({
-      avatarBase64: await getCroppedImg(this.state.image, crop, MAX_OUTPUT_WIDTH)
+      avatarBase64: await getCroppedImg(this.state.image, crop, outputWidth)
     });
   };
 
   onImageLoaded = img => {
-    const width = img.width / AVATAR_ASPECT < img.height * AVATAR_ASPECT ? img.width : img.height * AVATAR_ASPECT;
-    const height = img.width / AVATAR_ASPECT > img.height * AVATAR_ASPECT ? img.height : img.width / AVATAR_ASPECT;
+    const imageAspect = this.props.imageAspect ? this.props.imageAspect : AVATAR_ASPECT;
+    const width = img.width / imageAspect < img.height * imageAspect ? img.width : img.height * imageAspect;
+    const height = img.width / imageAspect > img.height * imageAspect ? img.height : img.width / imageAspect;
     const x = (img.width - width) / 2;
     const y = (img.height - height) / 2;
-    const crop = { aspect: AVATAR_ASPECT, width, height, x, y };
-
+    const crop = { aspect: imageAspect, width, height, x, y };
     this.setState(
       {
         image: img,
@@ -69,9 +74,9 @@ class AvatarCropModal extends React.Component<IAvatarCropModalProps> {
   };
 
   render() {
-    const { showModal, handleClose, imageBase64 } = this.props;
+    const { showModal, handleClose, imageBase64, onePreview } = this.props;
     const { avatarBase64, crop } = this.state;
-
+    const previewStyle = this.props.previewStyle ? this.props.previewStyle : 'avatar-big d-inline mr-2';
     return (
       <Modal isOpen={showModal} toggle={handleClose} backdrop="static" id="dismiss-page" autoFocus={false}>
         <AvForm>
@@ -95,8 +100,8 @@ class AvatarCropModal extends React.Component<IAvatarCropModalProps> {
                   <Translate contentKey="userManagement.avatar.preview" />
                 </div>
                 <div className="mb-1">
-                  {avatarBase64 && <img alt="Avatar big preview" className="avatar-big d-inline mr-2" src={avatarBase64} />}
-                  {avatarBase64 && <img alt="Avatar small preview" className="avatar-small d-inline" src={avatarBase64} />}
+                  {avatarBase64 && <img alt="Avatar big preview" className={previewStyle} src={avatarBase64} />}
+                  {avatarBase64 && !onePreview && <img alt="Avatar small preview" className="avatar-small d-inline" src={avatarBase64} />}
                 </div>
               </Col>
             </Row>

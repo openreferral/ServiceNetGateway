@@ -5,6 +5,7 @@ import { isIOS } from 'react-device-detect';
 import SingleRecordView from 'app/modules/provider/record/single-record-view';
 import { IRootState } from 'app/shared/reducers';
 import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
+import { getSiloByNameOrId } from 'app/entities/silo/silo.reducer';
 
 export interface IPublicHomeProps extends StateProps, DispatchProps {
   siloName: string;
@@ -21,6 +22,7 @@ class PublicHome extends React.Component<IPublicHomeProps, IPublicHomeState> {
   };
 
   componentDidMount(): void {
+    this.props.getSiloByNameOrId(this.props.siloName);
     this.props.toggleSingleRecordView({ orgId: null, singleRecordViewActive: false });
   }
 
@@ -53,7 +55,7 @@ const mapStateToProps = ({ providerRecord }: IRootState) => ({
   singleRecordViewActive: providerRecord.singleRecordViewActive
 });
 
-const mapDispatchToProps = { toggleSingleRecordView };
+const mapDispatchToProps = { toggleSingleRecordView, getSiloByNameOrId };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

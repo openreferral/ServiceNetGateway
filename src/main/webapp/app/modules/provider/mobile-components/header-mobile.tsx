@@ -8,8 +8,11 @@ import LoadingBar from 'react-redux-loading-bar';
 import { Avatar } from 'app/shared/layout/header/avatar';
 import { BrandIcon } from './mobile-header-components';
 import { FeedbackButton } from 'app/shared/layout/header/header-components';
+import { IRootState } from 'app/shared/reducers';
+import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
+import { connect } from 'react-redux';
 
-export interface IHeaderMobileProps {
+export interface IHeaderMobileProps extends StateProps, DispatchProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isSacramento: boolean;
@@ -25,6 +28,7 @@ export interface IHeaderMobileProps {
   avatarBase64: string;
   isPublic?: boolean;
   match?: any;
+  logoBase64?: any;
   prependRoutesWithMatch?: boolean;
 }
 
@@ -32,7 +36,7 @@ export interface IHeaderMobileState {
   menuOpen: boolean;
 }
 
-export default class HeaderMobile extends React.Component<IHeaderMobileProps, IHeaderMobileState> {
+export class HeaderMobile extends React.Component<IHeaderMobileProps, IHeaderMobileState> {
   state: IHeaderMobileState = {
     menuOpen: false
   };
@@ -45,6 +49,17 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
         </a>
       </div>
     ) : null;
+
+  getLogo = () => {
+    const { logoBase64 } = this.props;
+    return logoBase64 ? (
+      <div className="brand-icon">
+        <img alt="Logo" src={logoBase64} />
+      </div>
+    ) : (
+      <BrandIcon />
+    );
+  };
 
   render() {
     const { userLogin, isSacramento, match, avatarBase64 } = this.props;
@@ -69,7 +84,7 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
                   to={`${rootUrl}${isSacramento ? 'shelters' : ''}`}
                   className="brand-logo d-flex align-items-center mr-1"
                 >
-                  <BrandIcon />
+                  {this.getLogo()}
                 </NavbarBrand>
               </Col>
               <Col xs="2">
@@ -88,3 +103,17 @@ export default class HeaderMobile extends React.Component<IHeaderMobileProps, IH
     );
   }
 }
+
+const mapStateToProps = (storeState: IRootState) => ({
+  account: storeState.authentication.account
+});
+
+const mapDispatchToProps = { toggleSingleRecordView };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HeaderMobile);
