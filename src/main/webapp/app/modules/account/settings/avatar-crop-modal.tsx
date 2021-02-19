@@ -19,6 +19,7 @@ export interface IAvatarCropModalProps {
   imageAspect?: number;
   onePreview?: boolean;
   previewStyle?: any;
+  title?: any;
 }
 
 export interface IAvatarCropModalState {
@@ -77,11 +78,12 @@ class AvatarCropModal extends React.Component<IAvatarCropModalProps> {
     const { showModal, handleClose, imageBase64, onePreview } = this.props;
     const { avatarBase64, crop } = this.state;
     const previewStyle = this.props.previewStyle ? this.props.previewStyle : 'avatar-big d-inline mr-2';
+    const title = this.props.title ? this.props.title : 'userManagement.avatar.modalTitle';
     return (
       <Modal isOpen={showModal} toggle={handleClose} backdrop="static" id="dismiss-page" autoFocus={false}>
         <AvForm>
           <ModalHeader id="dismiss-title" toggle={handleClose}>
-            <Translate contentKey="userManagement.avatar.modalTitle" />
+            <Translate contentKey={title} />
           </ModalHeader>
           <ModalBody>
             <Row>

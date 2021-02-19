@@ -10,7 +10,9 @@
       "id": "ID",
       "name": "Name",
       "isPublic": "Public",
-      "isReferralEnabled": "Referral enabled"
+      "isReferralEnabled": "Referral enabled",
+      "uploadLogo": "Upload Logo",
+      "choseLogo": "Choose Logo"
     }
   }
 }
