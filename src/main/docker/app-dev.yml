@@ -60,6 +60,7 @@ services:
       - SPRING_OAUTH2_REFRESH_TOKEN_VALIDITY=${SPRING_OAUTH2_SESSION_TIMEOUT:-604800}
       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
       - REGISTRATION_SENDER_ADDRESS=${REGISTRATION_SENDER_ADDRESS:-servicenetaccounts@benetech.org}
+      - FEEDBACK_RECEIVER_ADDRESS=${FEEDBACK_RECEIVER_ADDRESS:-feedback@benetech.org}
       - JHIPSTER_SLEEP=10 # gives time for other services to boot before the application
   servicenet-postgresql:
     image: postgres:10.12

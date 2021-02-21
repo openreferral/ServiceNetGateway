@@ -146,15 +146,15 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
   };
 
   handleZipChanged = v => {
-    this.setState({ zip: v.value });
+    this.setState({ zip: v ? v.value : null });
   };
 
   handleRegionChanged = v => {
-    this.setState({ region: v.value });
+    this.setState({ region: v ? v.value : null });
   };
 
   handleCityChanged = v => {
-    this.setState({ city: v.value });
+    this.setState({ city: v ? v.value : null });
   };
 
   selectStyle = () => ({
@@ -231,6 +231,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
               inputId="filter-city"
               className="flex-fill mr-1"
               styles={this.selectStyle()}
+              isClearable
             />
             <Label className="sr-only" for="filter-county">
               <Translate contentKey="providerSite.county" />
@@ -243,6 +244,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
               value={_.find(regionList, r => r.value === region) || null}
               className="flex-fill mr-1"
               styles={this.selectStyle()}
+              isClearable
             />
             <Label className="sr-only" for="filter-zipCode">
               <Translate contentKey="providerSite.zipCode" />
@@ -255,6 +257,7 @@ export class FilterBar extends React.Component<IFilterBarProps, IFilterBarState>
               value={_.find(postalCodeList, c => c.value === zip) || null}
               className="flex-fill"
               styles={this.selectStyle()}
+              isClearable
             />
           </div>
         </div>

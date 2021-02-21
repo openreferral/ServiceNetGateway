@@ -38,6 +38,7 @@ import ReferralModal, { BENEFICIARY_CHECK_IN_TAB, REFERRAL_TAB } from 'app/modul
 import ClaimRecordsModal from 'app/modules/provider/claim-records-modal';
 import { setText, resetText, resetTextModal } from 'app/modules/provider/shared/search.reducer';
 import { sendAction, sendActionOnEvt } from 'app/shared/util/analytics';
+import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 
 const mapUrl = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=' + GOOGLE_API_KEY;
 const GRID_VIEW = 'GRID';
@@ -258,13 +259,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({ claimRecordsOpened: false }, () => this.props.resetRecordsToClaim());
   };
 
-  getRecordsForMap = () => {
+  getRecordsForMap = (initial = false) => {
     const { siloName, providerFilter, search } = this.props;
     this.setState({
       requestedBoundaries: this.state.boundaries,
       searchArea: false
     });
-    this.props.getProviderRecordsForMap(siloName, providerFilter, search, this.state.boundaries, MAX_PINS_ON_MAP);
+    this.props.getProviderRecordsForMap(siloName, providerFilter, search, initial ? null : this.state.boundaries, MAX_PINS_ON_MAP);
   };
 
   selectRecord = record => {
@@ -283,6 +284,10 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     this.setState({ isRecordHighlighted: false });
   };
 
+  onOrganizationNameClick = orgId => () => {
+    this.props.toggleSingleRecordView({ orgId, singleRecordViewActive: true });
+  };
+
   toggleMapView = () => {
     const { filtersChanged, isMapView } = this.props;
     if (isMapView) {
@@ -290,9 +295,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
     } else {
       sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW_BACK_TO_GRID : GA_ACTIONS.PUBLIC_MAP_VIEW_BACK_TO_GRID);
     }
-    if (isMapView && filtersChanged) {
-      this.getRecords(true);
-      this.props.uncheckFiltersChanged();
+    if (isMapView) {
+      if (filtersChanged) {
+        this.getRecords(true);
+        this.props.uncheckFiltersChanged();
+      }
+    } else {
+      this.getRecordsForMap(true);
     }
     this.props.toggleMapView();
     this.setState({
@@ -315,6 +324,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
         sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW_BACK_TO_GRID : GA_ACTIONS.PUBLIC_MAP_VIEW_BACK_TO_GRID);
       } else {
         sendAction(!this.props.siloName ? GA_ACTIONS.MAP_VIEW : GA_ACTIONS.PUBLIC_MAP_VIEW);
+        this.getRecordsForMap(true);
       }
       this.setState({
         rightSectionOpened: !this.state.rightSectionOpened
@@ -366,6 +376,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
       >
         <div className="mb-4">
           <RecordCard
+            onNameClick={this.onOrganizationNameClick(record.organization.id)}
             withOnlineServiceLabel
             fullWidth={recordViewType === LIST_VIEW && isInAllRecordSection}
             record={record}
@@ -423,14 +434,13 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   onMapBoundariesChanged = boundaries => {
-    const initialBoundaries = _.isEmpty(this.state.boundaries);
     const boundariesChanged = !_.isEqual(boundaries, this.state.requestedBoundaries);
     this.setState(
       {
         boundaries
       },
       () => {
-        if ((this.state.searchArea && boundariesChanged) || initialBoundaries) {
+        if (this.state.searchArea && boundariesChanged) {
           this.getRecordsForMap();
         }
       }
@@ -497,12 +507,14 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapCard = () => {
-    const { allRecordsForMap, selectedRecord, urlBase } = this.props;
+    const { allRecordsForMap, selectedRecord, urlBase, loadingMap, initialMapLoad } = this.props;
     const { isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const mapHeight = '100%';
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
+      initialLoad: initialMapLoad,
+      loadingMap,
       lat: selectedLat,
       lng: selectedLng,
       loadingElement: <div style={{ height: mapHeight }} />,
@@ -524,6 +536,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           <div className={`selected-record absolute-card full-width`}>
             <div>
               <RecordCard
+                onNameClick={this.onOrganizationNameClick(selectedRecord.organization.id)}
                 withOnlineServiceLabel
                 record={selectedRecord}
                 link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
@@ -540,13 +553,15 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
   };
 
   mapView = () => {
-    const { allRecordsForMap, selectedRecord, urlBase, siloName, isMapView } = this.props;
+    const { allRecordsForMap, selectedRecord, urlBase, loadingMap, initialMapLoad } = this.props;
     const { rightSectionOpened, isRecordHighlighted, selectedLat, selectedLng, showMyLocation, centeredAt } = this.state;
     const isMobile = this.isMobile();
     const mapHeight = isIOS ? this.state.iOSMapHeight : '100%';
     const mapProps = {
       googleMapURL: mapUrl,
       records: allRecordsForMap,
+      initialLoad: initialMapLoad,
+      loadingMap,
       lat: selectedLat,
       lng: selectedLng,
       loadingElement: <div style={{ height: mapHeight }} />,
@@ -569,6 +584,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                   <Col md={4} className={`col-md-4 pr-0 selected-record absolute-card`}>
                     <div className="px-2">
                       <RecordCard
+                        onNameClick={this.onOrganizationNameClick(selectedRecord.organization.id)}
                         withOnlineServiceLabel
                         record={selectedRecord}
                         link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
@@ -598,6 +614,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
               {isRecordHighlighted && selectedRecord && !rightSectionOpened ? (
                 <Col md={4} className={`col-md-4 pr-0 selected-record`}>
                   <RecordCard
+                    onNameClick={this.onOrganizationNameClick(selectedRecord.organization.id)}
                     withOnlineServiceLabel
                     record={selectedRecord}
                     link={`${urlBase ? `${urlBase}/` : ''}single-record-view/${selectedRecord.organization.id}`}
@@ -662,7 +679,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
           threshold={0}
           initialLoad={false}
           useWindow={false}
-          getScrollParent={() => document.getElementById('app-container')}
+          getScrollParent={() => document.getElementById('home-container')}
         >
           <Row noGutters>
             <MediaQuery maxDeviceWidth={MOBILE_WIDTH_BREAKPOINT}>{this.mapRecords({ records: allRecords })}</MediaQuery>
@@ -713,6 +730,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                   onSearch={this.props.setText}
                   onReset={this.props.resetText}
                   onClick={sendActionOnEvt(!!siloName ? GA_ACTIONS.PUBLIC_SEARCHING_RECORDS : GA_ACTIONS.SEARCHING_RECORDS)}
+                  initialValue={this.props.search}
                 />
               </Col>
             </Row>
@@ -750,6 +768,7 @@ export class AllRecords extends React.Component<IAllRecordsProps, IAllRecordsSta
                     onSearch={this.props.setText}
                     onReset={this.props.resetText}
                     onClick={sendActionOnEvt(!!siloName ? GA_ACTIONS.PUBLIC_SEARCHING_RECORDS : GA_ACTIONS.SEARCHING_RECORDS)}
+                    initialValue={this.props.search}
                   />
                 </Col>
               </Row>
@@ -853,6 +872,7 @@ const mapStateToProps = state => ({
   providerFilter: state.providerFilter.filter,
   search: state.search.text,
   allRecordsForMap: state.providerRecord.allRecordsForMap,
+  initialMapLoad: state.providerRecord.initialMapLoad,
   selectedRecord: state.providerRecord.selectedRecord,
   filtersChanged: state.providerFilter.filtersChanged,
   loading: state.providerRecord.loading,
@@ -872,7 +892,8 @@ const mapDispatchToProps = {
   resetRecordsToClaim,
   setText,
   resetText,
-  resetTextModal
+  resetTextModal,
+  toggleSingleRecordView
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

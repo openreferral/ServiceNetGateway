@@ -15,6 +15,7 @@ import { Card, CardBody, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
+import RecordUpdatesModal from 'app/modules/provider/record-updates-modal';
 
 export interface IUserRecordsProps extends StateProps, DispatchProps {}
 
@@ -23,11 +24,15 @@ const PAGE_SIZE = SLIDES_TO_SHOW * 2;
 
 interface IUserRecordsState {
   index: number;
+  updatesModalOpen: boolean;
+  updatesModalOrgId: string;
 }
 
 export class UserRecords extends React.Component<IUserRecordsProps, IUserRecordsState> {
   state = {
-    index: 0
+    index: 0,
+    updatesModalOpen: false,
+    updatesModalOrgId: ''
   };
   slider: any;
   constructor(props) {
@@ -37,13 +42,48 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
 
   componentDidMount() {
     this.props.getProviderRecords(0, PAGE_SIZE);
-  }
-
-  componentDidUpdate(prevPros) {
-    if (!prevPros.claimSuccess && this.props.claimSuccess) {
-      this.props.getProviderRecords(0, PAGE_SIZE);
+    if (this.props.currentUser) {
+      this.openRecord();
     }
   }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.claimSuccess && this.props.claimSuccess) {
+      this.props.getProviderRecords(0, PAGE_SIZE);
+    }
+    if (prevProps.currentUser !== this.props.currentUser) {
+      this.openRecord();
+    }
+  }
+
+  openRecord = (updatedOrgId = '', delta = 0) => {
+    const { organizationsWithUpdates } = this.props.currentUser;
+    const { updatesModalOrgId } = this.state;
+    const stillNotUpdated = organizationsWithUpdates.filter(id => this.props.updatedRecords.indexOf(id) === -1 && id !== updatedOrgId);
+    if (stillNotUpdated.length > 0) {
+      let idx = 0;
+      if (!!updatesModalOrgId) {
+        // find the index of currently opened record + delta
+        idx = stillNotUpdated.findIndex(org => org.id === updatesModalOrgId) + delta;
+        if (idx >= stillNotUpdated.length) {
+          // out of boundaries, open the first record
+          idx = 0;
+        } else if (idx < 0) {
+          // open last record
+          idx = stillNotUpdated.length - 1;
+        }
+      }
+      this.setState({
+        updatesModalOrgId: stillNotUpdated[idx],
+        updatesModalOpen: true
+      });
+    } else {
+      this.setState({
+        updatesModalOpen: false,
+        updatesModalOrgId: ''
+      });
+    }
+  };
 
   next = () => {
     this.slider.slickNext();
@@ -94,8 +134,15 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
     }
   };
 
+  toggleUpdatesModalOpen = () => {
+    this.setState({
+      updatesModalOpen: !this.state.updatesModalOpen
+    });
+  };
+
   render() {
     const { recordsTotal } = this.props;
+    const { updatesModalOpen, updatesModalOrgId } = this.state;
     const settings = {
       className: 'center',
       dots: true,
@@ -128,23 +175,31 @@ export class UserRecords extends React.Component<IUserRecordsProps, IUserRecords
       ]
     };
     return (
-      <Slider ref={c => (this.slider = c)} {...settings}>
-        <Card className="record-card new-record mx-3 mb-4">
-          <CardBody>
-            <div className="d-flex flex-column align-items-center">
-              <h1>
-                <Translate contentKey="record.newCard.title" />
-              </h1>
-              <ButtonPill className="button-pill-new-record d-flex align-items-center p-0">
-                <Link to={`/record-create`} className="alert-link w-100 h-100 d-flex align-items-center" style={{ color: 'white' }}>
-                  <Translate contentKey="record.newCard.buttonLabel" />
-                </Link>
-              </ButtonPill>
-            </div>
-          </CardBody>
-        </Card>
-        {_.map(Array.from(Array(recordsTotal).keys()), index => this.recordCard(index))}
-      </Slider>
+      <>
+        <RecordUpdatesModal
+          orgId={updatesModalOrgId}
+          modalOpen={updatesModalOpen}
+          toggleModalOpen={this.toggleUpdatesModalOpen}
+          openAnotherRecord={this.openRecord}
+        />
+        <Slider ref={c => (this.slider = c)} {...settings}>
+          <Card className="record-card new-record mx-3 mb-4">
+            <CardBody>
+              <div className="d-flex flex-column align-items-center">
+                <h1>
+                  <Translate contentKey="record.newCard.title" />
+                </h1>
+                <ButtonPill className="button-pill-new-record d-flex align-items-center p-0">
+                  <Link to={`/record-create`} className="alert-link w-100 h-100 d-flex align-items-center" style={{ color: 'white' }}>
+                    <Translate contentKey="record.newCard.buttonLabel" />
+                  </Link>
+                </ButtonPill>
+              </div>
+            </CardBody>
+          </Card>
+          {_.map(Array.from(Array(recordsTotal).keys()), index => this.recordCard(index))}
+        </Slider>
+      </>
     );
   }
 }
@@ -153,7 +208,8 @@ const mapStateToProps = state => ({
   records: state.providerRecord.recordsByIndex,
   recordsTotal: state.providerRecord.recordsTotal,
   currentUser: state.authentication.account,
-  claimSuccess: state.organization.claimSuccess
+  claimSuccess: state.organization.claimSuccess,
+  updatedRecords: state.organization.updatedRecords
 });
 
 const mapDispatchToProps = {

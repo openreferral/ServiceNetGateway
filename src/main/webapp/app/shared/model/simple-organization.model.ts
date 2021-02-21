@@ -15,6 +15,8 @@ export interface ISimpleOrganization {
   phones?: any[];
   covidProtocols?: string;
   onlyRemote?: boolean;
+  hasUpdates?: boolean;
+  updates?: any[];
 }
 
 export const defaultSimpleOrganization: ISimpleOrganization = {};

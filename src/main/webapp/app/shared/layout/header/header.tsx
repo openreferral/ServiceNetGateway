@@ -2,6 +2,7 @@ import './header.scss';
 import React from 'react';
 import { Translate, Storage } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, Collapse } from 'reactstrap';
+import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
@@ -11,8 +12,9 @@ import LoadingBar from 'react-redux-loading-bar';
 
 import { BrandMenu, Upload, DataStatus } from './header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu, SacramentoMenu } from './menus';
+import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 
-export interface IHeaderProps {
+export interface IHeaderProps extends StateProps, DispatchProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isSacramento: boolean;
@@ -31,13 +33,14 @@ export interface IHeaderProps {
   referralCount?: number;
   isReferralEnabled?: boolean;
   isServiceProvider?: boolean;
+  logoBase64?: any;
 }
 
 export interface IHeaderState {
   menuOpen: boolean;
 }
 
-export default class Header extends React.Component<IHeaderProps, IHeaderState> {
+export class Header extends React.Component<IHeaderProps, IHeaderState> {
   state: IHeaderState = {
     menuOpen: false
   };
@@ -110,3 +113,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     );
   }
 }
+
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = { toggleSingleRecordView };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);

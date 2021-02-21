@@ -19,6 +19,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { isIOS } from 'react-device-detect';
 import { GA_ACTIONS, MOBILE_WIDTH_BREAKPOINT } from 'app/config/constants';
 import { sendAction } from 'app/shared/util/analytics';
+import ClaimButton from 'app/modules/provider/record/claim-button';
+import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 const IOS_MODAL_MARGIN = 15;
 
 export interface IClaimRecordsModalProps extends StateProps, DispatchProps {
@@ -34,12 +36,14 @@ export interface IClaimRecordsModalState extends IPaginationBaseState {
   singleRecordTab: boolean;
   orgId: string;
   initialLoading: boolean;
+  isExiting: boolean;
 }
 
 const INITIAL_STATE = {
   claimModalActivePage: 0,
   doneClaiming: false,
-  initialLoading: true
+  initialLoading: true,
+  isExiting: false
 };
 
 export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, IClaimRecordsModalState> {
@@ -104,6 +108,13 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
     );
   };
 
+  exit = () => {
+    this.setState({
+      isExiting: true,
+      claimModalActivePage: 0
+    });
+  };
+
   claimMore = () => {
     const { searchTerm } = this.props;
     this.setState({ doneClaiming: false }, () => {
@@ -132,6 +143,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
             referring={false}
             claiming
             onNameClick={this.organizationNameOnClick(record.organization.id)}
+            marginClass="mx-3 mx-lg-2 mx-xl-3"
           />
         </div>
       </div>
@@ -143,6 +155,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
   };
 
   closeClaiming = () => {
+    this.setState({ singleRecordTab: false, orgId: null });
     this.props.closeClaiming();
     sendAction(GA_ACTIONS.CLAIM_RECORDS_CLAIM_MORE_RECORDS_POP_UP_NO);
   };
@@ -171,7 +184,7 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       {(claimingProgress === '100' || noRecordsToClaim === 0) && (
         <div className="d-flex flex-column justify-content-between align-items-center">
           <span className="pt-4 claim-modal-title">
-            <Translate contentKey="providerSite.succesfullClaim" interpolate={{ count: noRecordsToClaim || 0 }} />
+            <Translate contentKey="providerSite.succesfulClaim" interpolate={{ count: noRecordsToClaim || 0 }} />
           </span>
           <br />
           <span className="claim-modal-subtitle">
@@ -190,6 +203,25 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
       )}
     </div>
   );
+
+  turnOffExitModal = () => this.setState({ isExiting: false });
+
+  modalOnExit = numberOfClaimedRecords => {
+    const question =
+      numberOfClaimedRecords === 0 ? (
+        <Translate contentKey="recordCard.cancelQuestion" />
+      ) : (
+        <Translate contentKey="recordCard.cancelQuestionWithNumber" interpolate={{ count: numberOfClaimedRecords }} />
+      );
+    return (
+      <ConfirmationDialog
+        handleClose={() => this.turnOffExitModal()}
+        handleConfirm={() => this.closeClaiming()}
+        question={question}
+        title="recordCard.exit"
+      />
+    );
+  };
 
   recordList = () => {
     const { claimModalActivePage, initialLoading } = this.state;
@@ -216,38 +248,47 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
 
   claimRecordsPage = () => {
     const { claimedRecords, claimRecordsOpened, claimingProgress } = this.props;
-    const { doneClaiming, singleRecordTab, initialLoading } = this.state;
+    const { doneClaiming, singleRecordTab, initialLoading, isExiting } = this.state;
     const doneClaimingOpen = doneClaiming || !claimRecordsOpened;
+    const numberOfClaimedRecords = _.get(claimedRecords, 'length', 0);
     return (
       <>
-        {doneClaimingOpen && this.doneClaimingModal(claimingProgress, claimedRecords.length)}
-        <div
-          className={
-            (singleRecordTab || doneClaimingOpen ? 'd-none' : 'd-flex') +
-            ' flex-column justify-content-between align-items-center claim-record-modal-container p-1'
-          }
-        >
-          <div className="d-flex flex-column align-items-center w-100 pt-4 pt-sm-3 pb-2">
-            <span className="claim-modal-title">
-              <Translate contentKey="providerSite.claimTitle" />
-            </span>
-            <br />
-            <span className="claim-modal-subtitle">
-              <Translate contentKey="providerSite.claimSubtitle" />
-            </span>
-            <this.searchBar />
+        {isExiting && this.modalOnExit(numberOfClaimedRecords)}
+        <>
+          {doneClaimingOpen && this.doneClaimingModal(claimingProgress, claimedRecords.length)}
+          <div
+            className={
+              (singleRecordTab || doneClaimingOpen ? 'd-none' : 'd-flex') +
+              ' flex-column justify-content-between align-items-center claim-record-modal-container p-1'
+            }
+          >
+            <div className="d-flex flex-column align-items-center w-100 pt-4 pt-sm-3 pb-2">
+              <span className="claim-modal-title">
+                <Translate contentKey="providerSite.claimTitle" />
+              </span>
+              <br />
+              <span className="claim-modal-subtitle">
+                <Translate contentKey="providerSite.claimSubtitle" />
+              </span>
+              <this.searchBar />
+            </div>
+            <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body">
+              {initialLoading && <Spinner key={0} color="primary" />}
+              {this.recordList()}
+            </div>
+            <div className="flex-grow-1" />
+            <div className="d-flex align-items-center justify-content-center">
+              {numberOfClaimedRecords !== 0 ? (
+                <ButtonPill className="button-pill-green my-2 mr-2" onClick={this.claimRecords}>
+                  <Translate contentKey="recordCard.done" />
+                </ButtonPill>
+              ) : null}
+              <ButtonPill className="button-pill-gray my-2" style={{ backgroundColor: 'red' }} onClick={this.exit}>
+                <Translate contentKey="recordCard.exit" />
+              </ButtonPill>
+            </div>
           </div>
-          <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body">
-            {initialLoading && <Spinner key={0} color="primary" />}
-            {this.recordList()}
-          </div>
-          <div className="flex-grow-1" />
-          <div className="d-flex align-items-center justify-content-center">
-            <ButtonPill className="button-pill-green my-2" style={{ width: '120px' }} onClick={this.claimRecords}>
-              <Translate contentKey="recordCard.done" />
-            </ButtonPill>
-          </div>
-        </div>
+        </>
       </>
     );
   };
@@ -269,6 +310,12 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
         <div id="claim-record-modal-content" className="pt-3 claim-record-modal-body single-record">
           <SingleRecordView orgId={orgId} />
         </div>
+        <div className="d-flex align-items-center justify-content-center">
+          <ClaimButton orgId={orgId} style={{ width: '100px' }} />
+          <ButtonPill className="button-pill-gray my-2 ml-2" style={{ backgroundColor: 'red' }} onClick={this.exit}>
+            <Translate contentKey="recordCard.exit" />
+          </ButtonPill>
+        </div>
       </div>
     );
   };
@@ -289,8 +336,13 @@ export class ClaimRecordsModal extends React.Component<IClaimRecordsModalProps, 
           style={isIOS ? { height: modalHeight - IOS_MODAL_MARGIN, minHeight: modalHeight - IOS_MODAL_MARGIN } : {}}
           contentClassName={isIOS ? 'ios modal-content' : 'modal-content'}
         >
-          {singleRecordTab ? <this.singleRecordView /> : null}
-          <this.claimRecordsPage />
+          <>
+            <Button color="" className="position-absolute" style={{ right: '0' }} onClick={this.exit}>
+              <FontAwesomeIcon icon="times" />
+            </Button>
+            {singleRecordTab ? <this.singleRecordView /> : null}
+            <this.claimRecordsPage />
+          </>
         </Modal>
       </div>
     );

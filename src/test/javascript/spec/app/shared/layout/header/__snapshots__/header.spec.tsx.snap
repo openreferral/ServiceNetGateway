@@ -62,6 +62,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
       isSwaggerEnabled={true}
       onLocaleChange={[Function]}
       ribbonEnv="dev"
+      toggleSingleRecordView={[Function]}
       userLogin="user"
     />
     <Collapse
@@ -113,6 +114,7 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           isSwaggerEnabled={true}
           onLocaleChange={[Function]}
           ribbonEnv="dev"
+          toggleSingleRecordView={[Function]}
           userLogin="user"
         />
       </Nav>
@@ -171,6 +173,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
       isSwaggerEnabled={false}
       onLocaleChange={[Function]}
       ribbonEnv="prod"
+      toggleSingleRecordView={[Function]}
       userLogin="user"
     />
     <Collapse
@@ -222,6 +225,7 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           isSwaggerEnabled={false}
           onLocaleChange={[Function]}
           ribbonEnv="prod"
+          toggleSingleRecordView={[Function]}
           userLogin="user"
         />
       </Nav>

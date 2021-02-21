@@ -8,7 +8,8 @@ import { Navbar, Nav } from 'reactstrap';
 
 import { BrandMenu } from 'app/shared/layout/header/header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from 'app/shared/layout/header/menus';
-import Header from 'app/shared/layout/header/header';
+import { Header } from 'app/shared/layout/header/header';
+import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 
 describe('Header', () => {
   let mountedWrapper;
@@ -28,7 +29,8 @@ describe('Header', () => {
     isShelterOwner: false,
     isStaging: false,
     isPublic: false,
-    avatarBase64: null
+    avatarBase64: null,
+    toggleSingleRecordView
   };
   const prodProps = {
     ...devProps,

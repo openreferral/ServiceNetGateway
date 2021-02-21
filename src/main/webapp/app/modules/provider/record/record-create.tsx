@@ -30,6 +30,7 @@ import ButtonPill from '../shared/button-pill';
 import { OpeningHours } from 'app/modules/provider/record/opening-hours';
 import { sendAction } from 'app/shared/util/analytics';
 import { GA_ACTIONS } from 'app/config/constants';
+import ConfirmationDialog from 'app/shared/layout/confirmation-dialog';
 
 export interface IRecordCreateViewProp extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -44,6 +45,10 @@ export interface IRecordCreateViewState {
   leaving: boolean;
   openingHoursByLocation: any;
   datesClosedByLocation: any;
+  openDialogs: string[];
+  refreshOrganization: boolean;
+  refreshLocations: boolean;
+  refreshServices: boolean;
 }
 
 const ORGANIZATION_TAB = 'organization';
@@ -98,7 +103,11 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     invalidTabs: [],
     leaving: false,
     openingHoursByLocation: {},
-    datesClosedByLocation: {}
+    datesClosedByLocation: {},
+    openDialogs: [],
+    refreshOrganization: false,
+    refreshLocations: false,
+    refreshServices: false
   };
 
   componentDidMount() {
@@ -335,6 +344,67 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
     }
   };
 
+  discardChanges = () => {
+    const { activeTab, openDialogs } = this.state;
+    if (activeTab === ORGANIZATION_TAB) {
+      this.setState(
+        {
+          organization: _.cloneDeep(organizationModel),
+          openDialogs: openDialogs.filter(dialog => dialog !== 'discard'),
+          refreshOrganization: true
+        },
+        () => this.setState({ refreshOrganization: false })
+      );
+    } else if (activeTab === LOCATION_TAB) {
+      this.setState(
+        {
+          locations: _.cloneDeep(initialLocations),
+          openDialogs: openDialogs.filter(dialog => dialog !== 'discard'),
+          locationCount: 1,
+          refreshLocations: true
+        },
+        () => this.setState({ refreshLocations: false })
+      );
+    } else if (activeTab === SERVICE_TAB) {
+      this.setState(
+        {
+          services: _.cloneDeep(initialServices),
+          openDialogs: openDialogs.filter(dialog => dialog !== 'discard'),
+          serviceCount: 1,
+          refreshServices: true
+        },
+        () => this.setState({ refreshServices: false })
+      );
+    }
+  };
+
+  exit = () => this.props.history.push('/');
+
+  isDirty = () =>
+    !_.isEqual(this.state.organization, organizationModel) ||
+    !_.isEqual(this.state.locations, initialLocations) ||
+    !_.isEqual(this.state.services, initialServices);
+
+  openDialog = name => () => {
+    this.setState({
+      openDialogs: [...this.state.openDialogs, name]
+    });
+  };
+
+  closeDialog = name => () => {
+    this.setState({
+      openDialogs: this.state.openDialogs.filter(dialog => dialog !== name)
+    });
+  };
+
+  getDiscardDialogQuestion = () => {
+    if (this.state.activeTab === ORGANIZATION_TAB) {
+      return translate('record.create.discardQuestion');
+    } else {
+      return translate('record.create.discardOtherQuestion');
+    }
+  };
+
   locationTab = () => {
     const { locationCount, organization } = this.state;
     const isOrgRemote = _.get(organization, 'onlyRemote', false);
@@ -495,12 +565,22 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
   };
 
   render() {
-    const { organization, locations, services, activeTab, invalidTabs, serviceCount, leaving } = this.state;
+    const { organization, activeTab, invalidTabs, serviceCount, refreshOrganization, refreshLocations, refreshServices } = this.state;
     const phoneNumber = _.get(organization, 'phones[0].number', '');
     const { updating, taxonomyOptions } = this.props;
     const onlyRemote = _.get(organization, 'onlyRemote', false);
     return (
       <div className="record-shared record-create">
+        {this.state.openDialogs.indexOf('discard') !== -1 && (
+          <ConfirmationDialog
+            question={this.getDiscardDialogQuestion()}
+            handleClose={this.closeDialog('discard')}
+            handleConfirm={this.discardChanges}
+          />
+        )}
+        {this.state.openDialogs.indexOf('exit') !== -1 && (
+          <ConfirmationDialog question={translate('record.create.exit')} handleClose={this.closeDialog('exit')} handleConfirm={this.exit} />
+        )}
         <Nav tabs>
           <NavItem className={`${invalidTabs.includes(ORGANIZATION_TAB) ? 'invalid' : ''}`}>
             <NavLink
@@ -523,162 +603,163 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
         </Nav>
 
         <AvForm model={{}} onSubmit={this.saveRecord} className="background">
-          <Prompt
-            when={
-              !leaving &&
-              (!_.isEqual(organization, organizationModel) ||
-                !_.isEqual(locations, initialLocations) ||
-                !_.isEqual(services, initialServices))
-            }
-            message={location => `You have unsaved data, are you sure you want to leave?`}
-          />
           <TabContent activeTab={activeTab}>
             <TabPane tabId={ORGANIZATION_TAB}>
-              <Col md={{ size: 10, offset: 1 }}>
-                <div className="heading">
-                  <img data-src={PeopleLogo} className="lazyload" height={100} alt="Organization" />
-                  <h2>
-                    <Translate contentKey="record.heading.organization" />
-                  </h2>
-                  <div className="description">
-                    <Translate contentKey="record.heading.organizationDescription" />
+              {!refreshOrganization && (
+                <Col md={{ size: 10, offset: 1 }}>
+                  <div className="heading">
+                    <img data-src={PeopleLogo} className="lazyload" height={100} alt="Organization" />
+                    <h2>
+                      <Translate contentKey="record.heading.organization" />
+                    </h2>
+                    <div className="description">
+                      <Translate contentKey="record.heading.organizationDescription" />
+                    </div>
                   </div>
-                </div>
-                <AvGroup className="flex">
-                  <div className="required" />
-                  <Label className="sr-only" for="organization-name">
-                    {translate('record.name')}
-                  </Label>
-                  <AvField
-                    id="organization-name"
-                    type="text"
-                    name="name"
-                    validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') }
-                    }}
-                    placeholder={translate('record.name')}
-                    onChange={this.onOrganizationChange('name')}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label className="sr-only" for="organization-description">
-                    {translate('record.description')}
-                  </Label>
-                  <AvInput
-                    id="organization-description"
-                    type="textarea"
-                    name="description"
-                    placeholder={translate('record.description')}
-                    onChange={this.onOrganizationChange('description')}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label className="sr-only" for="organization-covidProtocols">
-                    {translate('record.covidProtocols')}
-                  </Label>
-                  <AvInput
-                    id="organization-covidProtocols"
-                    type="textarea"
-                    name="covidProtocols"
-                    placeholder={translate('record.covidProtocols')}
-                    onChange={this.onOrganizationChange('covidProtocols')}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label className="sr-only" for="organization-url">
-                    {translate('record.description')}
-                  </Label>
-                  <AvField
-                    id="organization-url"
-                    type="text"
-                    name="url"
-                    placeholder={translate('record.url')}
-                    onChange={this.onOrganizationChange('url')}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label className="sr-only" for="organization-facebook-url">
-                    {translate('record.facebookUrl')}
-                  </Label>
-                  <AvField
-                    id="organization-facebook-url"
-                    type="text"
-                    name="facebookUrl"
-                    placeholder={translate('record.facebookUrl')}
-                    onChange={this.onOrganizationChange('facebookUrl')}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label className="sr-only" for="organization-twitter-url">
-                    {translate('record.twitterUrl')}
-                  </Label>
-                  <AvField
-                    id="organization-twitter-url"
-                    type="text"
-                    name="twitterUrl"
-                    placeholder={translate('record.twitterUrl')}
-                    onChange={this.onOrganizationChange('twitterUrl')}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label className="sr-only" for="organization-instagram-url">
-                    {translate('record.instagramUrl')}
-                  </Label>
-                  <AvField
-                    id="organization-instagram-url"
-                    type="text"
-                    name="instagramUrl"
-                    placeholder={translate('record.instagramUrl')}
-                    onChange={this.onOrganizationChange('instagramUrl')}
-                  />
-                </AvGroup>
-                <AvGroup>
-                  <Label className="sr-only" for="organization-email">
-                    {translate('record.email')}
-                  </Label>
-                  <AvField
-                    id="organization-email"
-                    type="text"
-                    name="email"
-                    validate={{
-                      maxLength: { value: 50, errorMessage: translate('entity.validation.maxlength', { max: 50 }) }
-                    }}
-                    placeholder={translate('record.email')}
-                    onChange={this.onOrganizationChange('email')}
-                  />
-                </AvGroup>
-                <div className={`record-create ${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'invalid' : ''}`}>
-                  <Input
-                    className="my-2 form-control"
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    placeholder={translate('referral.placeholder.phone')}
-                    onChange={this.setPhone}
-                    value={phoneNumber}
-                    country="US"
-                  />
-                </div>
-                {phoneNumber &&
-                  !isPossiblePhoneNumber(phoneNumber) && (
-                    <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
-                  )}
-              </Col>
-              <div className="buttons navigation-buttons">
-                <ButtonPill onClick={() => this.props.history.goBack()} className="button-pill-secondary">
+                  <AvGroup className="flex">
+                    <div className="required" />
+                    <Label className="sr-only" for="organization-name">
+                      {translate('record.name')}
+                    </Label>
+                    <AvField
+                      id="organization-name"
+                      type="text"
+                      name="name"
+                      validate={{
+                        required: { value: true, errorMessage: translate('entity.validation.required') }
+                      }}
+                      placeholder={translate('record.name')}
+                      onChange={this.onOrganizationChange('name')}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label className="sr-only" for="organization-description">
+                      {translate('record.description')}
+                    </Label>
+                    <AvInput
+                      id="organization-description"
+                      type="textarea"
+                      name="description"
+                      placeholder={translate('record.description')}
+                      onChange={this.onOrganizationChange('description')}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label className="sr-only" for="organization-covidProtocols">
+                      {translate('record.covidProtocols')}
+                    </Label>
+                    <AvInput
+                      id="organization-covidProtocols"
+                      type="textarea"
+                      name="covidProtocols"
+                      placeholder={translate('record.covidProtocols')}
+                      onChange={this.onOrganizationChange('covidProtocols')}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label className="sr-only" for="organization-url">
+                      {translate('record.description')}
+                    </Label>
+                    <AvField
+                      id="organization-url"
+                      type="text"
+                      name="url"
+                      placeholder={translate('record.url')}
+                      onChange={this.onOrganizationChange('url')}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label className="sr-only" for="organization-facebook-url">
+                      {translate('record.facebookUrl')}
+                    </Label>
+                    <AvField
+                      id="organization-facebook-url"
+                      type="text"
+                      name="facebookUrl"
+                      placeholder={translate('record.facebookUrl')}
+                      onChange={this.onOrganizationChange('facebookUrl')}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label className="sr-only" for="organization-twitter-url">
+                      {translate('record.twitterUrl')}
+                    </Label>
+                    <AvField
+                      id="organization-twitter-url"
+                      type="text"
+                      name="twitterUrl"
+                      placeholder={translate('record.twitterUrl')}
+                      onChange={this.onOrganizationChange('twitterUrl')}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label className="sr-only" for="organization-instagram-url">
+                      {translate('record.instagramUrl')}
+                    </Label>
+                    <AvField
+                      id="organization-instagram-url"
+                      type="text"
+                      name="instagramUrl"
+                      placeholder={translate('record.instagramUrl')}
+                      onChange={this.onOrganizationChange('instagramUrl')}
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label className="sr-only" for="organization-email">
+                      {translate('record.email')}
+                    </Label>
+                    <AvField
+                      id="organization-email"
+                      type="text"
+                      name="email"
+                      validate={{
+                        maxLength: { value: 50, errorMessage: translate('entity.validation.maxlength', { max: 50 }) }
+                      }}
+                      placeholder={translate('record.email')}
+                      onChange={this.onOrganizationChange('email')}
+                    />
+                  </AvGroup>
+                  <div className={`record-create ${phoneNumber && !isPossiblePhoneNumber(phoneNumber) ? 'invalid' : ''}`}>
+                    <Input
+                      className="my-2 form-control"
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      placeholder={translate('referral.placeholder.phone')}
+                      onChange={this.setPhone}
+                      value={phoneNumber}
+                      country="US"
+                    />
+                  </div>
+                  {phoneNumber &&
+                    !isPossiblePhoneNumber(phoneNumber) && (
+                      <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                    )}
+                </Col>
+              )}
+              <div className="buttons navigation-buttons flex-wrap">
+                <ButtonPill onClick={this.openDialog('exit')} className="button-pill-secondary mb-1">
                   <FontAwesomeIcon icon="angle-left" />
                   &nbsp;
                   <Translate contentKey="record.navigation.goBack" />
                 </ButtonPill>
-                <ButtonPill onClick={() => this.toggle(LOCATION_TAB)} className="pull-right button-pill-secondary">
+                <ButtonPill onClick={() => this.toggle(LOCATION_TAB)} className="pull-right button-pill-secondary mb-1">
                   <Translate contentKey="record.navigation.addLocations" />
                   &nbsp;
                   <FontAwesomeIcon icon="angle-right" />
                 </ButtonPill>
+                {this.isDirty() && (
+                  <ButtonPill onClick={this.openDialog('discard')} className="ml-1 mb-1 button-pill-secondary">
+                    <Translate contentKey="record.navigation.discardChanges" />
+                  </ButtonPill>
+                )}
+                <ButtonPill onClick={this.openDialog('exit')} className="button-pill-danger ml-1 mb-1">
+                  <Translate contentKey="record.navigation.exit" />
+                </ButtonPill>
               </div>
             </TabPane>
             <TabPane tabId={LOCATION_TAB}>
-              <this.locationTab />
+              {!refreshLocations && <this.locationTab />}
               {!onlyRemote ? (
                 <div className="buttons list-buttons">
                   {this.state.locationCount === 1 ? null : (
@@ -695,233 +776,243 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
               ) : (
                 ''
               )}
-              <div className="buttons navigation-buttons">
-                <ButtonPill onClick={() => this.toggle(ORGANIZATION_TAB)} className="button-pill-secondary">
+              <div className="buttons navigation-buttons flex-wrap">
+                <ButtonPill onClick={() => this.toggle(ORGANIZATION_TAB)} className="button-pill-secondary mb-1">
                   <FontAwesomeIcon icon="angle-left" />
                   &nbsp;
                   <Translate contentKey="record.navigation.goBack" />
                 </ButtonPill>
-                <ButtonPill onClick={() => this.toggle(SERVICE_TAB)} className="pull-right button-pill-secondary">
+                <ButtonPill onClick={() => this.toggle(SERVICE_TAB)} className="pull-right button-pill-secondary mb-1">
                   <Translate contentKey="record.navigation.addServices" />
                   &nbsp;
                   <FontAwesomeIcon icon="angle-right" />
                 </ButtonPill>
+                {this.isDirty() && (
+                  <ButtonPill onClick={this.openDialog('discard')} className="ml-1 mb-1 button-pill-secondary">
+                    <Translate contentKey="record.navigation.discardChanges" />
+                  </ButtonPill>
+                )}
+                <ButtonPill onClick={this.openDialog('exit')} className="button-pill-danger ml-1 mb-1">
+                  <Translate contentKey="record.navigation.exit" />
+                </ButtonPill>
               </div>
             </TabPane>
             <TabPane tabId={SERVICE_TAB}>
-              <Col md={{ size: 10, offset: 1 }}>
-                <div className="heading">
-                  <img data-src={ServiceLogo} height={100} className="lazyload" alt="Service" />
-                  <h2>
-                    <Translate contentKey="record.heading.services" />
-                  </h2>
-                  <div className="description">
-                    <Translate contentKey="record.heading.servicesDescription" />
+              {!refreshServices && (
+                <Col md={{ size: 10, offset: 1 }}>
+                  <div className="heading">
+                    <img data-src={ServiceLogo} height={100} className="lazyload" alt="Service" />
+                    <h2>
+                      <Translate contentKey="record.heading.services" />
+                    </h2>
+                    <div className="description">
+                      <Translate contentKey="record.heading.servicesDescription" />
+                    </div>
                   </div>
-                </div>
-                {Array.apply(null, { length: serviceCount }).map((e, i) => {
-                  const isPhoneInvalid =
-                    _.get(this.state.services, `[${i}].phones[0].number`, '') &&
-                    !isPossiblePhoneNumber(_.get(this.state.services, `[${i}].phones[0].number`, ''));
-                  return (
-                    <Row key={`service-${i}`} className="item service">
-                      <Col md={1}>
-                        <h4>{i + 1}.</h4>
-                      </Col>
-                      <Col md={11}>
-                        <AvGroup className="flex">
-                          <div className="required" />
-                          <Label className="sr-only" for={'service-id[' + i + '].name'}>
-                            {translate('entity.validation.required')}
-                          </Label>
-                          <AvInput
-                            id={'service-id[' + i + '].name'}
-                            type="text"
-                            name={'services[' + i + '].name'}
-                            placeholder={translate('record.service.name')}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            onChange={this.onServiceChange(i, 'name')}
-                          />
-                        </AvGroup>
-                        <AvGroup className="flex">
-                          <div className="required" />
-                          <Label className="sr-only" for={'services[' + i + '].taxonomyIds'}>
-                            {translate('record.service.type')}
-                          </Label>
-                          <AvSelect
-                            name={'services[' + i + '].taxonomyIds'}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            options={taxonomyOptions}
-                            // @ts-ignore
-                            isMulti
-                            placeholder={translate('record.service.type')}
-                            onChange={this.onServiceChange(i, 'taxonomyIds')}
-                          />
-                        </AvGroup>
-                        <div className={`record-create ${isPhoneInvalid ? 'invalid' : ''}`}>
-                          <Input
-                            className="my-2 form-control"
-                            type="text"
-                            name="phone"
-                            id={'service-id[' + i + '].phone'}
-                            placeholder={translate('referral.placeholder.phone')}
-                            onChange={this.setServicePhone(i)}
-                            value={_.get(this.state.services, `[${i}].phones[0].number`, '')}
-                            country="US"
-                          />
-                        </div>
-                        {isPhoneInvalid && (
-                          <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
-                        )}
-                        <AvGroup className="flex">
-                          <div className="required" />
-                          <Label className="sr-only" for={'service-id[' + i + '].description'}>
-                            {translate('record.service.description')}
-                          </Label>
-                          <AvInput
-                            id={'service-id[' + i + '].description'}
-                            type="textarea"
-                            name={'services[' + i + '].description'}
-                            placeholder={translate('record.service.description')}
-                            validate={{
-                              required: { value: true, errorMessage: translate('entity.validation.required') }
-                            }}
-                            onChange={this.onServiceChange(i, 'description')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label className="sr-only" for={'service-id[' + i + '].applicationProcess'}>
-                            {translate('record.service.applicationProcess')}
-                          </Label>
-                          <AvInput
-                            id={'service-id[' + i + '].applicationProcess'}
-                            type="textarea"
-                            name={'services[' + i + '].applicationProcess'}
-                            placeholder={translate('record.service.applicationProcess')}
-                            onChange={this.onServiceChange(i, 'applicationProcess')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label className="sr-only" for={'service-id[' + i + '].eligibilityCriteria'}>
-                            {translate('record.service.eligibilityCriteria')}
-                          </Label>
-                          <AvInput
-                            id={'service-id[' + i + '].eligibilityCriteria'}
-                            type="textarea"
-                            name={'services[' + i + '].eligibilityCriteria'}
-                            placeholder={translate('record.service.eligibilityCriteria')}
-                            onChange={this.onServiceChange(i, 'eligibilityCriteria')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label className="sr-only" for={'service-id[' + i + '].docs[0].document'}>
-                            {translate('record.service.requiredDocuments')}
-                          </Label>
-                          <AvInput
-                            id={'service-id[' + i + '].docs[0].document'}
-                            type="textarea"
-                            name={'services[' + i + '].docs[0].document'}
-                            placeholder={translate('record.service.requiredDocuments')}
-                            onChange={this.onServiceDocsChange(i)}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label className="sr-only" for={'service-id[' + i + '].fees'}>
-                            {translate('record.service.fees')}
-                          </Label>
-                          <AvInput
-                            id={'service-id[' + i + '].fees'}
-                            type="textarea"
-                            name={'services[' + i + '].fees'}
-                            placeholder={translate('record.service.fees')}
-                            onChange={this.onServiceChange(i, 'fees')}
-                          />
-                        </AvGroup>
-                        <div className="d-flex flex-wrap">
-                          <AvGroup check className="flex mr-5">
-                            <Label check for={'service[' + i + '].medicareAccepted'}>
-                              {translate('record.service.medicareAccepted')}
+                  {Array.apply(null, { length: serviceCount }).map((e, i) => {
+                    const isPhoneInvalid =
+                      _.get(this.state.services, `[${i}].phones[0].number`, '') &&
+                      !isPossiblePhoneNumber(_.get(this.state.services, `[${i}].phones[0].number`, ''));
+                    return (
+                      <Row key={`service-${i}`} className="item service">
+                        <Col md={1}>
+                          <h4>{i + 1}.</h4>
+                        </Col>
+                        <Col md={11}>
+                          <AvGroup className="flex">
+                            <div className="required" />
+                            <Label className="sr-only" for={'service-id[' + i + '].name'}>
+                              {translate('entity.validation.required')}
                             </Label>
                             <AvInput
-                              id={'service-id[' + i + '].medicareAccepted'}
-                              type="checkbox"
-                              name={'services[' + i + '].medicareAccepted'}
-                              onChange={this.onServiceInsuranceChange(i, 'medicareAccepted')}
-                              value={_.get(this.state.services, `[${i}].medicareAccepted`, false)}
+                              id={'service-id[' + i + '].name'}
+                              type="text"
+                              name={'services[' + i + '].name'}
+                              placeholder={translate('record.service.name')}
+                              validate={{
+                                required: { value: true, errorMessage: translate('entity.validation.required') }
+                              }}
+                              onChange={this.onServiceChange(i, 'name')}
                             />
                           </AvGroup>
-                          <AvGroup check className="flex mr-5">
-                            <Label check for={'service[' + i + '].medicaidAccepted'}>
-                              {translate('record.service.medicaidAccepted')}
+                          <AvGroup className="flex">
+                            <div className="required" />
+                            <Label className="sr-only" for={'services[' + i + '].taxonomyIds'}>
+                              {translate('record.service.type')}
+                            </Label>
+                            <AvSelect
+                              name={'services[' + i + '].taxonomyIds'}
+                              validate={{
+                                required: { value: true, errorMessage: translate('entity.validation.required') }
+                              }}
+                              options={taxonomyOptions}
+                              // @ts-ignore
+                              isMulti
+                              placeholder={translate('record.service.type')}
+                              onChange={this.onServiceChange(i, 'taxonomyIds')}
+                            />
+                          </AvGroup>
+                          <div className={`record-create ${isPhoneInvalid ? 'invalid' : ''}`}>
+                            <Input
+                              className="my-2 form-control"
+                              type="text"
+                              name="phone"
+                              id={'service-id[' + i + '].phone'}
+                              placeholder={translate('referral.placeholder.phone')}
+                              onChange={this.setServicePhone(i)}
+                              value={_.get(this.state.services, `[${i}].phones[0].number`, '')}
+                              country="US"
+                            />
+                          </div>
+                          {isPhoneInvalid && (
+                            <div className="invalid-feedback d-block">{translate('register.messages.validate.phoneNumber.pattern')}</div>
+                          )}
+                          <AvGroup className="flex">
+                            <div className="required" />
+                            <Label className="sr-only" for={'service-id[' + i + '].description'}>
+                              {translate('record.service.description')}
                             </Label>
                             <AvInput
-                              id={'service-id[' + i + '].medicaidAccepted'}
-                              type="checkbox"
-                              name={'services[' + i + '].medicaidAccepted'}
-                              onChange={this.onServiceInsuranceChange(i, 'medicaidAccepted')}
-                              value={_.get(this.state.services, `[${i}].medicaidAccepted`, false)}
+                              id={'service-id[' + i + '].description'}
+                              type="textarea"
+                              name={'services[' + i + '].description'}
+                              placeholder={translate('record.service.description')}
+                              validate={{
+                                required: { value: true, errorMessage: translate('entity.validation.required') }
+                              }}
+                              onChange={this.onServiceChange(i, 'description')}
                             />
                           </AvGroup>
-                          <AvGroup check className="flex" style={{ marginBottom: '1rem' }}>
-                            <Label check for={'service[' + i + '].uninsuredAccepted'}>
-                              {translate('record.service.uninsuredAccepted')}
+                          <AvGroup>
+                            <Label className="sr-only" for={'service-id[' + i + '].applicationProcess'}>
+                              {translate('record.service.applicationProcess')}
                             </Label>
                             <AvInput
-                              id={'service-id[' + i + '].uninsuredAccepted'}
-                              type="checkbox"
-                              name={'services[' + i + '].uninsuredAccepted'}
-                              onChange={this.onServiceInsuranceChange(i, 'uninsuredAccepted')}
-                              value={_.get(this.state.services, `[${i}].uninsuredAccepted`, false)}
+                              id={'service-id[' + i + '].applicationProcess'}
+                              type="textarea"
+                              name={'services[' + i + '].applicationProcess'}
+                              placeholder={translate('record.service.applicationProcess')}
+                              onChange={this.onServiceChange(i, 'applicationProcess')}
                             />
                           </AvGroup>
-                        </div>
-                        <AvGroup>
-                          <Label className="sr-only" for={'service[' + i + '].insuranceLabel'}>
-                            {translate('record.service.insuranceLabel')}
-                          </Label>
-                          <AvInput
-                            id={'service-id[' + i + '].insuranceLabel'}
-                            type="text"
-                            name={'services[' + i + '].insuranceLabel'}
-                            placeholder={translate('record.service.insuranceLabel')}
-                            onChange={this.onServiceChange(i, 'insuranceLabel')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label className="sr-only" for={'service[' + i + '].safeForUndocumented'}>
-                            {translate('record.service.safeForUndocumented')}
-                          </Label>
-                          <AvInput
-                            id={'service-id[' + i + '].safeForUndocumented'}
-                            type="textarea"
-                            name={'services[' + i + '].safeForUndocumented'}
-                            placeholder={translate('record.service.safeForUndocumented')}
-                            onChange={this.onServiceChange(i, 'safeForUndocumented')}
-                          />
-                        </AvGroup>
-                        <AvGroup>
-                          <Label className="sr-only" for={'services[' + i + '].locationIndexes'}>
-                            {translate('record.service.locations')}
-                          </Label>
-                          <AvSelect
-                            name={'services[' + i + '].locationIndexes'}
-                            value={this.state.services[i]['locationIndexes']}
-                            onChange={this.onServiceChange(i, 'locationIndexes', [])}
-                            options={this.getLocations()}
-                            // @ts-ignore
-                            isMulti
-                            placeholder={translate('record.service.locations')}
-                          />
-                        </AvGroup>
-                      </Col>
-                    </Row>
-                  );
-                })}
-              </Col>
+                          <AvGroup>
+                            <Label className="sr-only" for={'service-id[' + i + '].eligibilityCriteria'}>
+                              {translate('record.service.eligibilityCriteria')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].eligibilityCriteria'}
+                              type="textarea"
+                              name={'services[' + i + '].eligibilityCriteria'}
+                              placeholder={translate('record.service.eligibilityCriteria')}
+                              onChange={this.onServiceChange(i, 'eligibilityCriteria')}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label className="sr-only" for={'service-id[' + i + '].docs[0].document'}>
+                              {translate('record.service.requiredDocuments')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].docs[0].document'}
+                              type="textarea"
+                              name={'services[' + i + '].docs[0].document'}
+                              placeholder={translate('record.service.requiredDocuments')}
+                              onChange={this.onServiceDocsChange(i)}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label className="sr-only" for={'service-id[' + i + '].fees'}>
+                              {translate('record.service.fees')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].fees'}
+                              type="textarea"
+                              name={'services[' + i + '].fees'}
+                              placeholder={translate('record.service.fees')}
+                              onChange={this.onServiceChange(i, 'fees')}
+                            />
+                          </AvGroup>
+                          <div className="d-flex flex-wrap">
+                            <AvGroup check className="flex mr-5">
+                              <Label check for={'service[' + i + '].medicareAccepted'}>
+                                {translate('record.service.medicareAccepted')}
+                              </Label>
+                              <AvInput
+                                id={'service-id[' + i + '].medicareAccepted'}
+                                type="checkbox"
+                                name={'services[' + i + '].medicareAccepted'}
+                                onChange={this.onServiceInsuranceChange(i, 'medicareAccepted')}
+                                value={_.get(this.state.services, `[${i}].medicareAccepted`, false)}
+                              />
+                            </AvGroup>
+                            <AvGroup check className="flex mr-5">
+                              <Label check for={'service[' + i + '].medicaidAccepted'}>
+                                {translate('record.service.medicaidAccepted')}
+                              </Label>
+                              <AvInput
+                                id={'service-id[' + i + '].medicaidAccepted'}
+                                type="checkbox"
+                                name={'services[' + i + '].medicaidAccepted'}
+                                onChange={this.onServiceInsuranceChange(i, 'medicaidAccepted')}
+                                value={_.get(this.state.services, `[${i}].medicaidAccepted`, false)}
+                              />
+                            </AvGroup>
+                            <AvGroup check className="flex" style={{ marginBottom: '1rem' }}>
+                              <Label check for={'service[' + i + '].uninsuredAccepted'}>
+                                {translate('record.service.uninsuredAccepted')}
+                              </Label>
+                              <AvInput
+                                id={'service-id[' + i + '].uninsuredAccepted'}
+                                type="checkbox"
+                                name={'services[' + i + '].uninsuredAccepted'}
+                                onChange={this.onServiceInsuranceChange(i, 'uninsuredAccepted')}
+                                value={_.get(this.state.services, `[${i}].uninsuredAccepted`, false)}
+                              />
+                            </AvGroup>
+                          </div>
+                          <AvGroup>
+                            <Label className="sr-only" for={'service[' + i + '].insuranceLabel'}>
+                              {translate('record.service.insuranceLabel')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].insuranceLabel'}
+                              type="text"
+                              name={'services[' + i + '].insuranceLabel'}
+                              placeholder={translate('record.service.insuranceLabel')}
+                              onChange={this.onServiceChange(i, 'insuranceLabel')}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label className="sr-only" for={'service[' + i + '].safeForUndocumented'}>
+                              {translate('record.service.safeForUndocumented')}
+                            </Label>
+                            <AvInput
+                              id={'service-id[' + i + '].safeForUndocumented'}
+                              type="textarea"
+                              name={'services[' + i + '].safeForUndocumented'}
+                              placeholder={translate('record.service.safeForUndocumented')}
+                              onChange={this.onServiceChange(i, 'safeForUndocumented')}
+                            />
+                          </AvGroup>
+                          <AvGroup>
+                            <Label className="sr-only" for={'services[' + i + '].locationIndexes'}>
+                              {translate('record.service.locations')}
+                            </Label>
+                            <AvSelect
+                              name={'services[' + i + '].locationIndexes'}
+                              value={this.state.services[i]['locationIndexes']}
+                              onChange={this.onServiceChange(i, 'locationIndexes', [])}
+                              options={this.getLocations()}
+                              // @ts-ignore
+                              isMulti
+                              placeholder={translate('record.service.locations')}
+                            />
+                          </AvGroup>
+                        </Col>
+                      </Row>
+                    );
+                  })}
+                </Col>
+              )}
               <div className="buttons list-buttons">
                 {this.state.serviceCount === 1 ? null : (
                   <ButtonPill onClick={this.removeService} className="button-pill-secondary mr-1">
@@ -934,18 +1025,26 @@ export class RecordCreate extends React.Component<IRecordCreateViewProp, IRecord
                   <Translate contentKey="record.addAnother" />
                 </ButtonPill>
               </div>
-              <div className="buttons navigation-buttons">
-                <ButtonPill onClick={() => this.toggle(LOCATION_TAB)} className="button-pill-secondary">
+              <div className="buttons navigation-buttons flex-wrap">
+                <ButtonPill onClick={() => this.toggle(LOCATION_TAB)} className="button-pill-secondary mb-1">
                   <FontAwesomeIcon icon="angle-left" />
                   &nbsp;
                   <Translate contentKey="record.navigation.goBack" />
                 </ButtonPill>
-                <ButtonPill className={`pull-right button-pill-primary outline-none ${updating ? 'disabled' : ''}`}>
+                <ButtonPill className={`pull-right button-pill-primary outline-none mb-1 ${updating ? 'disabled' : ''}`}>
                   <button id="submit" type="submit" disabled={updating}>
                     <FontAwesomeIcon icon="save" />
                     &nbsp;
                     <Translate contentKey="record.navigation.submit" />
                   </button>
+                </ButtonPill>
+                {this.isDirty() && (
+                  <ButtonPill onClick={this.openDialog('discard')} className="ml-1 mb-1 button-pill-secondary">
+                    <Translate contentKey="record.navigation.discardChanges" />
+                  </ButtonPill>
+                )}
+                <ButtonPill onClick={this.openDialog('exit')} className="button-pill-danger ml-1 mb-1">
+                  <Translate contentKey="record.navigation.exit" />
                 </ButtonPill>
               </div>
             </TabPane>

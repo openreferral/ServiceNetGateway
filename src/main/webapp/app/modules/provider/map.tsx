@@ -43,6 +43,8 @@ interface IPersistentMapProps {
   onBoundariesChanged: any;
   onMarkerClick: any;
   centeredAt: any;
+  loadingMap: boolean;
+  initialLoad: boolean;
 }
 
 export default class PersistentMap extends React.Component<IPersistentMapProps> {
@@ -78,12 +80,19 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
         zoom: MY_LOCATION_ZOOM
       });
     }
+    if (prevProps.records !== this.props.records && this.props.initialLoad) {
+      this.fitToMarkers();
+    }
   }
 
   onMapLoad = mapRef => {
     if (mapRef) {
+      this.mapRef = mapRef;
       const transitLayer = new window.google.maps.TransitLayer();
       transitLayer.setMap(mapRef.context[MAP]);
+      if (this.props.records && this.props.initialLoad) {
+        this.fitToMarkers();
+      }
     }
   };
 
@@ -109,8 +118,19 @@ export default class PersistentMap extends React.Component<IPersistentMapProps> 
 
   setMapRef = mapRef => {
     if (!_.isEqual(mapRef, this.mapRef)) {
-      this.mapRef = mapRef;
-      this.onMapLoad(this.mapRef);
+      this.onMapLoad(mapRef);
+    }
+  };
+
+  fitToMarkers = () => {
+    if (this.mapRef && this.mapRef.fitBounds) {
+      const markerLocations = extractMarkerLocations(this.props);
+      const bounds = new window.google.maps.LatLngBounds();
+      markerLocations.map(coords => {
+        const latLng = new window.google.maps.LatLng(coords.lat, coords.lng);
+        bounds.extend(latLng);
+      });
+      this.mapRef.fitBounds(bounds);
     }
   };
 

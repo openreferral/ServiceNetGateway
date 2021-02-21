@@ -8,14 +8,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './silo.reducer';
-import { Translate } from 'react-jhipster';
+import { translate, Translate } from 'react-jhipster';
+import AvatarCropModal from 'app/modules/account/settings/avatar-crop-modal';
+import { toBase64 } from 'app/shared/util/file-utils';
 
 export interface ISiloUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const SiloUpdate = (props: ISiloUpdateProps) => {
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
-
+  const [logoBase64, setLogoBase64] = useState('');
+  const [showLogoModal, setShowLogoModal] = useState(false);
+  const [imageBase64, setImageBase64] = useState(null);
   const { siloEntity, loading, updating } = props;
+
+  const LOGO_WIDTH = 430;
+  const LOGO_ASPECT = 3.307;
 
   const handleClose = () => {
     props.history.push('/entity/silo' + props.location.search);
@@ -38,6 +45,15 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
     [props.updateSuccess]
   );
 
+  useEffect(
+    () => {
+      if (!props.loading) {
+        setLogoBase64(props.siloEntity.logoBase64);
+      }
+    },
+    [props.siloEntity]
+  );
+
   const saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
       const entity = {
@@ -50,6 +66,24 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
       } else {
         props.updateEntity(entity);
       }
+    }
+  };
+
+  const closeLogoModal = () => {
+    setShowLogoModal(false);
+  };
+
+  const onLogoSubmit = logo => {
+    setLogoBase64(logo);
+    setShowLogoModal(false);
+  };
+
+  const handleImageFileRead = async e => {
+    const file = event.target['files'] && event.target['files'][0];
+    if (file) {
+      const image = await toBase64(file);
+      setShowLogoModal(true);
+      setImageBase64(image);
     }
   };
 
@@ -90,6 +124,27 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
                   <Translate contentKey="serviceNetApp.silo.isReferralEnabled">Referral enabled</Translate>
                 </Label>
               </AvGroup>
+              {logoBase64 && (
+                <div className="mt-2 mb-2 brand-logo">
+                  <AvField type="hidden" name="logoBase64" value={logoBase64} />
+                  <img alt="Silo logo big preview" src={logoBase64} />
+                </div>
+              )}
+              <div className="d-flex justify-content-between mt-3 mb-3">
+                <Translate contentKey="serviceNetApp.silo.uploadLogo">Upload Logo</Translate>
+                <AvField name="image" type="file" accept=".jpeg, .png, .jpg" onChange={handleImageFileRead} />
+              </div>
+              <AvatarCropModal
+                title="serviceNetApp.silo.choseLogo"
+                previewStyle="d-inline mr-2"
+                onePreview
+                outputWidth={LOGO_WIDTH}
+                imageAspect={LOGO_ASPECT}
+                showModal={showLogoModal}
+                handleClose={closeLogoModal}
+                handleSubmit={onLogoSubmit}
+                imageBase64={imageBase64}
+              />
               <Button tag={Link} id="cancel-save" to="/entity/silo" color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

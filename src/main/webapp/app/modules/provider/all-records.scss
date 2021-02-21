@@ -85,11 +85,16 @@
 }
 
 .claim-record-modal {
-  width: 80vw;
-  max-width: 80vw;
+  min-width: 80vw;
+  max-width: 90vw;
+  // medium devices
   @media only screen and (max-width: 768px) {
     width: auto;
     max-width: none;
+  }
+  // extra large devices
+  @media only screen and (min-width: 1200px) {
+    width: 80vw;
   }
 
   &.claiming {
@@ -131,6 +136,25 @@
   overflow-x: hidden;
   @media only screen and (max-width: 768px) {
     width: 100%;
+  }
+}
+
+.modal-on-exit-bottom-divider {
+  border-bottom: 1px solid black;
+}
+
+.modal-on-exit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 99999;
+  border: 1px black solid;
+  width: 50%;
+  padding: 0 !important;
+  @media only screen and (max-width: 768px) {
+    width: 90% !important;
   }
 }
 

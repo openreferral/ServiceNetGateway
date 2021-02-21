@@ -15,6 +15,9 @@ export const ACTION_TYPES = {
   FETCH_ORGANIZATION_OPTIONS: 'organization/FETCH_ORGANIZATION_OPTIONS',
   FETCH_ORGANIZATION: 'organization/FETCH_ORGANIZATION',
   FETCH_SIMPLE_ORGANIZATION: 'organization/FETCH_SIMPLE_ORGANIZATION',
+  FETCH_ORGANIZATION_WITH_UPDATES: 'organization/FETCH_ORGANIZATION_WITH_UPDATES',
+  APPLY_UPDATES: 'organization/APPLY_UPDATES',
+  DISCARD_UPDATES: 'organization/DISCARD_UPDATES',
   CREATE_ORGANIZATION: 'organization/CREATE_ORGANIZATION',
   UPDATE_ORGANIZATION: 'organization/UPDATE_ORGANIZATION',
   DELETE_ORGANIZATION: 'organization/DELETE_ORGANIZATION',
@@ -25,7 +28,8 @@ export const ACTION_TYPES = {
   UNCLAIM_RECORDS: 'organization/UNCLAIM_RECORDS',
   MARK_RECORD_TO_CLAIM: 'records/MARK_RECORD_TO_CLAIM',
   UNMARK_RECORD_TO_CLAIM: 'records/UNMARK_RECORD_TO_CLAIM',
-  RESET_RECORDS_TO_CLAIM: 'records/RESET_RECORDS_TO_CLAIM'
+  RESET_RECORDS_TO_CLAIM: 'records/RESET_RECORDS_TO_CLAIM',
+  RESET_ORGANIZATION: 'RESET_ORGANIZATION'
 };
 
 const initialState = {
@@ -39,9 +43,12 @@ const initialState = {
   updateSuccess: false,
   options: [] as ReadonlyArray<IOrganizationOption>,
   claimSuccess: false,
+  discardSuccess: false,
   leftToClaim: [],
   claimedRecords: [],
-  claimingProgress: '0'
+  updatedRecords: [],
+  claimingProgress: '0',
+  providersEntityWithUpdates: defaultSimpleOrganization
 };
 
 export type OrganizationState = Readonly<typeof initialState>;
@@ -53,10 +60,12 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION):
     case REQUEST(ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION):
+    case REQUEST(ACTION_TYPES.FETCH_ORGANIZATION_WITH_UPDATES):
       return {
         ...state,
         errorMessage: null,
         updateSuccess: false,
+        discardSuccess: false,
         loading: true
       };
     case REQUEST(ACTION_TYPES.CREATE_ORGANIZATION):
@@ -64,12 +73,15 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case REQUEST(ACTION_TYPES.DELETE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
     case REQUEST(ACTION_TYPES.UNCLAIM_RECORDS):
+    case REQUEST(ACTION_TYPES.APPLY_UPDATES):
+    case REQUEST(ACTION_TYPES.DISCARD_UPDATES):
       return {
         ...state,
         errorMessage: null,
         updateSuccess: false,
         updating: true,
-        claimSuccess: false
+        claimSuccess: false,
+        discardSuccess: false
       };
     case REQUEST(ACTION_TYPES.CLAIM_RECORDS):
       return {
@@ -88,13 +100,17 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
     case FAILURE(ACTION_TYPES.DELETE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.DEACTIVATE_ORGANIZATION):
     case FAILURE(ACTION_TYPES.UNCLAIM_RECORDS):
+    case FAILURE(ACTION_TYPES.APPLY_UPDATES):
+    case FAILURE(ACTION_TYPES.DISCARD_UPDATES):
+    case FAILURE(ACTION_TYPES.FETCH_ORGANIZATION_WITH_UPDATES):
       return {
         ...state,
         loading: false,
         updating: false,
         updateSuccess: false,
         errorMessage: action.payload,
-        claimSuccess: false
+        claimSuccess: false,
+        discardSuccess: false
       };
     case FAILURE(ACTION_TYPES.CLAIM_RECORDS):
       return {
@@ -169,6 +185,26 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
             ? (((claimedRecords.length - state.leftToClaim.length) / claimedRecords.length) * 100).toFixed(0)
             : '100'
       };
+    case SUCCESS(ACTION_TYPES.FETCH_ORGANIZATION_WITH_UPDATES):
+      return {
+        ...state,
+        loading: false,
+        providersEntityWithUpdates: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.APPLY_UPDATES):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        updatedRecords: [...state.updatedRecords, action.meta.orgId]
+      };
+    case SUCCESS(ACTION_TYPES.DISCARD_UPDATES):
+      return {
+        ...state,
+        updating: false,
+        discardSuccess: true,
+        updatedRecords: [...state.updatedRecords, action.meta.orgId]
+      };
     case ACTION_TYPES.SET_BLOB:
       const { name, data, contentType } = action.payload;
       return {
@@ -200,6 +236,11 @@ export default (state: OrganizationState = initialState, action): OrganizationSt
         ...state,
         claimedRecords: [],
         claimingProgress: '0'
+      };
+    case ACTION_TYPES.RESET_ORGANIZATION:
+      return {
+        ...state,
+        providersEntity: defaultSimpleOrganization
       };
     default:
       return state;
@@ -244,6 +285,36 @@ export const getProviderEntity = (id, siloName = '') => {
   return {
     type: ACTION_TYPES.FETCH_SIMPLE_ORGANIZATION,
     payload: axios.get<ISimpleOrganization>(requestUrl)
+  };
+};
+
+export const getProviderEntityUpdates = id => {
+  const requestUrl = `${SERVICENET_API_URL}/provider-organization/${id}?includeUpdates=true`;
+  return {
+    type: ACTION_TYPES.FETCH_ORGANIZATION_WITH_UPDATES,
+    payload: axios.get<ISimpleOrganization>(requestUrl)
+  };
+};
+
+export const applyUpdates = orgId => {
+  const requestUrl = `${SERVICENET_API_URL}/provider-organization/${orgId}/apply-updates`;
+  return {
+    type: ACTION_TYPES.APPLY_UPDATES,
+    payload: axios.post<ISimpleOrganization>(requestUrl),
+    meta: {
+      orgId
+    }
+  };
+};
+
+export const discardUpdates = orgId => {
+  const requestUrl = `${SERVICENET_API_URL}/provider-organization/${orgId}/discard-updates`;
+  return {
+    type: ACTION_TYPES.DISCARD_UPDATES,
+    payload: axios.post<ISimpleOrganization>(requestUrl),
+    meta: {
+      orgId
+    }
   };
 };
 
@@ -356,4 +427,8 @@ export const unmarkRecordToClaim = recordId => ({
 
 export const resetRecordsToClaim = () => ({
   type: ACTION_TYPES.RESET_RECORDS_TO_CLAIM
+});
+
+export const resetOrganization = () => ({
+  type: ACTION_TYPES.RESET_ORGANIZATION
 });

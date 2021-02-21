@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import AllRecords from './all-records';
 import { cleanReferredRecords } from './provider-record.reducer';
+import SingleRecordView from 'app/modules/provider/record/single-record-view';
+import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 
 export interface IHomeProps extends StateProps, DispatchProps {}
 
@@ -21,6 +23,7 @@ export class Home extends React.Component<IHomeProps, IHomeState> {
   componentDidMount() {
     const { previousUserName, userName } = this.props;
     const hasUserChanged = previousUserName !== userName;
+    this.props.toggleSingleRecordView({ orgId: null, singleRecordViewActive: false });
     if (hasUserChanged) {
       this.props.cleanReferredRecords();
     }
@@ -51,18 +54,23 @@ export class Home extends React.Component<IHomeProps, IHomeState> {
   );
 
   render() {
-    const { userLogin, avatarBase64 } = this.props;
+    const { userLogin, avatarBase64, recordToOpen, singleRecordViewActive } = this.props;
     const { isMapView } = this.state;
     return (
-      <div className="background">
-        {!isMapView && this.header(userLogin, avatarBase64)}
-        {!isMapView && (
-          <div className="user-cards-container">
-            <UserRecords />
+      <div>
+        {singleRecordViewActive ? <SingleRecordView orgId={recordToOpen} withBackButton /> : null}
+        <div id="home-container" className={`${singleRecordViewActive ? 'd-none' : ''} overflowYAuto`}>
+          <div className={`background`}>
+            {!isMapView && this.header(userLogin, avatarBase64)}
+            {!isMapView && (
+              <div className="user-cards-container">
+                <UserRecords />
+              </div>
+            )}
+            <div className={`all-records-container${isMapView ? ' map' : ''}`}>
+              <AllRecords toggleMapView={this.toggleMapView} isMapView={isMapView} referring />
+            </div>
           </div>
-        )}
-        <div className={`all-records-container${isMapView ? ' map' : ''}`}>
-          <AllRecords toggleMapView={this.toggleMapView} isMapView={isMapView} referring />
         </div>
       </div>
     );
@@ -73,12 +81,15 @@ const mapStateToProps = ({ authentication, providerRecord }: IRootState) => ({
   userLogin: authentication.account.login,
   userName: authentication.account.login,
   previousUserName: providerRecord.userName,
-  avatarBase64: authentication.account.avatarBase64
+  avatarBase64: authentication.account.avatarBase64,
+  recordToOpen: providerRecord.orgId,
+  singleRecordViewActive: providerRecord.singleRecordViewActive
 });
 
 const mapDispatchToProps = {
   getSession,
-  cleanReferredRecords
+  cleanReferredRecords,
+  toggleSingleRecordView
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

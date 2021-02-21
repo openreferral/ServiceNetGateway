@@ -19,7 +19,8 @@ export const ACTION_TYPES = {
   RESET_CHECKED_IN: 'records/RESET_CHECKED_IN',
   SEND_REFERRALS: 'records/SEND_REFERRALS',
   FETCH_MADE_TO_OPTIONS: 'records/FETCH_MADE_TO_OPTIONS',
-  FETCH_REFERRAL_MADE_FOR_RECORD: 'records/FETCH_REFERRAL_MADE_FOR_RECORD'
+  FETCH_REFERRAL_MADE_FOR_RECORD: 'records/FETCH_REFERRAL_MADE_FOR_RECORD',
+  TOGGLE_SINGLE_RECORD_VIEW: 'TOGGLE_SINGLE_RECORD_VIEW'
 };
 
 const initialState = {
@@ -45,7 +46,10 @@ const initialState = {
   totalClaimableRecords: 0,
   checkInsToRecordCount: 0,
   referralsToRecordCount: 0,
-  referralsFromRecordCount: 0
+  referralsFromRecordCount: 0,
+  initialMapLoad: false,
+  orgId: '',
+  singleRecordViewActive: false
 };
 
 const DEFAULT_RECORDS_SORT = 'updatedAt,desc';
@@ -75,7 +79,8 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
       return {
         ...state,
         selectedRecord: null,
-        loadingMap: true
+        loadingMap: true,
+        initialMapLoad: action.meta.initialMapLoad
       };
     case REQUEST(ACTION_TYPES.SELECT_RECORD):
       return {
@@ -219,6 +224,12 @@ export default (state: ProviderRecordsState = initialState, action): ProviderRec
         ...state,
         checkedIn: false
       };
+    case ACTION_TYPES.TOGGLE_SINGLE_RECORD_VIEW:
+      return {
+        ...state,
+        orgId: action.payload.orgId,
+        singleRecordViewActive: action.payload.singleRecordViewActive
+      };
     default:
       return state;
   }
@@ -280,7 +291,10 @@ export const getProviderRecordsForMap = (siloName = '', providerFilter, search, 
   const baseUrl = siloName ? `${allRecordForMapPublicApiUrl}?siloName=${siloName}&${params}` : `${allRecordForMapApiUrl}?${params}`;
   return {
     type: ACTION_TYPES.FETCH_ALL_RECORDS_FOR_MAP,
-    payload: axios.post(baseUrl, clearFilter(providerFilter))
+    payload: axios.post(baseUrl, clearFilter(providerFilter)),
+    meta: {
+      initialMapLoad: boundaries == null
+    }
   };
 };
 
@@ -351,4 +365,12 @@ export const getRecordsAvailableToClaim = (page, itemsPerPage, isInitLoading = f
 export const getReferralsMadeForRecord = (recordId: string) => ({
   type: ACTION_TYPES.FETCH_REFERRAL_MADE_FOR_RECORD,
   payload: axios.get(referralsMadeForRecordApiUrl + recordId)
+});
+
+export const toggleSingleRecordView = ({ orgId, singleRecordViewActive }) => ({
+  type: ACTION_TYPES.TOGGLE_SINGLE_RECORD_VIEW,
+  payload: {
+    orgId,
+    singleRecordViewActive
+  }
 });
