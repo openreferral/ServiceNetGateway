@@ -86,6 +86,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
                 avatarBase64={this.props.account.avatarBase64}
                 logoBase64={this.props.silo ? this.props.silo.logoBase64 : null}
                 prependRoutesWithMatch
+                label={this.props.silo ? this.props.silo.label : null}
               />
             </MediaQuery>
             <MediaQuery minDeviceWidth={769}>
@@ -106,6 +107,7 @@ export class PublicApp extends React.Component<IPublicAppProps, IPublicAppState>
                 avatarBase64={this.props.account.avatarBase64}
                 prependRoutesWithMatch
                 logoBase64={this.props.silo ? this.props.silo.logoBase64 : null}
+                label={this.props.silo ? this.props.silo.label : null}
               />
             </MediaQuery>
           </ErrorBoundary>

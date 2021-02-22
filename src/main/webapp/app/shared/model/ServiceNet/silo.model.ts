@@ -4,6 +4,7 @@ export interface ISilo {
   public?: boolean;
   referralEnabled?: boolean;
   logoBase64?: string;
+  label?: string;
 }
 
 export const defaultValue: Readonly<ISilo> = {};

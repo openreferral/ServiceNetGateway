@@ -9,8 +9,10 @@ import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './silo.reducer';
 import { translate, Translate } from 'react-jhipster';
-import AvatarCropModal from 'app/modules/account/settings/avatar-crop-modal';
+import ImageCropModal, { TEXT_ASPECT, TEXT_HEIGHT } from 'app/modules/account/settings/image-crop-modal';
 import { toBase64 } from 'app/shared/util/file-utils';
+import { Textfit } from 'react-textfit';
+import { LABEL_EXTRA_HEIGHT, LOGO_ASPECT, LOGO_HEIGHT, LOGO_WIDTH } from 'app/shared/layout/header/header-components';
 
 export interface ISiloUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -19,10 +21,8 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
   const [logoBase64, setLogoBase64] = useState('');
   const [showLogoModal, setShowLogoModal] = useState(false);
   const [imageBase64, setImageBase64] = useState(null);
+  const [label, setLabel] = useState(null);
   const { siloEntity, loading, updating } = props;
-
-  const LOGO_WIDTH = 430;
-  const LOGO_ASPECT = 3.307;
 
   const handleClose = () => {
     props.history.push('/entity/silo' + props.location.search);
@@ -49,6 +49,7 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
     () => {
       if (!props.loading) {
         setLogoBase64(props.siloEntity.logoBase64);
+        setLabel(props.siloEntity.label);
       }
     },
     [props.siloEntity]
@@ -73,8 +74,9 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
     setShowLogoModal(false);
   };
 
-  const onLogoSubmit = logo => {
-    setLogoBase64(logo);
+  const onLogoSubmit = (newLogo, newLabel) => {
+    setLogoBase64(newLogo);
+    setLabel(newLabel);
     setShowLogoModal(false);
   };
 
@@ -86,6 +88,19 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
       setImageBase64(image);
     }
   };
+
+  const imageHeight = LOGO_HEIGHT - (label ? LOGO_HEIGHT * TEXT_ASPECT - LABEL_EXTRA_HEIGHT : 0);
+
+  const labelComponent = label ? (
+    <div
+      className="label text-center stretch-children d-flex"
+      style={{ width: imageHeight * LOGO_ASPECT, height: LOGO_HEIGHT * TEXT_ASPECT }}
+    >
+      <Textfit mode="single" forceSingleModeWidth={false}>
+        {label}
+      </Textfit>
+    </div>
+  ) : null;
 
   return (
     <div className="silo">
@@ -127,15 +142,17 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
               {logoBase64 && (
                 <div className="mt-2 mb-2 brand-logo">
                   <AvField type="hidden" name="logoBase64" value={logoBase64} />
-                  <img alt="Silo logo big preview" src={logoBase64} />
+                  <img alt="Silo logo big preview" src={logoBase64} style={{ height: imageHeight }} />
+                  {labelComponent}
+                  <AvField type="hidden" name="label" value={label} />
                 </div>
               )}
               <div className="d-flex justify-content-between mt-3 mb-3">
                 <Translate contentKey="serviceNetApp.silo.uploadLogo">Upload Logo</Translate>
                 <AvField name="image" type="file" accept=".jpeg, .png, .jpg" onChange={handleImageFileRead} />
               </div>
-              <AvatarCropModal
-                title="serviceNetApp.silo.choseLogo"
+              <ImageCropModal
+                title="serviceNetApp.silo.chooseLogo"
                 previewStyle="d-inline mr-2"
                 onePreview
                 outputWidth={LOGO_WIDTH}
@@ -144,6 +161,8 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
                 handleClose={closeLogoModal}
                 handleSubmit={onLogoSubmit}
                 imageBase64={imageBase64}
+                includeLabel
+                label={label}
               />
               <Button tag={Link} id="cancel-save" to="/entity/silo" color="info">
                 <FontAwesomeIcon icon="arrow-left" />

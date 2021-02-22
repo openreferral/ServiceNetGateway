@@ -12,7 +12,8 @@
       "isPublic": "Public",
       "isReferralEnabled": "Referral enabled",
       "uploadLogo": "Upload Logo",
-      "choseLogo": "Choose Logo"
+      "chooseLogo": "Choose Logo",
+      "greyLabeling": "Grey-Labeling"
     }
   }
 }
