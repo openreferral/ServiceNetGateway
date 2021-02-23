@@ -8,6 +8,7 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { Textfit } from 'react-textfit';
 import './image-crop-modal.scss';
+import { useStateWithCallbackLazy } from 'use-state-with-callback';
 
 export const AVATAR_ASPECT = 1;
 export const MAX_OUTPUT_WIDTH = 120;
@@ -29,7 +30,7 @@ export interface IImageCropModal {
 }
 
 export default function ImageCropModal(props: IImageCropModal) {
-  const [image, setImage] = useState(0);
+  const [image, setImage] = useStateWithCallbackLazy(0);
   const [avatarBase64, setAvatarBase64] = useState('');
   const [height, setHeight] = useState(0);
   const [label, setLabel] = useState(props.label);
@@ -45,9 +46,13 @@ export default function ImageCropModal(props: IImageCropModal) {
     setCrop(newCrop);
   };
 
-  const onCropComplete = async (currentCrop, img = image) => {
+  const cropAndSetImage = (currentCrop, currentImage = image) => {
     const outputWidth = props.outputWidth ? props.outputWidth : MAX_OUTPUT_WIDTH;
-    setAvatarBase64(await getCroppedImg(img, currentCrop, outputWidth));
+    setAvatarBase64(getCroppedImg(currentImage, currentCrop, outputWidth));
+  };
+
+  const onCropComplete = async currentCrop => {
+    cropAndSetImage(currentCrop);
   };
 
   const onImageLoaded = img => {
@@ -56,11 +61,12 @@ export default function ImageCropModal(props: IImageCropModal) {
     const newHeight = img.width / newAspect > img.height * newAspect ? img.height : img.width / newAspect;
     const x = (img.width - newWidth) / 2;
     const y = (img.height - newHeight) / 2;
-    const newCrop = { aspect: newAspect, newWidth, newHeight, x, y };
-    setImage(img);
+    const newCrop = { aspect: newAspect, width: newWidth, height: newHeight, x, y };
     setHeight(newHeight);
     setCrop(newCrop);
-    onCropComplete(newCrop, img);
+    setImage(img, newImage => {
+      cropAndSetImage(newCrop, newImage);
+    });
     return false;
   };
 
