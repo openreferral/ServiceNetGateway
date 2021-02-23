@@ -7,10 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LoadingBar from 'react-redux-loading-bar';
 import { Avatar } from 'app/shared/layout/header/avatar';
 import { BrandIcon } from './mobile-header-components';
-import { FeedbackButton } from 'app/shared/layout/header/header-components';
+import { FeedbackButton, LABEL_EXTRA_HEIGHT, LOGO_ASPECT } from 'app/shared/layout/header/header-components';
 import { IRootState } from 'app/shared/reducers';
 import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 import { connect } from 'react-redux';
+import { TEXT_ASPECT } from 'app/modules/account/settings/image-crop-modal';
+import { Textfit } from 'react-textfit';
 
 export interface IHeaderMobileProps extends StateProps, DispatchProps {
   isAuthenticated: boolean;
@@ -30,7 +32,10 @@ export interface IHeaderMobileProps extends StateProps, DispatchProps {
   match?: any;
   logoBase64?: any;
   prependRoutesWithMatch?: boolean;
+  label?: string;
 }
+
+export const MOBILE_LOGO_HEIGHT = 35;
 
 export interface IHeaderMobileState {
   menuOpen: boolean;
@@ -51,10 +56,22 @@ export class HeaderMobile extends React.Component<IHeaderMobileProps, IHeaderMob
     ) : null;
 
   getLogo = () => {
-    const { logoBase64 } = this.props;
+    const { logoBase64, label } = this.props;
+    const imageHeight = MOBILE_LOGO_HEIGHT - (label ? MOBILE_LOGO_HEIGHT * TEXT_ASPECT - LABEL_EXTRA_HEIGHT : 0);
+    const labelComponent = label ? (
+      <div
+        className="label text-center stretch-children d-flex"
+        style={{ width: imageHeight * LOGO_ASPECT, height: MOBILE_LOGO_HEIGHT * TEXT_ASPECT }}
+      >
+        <Textfit mode="single" forceSingleModeWidth={false}>
+          {label}
+        </Textfit>
+      </div>
+    ) : null;
     return logoBase64 ? (
       <div className="brand-icon">
-        <img alt="Logo" src={logoBase64} />
+        <img alt="Logo" src={logoBase64} style={{ height: imageHeight }} />
+        {labelComponent}
       </div>
     ) : (
       <BrandIcon />

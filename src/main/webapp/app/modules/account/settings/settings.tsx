@@ -14,7 +14,7 @@ import { saveAccountSettings, reset } from './settings.reducer';
 import { RouteComponentProps } from 'react-router-dom';
 import ButtonPill from 'app/modules/provider/shared/button-pill';
 import { toBase64 } from 'app/shared/util/file-utils';
-import AvatarCropModal from 'app/modules/account/settings/avatar-crop-modal';
+import ImageCropModal from 'app/modules/account/settings/image-crop-modal';
 
 export interface IUserSettingsProps extends StateProps, DispatchProps, RouteComponentProps {}
 
@@ -92,7 +92,7 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
     });
   };
 
-  onAvatarSubmit = avatarBase64 => {
+  onAvatarSubmit = (avatarBase64, label) => {
     this.setState({
       avatarBase64,
       showAvatarModal: false
@@ -228,7 +228,7 @@ export class SettingsPage extends React.Component<IUserSettingsProps, IUserSetti
                 </div>
               )}
               <AvField name="image" type="file" accept=".jpeg, .png, .jpg" onChange={this.handleImageFileRead} className="mt-2 mb-3" />
-              <AvatarCropModal
+              <ImageCropModal
                 showModal={showAvatarModal}
                 handleClose={this.closeAvatarModal}
                 handleSubmit={this.onAvatarSubmit}

@@ -34,6 +34,7 @@ export interface IHeaderProps extends StateProps, DispatchProps {
   isReferralEnabled?: boolean;
   isServiceProvider?: boolean;
   logoBase64?: any;
+  label?: string;
 }
 
 export interface IHeaderState {

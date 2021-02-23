@@ -8,6 +8,13 @@ import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 import { Avatar } from './avatar';
+import { TEXT_ASPECT, TEXT_HEIGHT } from 'app/modules/account/settings/image-crop-modal';
+import { Textfit } from 'react-textfit';
+
+export const LOGO_HEIGHT = 45;
+export const LOGO_ASPECT = 3.307;
+export const LOGO_WIDTH = LOGO_ASPECT * LOGO_HEIGHT;
+export const LABEL_EXTRA_HEIGHT = 5;
 
 export const NavDropdown = props => (
   <UncontrolledDropdown nav inNavbar id={props.id}>
@@ -33,14 +40,27 @@ export const BrandIcon = props => (
   </div>
 );
 
-const getLogo = props =>
-  props && props.logoBase64 ? (
+const getLogo = props => {
+  const imageHeight = LOGO_HEIGHT - (props.label ? LOGO_HEIGHT * TEXT_ASPECT - LABEL_EXTRA_HEIGHT : 0);
+  const labelComponent = props.label ? (
+    <div
+      className="label text-center stretch-children d-flex"
+      style={{ width: imageHeight * LOGO_ASPECT, height: LOGO_HEIGHT * TEXT_ASPECT }}
+    >
+      <Textfit mode="single" forceSingleModeWidth={false}>
+        {props.label}
+      </Textfit>
+    </div>
+  ) : null;
+  return props && props.logoBase64 ? (
     <div className="brand-icon">
-      <img alt="Avatar big preview" src={props.logoBase64} />
+      <img alt="Avatar big preview" src={props.logoBase64} style={{ height: imageHeight }} />
+      {labelComponent}
     </div>
   ) : (
     <BrandIcon />
   );
+};
 
 export const BrandMenu = props => {
   let homeUrl = '/';

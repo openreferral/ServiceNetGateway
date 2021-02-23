@@ -75,6 +75,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             toggleMenu={this.toggleMenu}
             avatarBase64={this.props.account.avatarBase64}
             logoBase64={this.props.silo ? this.props.silo.logoBase64 : null}
+            label={this.props.silo ? this.props.silo.label : null}
           />
         </MediaQuery>
         <MediaQuery minDeviceWidth={769}>
@@ -95,6 +96,7 @@ export class ProviderApp extends React.Component<IProviderSiteProps, IProviderSi
             isServiceProvider={this.props.isServiceProvider}
             avatarBase64={this.props.account.avatarBase64}
             logoBase64={this.props.silo ? this.props.silo.logoBase64 : null}
+            label={this.props.silo ? this.props.silo.label : null}
           />
         </MediaQuery>
       </div>
