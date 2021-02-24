@@ -8,8 +8,9 @@ import 'lazysizes';
 // tslint:disable-next-line:no-submodule-imports
 import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 import { Avatar } from './avatar';
-import { TEXT_ASPECT, TEXT_HEIGHT } from 'app/modules/account/settings/image-crop-modal';
+import { FIT_TEXT_LONGER_THAN, INITIAL_FONT_SIZE, TEXT_ASPECT, TEXT_HEIGHT } from 'app/modules/account/settings/image-crop-modal';
 import { Textfit } from 'react-textfit';
+import { fitText } from 'app/shared/util/font-utils';
 
 export const LOGO_HEIGHT = 45;
 export const LOGO_ASPECT = 3.307;
@@ -44,12 +45,10 @@ const getLogo = props => {
   const imageHeight = LOGO_HEIGHT - (props.label ? LOGO_HEIGHT * TEXT_ASPECT - LABEL_EXTRA_HEIGHT : 0);
   const labelComponent = props.label ? (
     <div
-      className="label text-center stretch-children d-flex"
+      className="label text-right stretch-children d-flex"
       style={{ width: imageHeight * LOGO_ASPECT, height: LOGO_HEIGHT * TEXT_ASPECT }}
     >
-      <Textfit mode="single" forceSingleModeWidth={false}>
-        {props.label}
-      </Textfit>
+      {fitText(props.label, FIT_TEXT_LONGER_THAN, INITIAL_FONT_SIZE)}
     </div>
   ) : null;
   return props && props.logoBase64 ? (

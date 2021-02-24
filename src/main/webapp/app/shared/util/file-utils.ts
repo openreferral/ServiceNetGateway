@@ -1,10 +1,26 @@
 /**
  * @param {HTMLImageElement} image - Image File Object
+ * @param {Object} dimensions - image dimensions
+ */
+export const getCroppedImg = (image, dimensions) => {
+  const canvas = document.createElement('canvas');
+
+  canvas.width = dimensions.width;
+  canvas.height = dimensions.height;
+  const ctx = canvas.getContext('2d');
+
+  ctx.drawImage(image, dimensions.x, dimensions.y, dimensions.w, dimensions.h, 0, 0, dimensions.width, dimensions.height);
+
+  // As Base64 string
+  return canvas.toDataURL('image/jpeg');
+};
+
+/**
+ * @param {HTMLImageElement} image - Image File Object
  * @param {Object} crop - crop Object
  * @param maxWidth maximum output width
  */
-export const getCroppedImg = (image, crop, maxWidth = 0) => {
-  const canvas = document.createElement('canvas');
+export const getCroppedImgDimensions = (image, crop, maxWidth = 0) => {
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
   const cropWidth = crop.width || image.width;
@@ -14,17 +30,10 @@ export const getCroppedImg = (image, crop, maxWidth = 0) => {
   let outWidth = cropWidth;
   let outHeight = cropHeight;
   if (maxWidth > 0 && outWidth > maxWidth) {
-    outWidth = maxWidth;
     outHeight = outHeight * (maxWidth / outWidth);
+    outWidth = maxWidth;
   }
-  canvas.width = outWidth;
-  canvas.height = outHeight;
-  const ctx = canvas.getContext('2d');
-
-  ctx.drawImage(image, cropX * scaleX, cropY * scaleY, cropWidth * scaleX, cropHeight * scaleY, 0, 0, outWidth, outHeight);
-
-  // As Base64 string
-  return canvas.toDataURL('image/jpeg');
+  return { height: outHeight, width: outWidth, x: cropX * scaleX, y: cropY * scaleY, w: cropWidth * scaleX, h: cropHeight * scaleY };
 };
 
 export const toBase64 = file =>
