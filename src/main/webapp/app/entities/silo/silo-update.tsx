@@ -9,10 +9,16 @@ import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './silo.reducer';
 import { translate, Translate } from 'react-jhipster';
-import ImageCropModal, { TEXT_ASPECT, TEXT_HEIGHT } from 'app/modules/account/settings/image-crop-modal';
+import ImageCropModal, {
+  FIT_TEXT_LONGER_THAN,
+  INITIAL_FONT_SIZE,
+  TEXT_ASPECT,
+  TEXT_HEIGHT
+} from 'app/modules/account/settings/image-crop-modal';
 import { toBase64 } from 'app/shared/util/file-utils';
 import { Textfit } from 'react-textfit';
 import { LABEL_EXTRA_HEIGHT, LOGO_ASPECT, LOGO_HEIGHT, LOGO_WIDTH } from 'app/shared/layout/header/header-components';
+import { fitText } from 'app/shared/util/font-utils';
 
 export interface ISiloUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -93,12 +99,10 @@ export const SiloUpdate = (props: ISiloUpdateProps) => {
 
   const labelComponent = label ? (
     <div
-      className="label text-center stretch-children d-flex"
+      className="label text-right stretch-children d-flex"
       style={{ width: imageHeight * LOGO_ASPECT, height: LOGO_HEIGHT * TEXT_ASPECT }}
     >
-      <Textfit mode="single" forceSingleModeWidth={false}>
-        {label}
-      </Textfit>
+      {fitText(label, FIT_TEXT_LONGER_THAN, INITIAL_FONT_SIZE)}
     </div>
   ) : null;
 

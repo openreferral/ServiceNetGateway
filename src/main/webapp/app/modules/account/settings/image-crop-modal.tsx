@@ -2,17 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-jhipster';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
-import { getCroppedImg } from 'app/shared/util/file-utils';
+import { getCroppedImg, getCroppedImgDimensions } from 'app/shared/util/file-utils';
 import ReactCrop from 'react-image-crop';
 // tslint:disable-next-line:no-submodule-imports
 import 'react-image-crop/dist/ReactCrop.css';
 import { Textfit } from 'react-textfit';
 import './image-crop-modal.scss';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
+import { LABEL_EXTRA_HEIGHT, LOGO_ASPECT, LOGO_HEIGHT } from 'app/shared/layout/header/header-components';
+import { fitText } from 'app/shared/util/font-utils';
 
 export const AVATAR_ASPECT = 1;
 export const MAX_OUTPUT_WIDTH = 120;
 export const TEXT_ASPECT = 0.25;
+export const INITIAL_FONT_SIZE = 9;
+export const FIT_TEXT_LONGER_THAN = 25;
 export const TEXT_HEIGHT = TEXT_ASPECT * 100 + '%';
 
 export interface IImageCropModal {
@@ -32,7 +36,7 @@ export interface IImageCropModal {
 export default function ImageCropModal(props: IImageCropModal) {
   const [image, setImage] = useStateWithCallbackLazy(0);
   const [avatarBase64, setAvatarBase64] = useState('');
-  const [height, setHeight] = useState(0);
+  const [dimensions, setDimensions] = useState({ height: 0 });
   const [label, setLabel] = useState(props.label);
   const [crop, setCrop] = useState({
     aspect: props.imageAspect ? props.imageAspect : AVATAR_ASPECT
@@ -46,9 +50,12 @@ export default function ImageCropModal(props: IImageCropModal) {
     setCrop(newCrop);
   };
 
-  const cropAndSetImage = (currentCrop, currentImage = image) => {
+  const cropAndSetImage = (newCrop, newImage = image) => {
     const outputWidth = props.outputWidth ? props.outputWidth : MAX_OUTPUT_WIDTH;
-    setAvatarBase64(getCroppedImg(currentImage, currentCrop, outputWidth));
+    const newDimensions = getCroppedImgDimensions(newImage, newCrop, outputWidth);
+    setCrop(newCrop);
+    setDimensions(newDimensions);
+    setAvatarBase64(getCroppedImg(newImage, newDimensions));
   };
 
   const onCropComplete = async currentCrop => {
@@ -62,8 +69,6 @@ export default function ImageCropModal(props: IImageCropModal) {
     const x = (img.width - newWidth) / 2;
     const y = (img.height - newHeight) / 2;
     const newCrop = { aspect: newAspect, width: newWidth, height: newHeight, x, y };
-    setHeight(newHeight);
-    setCrop(newCrop);
     setImage(img, newImage => {
       cropAndSetImage(newCrop, newImage);
     });
@@ -77,15 +82,13 @@ export default function ImageCropModal(props: IImageCropModal) {
   const { showModal, handleClose, imageBase64, onePreview, includeLabel } = props;
   const previewStyle = props.previewStyle ? props.previewStyle : 'avatar-big d-inline mr-2';
   const title = props.title ? props.title : 'userManagement.avatar.modalTitle';
-  const textHeight = label ? TEXT_ASPECT * height : 0;
-  const imageHeight = height - textHeight;
-  const imageAspect = props.imageAspect ? props.imageAspect : AVATAR_ASPECT;
-  const textWidth = label ? imageHeight * imageAspect : 0;
-  const labelComponent = !!label ? (
-    <div className="flex-grow-1 text-center stretch-children d-flex" style={{ width: textWidth, height: textHeight }}>
-      <Textfit mode="single" forceSingleModeWidth={false}>
-        {label}
-      </Textfit>
+  const imageHeight = dimensions.height - (label ? dimensions.height * TEXT_ASPECT - LABEL_EXTRA_HEIGHT : 0);
+  const labelComponent = label ? (
+    <div
+      className="flex-grow-1 text-right stretch-children d-flex"
+      style={{ width: imageHeight * LOGO_ASPECT, height: LOGO_HEIGHT * TEXT_ASPECT }}
+    >
+      {fitText(label, FIT_TEXT_LONGER_THAN, INITIAL_FONT_SIZE)}
     </div>
   ) : null;
 
@@ -121,8 +124,8 @@ export default function ImageCropModal(props: IImageCropModal) {
               <div className="mt-3 mb-2">
                 <Translate contentKey="userManagement.avatar.preview" />
               </div>
-              <div className="mb-1" style={{ height }}>
-                <div style={{ height: height - (label ? textHeight : 0) }} className="d-flex">
+              <div className="mb-1">
+                <div style={{ height: imageHeight }} className="d-flex">
                   {avatarBase64 && <img alt="Avatar big preview" className={previewStyle} src={avatarBase64} />}
                   {avatarBase64 && !onePreview && <img alt="Avatar small preview" className="avatar-small d-inline" src={avatarBase64} />}
                 </div>

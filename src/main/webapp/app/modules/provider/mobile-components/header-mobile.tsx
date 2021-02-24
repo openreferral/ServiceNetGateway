@@ -11,8 +11,9 @@ import { FeedbackButton, LABEL_EXTRA_HEIGHT, LOGO_ASPECT } from 'app/shared/layo
 import { IRootState } from 'app/shared/reducers';
 import { toggleSingleRecordView } from 'app/modules/provider/provider-record.reducer';
 import { connect } from 'react-redux';
-import { TEXT_ASPECT } from 'app/modules/account/settings/image-crop-modal';
+import { FIT_TEXT_LONGER_THAN, INITIAL_FONT_SIZE, TEXT_ASPECT } from 'app/modules/account/settings/image-crop-modal';
 import { Textfit } from 'react-textfit';
+import { fitText } from 'app/shared/util/font-utils';
 
 export interface IHeaderMobileProps extends StateProps, DispatchProps {
   isAuthenticated: boolean;
@@ -36,6 +37,7 @@ export interface IHeaderMobileProps extends StateProps, DispatchProps {
 }
 
 export const MOBILE_LOGO_HEIGHT = 35;
+export const MOBILE_INITIAL_FONT_SIZE = 7;
 
 export interface IHeaderMobileState {
   menuOpen: boolean;
@@ -60,12 +62,10 @@ export class HeaderMobile extends React.Component<IHeaderMobileProps, IHeaderMob
     const imageHeight = MOBILE_LOGO_HEIGHT - (label ? MOBILE_LOGO_HEIGHT * TEXT_ASPECT - LABEL_EXTRA_HEIGHT : 0);
     const labelComponent = label ? (
       <div
-        className="label text-center stretch-children d-flex"
+        className="label text-right stretch-children d-flex"
         style={{ width: imageHeight * LOGO_ASPECT, height: MOBILE_LOGO_HEIGHT * TEXT_ASPECT }}
       >
-        <Textfit mode="single" forceSingleModeWidth={false}>
-          {label}
-        </Textfit>
+        {fitText(label, FIT_TEXT_LONGER_THAN, MOBILE_INITIAL_FONT_SIZE)}
       </div>
     ) : null;
     return logoBase64 ? (
