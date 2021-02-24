@@ -12,7 +12,7 @@ export const getCroppedImg = (image, dimensions) => {
   ctx.drawImage(image, dimensions.x, dimensions.y, dimensions.w, dimensions.h, 0, 0, dimensions.width, dimensions.height);
 
   // As Base64 string
-  return canvas.toDataURL('image/jpeg');
+  return canvas.toDataURL('image/png');
 };
 
 /**
