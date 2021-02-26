@@ -11,6 +11,7 @@ import { getClients, updateClient } from './client-management.reducer';
 import { IRootState } from 'app/shared/reducers';
 import _ from 'lodash';
 import queryString from 'query-string';
+import { getAllSilos } from 'app/entities/silo/silo.reducer';
 
 export interface IClientManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -35,6 +36,7 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
       this.getClients();
     }
     this.props.getSystemAccounts();
+    this.props.getAllSilos();
   }
 
   componentDidUpdate(prevProps) {
@@ -95,8 +97,13 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
     return _.get(systemAccount, 'name', '');
   };
 
+  getSilo = (silos, client) => {
+    const silo = _.find(silos, s => s.id === client.siloId);
+    return _.get(silo, 'name', '');
+  };
+
   render() {
-    const { clients, account, match, totalItems, systemAccounts } = this.props;
+    const { clients, account, match, totalItems, systemAccounts, silos } = this.props;
     return (
       <div>
         <h2 id="client-management-page-heading">
@@ -116,8 +123,12 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
                 <Translate contentKey="clientManagement.tokenValiditySeconds">Token validity seconds</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
-              <th className="hand" onClick={this.sort('accessTokenValiditySeconds')}>
+              <th>
                 <Translate contentKey="clientManagement.systemAccount">System Account</Translate>
+                <FontAwesomeIcon icon="sort" />
+              </th>
+              <th>
+                <Translate contentKey="clientManagement.silo">Silo</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
               <th />
@@ -133,6 +144,7 @@ export class ClientManagement extends React.Component<IClientManagementProps, IP
                 </td>
                 <td>{client.tokenValiditySeconds}</td>
                 <td>{this.getSystemAccount(systemAccounts, client)}</td>
+                <td>{this.getSilo(silos, client)}</td>
                 <td className="text-right">
                   <div className="btn-group flex-btn-group-container">
                     <Button tag={Link} to={`${match.url}/${client.clientId}`} color="info" size="sm">
@@ -182,10 +194,11 @@ const mapStateToProps = (storeState: IRootState) => ({
   clients: storeState.clientManagement.clients,
   totalItems: storeState.clientManagement.totalItems,
   account: storeState.authentication.account,
-  systemAccounts: storeState.userManagement.systemAccounts
+  systemAccounts: storeState.userManagement.systemAccounts,
+  silos: storeState.silo.allSilos
 });
 
-const mapDispatchToProps = { getClients, updateClient, getSystemAccounts };
+const mapDispatchToProps = { getClients, updateClient, getSystemAccounts, getAllSilos };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

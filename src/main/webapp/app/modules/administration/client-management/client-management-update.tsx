@@ -10,6 +10,7 @@ import { getClient, updateClient, createClient, reset } from './client-managemen
 import { getSystemAccounts } from 'app/modules/administration/user-management/user-management.reducer';
 
 import { IRootState } from 'app/shared/reducers';
+import { getAllSilos } from 'app/entities/silo/silo.reducer';
 
 export interface IClientManagementUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ clientId: string }> {
   clientProfile: any;
@@ -31,6 +32,7 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
       this.props.getClient(this.props.match.params.clientId);
     }
     this.props.getSystemAccounts();
+    this.props.getAllSilos();
   }
 
   componentWillUnmount() {
@@ -52,7 +54,7 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
 
   render() {
     const isInvalid = false;
-    const { client, loading, updating, systemAccounts } = this.props;
+    const { client, loading, updating, systemAccounts, silos } = this.props;
     return (
       <div>
         <Row className="justify-content-center">
@@ -131,6 +133,19 @@ export class ClientManagementUpdate extends React.Component<IClientManagementUpd
                   </AvFeedback>
                 </AvGroup>
                 <AvGroup>
+                  <Label for="siloId">
+                    <Translate contentKey="userManagement.silo">System Account</Translate>
+                  </Label>
+                  <AvInput type="select" className="form-control" name="siloId" value={client.siloId}>
+                    <option value="" key="0" />
+                    {silos.map(silo => (
+                      <option value={silo.id} key={silo.id}>
+                        {silo.name}
+                      </option>
+                    ))}
+                  </AvInput>
+                </AvGroup>
+                <AvGroup>
                   <Label for="tokenValiditySeconds">
                     <Translate contentKey="clientManagement.tokenValiditySeconds">Token validity in seconds</Translate>
                   </Label>
@@ -178,10 +193,11 @@ const mapStateToProps = (storeState: IRootState) => ({
   user: storeState.userManagement.user,
   systemAccounts: storeState.userManagement.systemAccounts,
   loading: storeState.clientManagement.loading,
-  updating: storeState.clientManagement.updating
+  updating: storeState.clientManagement.updating,
+  silos: storeState.silo.allSilos
 });
 
-const mapDispatchToProps = { getClient, updateClient, createClient, reset, getSystemAccounts };
+const mapDispatchToProps = { getClient, updateClient, createClient, reset, getSystemAccounts, getAllSilos };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
