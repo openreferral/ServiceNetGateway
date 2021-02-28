@@ -17,6 +17,7 @@
     "tokenValiditySeconds": "Token validity in seconds",
     "systemAccount": "System Account",
     "systemAccountRequired": "System Account required",
+    "silo": "Silo",
     "clientId": "Client Id",
     "clientSecret": "Client Secret",
     "error": {

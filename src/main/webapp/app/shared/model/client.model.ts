@@ -3,11 +3,13 @@ export interface IClient {
   clientSecret?: string;
   tokenValiditySeconds?: number;
   systemAccountId?: string;
+  siloId?: string;
 }
 
 export const defaultValue: Readonly<IClient> = {
   clientId: '',
   clientSecret: '',
   tokenValiditySeconds: 3600,
-  systemAccountId: ''
+  systemAccountId: '',
+  siloId: ''
 };
