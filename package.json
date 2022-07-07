@@ -29,7 +29,7 @@
     "filepond-plugin-file-validate-type": "1.2.0",
     "lazysizes": "5.2.2",
     "lodash": "4.17.19",
-    "moment": "2.22.2",
+    "moment": "2.29.4",
     "query-string": "6.8.2",
     "react": "16.8.6",
     "react-addons-css-transition-group": "16.0.0-alpha.3",
